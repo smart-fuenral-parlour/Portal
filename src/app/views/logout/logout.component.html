@@ -1,0 +1,15 @@
+<div class="image-container set-full-height" style="background-image: url('assets/img/download.png')">
+<div class="full">
+  <div class="row " >
+    <div class="col-md-8">
+      <img src="../../../../assets/img/skhomo.png" class="img-fluid" alt="">
+
+   
+    </div>
+    <p *ngIf="isAuthenticated">Signing out...</p>
+    <p *ngIf="!isAuthenticated">
+      Signed out successfully. Click <a [routerLink]="['/login/login']">here</a> to log back in.
+    </p>
+  </div>
+  </div>
+</div>
