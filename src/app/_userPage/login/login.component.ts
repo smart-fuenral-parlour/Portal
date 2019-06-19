@@ -5,6 +5,7 @@ import { ServiceService } from 'src/app/SERVICE/service.service'; // service lin
 import swal from 'sweetalert2';
 import { Moment } from 'moment'
 import * as moment from 'moment';
+import { AppComponent } from 'src/app/app.component'
 
 
 declare var $: any;
@@ -23,7 +24,7 @@ export class MyErrorStateMatcher implements ErrorStateMatcher {
 
 @Component({
     selector: 'app-login-cmp',
-    templateUrl: './login.component.html'
+    templateUrl: './login.component.html',
 })
 
 export class LoginComponent implements OnInit, OnDestroy {
@@ -57,7 +58,7 @@ export class LoginComponent implements OnInit, OnDestroy {
     username; password; isIncorrect = false; response
 
 
-    constructor(private element: ElementRef, private _service: ServiceService, private router: Router, private formBuilder: FormBuilder) {
+    constructor(private app: AppComponent, private element: ElementRef, private _service: ServiceService, private router: Router, private formBuilder: FormBuilder) {
         this.nativeElement = element.nativeElement;
         this.sidebarVisible = false;
     }
@@ -107,6 +108,7 @@ export class LoginComponent implements OnInit, OnDestroy {
     logins() {
         this.password = document.querySelector('#password')
         this.username = document.querySelector('#username')
+        this.app.loaderClass = 'load-wrapper-spinner'
 
 
         
@@ -131,7 +133,7 @@ export class LoginComponent implements OnInit, OnDestroy {
         if ( !this.emptyNAME && !this.emptyPASS) {
 
             this.isIncorrect = false
-
+            this.app.loading = true
             
             this._service.loginUser({'name': this.username.value,'password': this.password.value})
             .subscribe( res => {
@@ -144,8 +146,9 @@ export class LoginComponent implements OnInit, OnDestroy {
                    
                    localStorage.setItem('name', JSON.stringify(this.response.response[0].name+' '+this.response.response[0].surname));
                    localStorage.setItem('role', JSON.stringify(this.response.response[0].role));
-                   
+                   this.app.loading = false
                    this.router.navigate(['/dashboard']);
+                   this.app.loaderClass = 'load-wrapper' 
 /**
  * 
                    localStorage.setItem('name', JSON.stringify(id));
@@ -160,7 +163,9 @@ export class LoginComponent implements OnInit, OnDestroy {
                } else {
 
                    console.log('Incorrect!')
-                   this.isIncorrect = true                   
+                   this.app.loading = false    
+                   this.isIncorrect = true
+                   this.app.loaderClass = 'load-wrapper'               
                }
             },
             err => {

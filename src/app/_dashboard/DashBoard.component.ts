@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { TableData } from 'src/app/md/md-table/md-table.component';
 import { LegendItem, ChartType } from 'src/app/md/md-chart/md-chart.component';
+import { AppComponent } from 'src/app/app.component'
+
 
 import * as Chartist from 'chartist';
 

@@ -6,6 +6,7 @@ import { patchComponentDefWithScope } from '@angular/core/src/render3/jit/module
 import { Router } from '@angular/router';
 import { ServiceService } from 'src/app/SERVICE/service.service'; // service link here
 import swal from 'sweetalert2';
+import { AppComponent } from 'src/app/app.component'
 
 declare const $: any;
 
@@ -35,7 +36,7 @@ export class CreateSocietyComponent implements OnInit {
   societies; response
     
 
-  constructor(private formBuilder: FormBuilder, private _servive: ServiceService, private _routet: Router) { }
+  constructor(private app: AppComponent, private formBuilder: FormBuilder, private _servive: ServiceService, private _routet: Router) { }
 
 
   // province drop downkzn
@@ -88,6 +89,9 @@ export class CreateSocietyComponent implements OnInit {
   }
   ///////////////////////////////////////////////////////////////////////////////////////
   ngOnInit() {
+    this.app.loading = false
+    
+
 
       this._servive.getSociety()
           .subscribe(res => {

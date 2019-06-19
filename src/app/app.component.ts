@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, NavigationEnd, NavigationStart } from '@angular/router';
 import { Subscription } from 'rxjs/Subscription';
+import { LoginComponent } from './_userPage/login/login.component';
 
 @Component({
     selector: 'app-my-app',
@@ -9,6 +10,8 @@ import { Subscription } from 'rxjs/Subscription';
 
 export class AppComponent implements OnInit {
   private _router: Subscription;
+  loading = false
+  loaderClass = 'load-wrapper' 
 
   constructor( private router: Router ) {
   }

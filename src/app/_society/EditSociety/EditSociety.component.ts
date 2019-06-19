@@ -7,6 +7,8 @@ import { FormBuilder, AbstractControl } from '@angular/forms';
 import { Router } from '@angular/router';
 import { ServiceService } from 'src/app/SERVICE/service.service'; // service link here
 import swal from 'sweetalert2';
+import { AppComponent } from 'src/app/app.component'
+
 declare var $: any;
 
 @Component({

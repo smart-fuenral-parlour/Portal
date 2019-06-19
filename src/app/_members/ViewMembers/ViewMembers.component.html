@@ -51,7 +51,18 @@
         $(window).on("load",function(){
           $(".loader-wrapper").fadeOut("slow");
         });
-    </script -->
+    </script     
+    
+    
+    <mat-progress-spinner
+      class = "tp-margin"
+      [color] = "color"
+      [mode] = "mode"
+      [value] = "value">
+   </mat-progress-spinner> -->
+    <div class="row load-wrapper" id="load-wrapper" *ngIf="load" >
+      <mat-spinner [diameter]="50" [strokeWidth]="2" id="load" class="load"  width="150px"></mat-spinner>   <span>  Loading...</span>
+    </div>
     <div class="row" *ngIf="notFound">
       <div class="col-12 ml-auto mr-auto">
         <div class="card">

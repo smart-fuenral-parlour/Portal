@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { AppComponent } from 'src/app/app.component'
 
 @Component({
   selector: 'app-ViewPayments',
@@ -15,12 +16,13 @@ export class ViewPaymentsComponent implements OnInit {
   toDate
   selectedClaim
 
-  constructor() { }
+  constructor(private app: AppComponent) { }
 
   ngOnInit() {
-
+    this.app.loading = false
     this.toDate = document.querySelector('#toDate')
     this.fromDate = document.querySelector('#fromDate')
+
 
   }
 
@@ -43,7 +45,7 @@ export class ViewPaymentsComponent implements OnInit {
       this.fromNULL = true
     }
 
-    if(!this.fromNULL && !this.toNULL) {
+    if (!this.fromNULL && !this.toNULL) {
       this.table = true
     } else {
       this.table = false

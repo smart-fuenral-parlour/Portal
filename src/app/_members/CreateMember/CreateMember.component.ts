@@ -9,6 +9,7 @@ import swal from 'sweetalert2';
 import { Moment } from 'moment'
 import * as moment from 'moment';
 import { isNullOrUndefined } from 'util';
+import { AppComponent } from 'src/app/app.component'
 
 declare const $: any;
 
@@ -55,7 +56,7 @@ export class CreateMemberComponent implements OnInit {
     jsonDATA; creator
 
 
-    constructor(private formBuilder: FormBuilder, private _servive: ServiceService, private _routet: Router) { }
+    constructor( private formBuilder: FormBuilder, private _servive: ServiceService, private _routet: Router, private app: AppComponent) { }
 
 
     // province drop downkzn
@@ -175,11 +176,12 @@ export class CreateMemberComponent implements OnInit {
             buttonsStyling: false
         }).then((result) => {
             if (result.value) {
+                this.app.loading = true
 
                 this._servive.createMember(this.jsonDATA)
                     .subscribe(res => {
                         console.log(res)
-                        console.log('Member Created')
+                        this.app.loading = false
                     }, err => console.log(err))
 
                 swal(
@@ -236,6 +238,8 @@ export class CreateMemberComponent implements OnInit {
     }
     ///////////////////////////////////////////////////////////////////////////////////////
     ngOnInit() {
+        this.app.loading = false
+        
 
         this.invalid = false
         // GETTING NAME OF THE CREATOR

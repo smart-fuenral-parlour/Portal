@@ -3,6 +3,8 @@ import { Router } from '@angular/router';
 import { ServiceService } from 'src/app/SERVICE/service.service'; // service link here
 import swal from 'sweetalert2';
 import { isNullOrUndefined } from 'util';
+import { AppComponent } from 'src/app/app.component'
+
 declare var $: any;
 
 declare interface DataTable {
@@ -33,7 +35,12 @@ export class ViewMembersComponent implements OnInit {
   searchInput
   tes = false;
 
-  constructor(private _service: ServiceService, private _router: Router) {
+  title = 'materialApp'; 
+  color = 'primary';
+  mode = 'determinate';
+  value = 80;
+
+  constructor(private _service: ServiceService, private _router: Router, private app: AppComponent) {
 
   }
 
@@ -51,6 +58,9 @@ export class ViewMembersComponent implements OnInit {
 
 
   ngOnInit() {
+    this.app.loading = false
+    
+    
     window.onload = () => {
       console.log('loading...')
   };
@@ -75,7 +85,7 @@ export class ViewMembersComponent implements OnInit {
 
   click() {
     this.tes = true
-
+ this.app.loading = true
     window.onloadstart
   }
 
@@ -85,6 +95,7 @@ export class ViewMembersComponent implements OnInit {
     this.isEmpty = false
     this.searchResult = false
     this.notFound = false
+    //this.load = true
 
     this.searchInput = document.querySelector('#searchBox')
 
@@ -102,6 +113,7 @@ export class ViewMembersComponent implements OnInit {
       this.notFound = false
 
       if (this.selectedSearchType == 'Membership Number') {
+        this.app.loading = true
 
         this._service.searchMemberByMembershipNumber(this.searchInput.value)
           .subscribe(res => {
@@ -111,10 +123,12 @@ export class ViewMembersComponent implements OnInit {
 
             if (this.response.response.length > 0  ) {
               console.log('Search By Membership Number')
+              this.app.loading = false
               this.notFound = false
               this.searchResult = true
             } else {
               console.log('NO MEMBERS FOUND')
+              this.app.loading = false
               this.searchResult = false
               this.notFound = true
             }
@@ -128,17 +142,21 @@ export class ViewMembersComponent implements OnInit {
 
       } else
         if (this.selectedSearchType == 'Surname') {
+          this.app.loading = true
 
           this._service.searchMemberBySurname(this.searchInput.value)
             .subscribe(res => {
               this.response = res
+              this.app.loading = true
 
               if (this.response.response.length > 0) {
                 console.log('Search By Surname')
+                this.app.loading = false
                 this.notFound = false
                 this.searchResult = true
               } else {
                 console.log('NO MEMBERS FOUND')
+                this.app.loading = false
                 this.searchResult = false
                 this.notFound = true
               }
@@ -149,6 +167,7 @@ export class ViewMembersComponent implements OnInit {
 
         } else
           if (this.searchInput.value.length == 13 || this.selectedSearchType == 'ID Number') {
+            this.app.loading = true
             this._service.searchMemberByIdNumber(this.searchInput.value)
               .subscribe(res => {
                 this.response = res
@@ -157,10 +176,12 @@ export class ViewMembersComponent implements OnInit {
 
                 if (this.response.response.length > 0) {
                   console.log('Search By ID Number')
+                  this.app.loading = false
                   this.notFound = false
                   this.searchResult = true
                 } else {
                   console.log('NO MEMBERS FOUND')
+                  this.app.loading = false
                   this.searchResult = false
                   this.notFound = true
                 }

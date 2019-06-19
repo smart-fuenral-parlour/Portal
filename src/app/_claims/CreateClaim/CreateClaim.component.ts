@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { ServiceService } from 'src/app/SERVICE/service.service'; // service link here
 import { isNullOrUndefined } from 'util';
+import { AppComponent } from 'src/app/app.component'
 
 @Component({
   selector: 'app-CreateClaim',
@@ -21,7 +22,7 @@ export class CreateClaimComponent implements OnInit {
   invalidID = false;
   searchInput
 
-  constructor(private _service: ServiceService, private _router: Router) { }
+  constructor( private app: AppComponent, private _service: ServiceService, private _router: Router) { }
 
   Types = [
     { id: 1, value: 'ID Number', viewValue: 'ID Number' },
@@ -29,6 +30,8 @@ export class CreateClaimComponent implements OnInit {
   ];
 
   ngOnInit() {
+    this.app.loading = false
+   
   }
 
   //Search member

@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router'
+import { AppComponent } from 'src/app/app.component'
 
 @Component({
   selector: 'app-ViewAllClaims',
@@ -16,10 +17,11 @@ export class ViewAllClaimsComponent implements OnInit {
   toDate
   selectedClaim
 
-  constructor(private _router: Router) { }
+  constructor(private app: AppComponent, private _router: Router) { }
 
   ngOnInit() {
-
+    this.app.loading = false
+    
     this.toDate = document.querySelector('#toDate')
     this.fromDate = document.querySelector('#fromDate')
 

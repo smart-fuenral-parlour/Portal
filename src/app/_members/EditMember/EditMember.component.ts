@@ -5,6 +5,7 @@ import { isNullOrUndefined, isNull } from 'util';
 import swal from 'sweetalert2';
 import { Moment } from 'moment'
 import * as moment from 'moment';
+import { AppComponent } from 'src/app/app.component';
 
 declare const $: any;
 @Component({
@@ -17,8 +18,6 @@ export class EditMemberComponent implements OnInit {
   ID;
   singleMember;
   response;
-
-
 
   testAll;
   membershipID;
@@ -41,7 +40,7 @@ export class EditMemberComponent implements OnInit {
   selectedGender: string;
   selectedProvince: string
 
-  constructor(private _service: ServiceService, private _router: Router) {
+  constructor(private app: AppComponent, private _service: ServiceService, private _router: Router) {
     if (!isNullOrUndefined(sessionStorage.getItem('greenlinks'))) {
       this.society = true
     }
@@ -86,7 +85,7 @@ export class EditMemberComponent implements OnInit {
 
     if (localStorage.getItem('id') != null) {
       this.ID = JSON.parse(localStorage.getItem('id'));
-
+      this.app.loading = true
       this._service.getSingleMember(this.ID)
         .subscribe(res => {
           this.response = res
@@ -94,9 +93,14 @@ export class EditMemberComponent implements OnInit {
           this.gender = this.singleMember[0].gender
           this.province = this.singleMember[0].province
           this.membershipID = this.singleMember[0].membershipnumber
+          this.app.loading = false
         },
 
-          err => console.log(err))
+          err => {
+
+            this.app.loading = false
+            console.log(err)
+          })
     } else {
       return null;
     }
@@ -125,28 +129,28 @@ export class EditMemberComponent implements OnInit {
 
 
     // SURNAME /////////////////
-    if (isNullOrUndefined(this.lname.value) || this.lname.value == "" ) {
+    if (isNullOrUndefined(this.lname.value) || this.lname.value == "") {
       this.newSURNAME = this.lname.placeholder
     } else {
       this.newSURNAME = this.lname.value
     }
 
     // IDNUMBER /////////////////
-    if (isNullOrUndefined(this.idnumber.value) || this.idnumber.value == "" ) {
+    if (isNullOrUndefined(this.idnumber.value) || this.idnumber.value == "") {
       this.newIDNUMBER = this.idnumber.placeholder
     } else {
       this.newIDNUMBER = this.idnumber.value
     }
 
     // EMAIL /////////////////
-    if (isNullOrUndefined(this.email.value) || this.email.value == "" ) {
+    if (isNullOrUndefined(this.email.value) || this.email.value == "") {
       this.newEMAIL = this.email.placeholder
     } else {
       this.newEMAIL = this.email.value
     }
 
     // GENDER /////////////////
-    if (isNullOrUndefined(this.selectedGender) || this.selectedGender == ""  ) {
+    if (isNullOrUndefined(this.selectedGender) || this.selectedGender == "") {
       this.newGENDER = this.gender
     } else {
       this.newGENDER = this.selectedGender
@@ -154,7 +158,7 @@ export class EditMemberComponent implements OnInit {
 
 
     // PROVINCE /////////////////
-    if (isNullOrUndefined(this.selectedProvince) || this.selectedProvince == ""  ) {
+    if (isNullOrUndefined(this.selectedProvince) || this.selectedProvince == "") {
       this.newPROVINCE = this.province
     } else {
       this.newPROVINCE = this.selectedProvince
@@ -162,7 +166,7 @@ export class EditMemberComponent implements OnInit {
 
 
     // SUBURB /////////////////
-    if ( isNullOrUndefined(this.suburb.value) || this.suburb.value == "") {
+    if (isNullOrUndefined(this.suburb.value) || this.suburb.value == "") {
       this.newSUBURB = this.suburb.placeholder
     } else {
       this.newSUBURB = this.suburb.value
@@ -225,11 +229,11 @@ export class EditMemberComponent implements OnInit {
           .subscribe(res => {
             console.log(res)
             this.testAll = res
-            if(this.testAll.code != 200){
-            console.log(this.testAll.error)
+            if (this.testAll.code != 200) {
+              console.log(this.testAll.error)
             }
             console.log('Member Updated')
-          //  window.location.reload()
+            //  window.location.reload()
           }, err => console.log(err))
 
         swal(
@@ -239,7 +243,7 @@ export class EditMemberComponent implements OnInit {
             confirmButtonClass: "btn btn-success",
             buttonsStyling: false
 
-          }).then((result) => { if(sessionStorage.getItem('fromMemberDetails') == 'true') { this._router.navigate(['/members/viewmemberdetails']) } else { this._router.navigate(['/members/searchmember']) }} )
+          }).then((result) => { if (sessionStorage.getItem('fromMemberDetails') == 'true') { this._router.navigate(['/members/viewmemberdetails']) } else { this._router.navigate(['/members/searchmember']) } })
       }
     })
 

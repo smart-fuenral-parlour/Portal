@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import PerfectScrollbar from 'perfect-scrollbar';
 import { isNullOrUndefined } from 'util';
+import { AppComponent } from 'src/app/app.component'
 
 declare const $: any;
 
@@ -196,6 +197,8 @@ export class SidebarComponent implements OnInit {
     public menuItems: any[];
     user;
     role
+    constructor(private app: AppComponent) {      
+    }
 
     isMobileMenu() {
         if ($(window).width() > 991) {
@@ -230,4 +233,9 @@ export class SidebarComponent implements OnInit {
         }
         return bool;
     }
+
+nextPage() {
+    this.app.loading = true
+}
+
 }

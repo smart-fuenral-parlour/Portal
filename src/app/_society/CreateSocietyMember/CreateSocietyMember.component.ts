@@ -6,6 +6,7 @@ import { patchComponentDefWithScope } from '@angular/core/src/render3/jit/module
 import { Router } from '@angular/router';
 import { ServiceService } from 'src/app/SERVICE/service.service'; // service link here
 import swal from 'sweetalert2';
+import { AppComponent } from 'src/app/app.component'
 
 declare const $: any;
 

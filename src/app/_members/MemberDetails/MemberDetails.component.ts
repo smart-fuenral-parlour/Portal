@@ -7,6 +7,8 @@ import { Key } from 'protractor';
 import { Router } from '@angular/router';
 import swal from 'sweetalert2';
 import { Subscriber } from 'rxjs';
+import { AppComponent } from 'src/app/app.component'
+
 declare var $: any;
 
 
@@ -41,7 +43,17 @@ export class MemberDetailsComponent implements OnInit {
   payments
   Nopayment = false;
 
-  constructor(private fb: FormBuilder, private _service: ServiceService, private _router: Router) {
+
+  payment_toNULL = false; claim_toNULL = false
+  payment_fromNULL = false; claim_fromNULL = false
+  paymentTable = false; claimTable = false
+
+  fromDate
+  toDate
+  selectedClaim
+
+  constructor(private fb: FormBuilder, private _service: ServiceService, private _router: Router, private app: AppComponent) {
+
 
     this.addForm = this.fb.group({
       items: [null, Validators.required],
@@ -57,6 +69,7 @@ export class MemberDetailsComponent implements OnInit {
 
   ngOnInit() {
 
+    this.app.loading = true
     if (!isNullOrUndefined(sessionStorage.getItem('greenlinks'))) {
       this.society = true
     }
@@ -66,6 +79,7 @@ export class MemberDetailsComponent implements OnInit {
     if (localStorage.getItem('id') != null) {
       this.ID = JSON.parse(localStorage.getItem('id'));
 
+      
 
       this._service.getSingleMember(this.ID)
         .subscribe(res => {
@@ -107,23 +121,32 @@ export class MemberDetailsComponent implements OnInit {
                 this.noBeneficiary = false
               }
 
+
+              this.app.loading = false
+
               this._service.payments(this.membershipID)
                 .subscribe(res => {
                   this.response = res
-                  
+
                   this.payments = this.response.response
-                  if(this.payments.length > 0){
+                  if (this.payments.length > 0) {
                     this.Nopayment = false
                     console.log('Number of payments: ' + this.payments.length)
                     console.log(this.payments)
                   } else {
                     this.Nopayment = true
                   }
-                }, err => console.log(err))
+                }, err => {
+            
+                  console.log(err)
+                })
 
               console.log(this.beneficiaries)
-            },
-              err => console.log(err))
+            }, err => {
+            
+              this.app.loading = false
+              console.log(err)
+            })
 
 
           if (this.policystatus = 'Active') {
@@ -133,9 +156,10 @@ export class MemberDetailsComponent implements OnInit {
           }
 
 
-        },
-
-          err => console.log(err))
+        }, err => {
+          this.app.loading = false
+          console.log(err)
+        })
     } else {
       return null;
     }
@@ -193,7 +217,10 @@ export class MemberDetailsComponent implements OnInit {
         this._service.removeBeneficiary(id)
           .subscribe(res => {
             console.log(res)
-          }, err => console.log(err))
+          }, err => {
+            
+            console.log(err)
+          })
         swal(
           {
             title: 'Deleted',
@@ -224,7 +251,7 @@ export class MemberDetailsComponent implements OnInit {
 
   // Edit a member
   editMember() {
-   // this.selectedrow = index;
+    // this.selectedrow = index;
     localStorage.setItem('id', JSON.stringify(this.memberId));
     sessionStorage.setItem('fromMemberDetails', JSON.stringify(true));
     this._router.navigate(['/members/editmember']);
@@ -240,7 +267,7 @@ export class MemberDetailsComponent implements OnInit {
       title: 'Edit Beneficiary',
       html:
         '<div class="row">' +
-        
+
         '<div class="col-10">' +
 
         ' <div class="row">' +
@@ -267,7 +294,7 @@ export class MemberDetailsComponent implements OnInit {
         '<input matInput type="number" name="idnumber" minLength id="IDNumber" placeholder="' + IDNUMBER + '" class="form-control" />' +
         '</div>' +
         '</div>' +
-        
+
         '</div>',
       showCancelButton: true,
       confirmButtonClass: 'btn btn-success',
@@ -275,6 +302,7 @@ export class MemberDetailsComponent implements OnInit {
       buttonsStyling: false
     }).then((result) => {
       if (result.value) {
+        this.app.loading = true
 
         // NEW BENEFICIARY NAME
         if ($('#Name').val() == '' || isNullOrUndefined($('#Name').val())) {
@@ -298,10 +326,10 @@ export class MemberDetailsComponent implements OnInit {
         }
 
 
-        console.log('valid')
 
         this._service.updateBeneficiary(id, { 'name': this.BenefitName, 'surname': this.BenefitSurname, 'idnumber': this.BenefitIdNumber })
           .subscribe(res => {
+            this.app.loading = false
             console.log(res)
 
 
@@ -313,6 +341,10 @@ export class MemberDetailsComponent implements OnInit {
                 buttonsStyling: false
 
               }).then((result) => window.location.reload())
+          }, err => {
+            
+            this.app.loading = false
+            console.log(err)
           })
 
 
@@ -328,7 +360,7 @@ export class MemberDetailsComponent implements OnInit {
       title: 'Create Beneficiary',
       html:
         '<div class="row">' +
-        
+
         '<div class="col-10">' +
 
         ' <div class="row">' +
@@ -355,7 +387,7 @@ export class MemberDetailsComponent implements OnInit {
         '<input matInput type="number" name="idnumber" minLength id="IDNumber"  class="form-control" />' +
         '</div>' +
         '</div>' +
-        
+
         '</div>',
       showCancelButton: true,
       confirmButtonClass: 'btn btn-success',
@@ -368,28 +400,108 @@ export class MemberDetailsComponent implements OnInit {
 
 
         console.log('valid')
-/*
-        this._service.updateBeneficiary(id, { 'name': this.BenefitName, 'surname': this.BenefitSurname, 'idnumber': this.BenefitIdNumber })
-          .subscribe(res => {
-            console.log(res)
-
-
-            swal(
-              {
-                title: 'Updates Succesfully Saved',
-                type: 'success',
-                confirmButtonClass: "btn btn-success",
-                buttonsStyling: false
-
-              }).then((result) => window.location.reload())
-          })
-          */
+        /*
+                this._service.updateBeneficiary(id, { 'name': this.BenefitName, 'surname': this.BenefitSurname, 'idnumber': this.BenefitIdNumber })
+                  .subscribe(res => {
+                    console.log(res)
+        
+        
+                    swal(
+                      {
+                        title: 'Updates Succesfully Saved',
+                        type: 'success',
+                        confirmButtonClass: "btn btn-success",
+                        buttonsStyling: false
+        
+                      }).then((result) => window.location.reload())
+                  })
+                  */
 
 
 
       }
     })
   }
+
+
+
+  fromEnable() {
+
+    if (this.claim_fromNULL) {
+      this.claim_fromNULL = false
+    }
+
+    if (this.payment_fromNULL) {
+      this.payment_fromNULL = false
+    }
+
+  }
+
+  toEnable() {
+
+    if (this.claim_toNULL) {
+      this.claim_toNULL = false
+    }
+
+    if (this.payment_toNULL) {
+      this.payment_toNULL = false
+    }
+
+  }
+
+  searchClaim() {
+
+
+    this.toDate = document.querySelector('#ClaimtoDate')
+    this.fromDate = document.querySelector('#ClaimfromDate')
+
+    if (this.toDate.value == '') {
+      this.claim_toNULL = true
+    }
+
+    if (this.fromDate.value == '') {
+      this.claim_fromNULL = true
+    }
+
+    if (!this.claim_fromNULL && !this.claim_toNULL) {
+      this.claimTable = true
+    } else {
+      this.claimTable = false
+    }
+
+  }
+
+  // View member details
+  claimInfo(index) {
+    this.selectedClaim = index;
+    // console.log('Member ID: ' + id);
+    //  localStorage.setItem('id', JSON.stringify(id));
+    this._router.navigate(['/claims/claiminfo']);
+  }
+
+
+  searchPayments() {
+
+    this.toDate = document.querySelector('#PaymenttoDate')
+    this.fromDate = document.querySelector('#PaymentfromDate')
+
+    if (this.toDate.value == '') {
+      this.payment_toNULL = true
+    }
+
+    if (this.fromDate.value == '') {
+      this.payment_fromNULL = true
+    }
+
+    if (!this.payment_fromNULL && !this.payment_toNULL) {
+      this.paymentTable = true
+    } else {
+      this.paymentTable = false
+    }
+
+  }
+
+
 }
 
 
