@@ -32,13 +32,15 @@ export class MemberDetailsComponent implements OnInit {
   idnumber; email;
   housenumber; streetname
   suburb; province
-  contact; membershipID
+  contact; membershipNumber
   policystatus; color;
   createdby; noBeneficiary = false
   BenefitName; BenefitSurname = []; BenefitIdNumber;
   memberId
   editTextBox = false;
   date
+  gender
+  lifestatus
   creator
   payments
   Nopayment = false;
@@ -79,40 +81,35 @@ export class MemberDetailsComponent implements OnInit {
     if (localStorage.getItem('id') != null) {
       this.ID = JSON.parse(localStorage.getItem('id'));
 
-      
+
 
       this._service.getSingleMember(this.ID)
         .subscribe(res => {
 
           this.singleMember = res
-          this.firstName = this.singleMember.response[0].name
-          this.lastName = this.singleMember.response[0].surname
-          this.idnumber = this.singleMember.response[0].idnumber
-          this.email = this.singleMember.response[0].email
-          this.housenumber = this.singleMember.response[0].housenumber
-          this.streetname = this.singleMember.response[0].streetname
-          this.suburb = this.singleMember.response[0].suburb
-          this.province = this.singleMember.response[0].province
-          this.contact = this.singleMember.response[0].contactnumber
-          this.membershipID = this.singleMember.response[0].membershipnumber
-          this.memberId = this.singleMember.response[0].idMembers
-          this.policystatus = this.singleMember.response[0].policystatus
-          this.date = this.singleMember.response[0].date
-          this.createdby = this.singleMember.response[0].createdby
+          this.firstName = this.singleMember[0].name
+          this.lastName = this.singleMember[0].surname
+          this.idnumber = this.singleMember[0].identitynumber
+          this.email = this.singleMember[0].email
+          this.housenumber = this.singleMember[0].housenumber
+          this.streetname = this.singleMember[0].streetname
+          this.suburb = this.singleMember[0].suburb
+          this.province = this.singleMember[0].province
+          this.contact = this.singleMember[0].contactnumber
+          this.membershipNumber = this.singleMember[0].membershipnumber
+          this.memberId = this.singleMember[0].idmember
+          this.policystatus = 'Active'//this.singleMember[0].policystatus
+          this.date = this.singleMember[0].createddate
+          this.createdby = 'SYSTEM' //this.singleMember[0].createdby
+          this.gender = this.singleMember[0].gender
           this.noBeneficiary = false
 
 
-          this._service.getMemberBeneficiary(this.membershipID)
+          this._service.getMemberBeneficiary(this.memberId)
             .subscribe(res => {
               this.response = res;
-              this.beneficiaries = this.response.response
+              this.beneficiaries = res
               console.log(res)
-
-
-              for (this.i = 0; this.i < this.beneficiaries.length; this.i++) {
-                this.BenefitSurname.push(this.beneficiaries[this.i].surname)
-              }
-
 
 
               if (this.beneficiaries.length == 0) {
@@ -124,7 +121,7 @@ export class MemberDetailsComponent implements OnInit {
 
               this.app.loading = false
 
-              this._service.payments(this.membershipID)
+              this._service.payments(this.membershipNumber)
                 .subscribe(res => {
                   this.response = res
 
@@ -137,13 +134,13 @@ export class MemberDetailsComponent implements OnInit {
                     this.Nopayment = true
                   }
                 }, err => {
-            
+
                   console.log(err)
                 })
 
               console.log(this.beneficiaries)
             }, err => {
-            
+
               this.app.loading = false
               console.log(err)
             })
@@ -218,7 +215,7 @@ export class MemberDetailsComponent implements OnInit {
           .subscribe(res => {
             console.log(res)
           }, err => {
-            
+
             console.log(err)
           })
         swal(
@@ -327,7 +324,7 @@ export class MemberDetailsComponent implements OnInit {
 
 
 
-        this._service.updateBeneficiary(id, { 'name': this.BenefitName, 'surname': this.BenefitSurname, 'idnumber': this.BenefitIdNumber })
+        this._service.updateBeneficiary(id, { 'idmember': this.memberId, 'name': this.BenefitName, 'surname': this.BenefitSurname, 'identitynumber': this.BenefitIdNumber })
           .subscribe(res => {
             this.app.loading = false
             console.log(res)
@@ -342,7 +339,7 @@ export class MemberDetailsComponent implements OnInit {
 
               }).then((result) => window.location.reload())
           }, err => {
-            
+
             this.app.loading = false
             console.log(err)
           })
@@ -356,6 +353,12 @@ export class MemberDetailsComponent implements OnInit {
   }
 
   createBeneficiary() {
+
+
+    let nameEmp = 'hidden'
+    let surnameEmp
+    let idnumberEmp
+
     swal({
       title: 'Create Beneficiary',
       html:
@@ -368,6 +371,9 @@ export class MemberDetailsComponent implements OnInit {
         '<div class="col-8">' +
         '<mat-form-field class="example-full-width">' +
         '<input matInput type="text" id="Name"   class="form-control" />' +
+        ' <p  style="color:red; font-size:13px" hidden >' +
+        'Name field empty' +
+        '</p>' +
         '</mat-form-field>' +
         '</div>' +
         '</div>' +
@@ -397,10 +403,28 @@ export class MemberDetailsComponent implements OnInit {
       if (result.value) {
 
 
+        console.log({ 'idmember': this.memberId, 'createddate': this.date, 'idlifestatus': 1, 'identitynumber': $('#IDNumber').val(), 'name': $('#Name').val(), 'surname': $('#Surname').val() })
+
+        this._service.createMemberBeneficiary({ 'idmember': this.memberId, 'createddate': this.date, 'idlifestatus': 1, 'identitynumber': $('#IDNumber').val(), 'name': $('#Name').val(), 'surname': $('#Surname').val() })
+          .subscribe(ben => {
+            console.log(ben)
+
+          }, err => {
+            console.log(err)
+          })
 
 
-        console.log('valid')
+        swal(
+          {
+            title: 'Updates Succesfully Saved',
+            type: 'success',
+            confirmButtonClass: "btn btn-success",
+            buttonsStyling: false
+
+          }).then((result) => window.location.reload())
+
         /*
+
                 this._service.updateBeneficiary(id, { 'name': this.BenefitName, 'surname': this.BenefitSurname, 'idnumber': this.BenefitIdNumber })
                   .subscribe(res => {
                     console.log(res)

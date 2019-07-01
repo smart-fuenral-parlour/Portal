@@ -12,12 +12,12 @@
             </h4>
           </div>
           <div class="card-body">
-            <form *ngFor="let member of singleMember">
+            <form *ngFor="let member of response">
               <div class="row">
                 <div class="col-md-6">
                   <div class="form-group">
                     <label class="bmd-label-floating">Fist Name</label>
-                    <input type="text" class="form-control" id="name" name="name" placeholder="{{ member.name }}">
+                    <input type="text" class="form-control" id="name" name="name" placeholder="{{ myLifeStatus }}">
                   </div>
                 </div>
                 <div class="col-md-6">
@@ -33,7 +33,7 @@
                   <div class="form-group">
                     <label class="bmd-label-floating">Identity Number</label>
                     <input type="number" class="form-control" id="idnumber" name="idnumber"
-                      placeholder="{{ member.idnumber }}">
+                      placeholder="{{ member.identitynumber }}">
                   </div>
                 </div>
 
@@ -52,6 +52,40 @@
                 </div>
 
               </div>
+
+              
+              <div class="row" hidden>
+                  <div class="col-md-4">
+                      <label class="bmd-label-floating">Policy Type</label>
+                      <div>
+                        <mat-form-field>
+                          <mat-select placeholder="Famile plan" id="policyType" name="policyType"
+                            [(ngModel)]="selectedPolicyType">
+                            <mat-option *ngFor="let policy of policyType" [value]="policy.idlifestatus">
+                              {{ policy.name | titlecase }}
+                            </mat-option>
+                          </mat-select>
+                        </mat-form-field>
+                      </div>
+                    </div>    
+                
+  
+                  <div class="col-md-4">
+                    <label class="bmd-label-floating">Life status</label>
+                    <div>
+                      <mat-form-field>
+                        <mat-select placeholder="alive" id="lifestatus" name="lifestatus"
+                          [(ngModel)]="selectedLifeStatus">
+                          <mat-option *ngFor="let life of lifestatus" [value]="life.idpolicytype">
+                            {{ life.name | titlecase }}
+                          </mat-option>
+                        </mat-select>
+                      </mat-form-field>
+                    </div>
+                  </div>
+  
+                </div>
+
               <div class="row">
 
                 <div class="col-md-5">
@@ -60,7 +94,7 @@
                     <input type="text" class="form-control" id="email" name="email" placeholder="{{ member.email }}">
                   </div>
                 </div>
-                <div class="col-md-3">
+                <div class="col-3">
                   <div class="form-group">
                     <label class="bmd-label-floating">Contact Number</label>
                     <input type="number" class="form-control" id="contact" name="contact"
@@ -95,7 +129,7 @@
                   </div>
                 </div>
 
-                  <div class="col-md-4">
+                <div class="col-md-4">
                   <label class="bmd-label-floating">Province</label>
                   <div>
                     <mat-form-field>
@@ -138,9 +172,3 @@
     </div>
   </div>
 </div>
-
-
-
-
-
-                  

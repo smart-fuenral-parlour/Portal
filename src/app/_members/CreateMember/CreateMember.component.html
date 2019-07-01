@@ -36,6 +36,11 @@
                       Contacts
                     </a>
                   </li>
+                  <li class="nav-item">
+                    <a class="nav-link " href="#contractsInfo" data-toggle="tab" role="tab">
+                      Contract Info
+                    </a>
+                  </li>
                 </ul>
               </div>
               <div class="card-body">
@@ -82,12 +87,13 @@
                           </span>
                           <mat-form-field class="example-full-width has-label"
                             [ngClass]="displayFieldCss(type, 'idnumber')">
-                            <input type="number" name="idnumber" matInput id="idnumber" placeholder="ID Number"
+                            <input type="number" name="idnumber"  matInput id="idnumber" placeholder="ID Number"
                               formControlName="idnumber" minlength="13">
                           </mat-form-field>
+                          
                         </div>
-                        <div class="col-5" *ngIf='false'>
-                          <mat-error>
+                        <div class="col-12"  hidden  >
+                          <mat-error name="idText" id="idText" >
                             ID number must have 13 digits
                           </mat-error>
                         </div>
@@ -330,7 +336,7 @@
                   </div>
 
                   <!-- TERMS AND CONDITIONS -->
-                  <div class="tab-pane">
+                  <div class="tab-pane" id="contractsInfo">
                     <div class="row justify-content-center">
                       <div class="col-sm-12">
                         <h5 class="info-text"> CONTRACT INFORMATION </h5>
@@ -356,15 +362,26 @@
                                       trivial example, which of us ever undertakes laborious physical exercise,
                                       except to obtain some advantage from it? But who has any right to find fault
                                       with a man who chooses to enjoy a pleasure that has no annoying consequences,
-                                      or one who avoids a pain that produces no resultant pleasure?</p>
+                                      or one who avoids a pain that produces no resultant pleasure?</p >
                                   </div>
                                 </div>
                               </div>
                             </div>
                           </div>
                         </div>
-
-                        <div class="col-sm-5 col-sm-offset-1 checkbox-radios">
+                        <div class="col-8">
+                            <mat-form-field class="example-full-width has-label">
+                                <mat-select (click)="test()" placeholder="Choose Polycy type" name="policytype" id="policytype"
+                                  formControlName="selectedPolicyType" [(ngModel)]="selectedPolicyType"
+                                  required>
+                                  <mat-option *ngFor="let policy of policies" value="{{policy.idpolicytype}}">
+                                    {{ policy.name }}
+                                  </mat-option>
+                                </mat-select>
+                              </mat-form-field>
+                              
+                      </div>
+                        <div class="col-sm-12 col-sm-offset-1 checkbox-radios">
                           <div class="form-check">
                             <label class="form-check-label">
                               <input class="form-check-input" type="checkbox" name="check1" id="check1" value=""> I
@@ -397,7 +414,7 @@
                     value="previous" id="prev">
                 </div>
                 <div class="ml-auto">
-                  <input type="button" class="btn btn-next btn-fill btn-info btn-wd"  name="next"
+                  <input type="button" class="btn btn-next btn-fill btn-info btn-wd"   name="next"
                     id="next" value="Next">
                   <input type="button" class="btn btn-finish btn-fill btn-success btn-wd" name="finish" id="finish"
                     value="Finish" style="display: none;" (click)="finishCreate()">

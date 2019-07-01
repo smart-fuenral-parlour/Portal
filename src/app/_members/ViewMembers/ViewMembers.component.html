@@ -95,24 +95,24 @@
                     <th>Name</th>
                     <th>Surname</th>
                     <th>Date Joined</th>
-                    <th>Polycy Status</th>
+                    <th>Contact Number</th>
                     <th class="disabled-sorting text-right">Action</th>
                   </tr>
                 </thead>
                 <tbody>
-                  <tr *ngFor="let member of response.response; let i = index">
+                  <tr *ngFor="let member of membas; let i = index">
                     <td>{{ member.membershipnumber }}</td>
                     <td>{{ member.name }}</td>
                     <td>{{ member.surname }}</td>
-                    <td>{{ member.date }}</td>
-                    <td>{{ member.policystatus }}</td>
+                    <td>{{ member.createddate  | date: "dd MMMM, yyyy" }}</td>
+                    <td>{{ member.contactnumber }}</td>
                     <td class="text-right">
-                      <a (click)="editMember(i, member.idMembers)" class="btn btn-link btn-info btn-just-icon edit"><i
+                      <a (click)="editMember(i, member.idmember)" class="btn btn-link btn-info btn-just-icon edit"><i
                           class="material-icons" [class.active]="i == selectedrow">edit</i></a>
-                      <a (click)="viewMember(i, member.idMembers)"
+                      <a (click)="viewMember(i, member.idmember)"
                         class="btn btn-link btn-warning btn-just-icon view"><i class="material-icons"
                           [class.active]="i == selectedrow">info</i></a>
-                      <a (click)="deleteMember(i, member.idMembers)"
+                      <a (click)="deleteMember(i, member.idmember)"
                         class="btn btn-link btn-danger btn-just-icon remove"><i class="material-icons"
                           [class.active]="i == selectedrow">delete</i></a>
                     </td>

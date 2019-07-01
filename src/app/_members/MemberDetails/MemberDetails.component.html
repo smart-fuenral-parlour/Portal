@@ -148,7 +148,7 @@
               <h5 class="card-category text-gray"><b>Member Details</b></h5>
               <h4 class="card-title text-black"> {{firstName}} {{lastName}} </h4>
               <p class="card-description">
-                ID number: <b>{{idnumber}}</b> <br /><br /> email: <b>{{email}}</b> <br /> Contact Number:
+                ID number: <b>{{idnumber}}</b><br /> Gender: <b>{{gender}}</b> <br /><br /> email: <b>{{email}}</b> <br /> Contact Number:
                 <b>{{contact}}</b>
               </p>
               <!-- SOCIETY NAME TEXT BOX HERE  
@@ -175,7 +175,7 @@
                 </div>
                 <div class="material-datatables">
                   <table id="datatables" class="table table-striped table-no-bordered table-hover text-primary"
-                    cellspacing="0" width="100%" style="width:100%">
+                    cellspacing="0" width="100%" style="width:100%; ">
                     <thead>
                       <tr>
                         <th>ID Number</th>
@@ -187,15 +187,15 @@
                     </thead>
                     <tbody>
                       <tr *ngFor="let beneficiary of beneficiaries; let i = index">
-                        <td>{{ beneficiary.idnumber }}</td>
+                        <td>{{ beneficiary.identitynumber }}</td>
                         <td>{{ beneficiary.name }}</td>
                         <td>{{ beneficiary.surname }}</td>
-                        <td>{{ beneficiary.date }}</td>
+                        <td>{{ beneficiary.createddate  | date: "dd MMMM, yyyy HH:mm a" }}</td>
                         <td class="text-right">
-                          <a (click)="editbeneficiary(i, beneficiary.idBeneficiaries, beneficiary.name, beneficiary.surname, beneficiary.idnumber)"
+                          <a (click)="editbeneficiary(i, beneficiary.idbeneficiary, beneficiary.name, beneficiary.surname, beneficiary.identitynumber)"
                             class="btn btn-link btn-info btn-just-icon edit"><i class="material-icons"
                               [class.active]="i == selectedrow">edit</i></a>
-                          <a (click)="deleteBeneficiary(i, beneficiary.idBeneficiaries, beneficiary.name, beneficiary.surname)"
+                          <a (click)="deleteBeneficiary(i, beneficiary.idbeneficiary, beneficiary.name, beneficiary.surname)"
                             class="btn btn-link btn-danger btn-just-icon remove"><i class="material-icons"
                               [class.active]="i == selectedrow">delete</i></a>
                         </td>

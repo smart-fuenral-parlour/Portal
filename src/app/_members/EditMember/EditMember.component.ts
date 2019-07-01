@@ -16,7 +16,7 @@ declare const $: any;
 export class EditMemberComponent implements OnInit {
 
   ID;
-  singleMember;
+  idmember;
   response;
 
   testAll;
@@ -32,6 +32,9 @@ export class EditMemberComponent implements OnInit {
   house; newHOUSE
   suburb; newSUBURB
   gender; newGENDER
+  myLifeStatus
+  idlifestatus
+  idpolicytype
   creator
   /////////SOCIETY////////////  
   society: boolean = false;
@@ -39,6 +42,10 @@ export class EditMemberComponent implements OnInit {
   ///////////////////////////
   selectedGender: string;
   selectedProvince: string
+  lifestatus
+  selectedLifeStatus
+  policyType
+  selectedPolicyType
 
   constructor(private app: AppComponent, private _service: ServiceService, private _router: Router) {
     if (!isNullOrUndefined(sessionStorage.getItem('greenlinks'))) {
@@ -82,6 +89,16 @@ export class EditMemberComponent implements OnInit {
     */
 
 
+   this.fname = document.querySelector('#name');
+   this.lname = document.querySelector('#surname');
+   this.email = document.querySelector('#email');
+   this.suburb = document.querySelector('#suburb');
+   this.street = document.querySelector('#street');
+   this.idnumber = document.querySelector('#idnumber');
+   //this.province = document.querySelector('#province');
+   this.house = document.querySelector('#house');
+   this.contact = document.querySelector('#contact');
+   // this.gender = document.querySelector('#gender');
 
     if (localStorage.getItem('id') != null) {
       this.ID = JSON.parse(localStorage.getItem('id'));
@@ -89,10 +106,34 @@ export class EditMemberComponent implements OnInit {
       this._service.getSingleMember(this.ID)
         .subscribe(res => {
           this.response = res
-          this.singleMember = this.response.response
-          this.gender = this.singleMember[0].gender
-          this.province = this.singleMember[0].province
-          this.membershipID = this.singleMember[0].membershipnumber
+
+          this.gender = this.response[0].gender
+          this.myLifeStatus = this.response[0].name
+          this.province = this.response[0].province
+          this.membershipID = this.response[0].membershipnumber
+          this.idmember = this.response[0].idmember
+          this.idlifestatus = this.response[0].idlifestatus
+         // this.idpolicytype = this.response[0].idpolicytype
+         this._service.getPolicyType()
+         .subscribe(policyT => {
+           this.policyType = policyT
+         }, err => {
+           console.log(err)
+         })
+    /*     this._service.getLifestatus(this.idlifestatus)
+         .subscribe( lifes => {
+          this._service.getAllLifestatus()
+            .subscribe(lifeS => {
+              this.lifestatus = lifeS
+
+            }, err => {
+              console.log(err)
+            })
+         }, err => {
+           console.log(err)
+         })*/
+
+
           this.app.loading = false
         },
 
@@ -110,6 +151,7 @@ export class EditMemberComponent implements OnInit {
   updateMember() {
 
     this.fname = document.querySelector('#name');
+    this.fname = document.querySelector('#name');
     this.lname = document.querySelector('#surname');
     this.email = document.querySelector('#email');
     this.suburb = document.querySelector('#suburb');
@@ -119,9 +161,12 @@ export class EditMemberComponent implements OnInit {
     this.house = document.querySelector('#house');
     this.contact = document.querySelector('#contact');
     // this.gender = document.querySelector('#gender');
+    
+    console.log(this.fname.value)
+    console.log(this.fname)
 
     // NAME /////////////////
-    if (isNullOrUndefined(this.fname.value) || this.fname.value == "") {
+    if ( this.fname.value == "") {
       this.newNAME = this.fname.placeholder
     } else {
       this.newNAME = this.fname.value
@@ -129,65 +174,64 @@ export class EditMemberComponent implements OnInit {
 
 
     // SURNAME /////////////////
-    if (isNullOrUndefined(this.lname.value) || this.lname.value == "") {
+    if ( this.lname.value == "") {
       this.newSURNAME = this.lname.placeholder
     } else {
       this.newSURNAME = this.lname.value
     }
 
-    // IDNUMBER /////////////////
-    if (isNullOrUndefined(this.idnumber.value) || this.idnumber.value == "") {
+    // IDNUMBER ///////////////// isNullOrUndefined(this.idnumber.value) ||
+    if ( this.idnumber.value == "") {
       this.newIDNUMBER = this.idnumber.placeholder
     } else {
       this.newIDNUMBER = this.idnumber.value
     }
 
-    // EMAIL /////////////////
-    if (isNullOrUndefined(this.email.value) || this.email.value == "") {
+    // EMAIL ///////////////// isNullOrUndefined(this.email.value) ||
+    if ( this.email.value == "") {
       this.newEMAIL = this.email.placeholder
     } else {
       this.newEMAIL = this.email.value
     }
 
-    // GENDER /////////////////
-    if (isNullOrUndefined(this.selectedGender) || this.selectedGender == "") {
+    // GENDER ///////////////// isNullOrUndefined(this.selectedGender) ||
+    if ( this.selectedGender == "") {
       this.newGENDER = this.gender
     } else {
       this.newGENDER = this.selectedGender
     }
 
-
-    // PROVINCE /////////////////
-    if (isNullOrUndefined(this.selectedProvince) || this.selectedProvince == "") {
+    // PROVINCE ///////////////// 
+    if ( this.selectedProvince == "") {
       this.newPROVINCE = this.province
     } else {
       this.newPROVINCE = this.selectedProvince
     }
 
 
-    // SUBURB /////////////////
-    if (isNullOrUndefined(this.suburb.value) || this.suburb.value == "") {
+    // SUBURB ///////////////// isNullOrUndefined(this.suburb.value) ||
+    if ( this.suburb.value == "") {
       this.newSUBURB = this.suburb.placeholder
     } else {
       this.newSUBURB = this.suburb.value
     }
 
-    // HOUSE NUMBER /////////////////
-    if (isNullOrUndefined(this.house.value) || this.house.value == "") {
+    // HOUSE NUMBER /////////////////isNullOrUndefined(this.house.value) ||
+    if ( this.house.value == "") {
       this.newHOUSE = this.house.placeholder
     } else {
       this.newHOUSE = this.house.value
     }
 
-    // CONTACT NUMBER /////////////////
-    if (isNullOrUndefined(this.contact.value) || this.contact.value == "") {
+    // CONTACT NUMBER ///////////////// isNullOrUndefined(this.contact.value) ||
+    if ( this.contact.value == "") {
       this.newCONTACT = this.contact.placeholder
     } else {
       this.newCONTACT = this.contact.value
     }
 
-    // STREET NAME /////////////////
-    if (isNullOrUndefined(this.street.value) || this.street.value == "") {
+    // STREET NAME ///////////////// isNullOrUndefined(this.street.value) || 
+    if (this.street.value == "") {
       this.newSTREET = this.street.placeholder
     } else {
       this.newSTREET = this.street.value
@@ -196,7 +240,7 @@ export class EditMemberComponent implements OnInit {
     this.JSONData = {
       'name': this.newNAME,
       'surname': this.newSURNAME,
-      'idnumber': this.newIDNUMBER,
+      'identitynumber': this.newIDNUMBER,
       'email': this.newEMAIL,
       'contactnumber': this.newCONTACT,
       'gender': this.newGENDER,
@@ -204,12 +248,11 @@ export class EditMemberComponent implements OnInit {
       'streetname': this.newSTREET,
       'suburb': this.newSUBURB,
       'province': this.newPROVINCE,
-      'createdby': this.creator
+      'iduser': '1'
     }
 
     //{"name":"YEBO","surname":"","idnumber":"","email":"","contactnumber":"","gender":"","housenumber":"","streetname":"","suburb":"","province":"","birthyear":""}
-    console.log(this.JSONData)
-    console.log(this.ID)
+
 
 
     swal({
@@ -224,17 +267,26 @@ export class EditMemberComponent implements OnInit {
       buttonsStyling: false
     }).then((result) => {
       if (result.value) {
+        if (localStorage.getItem('id') != null) {
+          this.ID = JSON.parse(localStorage.getItem('id'));
+          this.app.loading = true
 
-        this._service.updateMember(this.membershipID, this.JSONData)
-          .subscribe(res => {
-            console.log(res)
-            this.testAll = res
-            if (this.testAll.code != 200) {
-              console.log(this.testAll.error)
-            }
-            console.log('Member Updated')
-            //  window.location.reload()
-          }, err => console.log(err))
+
+          this._service.updateMember(this.ID, this.JSONData)
+            .subscribe(res => {
+              console.log(res)
+              this.response = res
+              if (this.response.length > 0) {
+                console.log(this.response)
+              }
+              console.log('Member Updated')
+              //  window.location.reload()
+            }, err => { console.log(err) })
+
+
+        } else {
+          return null;
+        }
 
         swal(
           {

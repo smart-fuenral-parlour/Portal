@@ -142,10 +142,13 @@ export class LoginComponent implements OnInit, OnDestroy {
                if( this.response.status == 200 ) {
 
                 this.jsonLOGIN = this.response.response
+                   console.log('user ID: '+ this.response[0].iduser )
                    console.log('name: '+this.response.response[0].name+' '+this.response.response[0].surname)  
                    
                    localStorage.setItem('name', JSON.stringify(this.response.response[0].name+' '+this.response.response[0].surname));
-                   localStorage.setItem('role', JSON.stringify(this.response.response[0].role));
+                   localStorage.setItem('role', JSON.stringify(this.response.response[0].role));     
+                   // NEW API CODE              
+                   localStorage.setItem('iduser', JSON.stringify(this.response[0].iduser));
                    this.app.loading = false
                    this.router.navigate(['/dashboard']);
                    this.app.loaderClass = 'load-wrapper' 

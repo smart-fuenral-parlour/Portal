@@ -14,6 +14,8 @@ export class ServiceService {
   member: string = '/assets/json/members.json'
   society: string = '/assets/json/society.json'
   beneficiary: string = '/assets/json/beneficiary.json'
+  url = 'http://greenlinks1.dedicated.co.za:3001/api';
+
   constructor(private _http: HttpClient) { }
 
   Header: HttpHeaders = new HttpHeaders({
@@ -34,47 +36,57 @@ export class ServiceService {
     return this._http.post('http://greenlinks1.dedicated.co.za:3000/api/login', jsonData, { headers: this.Header });
   }
 
-  //////  MEMBERS SERVICE  //////////
+
+
+
+  ///////////////////////////////////////////  MEMBERS SERVICE  ///////////////////////////////////////////////
   getMembers() {
-    return this._http.get<Members>('http://greenlinks1.dedicated.co.za:3000/api/members', { headers: this.Header })
+   // return this._http.get<Members>('http://greenlinks1.dedicated.co.za:3000/api/members', { headers: this.Header })
+   return this._http.get<Members>(this.url + '/member', { headers: this.Header })
 
   }
 
-  searchMemberBySurname(surname) {
-    return this._http.get(' http://greenlinks1.dedicated.co.za:3000/api/serchbysurname/' + surname, { headers: this.Header })
-
+  searchMemberBySurname(surname) {//
+    //return this._http.get(' http://greenlinks1.dedicated.co.za:3000/api/serchbysurname/' + surname, { headers: this.Header })
+    return this._http.get(this.url + '/getmemberbysurname/' + surname, { headers: this.Header })
   }
 
   searchMemberByIdNumber(idnumber) {
-    return this._http.get('http://greenlinks1.dedicated.co.za:3000/api/serchbyidnumber/' + idnumber, { headers: this.Header })
-
+   // return this._http.get('http://greenlinks1.dedicated.co.za:3000/api/serchbyidnumber/' + idnumber, { headers: this.Header })
+    return this._http.get(this.url + '/getmemberbyidentitynumber/' + idnumber, { headers: this.Header })
   }
 
   searchMemberByMembershipNumber(membership) {
-    return this._http.get('http://greenlinks1.dedicated.co.za:3000/api/serchbymembershipnumber/' + membership, { headers: this.Header })
-
+   // return this._http.get('http://greenlinks1.dedicated.co.za:3000/api/serchbymembershipnumber/' + membership, { headers: this.Header })
+   return this._http.get(this.url + '/getmemberbymembershipnumber/' + membership, { headers: this.Header })
   }
 
   getSingleMember(id) {
-    return this._http.get('http://greenlinks1.dedicated.co.za:3000/api/members/' + id, { headers: this.Header })
-
+    //return this._http.get('http://greenlinks1.dedicated.co.za:3000/api/members/' + id, { headers: this.Header })
+    return this._http.get(this.url + '/member/' + id, { headers: this.Header })
   }
 
   removeMember(id) {
-    return this._http.delete('http://greenlinks1.dedicated.co.za:3000/api/members/' + id, { headers: this.Header })
+   // return this._http.delete('http://greenlinks1.dedicated.co.za:3000/api/members/' + id, { headers: this.Header })
+    return this._http.delete(this.url + '/member/' + id, { headers: this.Header })
 
   }
 
   updateMember(id, data) {
-    return this._http.put('http://greenlinks1.dedicated.co.za:3000/api/members/' + id, data, { headers: this.Header });
+   // return this._http.put('http://greenlinks1.dedicated.co.za:3000/api/members/' + id, data, { headers: this.Header });
     //return this._http.get(this.member);    2019163142
+    return this._http.put(this.url + '/member/' + id, data, { headers: this.Header })
   }
 
   createMember(data) {
-    return this._http.post<any>('http://greenlinks1.dedicated.co.za:3000/api/members', data, { headers: this.Header });
+   // return this._http.post<any>('http://greenlinks1.dedicated.co.za:3000/api/members', data, { headers: this.Header });
+    return this._http.post<any>(this.url + '/member', data, { headers: this.Header });
   }
 
-  //////  SOCIETY SERVICE  ////////// 
+
+
+
+  //////////////////////////////////////////////  SOCIETY SERVICE ////////////////////////////////////////// 
   getSociety() {
     //  return this._http.get<Members>('http://greenlinks1.dedicated.co.za:3000/api/society', { headers: this.Header })
     return this._http.get<Society>(this.society);
@@ -103,25 +115,48 @@ export class ServiceService {
 
   createMemberBeneficiary(data) {
     //return this._http.post('http://greenlinks1.dedicated.co.za:3000/api/members', data, { headers: this.Header })
-    return this._http.get(this.beneficiary);
+    return this._http.post<any>(this.url + '/beneficiary', data, { headers: this.Header });
   }
 
   getMemberBeneficiary(id) {
-    return this._http.get('http://greenlinks1.dedicated.co.za:3000/api/memberbeneficiaries/' + id, { headers: this.Header })
+    //return this._http.get('http://greenlinks1.dedicated.co.za:3000/api/memberbeneficiaries/' + id, { headers: this.Header })
+    return this._http.get(this.url + '/beneficiarybyidmember/' + id, { headers: this.Header })
   }
 
   removeBeneficiary(id) {
-    return this._http.delete('http://greenlinks1.dedicated.co.za:3000/api/beneficiaries/' + id, { headers: this.Header })
+   // return this._http.delete('http://greenlinks1.dedicated.co.za:3000/api/beneficiaries/' + id, { headers: this.Header })
+    return this._http.delete(this.url + '/beneficiary/' + id, { headers: this.Header })
 
   }
 
   updateBeneficiary(id, data) {
-    return this._http.put('http://greenlinks1.dedicated.co.za:3000/api/beneficiaries/' + id, data, { headers: this.Header });
+    //return this._http.put('http://greenlinks1.dedicated.co.za:3000/api/beneficiaries/' + id, data, { headers: this.Header });
     //return this._http.get(this.beneficiary);   1
+    return this._http.put(this.url + '/beneficiary/' + id, data, { headers: this.Header });
   }
 
+
+
+//
   payments(id) {
     return this._http.get('http://greenlinks1.dedicated.co.za:3000/api/payments/' + id, { headers: this.Header })
   }
+
+  getLifestatus(id) {
+    // return this._http.post<any>('http://greenlinks1.dedicated.co.za:3000/api/members', data, { headers: this.Header });
+ 
+     return this._http.get(this.url + '/lifestatus/' + id, { headers: this.Header })
+   }
+
+   getAllLifestatus() {
+     return this._http.get(this.url + '/lifestatus', { headers: this.Header })
+   }
+
+   getPolicyType() {
+    // return this._http.post<any>('http://greenlinks1.dedicated.co.za:3000/api/members', data, { headers: this.Header });
+ 
+     return this._http.get(this.url + '/policytype', { headers: this.Header })
+   }
+
 
 }

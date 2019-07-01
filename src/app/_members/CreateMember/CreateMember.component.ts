@@ -38,6 +38,7 @@ export class MyErrorStateMatcher implements ErrorStateMatcher {
 export class CreateMemberComponent implements OnInit {
 
     societies; response
+    policies
     fname; lname;
     BenefitName; BenefitSurname;
     BenefitIDnum; dateV: string
@@ -45,6 +46,8 @@ export class CreateMemberComponent implements OnInit {
     houseNo; streetName;
     suburb; province;
     phone; email;
+    iduser
+    policyType
     beneficiary = [];
     i: number;
     invalid = false
@@ -52,11 +55,15 @@ export class CreateMemberComponent implements OnInit {
 
     selectedProvince: string;
     selectedGender: string;
+    selectedPolicyType: string
 
-    jsonDATA; creator
+    memberDATA
+    beneficiaryDATA
+    creator
+    lifeStatus
 
 
-    constructor( private formBuilder: FormBuilder, private _servive: ServiceService, private _routet: Router, private app: AppComponent) { }
+    constructor(private formBuilder: FormBuilder, private _servive: ServiceService, private _routet: Router, private app: AppComponent) { }
 
 
     // province drop downkzn
@@ -73,13 +80,16 @@ export class CreateMemberComponent implements OnInit {
     ];
 
 
+
+
     genders = [
         { value: 'Male', name: 'Male', abrv: 'M' },
         { value: 'Female', name: 'Female', abrv: 'F' }
     ]
     emailFormControl = new FormControl('', [
         Validators.required,
-        Validators.email,
+        Validators.email
+
     ]);
 
     matcher = new MyErrorStateMatcher();
@@ -97,40 +107,27 @@ export class CreateMemberComponent implements OnInit {
     }
 
     ///////////////////////////////////////////////////////////////////////////////////////
+    test() {
+        console.log(this.policyType.value)
+        console.log(this.policyType)
+    }
 
     nextPan() {
+        
 
-     //   this.idNumber = document.querySelector('#idnumber')
-
-        if (this.idNumber.value.length < 13) {
-            this.invalidID = true
+        //   this.idNumber = document.querySelector('#idnumber')
+        if (this.idNumber.value.length == 13) {
+           return false
         } else {
-            this.invalidID = false
+            return true
         }
-
-       // console.log(this.idNumber)
+        // console.log(this.idNumber)
     }
 
 
     finishCreate() {
 
-        this.fname = document.querySelector('#firstname')
-        this.lname = document.querySelector('#lastname')
-        this.idNumber = document.querySelector('#idnumber')
-
-        this.houseNo = document.querySelector('#housenumber')
-        this.streetName = document.querySelector('#streetname')
-        this.suburb = document.querySelector('#suburb')
-
-        this.email = document.querySelector('#email')
-        this.phone = document.querySelector('#phone')
-        this.date = document.querySelector('#date')
-
-
-        this.email = document.querySelector('#email')
-        this.phone = document.querySelector('#phone')
-        this.date = document.querySelector('#date')
-
+        
 
         const year = moment(this.date.value).format('YYYY')
         this.beneficiary = [];
@@ -141,16 +138,24 @@ export class CreateMemberComponent implements OnInit {
             this.BenefitSurname = document.querySelector('#beneficiarySurname' + this.i)
             this.BenefitIDnum = document.querySelector('#beneficiaryID' + this.i)
 
+            this.beneficiary.push({
+                'idmember': '',
+                'createddate': '',
+                'name': this.BenefitName.value,
+                'surname': this.BenefitSurname.value,
+                'identitynumber': this.BenefitIDnum.value,
+                'idlifestatus': '1'
+            })
             // tslint:disable-next-line: max-line-length
-            this.beneficiary.push({ 'name': this.BenefitName.value, 'surname': this.BenefitSurname.value, 'idnumber': this.BenefitIDnum.value })
         }
 
 
 
-        this.jsonDATA = {
+
+        this.memberDATA = {
             'name': this.fname.value,
             'surname': this.lname.value,
-            'idnumber': this.idNumber.value,
+            'identitynumber': this.idNumber.value,
             'email': this.email.value,
             'contactnumber': this.phone.value,
             'gender': this.selectedGender,
@@ -159,9 +164,13 @@ export class CreateMemberComponent implements OnInit {
             'suburb': this.suburb.value,
             'province': this.selectedProvince,
             'birthyear': year,
-            'beneficiaries': this.beneficiary,
-            'numberOfBeneficiaries': this.BeneficiaryForm.length,
-            'createdby': this.creator
+            //'idpolicytype': this.selectedPolicyType,
+            //  'beneficiaries': this.beneficiary,
+            // 'numberOfBeneficiaries': this.BeneficiaryForm.length,
+            'iduser': this.iduser,
+            'idlifestatus': '1',
+            'identitydocument': 'document.pdf'
+            //membershipnumber
         }
 
         swal({
@@ -178,9 +187,28 @@ export class CreateMemberComponent implements OnInit {
             if (result.value) {
                 this.app.loading = true
 
-                this._servive.createMember(this.jsonDATA)
+                this._servive.createMember(this.memberDATA)
                     .subscribe(res => {
                         console.log(res)
+                        this.response = res
+                        console.log(this.response[0].idmember)
+
+                        for (this.i = 0; this.i < this.BeneficiaryForm.length; this.i++) {
+                            this.beneficiary[this.i].idmember = this.response[0].idmember
+                            this.beneficiary[this.i].createddate = this.response[0].createddate
+
+                            this._servive.createMemberBeneficiary(this.beneficiary[this.i])
+                            .subscribe(ben => {
+                                console.log(ben)
+                                
+                            }, err => {
+                                console.log(err)
+                            })
+                        }
+
+                        console.log(this.beneficiary)
+    
+
                         this.app.loading = false
                     }, err => console.log(err))
 
@@ -192,12 +220,12 @@ export class CreateMemberComponent implements OnInit {
                         confirmButtonClass: "btn btn-success",
                         buttonsStyling: false
 
-                    }).then((result) => window.location.reload())
+                    }).then((result) =>  window.location.reload())
             }
         })
 
 
-        console.log(this.jsonDATA)
+        console.log(this.memberDATA)
 
 
     }
@@ -236,18 +264,66 @@ export class CreateMemberComponent implements OnInit {
         (((this.type.get('BeneficiaryGroup') as FormGroup).get('beneficiary')) as FormArray).removeAt(index)
 
     }
-    ///////////////////////////////////////////////////////////////////////////////////////
+    //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     ngOnInit() {
-        this.app.loading = false
+
+        this.fname = document.querySelector('#firstname')
+        this.lname = document.querySelector('#lastname')
+        this.idNumber = document.querySelector('#idnumber')
+
+        this.houseNo = document.querySelector('#housenumber')
+        this.streetName = document.querySelector('#streetname')
+        this.suburb = document.querySelector('#suburb')
         
+        this.policyType = document.querySelector('#policytype')
+
+        this.email = document.querySelector('#email')
+        this.phone = document.querySelector('#phone')
+        this.date = document.querySelector('#date')
+
+
+        this.email = document.querySelector('#email')
+        this.phone = document.querySelector('#phone')
+        this.date = document.querySelector('#date')
+
+        this._servive.getPolicyType()
+            .subscribe(res => {
+                this.policies = res
+            })
+
+    /* get policy type* idpolicytype  name
+    policyType = [
+        {value: 'paris-0', name: 'Paris'},
+        {value: 'miami-1', viewValue: 'Miami'},
+        {value: 'bucharest-2', viewValue: 'Bucharest'},
+        {value: 'new-york-3', viewValue: 'New York'},
+        {value: 'london-4', viewValue: 'London'},
+        {value: 'barcelona-5', viewValue: 'Barcelona'},
+        {value: 'moscow-6', viewValue: 'Moscow'},
+    ];*/
+
+        this.app.loading = false
 
         this.invalid = false
+
         // GETTING NAME OF THE CREATOR
         if (!isNullOrUndefined(localStorage.getItem('name'))) {
             this.creator = JSON.parse(localStorage.getItem('name'))
         } else {
             this.creator = 'System'
         }
+
+        // GETTING NAME OF THE CREATOR BY USER ID
+        if (!isNullOrUndefined(localStorage.getItem('iduser'))) {
+            // this.iduser = JSON.parse(localStorage.getItem('iduser'))
+            this.iduser = '1';
+        } else {
+            this.iduser = '1';
+        }
+
+
+
 
         // this.setArrayInputs(this.arrayInputs)
 
@@ -267,6 +343,7 @@ export class CreateMemberComponent implements OnInit {
 
             firstName: [null, Validators.required],
             idnumber: [null, Validators.required],
+            selectedPolicyType: [null, Validators.requiredTrue],// drop down list
             date: [null, Validators.required],
             selectedGender: [null, Validators.required], // drop down list
             province: [null, Validators.required], // drop down list
@@ -281,7 +358,7 @@ export class CreateMemberComponent implements OnInit {
         // Code for the Validator  beneficiaryName
 
         const $validator = $('.card-wizard form').validate({
-            rules: {
+ /*           rules: {
                 firstname: {
                     required: true,
                     minlength: 2
@@ -303,6 +380,10 @@ export class CreateMemberComponent implements OnInit {
                     required: true,
                     minlength: 2
                 },
+                selectedPolicyType: {
+                    required: true,
+                    minlength: 2
+                },
                 province: {
                     required: true,
                     minlength: 2
@@ -314,7 +395,7 @@ export class CreateMemberComponent implements OnInit {
                 idnumber: {
                     required: true,
                     minlength: 13,
-                    maxlength: 13
+                    invalidID: true
                 },
                 streetname: {
                     required: true,
@@ -342,7 +423,7 @@ export class CreateMemberComponent implements OnInit {
                     minlength: 3,
                 }
             },
-
+*/
             highlight: function (element) {
                 $(element).closest('.form-group').removeClass('has-success').addClass('has-danger');
             },

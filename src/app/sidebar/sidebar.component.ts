@@ -60,12 +60,6 @@ export const ROUTES: RouteInfo[] = [
     
 
 
-
-
-    
-    
-       /* 
-       
            {
         path: '/payments',
         title: 'Payments',
@@ -186,7 +180,7 @@ export const ROUTES: RouteInfo[] = [
             {path: 'lock', title: 'Lock Screen Page', ab:'LSP'},
             {path: 'user', title: 'User Page', ab:'UP'}
         ]
-    }*/
+    }
 ];
 @Component({
     selector: 'app-sidebar-cmp',
