@@ -24,11 +24,10 @@ export class ViewMembersComponent implements OnInit {
 
   public dataTable: DataTable;
   response;
-  members;
-  membas
-  lifestatus = '';
+  members
+  lifestatus;
   i: number;
-  x = 0;
+  x = 0;y=0; z=0;
   selectedrow;
   selectedSearchType
   searchText = 'ID Number';
@@ -124,32 +123,30 @@ export class ViewMembersComponent implements OnInit {
 
             if (this.response.length > 0) {
               console.log('Search By Membership Number')
-              this.membas = []
+              this.members = []
+              this.z = 0;
 
               for (this.i = 0; this.i < this.response.length; this.i++) {
-                console.log(this.response[this.i])
+                this._service.getLifestatus(this.response[this.i].idlifestatus)
+                .subscribe(lifeS => { 
 
-                console.log(isNullOrUndefined(this.response[this.i].idlifestatus))
-                if (isNullOrUndefined(this.response[this.i].idlifestatus)) {
-                  this.membas.push({
-                    'idmember': this.response[this.i].idmember,
-                    'membershipnumber': this.response[this.i].membershipnumber,
-                    'name': this.response[this.i].name,
-                    'surname': this.response[this.i].surname,
-                    'createddate': this.response[this.i].createddate,
-                    'lifestatus': 'NOT DEFINED'
+                  this.members.push({
+                    'idmember': this.response[this.z].idmember,
+                    'membershipnumber': this.response[this.z].membershipnumber,
+                    'name': this.response[this.z].name,
+                    'surname': this.response[this.z].surname,
+                    'createddate': this.response[this.z].createddate,
+                    'identitynumber': this.response[this.z].identitynumber,
+                    'lifestatus': lifeS[0].name
                   })
-                } else {
+                  this.z++
 
-                  this.membas.push({
-                    'idmember': this.response[this.i].idmember,
-                    'membershipnumber': this.response[this.i].membershipnumber,
-                    'name': this.response[this.i].name,
-                    'surname': this.response[this.i].surname,
-                    'createddate': this.response[this.i].createddate,
-                    'lifestatus': 'DEFINED'
-                  })
-                }
+                  
+                }, err => {
+                  console.log()
+                })
+
+
               }
 
               this.app.loading = false
@@ -165,7 +162,6 @@ export class ViewMembersComponent implements OnInit {
           },
             err => {
               console.log(err)
-              console.log(this.response.error)
             }
           )
 
@@ -177,35 +173,37 @@ export class ViewMembersComponent implements OnInit {
             .subscribe(res => {
               this.response = res
 
-
               if (this.response.length > 0) {
-                console.log(this.response)
-                this.membas = []
+                console.log('Search By Surname')
+                
+                this.members = []
+                this.z = 0
 
                 for (this.i = 0; this.i < this.response.length; this.i++) {
-                  console.log(this.response[this.i])
+                  
+                  this._service.getLifestatus(this.response[this.i].idlifestatus)
+                  .subscribe(lifeS => {
 
-                  console.log(isNullOrUndefined(this.response[this.i].idlifestatus))
-                  if (isNullOrUndefined(this.response[this.i].idlifestatus)) {
-                    this.membas.push({
-                      'idmember': this.response[this.i].idmember,
-                      'membershipnumber': this.response[this.i].membershipnumber,
-                      'name': this.response[this.i].name,
-                      'surname': this.response[this.i].surname,
-                      'createddate': this.response[this.i].createddate,
-                      'lifestatus': 'NOT DEFINED'
+                    
+                    this.members.push({
+                      'idmember': this.response[this.z].idmember,
+                      'membershipnumber': this.response[this.z].membershipnumber,
+                      'name': this.response[this.z].name,
+                      'surname': this.response[this.z].surname,
+                      'createddate': this.response[this.z].createddate,
+                      'identitynumber': this.response[this.z].identitynumber,
+                      'lifestatus': lifeS[0].name
                     })
-                  } else {
+                    this.z++
 
-                    this.membas.push({
-                      'idmember': this.response[this.i].idmember,
-                      'membershipnumber': this.response[this.i].membershipnumber,
-                      'name': this.response[this.i].name,
-                      'surname': this.response[this.i].surname,
-                      'createddate': this.response[this.i].createddate,
-                      'lifestatus': 'DEFINED'
-                    })
-                  }
+                    
+                  }, err => {
+                    console.log()
+                  })
+                  
+
+/*
+*/
                 }
 
 
@@ -220,7 +218,9 @@ export class ViewMembersComponent implements OnInit {
               }
 
             },
-              err => console.log(err)
+              err => {
+                console.log(err)
+              }
             )
 
         } else
@@ -230,93 +230,45 @@ export class ViewMembersComponent implements OnInit {
               .subscribe(res => {
                 this.response = res
 
-
                 if (this.response.length > 0) {
-                  console.log('Search By ID Number')//
-
-                  this.membas = []
-                  for (this.i = 0; this.i < this.response.length; this.i++) {
-                    console.log(this.response[this.i])
-
-                    console.log(isNullOrUndefined(this.response[this.i].idlifestatus))
-                    if (isNullOrUndefined(this.response[this.i].idlifestatus)) {
-                      this.membas.push({
-                        'idmember': this.response[this.i].idmember,
-                        'membershipnumber': this.response[this.i].membershipnumber,
-                        'name': this.response[this.i].name,
-                        'surname': this.response[this.i].surname,
-                        'createddate': this.response[this.i].createddate,
-                        'lifestatus': 'NOT DEFINED'
-                      })
-                    } else {
-                      this.membas.push({
-                        'idmember': this.response[this.i].idmember,
-                        'membershipnumber': this.response[this.i].membershipnumber,
-                        'name': this.response[this.i].name,
-                        'surname': this.response[this.i].surname,
-                        'createddate': this.response[this.i].createddate,
-                        'lifestatus': 'DEFINED'
-                      })
-                      console.log(this.response[this.i].idlifestatus)
-                      this._service.getLifestatus(this.response[this.i].idlifestatus)
-                        .subscribe(lifeS => {
-                          this.lifestatus = lifeS[0].name
-                          console.log(this.response[0].name)
-                          console.log(this.lifestatus)
-                        })
-
-                        console.log(this.response[0].name)
-                        console.log(this.lifestatus)
-
-                    }
-                  }
-
-
-                //  this.lifestatus = []
-                  if (isNullOrUndefined(this.response[this.i].idlifestatus)) {
-
-                  //  this.lifestatus.push('NOT DEFINED'                    )
-
-
-                  } else {
-
-                    this._service.getLifestatus(this.response[this.i].idlifestatus)
-                      .subscribe(status => {
-                        console.log(status[0].name)
-
-                       // this.lifestatus.push(''status[0].name                        )
-                      }, err => { console.log(err) })
-
-
-                  }
-                  for (this.i = 0; this.i < this.response.length; this.i++) {
-
-
-
-
-                  }
-                  console.log(this.lifestatus)
-                  console.log(this.lifestatus[1])
-
+                  console.log('Search By ID Number')
 
                   this.members = []
-                  for (this.i = 0; this.i <= this.lifestatus.length; this.i++) {
-                    console.log(this.lifestatus[this.i])
-                    console.log(this.i)
-
+                  this.z = 0
+                  
+                  for (this.i = 0; this.i < this.response.length; this.i++) {
                     this.members.push({
+                      'idmember': this.response[this.i].idmember,
                       'membershipnumber': this.response[this.i].membershipnumber,
                       'name': this.response[this.i].name,
                       'surname': this.response[this.i].surname,
                       'createddate': this.response[this.i].createddate,
-                      'lifestatus': this.lifestatus[this.i]
+                      'identitynumber': this.response[this.i].identitynumber
+                    })
+                    this._service.getLifestatus(this.response[this.i].idlifestatus)
+                    .subscribe(lifeS => {
+  
+ /*                     
+                      this.members.push({
+                        'idmember': this.response[this.z].idmember,
+                        'membershipnumber': this.response[this.z].membershipnumber,
+                        'name': this.response[this.z].name,
+                        'surname': this.response[this.z].surname,
+                        'createddate': this.response[this.z].createddate,
+                        'identitynumber': this.response[this.z].identitynumber,
+                        'lifestatus': lifeS[0].name
+                      })
+                      this.z++
+  */
+                      
+                    }, err => {
+                      console.log()
                     })
 
 
 
                   }
-
-                  console.log(this.members)
+                  
 
                   this.app.loading = false
                   this.notFound = false
@@ -407,6 +359,37 @@ export class ViewMembersComponent implements OnInit {
 
 
 /*
+
+                  console.log(isNullOrUndefined(this.response[this.i].idlifestatus))
+                  if (isNullOrUndefined(this.response[this.i].idlifestatus)) {
+                    this.members.push({
+                      'idmember': this.response[this.i].idmember,
+                      'membershipnumber': this.response[this.i].membershipnumber,
+                      'name': this.response[this.i].name,
+                      'surname': this.response[this.i].surname,
+                      'createddate': this.response[this.i].createddate,
+                      'lifestatus': 'NOT DEFINED'
+                    })
+                  } else {
+
+                    this._service.getLifestatus(this.response[this.i].idlifestatus)
+                      .subscribe(lifeS => {
+                        this.lifestatus = lifeS[0].name
+                        console.log(this.lifestatus)
+                        console.log(this.i)
+                        console.log(this.response[0])
+                        
+                      })
+                    //  console.log(this.lifestatus)
+                    this.members.push({
+                      'idmember': this.response[this.i].idmember,
+                      'membershipnumber': this.response[this.i].membershipnumber,
+                      'name': this.response[this.i].name,
+                      'surname': this.response[this.i].surname,
+                      'createddate': this.response[this.i].createddate,
+                      'lifestatus': 'DEFINED'
+                    })
+                  }
 
   ngAfterViewInit() {
 

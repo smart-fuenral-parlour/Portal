@@ -62,22 +62,21 @@ export class CreateClaimComponent implements OnInit {
           .subscribe(res => {
             this.response = res
 
-            console.log(this.members)
-
-            if (this.response.response.length > 0) {
+            if (this.response.length > 0) {
               console.log('Search By Membership Number')
               this.notFound = false
+              this.isEmpty = false
               this.searchResult = true
             } else {
               console.log('NO MEMBERS FOUND')
               this.searchResult = false
+              this.isEmpty = false
               this.notFound = true
             }
 
           },
             err => {
               console.log(err)
-              console.log(this.response.error)
             }
           )
 
@@ -88,34 +87,37 @@ export class CreateClaimComponent implements OnInit {
             .subscribe(res => {
               this.response = res
 
-              if (this.response.response.length > 0) {
+              if (this.response.length > 0) {
                 console.log('Search By Surname')
                 this.notFound = false
+                this.isEmpty = false
                 this.searchResult = true
               } else {
                 console.log('NO MEMBERS FOUND')
                 this.searchResult = false
+                this.isEmpty = false
                 this.notFound = true
               }
 
             },
-              err => console.log(err)
+              err => {console.log(err)}
             )
 
         } else
-          if (this.searchInput.value.length == 13 || this.selectedSearchType == 'ID Number') {
-            this._service.searchMemberByIdNumber(this.searchInput.value)
+          if ( this.selectedSearchType == 'ID Number') {
+            if(this.searchInput.value.length == 13){
+              this._service.searchMemberByIdNumber(this.searchInput.value)
               .subscribe(res => {
                 this.response = res
 
-                console.log(this.members)
-
-                if (this.response.response.length > 0) {
+                if (this.response.length > 0) {
                   console.log('Search By ID Number')
+                  this.isEmpty = false
                   this.notFound = false
                   this.searchResult = true
                 } else {
                   console.log('NO MEMBERS FOUND')
+                  this.isEmpty = false
                   this.searchResult = false
                   this.notFound = true
                 }
@@ -123,10 +125,14 @@ export class CreateClaimComponent implements OnInit {
               },
                 err => console.log(err)
               )
+            }else {
+              this.notFound = false
+              this.searchResult = false
+              this.isEmpty = false
+              this.invalidID = true;
+            }
 
-          } else {
-            this.invalidID = true;
-          }
+          } 
 
     }
 

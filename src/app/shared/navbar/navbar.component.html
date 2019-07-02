@@ -3,13 +3,13 @@
     <div class="navbar-wrapper">
       <div class="navbar-minimize">
         <button mat-raised-button (click)="minimizeSidebar()" class="btn btn-just-icon btn-white btn-fab btn-round">
-          <i class="material-icons text_align-center visible-on-sidebar-regular">more_vert</i>
-          <i class="material-icons design_bullet-list-67 visible-on-sidebar-mini">view_list</i>
+          <i class="material-icons text_align-center visible-on-sidebar-regular"  data-toggle="tooltip" data-placement="down" title="toggle close sidebar">more_vert</i>
+          <i class="material-icons design_bullet-list-67 visible-on-sidebar-mini"  data-toggle="tooltip" data-placement="down" title="toggle open sidebar">view_list</i>
         </button>
       </div>
       <a class="navbar-brand" href="{{getPath()}}"> {{getTitle()}}</a>
     </div>
-    <button mat-button class="navbar-toggler btn-no-ripple" type="button" (click)="sidebarToggle()">
+    <button mat-button class="navbar-toggler btn-no-ripple" type="button" (click)="sidebarToggle()" >
       <span class="sr-only">Toggle navigation</span>
       <span class="navbar-toggler-icon icon-bar"></span>
       <span class="navbar-toggler-icon icon-bar"></span>
@@ -28,7 +28,7 @@
       <ul class="navbar-nav">
         <li class="nav-item">
           <a class="nav-link" href="/dashboard" data-toggle="tooltip" data-placement="down" title="Home Page">
-            <i class="material-icons">dashboard</i>Homepage
+            <i class="material-icons">home</i>Homepage
             <p>
               <span class="d-lg-none d-md-block">Home</span>
             </p>

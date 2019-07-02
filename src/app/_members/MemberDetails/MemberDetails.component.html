@@ -194,10 +194,10 @@
                         <td class="text-right">
                           <a (click)="editbeneficiary(i, beneficiary.idbeneficiary, beneficiary.name, beneficiary.surname, beneficiary.identitynumber)"
                             class="btn btn-link btn-info btn-just-icon edit"><i class="material-icons"
-                              [class.active]="i == selectedrow">edit</i></a>
+                              [class.active]="i == selectedrow" data-toggle="tooltip" data-placement="down" title="edit beneficiary details">edit</i></a>
                           <a (click)="deleteBeneficiary(i, beneficiary.idbeneficiary, beneficiary.name, beneficiary.surname)"
                             class="btn btn-link btn-danger btn-just-icon remove"><i class="material-icons"
-                              [class.active]="i == selectedrow">delete</i></a>
+                              [class.active]="i == selectedrow" data-toggle="tooltip" data-placement="down" title="remove beneficiary">delete</i></a>
                         </td>
                         <!--idMembers-->
                       </tr>
@@ -223,7 +223,8 @@
         </div>
         <div>
           <button mat-raised-button type="button" (click)="createBeneficiary()" mat-raised-button
-            class="btn btn-primary btn-sm pull-right" id="add" name="add"><b>+</b>Add
+            class="btn btn-primary btn-sm pull-right" id="add" name="add"><i class="material-icons"
+            [class.active]="i == selectedClaim">add</i>Add
             Benefetiary</button>
           <button mat-raised-button class="btn btn-primary btn-sm pull-right" (click)="editMember()"><i
               class="material-icons">edit</i> Edit Member</button>
@@ -486,8 +487,8 @@
                         <td>Paid</td>
                         <td class="text-right">
                           <button (click)="claimInfo(i)"
-                            class="btn btn-link btn-warning "><i class="material-icons"
-                              [class.active]="i == selectedClaim">info</i>Claim Info</button>
+                            class="btn btn-link btn-info "><i class="material-icons"
+                              [class.active]="i == selectedClaim" data-toggle="tooltip" data-placement="down" title="view claim info">info</i> Claim Info</button>
                         </td>
                       </tr>
                     </tbody>

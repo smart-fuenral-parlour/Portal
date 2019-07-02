@@ -125,8 +125,8 @@
                     <td>Paid</td>
                     <td class="text-right">
                       <button (click)="claimInfo(i)"
-                        class="btn btn-link btn-warning "><i class="material-icons"
-                          [class.active]="i == selectedClaim">info</i>Claim Info</button>
+                        class="btn btn-link btn-info "><i class="material-icons"
+                          [class.active]="i == selectedClaim"  data-toggle="tooltip" data-placement="down" title="view claim information">info</i>Claim Info</button>
                     </td>
                   </tr>
                 </tbody>

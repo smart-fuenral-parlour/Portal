@@ -1,11 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { ServiceService } from 'src/app/SERVICE/service.service'; // service link here
-import { isNullOrUndefined, isNull } from 'util';
 import swal from 'sweetalert2';
 import { Moment } from 'moment'
 import * as moment from 'moment';
 import { AppComponent } from 'src/app/app.component';
+import { isNullOrUndefined } from 'util';
 
 declare const $: any;
 @Component({
@@ -162,11 +162,9 @@ export class EditMemberComponent implements OnInit {
     this.contact = document.querySelector('#contact');
     // this.gender = document.querySelector('#gender');
     
-    console.log(this.fname.value)
-    console.log(this.fname)
 
     // NAME /////////////////
-    if ( this.fname.value == "") {
+    if (isNullOrUndefined(this.fname.value) || this.fname.value == "") {
       this.newNAME = this.fname.placeholder
     } else {
       this.newNAME = this.fname.value
@@ -174,64 +172,64 @@ export class EditMemberComponent implements OnInit {
 
 
     // SURNAME /////////////////
-    if ( this.lname.value == "") {
+    if (isNullOrUndefined(this.lname.value) || this.lname.value == "") {
       this.newSURNAME = this.lname.placeholder
     } else {
       this.newSURNAME = this.lname.value
     }
 
-    // IDNUMBER ///////////////// isNullOrUndefined(this.idnumber.value) ||
-    if ( this.idnumber.value == "") {
+    // IDNUMBER ///////////////// 
+    if ( isNullOrUndefined(this.idnumber.value) || this.idnumber.value == "") {
       this.newIDNUMBER = this.idnumber.placeholder
     } else {
       this.newIDNUMBER = this.idnumber.value
     }
 
-    // EMAIL ///////////////// isNullOrUndefined(this.email.value) ||
-    if ( this.email.value == "") {
+    // EMAIL ///////////////// 
+    if (isNullOrUndefined(this.email.value) || this.email.value == "") {
       this.newEMAIL = this.email.placeholder
     } else {
       this.newEMAIL = this.email.value
     }
 
-    // GENDER ///////////////// isNullOrUndefined(this.selectedGender) ||
-    if ( this.selectedGender == "") {
+    // GENDER ///////////////// 
+    if (isNullOrUndefined(this.selectedGender) || this.selectedGender == "") {
       this.newGENDER = this.gender
     } else {
       this.newGENDER = this.selectedGender
     }
 
     // PROVINCE ///////////////// 
-    if ( this.selectedProvince == "") {
+    if ( isNullOrUndefined(this.selectedProvince) || this.selectedProvince == "") {
       this.newPROVINCE = this.province
     } else {
       this.newPROVINCE = this.selectedProvince
     }
 
 
-    // SUBURB ///////////////// isNullOrUndefined(this.suburb.value) ||
-    if ( this.suburb.value == "") {
+    // SUBURB ///////////////// 
+    if (isNullOrUndefined(this.suburb.value) || this.suburb.value == "") {
       this.newSUBURB = this.suburb.placeholder
     } else {
       this.newSUBURB = this.suburb.value
     }
 
-    // HOUSE NUMBER /////////////////isNullOrUndefined(this.house.value) ||
-    if ( this.house.value == "") {
+    // HOUSE NUMBER /////////////////
+    if (isNullOrUndefined(this.house.value) || this.house.value == "") {
       this.newHOUSE = this.house.placeholder
     } else {
       this.newHOUSE = this.house.value
     }
 
-    // CONTACT NUMBER ///////////////// isNullOrUndefined(this.contact.value) ||
-    if ( this.contact.value == "") {
+    // CONTACT NUMBER ///////////////// 
+    if (isNullOrUndefined(this.contact.value) || this.contact.value == "") {
       this.newCONTACT = this.contact.placeholder
     } else {
       this.newCONTACT = this.contact.value
     }
 
-    // STREET NAME ///////////////// isNullOrUndefined(this.street.value) || 
-    if (this.street.value == "") {
+    // STREET NAME /////////////////  
+    if ( isNullOrUndefined(this.street.value) || this.street.value == "") {
       this.newSTREET = this.street.placeholder
     } else {
       this.newSTREET = this.street.value
@@ -274,7 +272,7 @@ export class EditMemberComponent implements OnInit {
 
           this._service.updateMember(this.ID, this.JSONData)
             .subscribe(res => {
-              console.log(res)
+              
               this.response = res
               if (this.response.length > 0) {
                 console.log(this.response)

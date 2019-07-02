@@ -95,26 +95,27 @@
                     <th>Name</th>
                     <th>Surname</th>
                     <th>Date Joined</th>
-                    <th>Contact Number</th>
+                    <th>ID Number</th>
                     <th class="disabled-sorting text-right">Action</th>
                   </tr>
                 </thead>
                 <tbody>
-                  <tr *ngFor="let member of membas; let i = index">
+                  <tr *ngFor="let member of members; let i = index">
                     <td>{{ member.membershipnumber }}</td>
                     <td>{{ member.name }}</td>
                     <td>{{ member.surname }}</td>
                     <td>{{ member.createddate  | date: "dd MMMM, yyyy" }}</td>
-                    <td>{{ member.contactnumber }}</td>
+                    <td>{{ member.identitynumber }}</td>
                     <td class="text-right">
                       <a (click)="editMember(i, member.idmember)" class="btn btn-link btn-info btn-just-icon edit"><i
-                          class="material-icons" [class.active]="i == selectedrow">edit</i></a>
+                          class="material-icons" [class.active]="i == selectedrow" data-toggle="tooltip" data-placement="down" title="edit member">edit</i>
+                        </a>
                       <a (click)="viewMember(i, member.idmember)"
                         class="btn btn-link btn-warning btn-just-icon view"><i class="material-icons"
-                          [class.active]="i == selectedrow">info</i></a>
+                          [class.active]="i == selectedrow" data-toggle="tooltip" data-placement="down" title="view member info">info</i></a>
                       <a (click)="deleteMember(i, member.idmember)"
                         class="btn btn-link btn-danger btn-just-icon remove"><i class="material-icons"
-                          [class.active]="i == selectedrow">delete</i></a>
+                          [class.active]="i == selectedrow" data-toggle="tooltip" data-placement="down" title="delete member">delete</i></a>
                     </td>
                   </tr>
                 </tbody>
