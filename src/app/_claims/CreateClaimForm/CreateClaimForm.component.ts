@@ -50,7 +50,7 @@ export class CreateClaimFormComponent implements OnInit {
     "deceasedsurname": "1111"*/
 
 
-  constructor(private app: AppComponent, private _service: ServiceService) { }
+  constructor(private app: AppComponent, private _service: ServiceService, private _router: Router) { }
 
   ngOnInit() {
 
@@ -114,7 +114,7 @@ export class CreateClaimFormComponent implements OnInit {
       .subscribe(res => {
         console.log(res);
 
-
+        document.location.reload()
         
       }, err => {
         console.log(err)
