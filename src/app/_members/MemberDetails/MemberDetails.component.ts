@@ -20,7 +20,7 @@ declare var $: any;
 export class MemberDetailsComponent implements OnInit {
 
   addForm: FormGroup;
-  ID; i: number
+  getID; i: number
   singleMember;
   rows: FormArray;
   itemForm: FormGroup;
@@ -75,20 +75,21 @@ export class MemberDetailsComponent implements OnInit {
   ngOnInit() {
 
     this.app.loading = true
+    // test if member is from a society
     if (!isNullOrUndefined(sessionStorage.getItem('greenlinks'))) {
-      this.society = true
+      this.society = true  
     }
 
     if (localStorage.getItem('iduser') != null) {
       this.iduser = localStorage.getItem('iduser')
     }
 
-    if (localStorage.getItem('id') != null) {
-      this.ID = JSON.parse(localStorage.getItem('id'));
+    if (localStorage.getItem('idmember') != null) {
+      this.getID = JSON.parse(localStorage.getItem('idmember'));
 
 
 
-      this._service.getSingleMember(this.ID)
+      this._service.getSingleMember(this.getID)
         .subscribe(member1 => {
 
           this.singleMember = member1
@@ -103,9 +104,9 @@ export class MemberDetailsComponent implements OnInit {
           this.contact = this.singleMember[0].contactnumber
           this.membershipNumber = this.singleMember[0].membershipnumber
           this.memberId = this.singleMember[0].idmember
-          this.policystatus = 'Active'//this.singleMember[0].policystatus
+      /**/this.policystatus = 'Active'//this.singleMember[0].policystatus
           this.date = this.singleMember[0].createddate
-         // this.createdby = 'SYSTEM' //this.singleMember[0].createdby
+      /***/this.createdby = 'SYSTEM' //this.singleMember[0].createdby
           this.gender = this.singleMember[0].gender
           this.noBeneficiary = false
 
@@ -135,7 +136,7 @@ export class MemberDetailsComponent implements OnInit {
                 })
 
               /**
-               * 
+               * idmember
                */
 
 

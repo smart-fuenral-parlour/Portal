@@ -62,6 +62,16 @@ export class CreateMemberComponent implements OnInit {
     creator
     lifeStatus
 
+    // policy type details
+    typeSelected = false
+    name
+    description
+    lapsedays
+    premium
+    maximumbeneficiaries
+    trialperiod
+    minimumage
+
 
     constructor(private formBuilder: FormBuilder, private _servive: ServiceService, private _routet: Router, private app: AppComponent) { }
 
@@ -108,16 +118,16 @@ export class CreateMemberComponent implements OnInit {
 
     ///////////////////////////////////////////////////////////////////////////////////////
     test() {
-        console.log(this.policyType.value)
-        console.log(this.policyType)
+        console.log('Test function')
+
     }
 
     nextPan() {
-        
+
 
         //   this.idNumber = document.querySelector('#idnumber')
         if (this.idNumber.value.length == 13) {
-           return false
+            return false
         } else {
             return true
         }
@@ -127,7 +137,7 @@ export class CreateMemberComponent implements OnInit {
 
     finishCreate() {
 
-        
+
 
         const year = moment(this.date.value).format('YYYY')
         this.beneficiary = [];
@@ -164,9 +174,7 @@ export class CreateMemberComponent implements OnInit {
             'suburb': this.suburb.value,
             'province': this.selectedProvince,
             'birthyear': year,
-            //'idpolicytype': this.selectedPolicyType,
-            //  'beneficiaries': this.beneficiary,
-            // 'numberOfBeneficiaries': this.BeneficiaryForm.length,
+            'idpolicytype': this.selectedPolicyType,
             'iduser': this.iduser,
             'idlifestatus': '1',
             'identitydocument': 'document.pdf'
@@ -198,16 +206,16 @@ export class CreateMemberComponent implements OnInit {
                             this.beneficiary[this.i].createddate = this.response[0].createddate
 
                             this._servive.createMemberBeneficiary(this.beneficiary[this.i])
-                            .subscribe(ben => {
-                                console.log(ben)
-                                
-                            }, err => {
-                                console.log(err)
-                            })
+                                .subscribe(ben => {
+                                    console.log(ben)
+
+                                }, err => {
+                                    console.log(err)
+                                })
                         }
 
                         console.log(this.beneficiary)
-    
+
 
                         this.app.loading = false
                     }, err => console.log(err))
@@ -220,7 +228,7 @@ export class CreateMemberComponent implements OnInit {
                         confirmButtonClass: "btn btn-success",
                         buttonsStyling: false
 
-                    }).then((result) =>  window.location.reload())
+                    }).then((result) => window.location.reload())
             }
         })
 
@@ -264,6 +272,31 @@ export class CreateMemberComponent implements OnInit {
         (((this.type.get('BeneficiaryGroup') as FormGroup).get('beneficiary')) as FormArray).removeAt(index)
 
     }
+
+    selectPolicyType() {
+        console.log(this.selectedPolicyType)
+        this.typeSelected = false
+        this._servive.getPolicyTypeDetails(this.selectedPolicyType)
+            .subscribe(res => {
+
+                this.name = res[0].name
+                this.maximumbeneficiaries = res[0].maximumbeneficiaries
+                this.lapsedays = res[0].lapsedays
+                this.premium = res[0].premium
+                this.trialperiod = res[0].trialperiod
+                this.minimumage = res[0].minimumage
+                this.description = res[0].description
+
+                this.typeSelected = true
+
+            }, err => {
+                console.log(err)
+            })
+
+
+            
+    }
+
     //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     ngOnInit() {
@@ -275,13 +308,12 @@ export class CreateMemberComponent implements OnInit {
         this.houseNo = document.querySelector('#housenumber')
         this.streetName = document.querySelector('#streetname')
         this.suburb = document.querySelector('#suburb')
-        
+
         this.policyType = document.querySelector('#policytype')
 
         this.email = document.querySelector('#email')
         this.phone = document.querySelector('#phone')
         this.date = document.querySelector('#date')
-
 
         this.email = document.querySelector('#email')
         this.phone = document.querySelector('#phone')
@@ -290,18 +322,20 @@ export class CreateMemberComponent implements OnInit {
         this._servive.getAllPolicyType()
             .subscribe(res => {
                 this.policies = res
+            }, err => {
+                console.log(err)
             })
 
-    /* get policy type* idpolicytype  name
-    policyType = [
-        {value: 'paris-0', name: 'Paris'},
-        {value: 'miami-1', viewValue: 'Miami'},
-        {value: 'bucharest-2', viewValue: 'Bucharest'},
-        {value: 'new-york-3', viewValue: 'New York'},
-        {value: 'london-4', viewValue: 'London'},
-        {value: 'barcelona-5', viewValue: 'Barcelona'},
-        {value: 'moscow-6', viewValue: 'Moscow'},
-    ];*/
+        /* get policy type* idpolicytype  name
+        policyType = [
+            {value: 'paris-0', name: 'Paris'},
+            {value: 'miami-1', viewValue: 'Miami'},
+            {value: 'bucharest-2', viewValue: 'Bucharest'},
+            {value: 'new-york-3', viewValue: 'New York'},
+            {value: 'london-4', viewValue: 'London'},
+            {value: 'barcelona-5', viewValue: 'Barcelona'},
+            {value: 'moscow-6', viewValue: 'Moscow'},
+        ];*/
 
         this.app.loading = false
 
@@ -316,8 +350,7 @@ export class CreateMemberComponent implements OnInit {
 
         // GETTING NAME OF THE CREATOR BY USER ID
         if (!isNullOrUndefined(localStorage.getItem('iduser'))) {
-            // this.iduser = JSON.parse(localStorage.getItem('iduser'))
-            this.iduser = '1';
+            this.iduser = JSON.parse(localStorage.getItem('iduser'))         
         } else {
             this.iduser = '1';
         }
@@ -358,72 +391,72 @@ export class CreateMemberComponent implements OnInit {
         // Code for the Validator  beneficiaryName
 
         const $validator = $('.card-wizard form').validate({
- /*           rules: {
-                firstname: {
-                    required: true,
-                    minlength: 2
-                },
-                beneficiaryName: {
-                    required: true,
-                    minlength: 2
-                },
-                beneficiarySurname: {
-                    required: true,
-                    minlength: 2
-                },
-                beneficiaryID: {
-                    required: true,
-                    minlength: 13,
-                    maxlength: 13
-                },
-                selectedGender: {
-                    required: true,
-                    minlength: 2
-                },
-                selectedPolicyType: {
-                    required: true,
-                    minlength: 2
-                },
-                province: {
-                    required: true,
-                    minlength: 2
-                },
-                date: {
-                    date: true,
-                    minlength: 1
-                },
-                idnumber: {
-                    required: true,
-                    minlength: 13,
-                    invalidID: true
-                },
-                streetname: {
-                    required: true,
-                    minlength: 2
-                },
-                suburb: {
-                    required: true,
-                    minlength: 2
-                },
-                housenumber: {
-                    required: true,
-                    minlength: 1
-                },
-                phone: {
-                    required: true,
-                    minlength: 10,
-                    maxlength: 10
-                },
-                lastname: {
-                    required: true,
-                    minlength: 3
-                },
-                email: {
-                    required: true,
-                    minlength: 3,
-                }
-            },
-*/
+            /*           rules: {
+                           firstname: {
+                               required: true,
+                               minlength: 2
+                           },
+                           beneficiaryName: {
+                               required: true,
+                               minlength: 2
+                           },
+                           beneficiarySurname: {
+                               required: true,
+                               minlength: 2
+                           },
+                           beneficiaryID: {
+                               required: true,
+                               minlength: 13,
+                               maxlength: 13
+                           },
+                           selectedGender: {
+                               required: true,
+                               minlength: 2
+                           },
+                           selectedPolicyType: {
+                               required: true,
+                               minlength: 2
+                           },
+                           province: {
+                               required: true,
+                               minlength: 2
+                           },
+                           date: {
+                               date: true,
+                               minlength: 1
+                           },
+                           idnumber: {
+                               required: true,
+                               minlength: 13,
+                               invalidID: true
+                           },
+                           streetname: {
+                               required: true,
+                               minlength: 2
+                           },
+                           suburb: {
+                               required: true,
+                               minlength: 2
+                           },
+                           housenumber: {
+                               required: true,
+                               minlength: 1
+                           },
+                           phone: {
+                               required: true,
+                               minlength: 10,
+                               maxlength: 10
+                           },
+                           lastname: {
+                               required: true,
+                               minlength: 3
+                           },
+                           email: {
+                               required: true,
+                               minlength: 3,
+                           }
+                       },
+           */
             highlight: function (element) {
                 $(element).closest('.form-group').removeClass('has-success').addClass('has-danger');
             },

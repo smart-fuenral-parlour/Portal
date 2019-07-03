@@ -100,7 +100,7 @@
 
 
 
-  <span>Created By: {{createdby}}</span>
+  <span>Created By: {{createdby.name | titlecase}} {{createdby.surname | titlecase}}</span>
   <br />
   <ul class="nav nav-pills nav-pills-primary nav-pills-icons " role="tablist">
     <li class="nav-item">
@@ -139,7 +139,7 @@
               </div>
             </div>
             <p class="card-description">
-              created:<b> {{ date | date: "EEEE MMMM dd, yyyy 'at' HH:mm"}} </b>
+              Created date:<b> {{ date | date: "EEEE MMMM dd, yyyy 'at' HH:mm"}} </b>
             </p>
           </div>
           <div class="card col-sm-6 card-profile">

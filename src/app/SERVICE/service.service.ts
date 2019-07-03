@@ -11,9 +11,7 @@ import { Society } from './society'
 export class ServiceService {
 
 
-  member: string = '/assets/json/members.json'
-  society: string = '/assets/json/society.json'
-  beneficiary: string = '/assets/json/beneficiary.json'
+  OldUrl = 'http://greenlinks1.dedicated.co.za:3000/api'
   url = 'http://greenlinks1.dedicated.co.za:3002/api';
 
   constructor(private _http: HttpClient) { }
@@ -33,7 +31,27 @@ export class ServiceService {
     return this._http.post(this.url + '/login', jsonData, { headers: this.Header });
   }
 
-  
+
+  //////////////////////////////////////////////  SOCIETY SERVICE ////////////////////////////////////////// 
+  getSociety() {
+    //  return this._http.get<Members>('http://greenlinks1.dedicated.co.za:3000/api/society', { headers: this.Header })
+    return this._http.get<Society>('society');
+  }
+
+  getSingleSocietyr(id) {
+    // return this._http.get('http://greenlinks1.dedicated.co.za:3000/api/members/'+id, { headers: this.Header })
+    return this._http.get('society');
+  }
+
+  removeSociety(id) {
+    // return this._http.delete('http://greenlinks1.dedicated.co.za:3000/api/members/'+id, { headers: this.Header })
+    return this._http.get('society');
+  }
+
+  updateSociety(id, data) {
+    //  return this._http.put('http://greenlinks1.dedicated.co.za:3000/api/members/'+id, data, { headers: this.Header });
+    return this._http.get('society');
+  }  
 
   ///////////////////////////////////////////  MEMBERS SERVICE  ///////////////////////////////////////////////
   getMembers() {
@@ -82,54 +100,29 @@ export class ServiceService {
 
 
 
-  //////////////////////////////////////////////  SOCIETY SERVICE ////////////////////////////////////////// 
-  getSociety() {
-    //  return this._http.get<Members>('http://greenlinks1.dedicated.co.za:3000/api/society', { headers: this.Header })
-    return this._http.get<Society>(this.society);
-  }
-
-  getSingleSocietyr(id) {
-    // return this._http.get('http://greenlinks1.dedicated.co.za:3000/api/members/'+id, { headers: this.Header })
-    return this._http.get(this.society);
-  }
-
-  removeSociety(id) {
-    // return this._http.delete('http://greenlinks1.dedicated.co.za:3000/api/members/'+id, { headers: this.Header })
-    return this._http.get(this.society);
-  }
-
-  updateSociety(id, data) {
-    //  return this._http.put('http://greenlinks1.dedicated.co.za:3000/api/members/'+id, data, { headers: this.Header });
-    return this._http.get(this.society);
-  }
-
-
   //////  BENEFICIARY SERVICE  //////////
   getBeneficiary() {
     return this._http.get<Members>('http://greenlinks1.dedicated.co.za:3000/api/beneficiaries', { headers: this.Header })
   }
 
-  createMemberBeneficiary(data) {
-    //return this._http.post('http://greenlinks1.dedicated.co.za:3000/api/members', data, { headers: this.Header })
+  createMemberBeneficiary(data) {    
     return this._http.post<any>(this.url + '/beneficiary', data, { headers: this.Header });
   }
 
   getMemberBeneficiary(id) {
-    //return this._http.get('http://greenlinks1.dedicated.co.za:3000/api/memberbeneficiaries/' + id, { headers: this.Header })
     return this._http.get(this.url + '/beneficiarybyidmember/' + id, { headers: this.Header })
   }
 
   removeBeneficiary(id) {
-    // return this._http.delete('http://greenlinks1.dedicated.co.za:3000/api/beneficiaries/' + id, { headers: this.Header })
-    return this._http.delete(this.url + '/beneficiary/' + id, { headers: this.Header })
+     return this._http.delete(this.url + '/beneficiary/' + id, { headers: this.Header })
 
   }
 
-  updateBeneficiary(id, data) {
-    //return this._http.put('http://greenlinks1.dedicated.co.za:3000/api/beneficiaries/' + id, data, { headers: this.Header });
-    //return this._http.get(this.beneficiary);   1
+  updateBeneficiary(id, data) {//beneficiaries
     return this._http.put(this.url + '/beneficiary/' + id, data, { headers: this.Header });
   }
+
+
 
 
   /////////////////  SIMPLE GET REQUEST   ////////////////////////////////////
@@ -149,6 +142,8 @@ export class ServiceService {
   getLifestatus(id) {
     return this._http.get( this.url + '/lifestatus/' + id, { headers: this.Header })
   }
+
+
 
   ///////////////// GET ALL REQUESTS  ////////////////////////////////
 
@@ -177,6 +172,7 @@ export class ServiceService {
   }
 
   
+
   /////////////////  CLAIMS API  ////////////////////////////////
 
   createClaim(data) {
@@ -190,5 +186,15 @@ export class ServiceService {
   getSingleClaim(id) {
     return this._http.get(this.url + '/claim/' + id, { headers: this.Header })
   }
+
+  
+
+  /////////////////  POLICY API  ////////////////////////////////
+
+  getPolicyTypeDetails(idpolicytype)  {
+    return this._http.get(this.url + '/policytype/' + idpolicytype, { headers: this.Header })
+  }
+
+  
 
 }

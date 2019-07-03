@@ -47,6 +47,8 @@ export class EditMemberComponent implements OnInit {
   policyType
   selectedPolicyType
 
+  iduser
+
   constructor(private app: AppComponent, private _service: ServiceService, private _router: Router) {
     if (!isNullOrUndefined(sessionStorage.getItem('greenlinks'))) {
       this.society = true
@@ -88,6 +90,10 @@ export class EditMemberComponent implements OnInit {
           )
     */
 
+   if (localStorage.getItem('iduser') != '') {
+    this.iduser = JSON.parse(localStorage.getItem('iduser'))
+    console.log(this.iduser)
+  }
 
    this.fname = document.querySelector('#name');
    this.lname = document.querySelector('#surname');
@@ -95,13 +101,11 @@ export class EditMemberComponent implements OnInit {
    this.suburb = document.querySelector('#suburb');
    this.street = document.querySelector('#street');
    this.idnumber = document.querySelector('#idnumber');
-   //this.province = document.querySelector('#province');
    this.house = document.querySelector('#house');
    this.contact = document.querySelector('#contact');
-   // this.gender = document.querySelector('#gender');
 
-    if (localStorage.getItem('id') != null) {
-      this.ID = JSON.parse(localStorage.getItem('id'));
+    if (localStorage.getItem('idmember') != null) {
+      this.ID = JSON.parse(localStorage.getItem('idmember'));
       this.app.loading = true
       this._service.getSingleMember(this.ID)
         .subscribe(res => {
@@ -113,25 +117,13 @@ export class EditMemberComponent implements OnInit {
           this.membershipID = this.response[0].membershipnumber
           this.idmember = this.response[0].idmember
           this.idlifestatus = this.response[0].idlifestatus
-         // this.idpolicytype = this.response[0].idpolicytype
          this._service.getAllPolicyType()
          .subscribe(policyT => {
            this.policyType = policyT
          }, err => {
            console.log(err)
          })
-    /*     this._service.getLifestatus(this.idlifestatus)
-         .subscribe( lifes => {
-          this._service.getAllLifestatus()
-            .subscribe(lifeS => {
-              this.lifestatus = lifeS
-
-            }, err => {
-              console.log(err)
-            })
-         }, err => {
-           console.log(err)
-         })*/
+         
 
 
           this.app.loading = false
@@ -157,10 +149,8 @@ export class EditMemberComponent implements OnInit {
     this.suburb = document.querySelector('#suburb');
     this.street = document.querySelector('#street');
     this.idnumber = document.querySelector('#idnumber');
-    //this.province = document.querySelector('#province');
     this.house = document.querySelector('#house');
     this.contact = document.querySelector('#contact');
-    // this.gender = document.querySelector('#gender');
     
 
     // NAME /////////////////
@@ -246,7 +236,7 @@ export class EditMemberComponent implements OnInit {
       'streetname': this.newSTREET,
       'suburb': this.newSUBURB,
       'province': this.newPROVINCE,
-      'iduser': '1'
+      'iduser': this.iduser
     }
 
     //{"name":"YEBO","surname":"","idnumber":"","email":"","contactnumber":"","gender":"","housenumber":"","streetname":"","suburb":"","province":"","birthyear":""}
@@ -265,8 +255,8 @@ export class EditMemberComponent implements OnInit {
       buttonsStyling: false
     }).then((result) => {
       if (result.value) {
-        if (localStorage.getItem('id') != null) {
-          this.ID = JSON.parse(localStorage.getItem('id'));
+        if (localStorage.getItem('idmember') != null) {
+          this.ID = JSON.parse(localStorage.getItem('idmember'));
           this.app.loading = true
 
 
@@ -283,7 +273,7 @@ export class EditMemberComponent implements OnInit {
 
 
         } else {
-          return null;
+           console.log('NO USER ID')
         }
 
         swal(

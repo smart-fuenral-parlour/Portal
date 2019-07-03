@@ -4,6 +4,7 @@ import { ServiceService } from 'src/app/SERVICE/service.service'; // service lin
 import swal from 'sweetalert2';
 import { isNullOrUndefined } from 'util';
 import { AppComponent } from 'src/app/app.component'
+import { jsonpCallbackContext } from '@angular/common/http/src/module';
 
 declare var $: any;
 
@@ -36,7 +37,7 @@ export class ViewMembersComponent implements OnInit {
   notFound = false;
   invalidID = false;
   searchInput
-  tes = false;
+  iduser
 
   title = 'materialApp';
   color = 'primary';
@@ -61,33 +62,18 @@ export class ViewMembersComponent implements OnInit {
 
 
   ngOnInit() {
-    this.app.loading = false
-
-
-    window.onload = () => {
-      console.log('loading...')
-    };
-
-    /*
     
-                         console.log('SUCCES')
-                         console.log(res)
-        this._service.getMembers()
-          .subscribe(res => {
-            this.response = res
-            this.members = this.response.response
-            console.log(this.members)
-          },
-            err => console.log(err.message))
-            */
+    if (localStorage.getItem('iduser') != '') {
+      this.iduser = JSON.parse(localStorage.getItem('iduser'))
+      console.log(this.iduser)
+    }
 
-
-
+    this.app.loading = false
     sessionStorage.clear()
   }
 
   click() {
-    this.tes = true
+
     this.app.loading = true
     window.onloadstart
   }
@@ -303,24 +289,24 @@ export class ViewMembersComponent implements OnInit {
 
 
   // Edit a member
-  editMember(index, id) {
+  editMember(index, idmember) {
     this.selectedrow = index;
-    console.log('Member ID: ' + id);
-    localStorage.setItem('id', JSON.stringify(id));
+    
+    localStorage.setItem('idmember', JSON.stringify(idmember));
     sessionStorage.clear()
     this._router.navigate(['/members/editmember']);
   }
 
-  // View member details
-  viewMember(index, id) {
+  // View full member details
+  viewMember(index, idmember) {
     this.selectedrow = index;
-    console.log('Member ID: ' + id);
-    localStorage.setItem('id', JSON.stringify(id));
+    
+    localStorage.setItem('idmember', JSON.stringify(idmember));
     this._router.navigate(['/members/viewmemberdetails']);
   }
 
   // Delete a member
-  deleteMember(index, id) {
+  deleteMember(index, idmember) {
     this.selectedrow = index;
 
     swal({
@@ -336,7 +322,7 @@ export class ViewMembersComponent implements OnInit {
     }).then((result) => {
       if (result.value) {
 
-        this._service.removeMember(id)
+        this._service.removeMember(idmember)
           .subscribe(res => {
             console.log(res)
           }, err => console.log(err))
