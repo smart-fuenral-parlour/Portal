@@ -71,7 +71,10 @@ export class CreateMemberComponent implements OnInit {
     maximumbeneficiaries
     trialperiod
     minimumage
+
+    JSONbalance
     JSONpolicyDetail
+
 
 
     constructor(private formBuilder: FormBuilder, private _service: ServiceService, private _routet: Router, private app: AppComponent) { }
@@ -178,10 +181,10 @@ export class CreateMemberComponent implements OnInit {
             'idpolicytype': this.selectedPolicyType,
             'iduser': this.iduser,
             'idlifestatus': '1',
-            'identitydocument': 'document.pdf',
-            'idpolicystatus': '1',
+            'identitydocument': 'document.pdf'
             //membershipnumber
         }
+        console.log(new Date())
 
         swal({
             title: 'Finish Create',
@@ -203,31 +206,56 @@ export class CreateMemberComponent implements OnInit {
                         console.log(this.response[0].idmember)
 
 
-                        this.JSONpolicyDetail.push({
+                        this.JSONpolicyDetail = {
                             'idmember': this.response[0].idmember,
                             'membershipnumber': memb[0].membershipnumber,
-                            'idpolicystatus': memb[0].idpolicystatus,
-                            'createddate': memb[0].createddate,
+                            'idpolicystatus':'1',
                             'iduser': memb[0].iduser,
                             'idpolicytype': memb[0].idpolicytype
-                        })
-
-                        for (this.i = 0; this.i < this.BeneficiaryForm.length; this.i++) {
-                            this.beneficiary[this.i].idmember = this.response[0].idmember
-                            this.beneficiary[this.i].createddate = this.response[0].createddate
-
-                            this._service.createMemberBeneficiary(this.beneficiary[this.i])
-                                .subscribe(ben => {
-                                    console.log(ben)
-                                    
-
-                                }, err => {
-                                    console.log(err)
-                                })
                         }
+                      //cc  console.log(this.JSONpolicyDetail)
 
-                        console.log(this.beneficiary)
+                        this._service.getPolicyTypeDetails(memb[0].idpolicytype)
+                            .subscribe(policyT => {
+                            //cc     console.log(policyT)
 
+
+                                this._service.createMemberPolicyDetails(this.JSONpolicyDetail)
+                                    .subscribe(policyD => {
+                                        console.log(policyD)
+
+                                        this.JSONbalance = {
+
+                                            'idpolicydetails': policyD[0].idpolicydetails,
+                                            'amount': policyT[0].premium,
+                                            'lastpaiddate': '20/06/19' //new Date()
+                                        }
+                                        console.log(this.JSONbalance)
+                                        this._service.createMemberBalanceDetails(this.JSONbalance)
+                                            .subscribe(balance => {
+                                                console.log(balance)
+
+                                                for (this.i = 0; this.i < this.BeneficiaryForm.length; this.i++) {
+                                                    this.beneficiary[this.i].idmember = this.response[0].idmember
+                                                    this.beneficiary[this.i].createddate = this.response[0].createddate
+
+                                                    this._service.createMemberBeneficiary(this.beneficiary[this.i])
+                                                        .subscribe(ben => {
+                                                            console.log(ben)
+
+                                                        }, err => {
+                                                            console.log(err)
+                                                        })
+                                                }
+                                            }, err => { console.log(err) })
+
+                                    }, err => {
+                                        console.log(err)
+                                    })
+                            }, err => {
+                                console.log(err)
+                            })
+                            
 
                         this.app.loading = false
                     }, err => console.log(err))
@@ -240,7 +268,7 @@ export class CreateMemberComponent implements OnInit {
                         confirmButtonClass: "btn btn-success",
                         buttonsStyling: false
 
-                    }).then((result) => window.location.reload())
+                    }).then((result) => console.log('done')) ///window.location.reload())
             }
         })
 

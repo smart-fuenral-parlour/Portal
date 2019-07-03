@@ -97,6 +97,10 @@ export class ServiceService {
     return this._http.post<any>(this.url + '/member', data, { headers: this.Header });
   }
 
+  createMemberBalanceDetails(data) {
+    return this._http.post<any>(this.url + '/balance', data, { headers: this.Header });
+  }
+
 
 
 
@@ -195,6 +199,8 @@ export class ServiceService {
     return this._http.get(this.url + '/policytype/' + idpolicytype, { headers: this.Header })
   }
 
-  
+  createMemberPolicyDetails(data) {
+    return this._http.post<any>(this.url + '/policydetails', data, { headers: this.Header });
+ }
 
 }
