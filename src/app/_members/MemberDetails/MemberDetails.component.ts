@@ -33,14 +33,14 @@ export class MemberDetailsComponent implements OnInit {
   housenumber; streetname
   suburb; province
   contact; membershipNumber
-  policystatus; color;
+  policystatus; policycolor;
   createdby; noBeneficiary = false
   BenefitName; BenefitSurname = []; BenefitIdNumber;
   memberId
   editTextBox = false;
   date
   gender
-  lifestatus
+  lifestatus; lifecolor
   creator
   payments
   claims
@@ -148,9 +148,15 @@ export class MemberDetailsComponent implements OnInit {
 
 
           if (this.policystatus = 'Active') {
-            this.color = 'text-success'
+            this.policycolor = 'text-success'
           } else {
-            this.color = 'text-danger'
+            this.policycolor = 'text-danger'
+          }
+
+          if (this.lifestatus = 'Alive') {
+            this.lifecolor = 'text-success'
+          } else {
+            this.lifecolor = 'text-danger'
           }
 
 
@@ -163,39 +169,6 @@ export class MemberDetailsComponent implements OnInit {
     }
 
   }
-
-
-
-  /* editMember(index, id) {
-     this.selectedrow = index;
- 
-     swal({
-       title: 'Edit BeneficiaRY',
-       html: '<div class="form-group">' +
-         '<input id="input-field" type="text" class="form-control" />' +
-         '</div>',
-       showCancelButton: true,
-       confirmButtonClass: 'btn btn-success',
-       cancelButtonClass: 'btn btn-danger',
-       buttonsStyling: false
-     }).then(function (result) {
-       swal({
-         type: 'success',
-         html: 'You entered: <strong>' +
-           $('#input-field').val() +
-           '</strong>',
-         confirmButtonClass: 'btn btn-success',
-         buttonsStyling: false
- 
-       })
-     }).catch(swal.noop)
-   }
-   // {"name":"YEBO","surname":"ertyuio","idnumber":"23456789"}
-   // Delete a member              "idBeneficiaries": 69,
-           "membershipnumber": "2019163630", 
-           */
-
-
 
   deleteBeneficiary(index, id, NAME, SURNAME) {
     this.selectedrow = index;
@@ -250,7 +223,7 @@ export class MemberDetailsComponent implements OnInit {
   // Edit a member
   editMember() {
     // this.selectedrow = index;
-    localStorage.setItem('id', JSON.stringify(this.memberId));
+    localStorage.setItem('idmember', JSON.stringify(this.memberId));
     sessionStorage.setItem('fromMemberDetails', JSON.stringify(true));
     this._router.navigate(['/members/editmember']);
   }
@@ -404,8 +377,6 @@ export class MemberDetailsComponent implements OnInit {
       if (result.value) {
 
 
-        console.log({ 'idmember': this.memberId, 'createddate': this.date, 'idlifestatus': 1, 'identitynumber': $('#IDNumber').val(), 'name': $('#Name').val(), 'surname': $('#Surname').val() })
-
         this._service.createMemberBeneficiary({ 'idmember': this.memberId, 'createddate': this.date, 'idlifestatus': 1, 'identitynumber': $('#IDNumber').val(), 'name': $('#Name').val(), 'surname': $('#Surname').val() })
           .subscribe(ben => {
             console.log(ben)
@@ -423,26 +394,6 @@ export class MemberDetailsComponent implements OnInit {
             buttonsStyling: false
 
           }).then((result) => window.location.reload())
-
-        /*
-
-                this._service.updateBeneficiary(id, { 'name': this.BenefitName, 'surname': this.BenefitSurname, 'idnumber': this.BenefitIdNumber })
-                  .subscribe(res => {
-                    console.log(res)
-        
-        
-                    swal(
-                      {
-                        title: 'Updates Succesfully Saved',
-                        type: 'success',
-                        confirmButtonClass: "btn btn-success",
-                        buttonsStyling: false
-        
-                      }).then((result) => window.location.reload())
-                  })
-                  */
-
-
 
       }
     })
@@ -497,10 +448,10 @@ export class MemberDetailsComponent implements OnInit {
   }
 
   // View member details
-  claimInfo(index, id) {
+  claimInfo(index, idclaim) {
     this.selectedClaim = index;
-    // console.log('Member ID: ' + id);
-    localStorage.setItem('claimID', JSON.stringify(id));
+    
+    localStorage.setItem('idclaim', JSON.stringify(idclaim));
     this._router.navigate(['/claims/claiminfo']);
   }
 
