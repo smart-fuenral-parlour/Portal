@@ -32,6 +32,9 @@ export class CreateClaimFormComponent implements OnInit {
   PlaceOfDeath
 
   jsonDATA = []
+  JSONpolicyDetail = []
+
+  iduser
 
   /*"idclaimtype": "1",
     "idpolicydetails": "1",
@@ -52,6 +55,19 @@ export class CreateClaimFormComponent implements OnInit {
   ngOnInit() {
 
 
+    // GET ID MEMBER FROM STORAGE
+    if (localStorage.getItem('idmember') != null) {
+      this.idMember = JSON.parse(localStorage.getItem('idmember'))
+      //  console.log(this.idMember)
+    }
+
+    // GET ID USER FROM STORAGE
+    if (localStorage.getItem('iduser') != null) {
+      this.iduser = localStorage.getItem('iduser')
+      // console.log(this.iduser)
+    }
+
+
     // GET DROP DOWN
     this._service.getAllClaimType()
       .subscribe(claimT => {
@@ -64,10 +80,6 @@ export class CreateClaimFormComponent implements OnInit {
 
       }, err => { console.log(err) })
 
-    if (localStorage.getItem('id') != '') {
-      this.idMember = JSON.parse(localStorage.getItem('id'))
-      console.log(this.idMember)
-    }
 
     this.app.loading = false
   }
@@ -81,7 +93,6 @@ export class CreateClaimFormComponent implements OnInit {
     this.deathDate = document.querySelector('#dod')
     this.burialDate = document.querySelector('#burialdate')
 
-
     this.jsonDATA.push({
       'idclaimtype': this.selectedClaimType,
       'idpolicydetails': '1',
@@ -93,16 +104,18 @@ export class CreateClaimFormComponent implements OnInit {
       'idpayouttype': this.selectedPayOutType,
       'idclaimstatus': '1', // set to trail/pending/draft by default id=1
       'deceasedname': this.name.value,
-      'iduser': '1',
+      'iduser': this.iduser,
       'idmember': this.idMember,
       'deceasedsurname': this.surname.value
     })
 
-    console.log(this.jsonDATA)
-    this._service.createClaim(this.jsonDATA)
+    console.log(this.jsonDATA[0])
+    this._service.createClaim(this.jsonDATA[0])
       .subscribe(res => {
         console.log(res);
 
+
+        
       }, err => {
         console.log(err)
       })

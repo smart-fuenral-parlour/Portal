@@ -71,9 +71,10 @@ export class CreateMemberComponent implements OnInit {
     maximumbeneficiaries
     trialperiod
     minimumage
+    JSONpolicyDetail
 
 
-    constructor(private formBuilder: FormBuilder, private _servive: ServiceService, private _routet: Router, private app: AppComponent) { }
+    constructor(private formBuilder: FormBuilder, private _service: ServiceService, private _routet: Router, private app: AppComponent) { }
 
 
     // province drop downkzn
@@ -177,7 +178,8 @@ export class CreateMemberComponent implements OnInit {
             'idpolicytype': this.selectedPolicyType,
             'iduser': this.iduser,
             'idlifestatus': '1',
-            'identitydocument': 'document.pdf'
+            'identitydocument': 'document.pdf',
+            'idpolicystatus': '1',
             //membershipnumber
         }
 
@@ -195,19 +197,29 @@ export class CreateMemberComponent implements OnInit {
             if (result.value) {
                 this.app.loading = true
 
-                this._servive.createMember(this.memberDATA)
-                    .subscribe(res => {
-                        console.log(res)
-                        this.response = res
+                this._service.createMember(this.memberDATA)
+                    .subscribe(memb => {
+                        this.response = memb
                         console.log(this.response[0].idmember)
+
+
+                        this.JSONpolicyDetail.push({
+                            'idmember': this.response[0].idmember,
+                            'membershipnumber': memb[0].membershipnumber,
+                            'idpolicystatus': memb[0].idpolicystatus,
+                            'createddate': memb[0].createddate,
+                            'iduser': memb[0].iduser,
+                            'idpolicytype': memb[0].idpolicytype
+                        })
 
                         for (this.i = 0; this.i < this.BeneficiaryForm.length; this.i++) {
                             this.beneficiary[this.i].idmember = this.response[0].idmember
                             this.beneficiary[this.i].createddate = this.response[0].createddate
 
-                            this._servive.createMemberBeneficiary(this.beneficiary[this.i])
+                            this._service.createMemberBeneficiary(this.beneficiary[this.i])
                                 .subscribe(ben => {
                                     console.log(ben)
+                                    
 
                                 }, err => {
                                     console.log(err)
@@ -276,7 +288,7 @@ export class CreateMemberComponent implements OnInit {
     selectPolicyType() {
         console.log(this.selectedPolicyType)
         this.typeSelected = false
-        this._servive.getPolicyTypeDetails(this.selectedPolicyType)
+        this._service.getPolicyTypeDetails(this.selectedPolicyType)
             .subscribe(res => {
 
                 this.name = res[0].name
@@ -294,7 +306,7 @@ export class CreateMemberComponent implements OnInit {
             })
 
 
-            
+
     }
 
     //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -319,7 +331,7 @@ export class CreateMemberComponent implements OnInit {
         this.phone = document.querySelector('#phone')
         this.date = document.querySelector('#date')
 
-        this._servive.getAllPolicyType()
+        this._service.getAllPolicyType()
             .subscribe(res => {
                 this.policies = res
             }, err => {
@@ -350,7 +362,7 @@ export class CreateMemberComponent implements OnInit {
 
         // GETTING NAME OF THE CREATOR BY USER ID
         if (!isNullOrUndefined(localStorage.getItem('iduser'))) {
-            this.iduser = JSON.parse(localStorage.getItem('iduser'))         
+            this.iduser = JSON.parse(localStorage.getItem('iduser'))
         } else {
             this.iduser = '1';
         }

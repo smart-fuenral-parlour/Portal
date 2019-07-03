@@ -43,9 +43,8 @@ export class CreateClaimComponent implements OnInit {
 
     this.searchInput = document.querySelector('#searchBox')
 
-    console.log(this.selectedSearchType)
+    console.log('Search By: '+this.selectedSearchType)
     console.log(this.searchInput.value)
-
 
     if (this.searchInput.value == '' || isNullOrUndefined(this.searchInput.value)) {
       this.searchResult = false
@@ -80,7 +79,7 @@ export class CreateClaimComponent implements OnInit {
             }
           )
 
-      } else
+      } else {
         if (this.selectedSearchType == 'Surname') {
 
           this._service.searchMemberBySurname(this.searchInput.value)
@@ -132,6 +131,7 @@ export class CreateClaimComponent implements OnInit {
             }
 
           } 
+        }
 
     }
 
@@ -147,12 +147,11 @@ export class CreateClaimComponent implements OnInit {
   }
 
     // Create Claim
-    createClaim(index, id) {
+    createClaim(index, idmember) {
       this.selectedrow = index;
-
-      //console.log('Member ID: ' + id);
-      localStorage.setItem('id', JSON.stringify(id));
-      this._router.navigate(['/claims/createclaimformember']);
+      
+      localStorage.setItem('idmember', JSON.stringify(idmember));
+       this._router.navigate(['/claims/createclaimformember']);
     }
 
 }
