@@ -54,7 +54,7 @@ export class LoginComponent implements OnInit, OnDestroy {
     login : FormGroup;
     type : FormGroup;
     //////////////////////////////////////////////////////////////////////////////////////////////////
-    jsonLOGIN ; emptyPASS = false; emptyNAME = false
+    emptyPASS = false; emptyNAME = false
     username; password; isIncorrect = false; response
 
 
@@ -135,34 +135,21 @@ export class LoginComponent implements OnInit, OnDestroy {
             this.isIncorrect = false
             this.app.loading = true
             
-            this._service.loginUser({'name': this.username.value,'password': this.password.value})
+            this._service.loginUser({'username': this.username.value,'password': this.password.value})
             .subscribe( res => {
                this.response = res
 
-               if( this.response.status == 200 ) {
+               if( this.response.length > 0 ) {
 
-                this.jsonLOGIN = this.response.response
-                   console.log('user ID: '+ this.response[0].iduser )
-                   console.log('name: '+this.response.response[0].name+' '+this.response.response[0].surname)  
-                   
-                   localStorage.setItem('name', JSON.stringify(this.response.response[0].name+' '+this.response.response[0].surname));
-                   localStorage.setItem('role', JSON.stringify(this.response.response[0].role));     
+                                   
+                   //localStorage.setItem('name', JSON.stringify(this.response.response[0].name+' '+this.response.response[0].surname));
+                   // localStorage.setItem('role', JSON.stringify(this.response.response[0].role));     
                    // NEW API CODE              
                    localStorage.setItem('iduser', JSON.stringify(this.response[0].iduser));
                    this.app.loading = false
-                   this.router.navigate(['/dashboard']);
                    this.app.loaderClass = 'load-wrapper' 
-/**
- * 
-                   localStorage.setItem('name', JSON.stringify(id));
-                // GETTING NAME OF THE CREATOR
-            if(!isNullOrUndefined( localStorage.getItem('name') )){
-                this.creator = JSON.parse(localStorage.getItem('name'))
-            } else {
-                this.creator = 'System'
-            }
-        
- */
+                   this.router.navigate(['/dashboard']);
+
                } else {
 
                    console.log('Incorrect!')

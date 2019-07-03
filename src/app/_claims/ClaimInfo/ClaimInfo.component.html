@@ -14,7 +14,6 @@
                         <table class="table">
                                 <thead class="text-primary">
                                     <tr>
-                                      <th>No.</th>
                                       <th>Claim No.</th>
                                       <th>Amount</th>
                                       <th>Name Surname</th>
@@ -24,19 +23,32 @@
                                 </thead>
                               <tbody>
                                   <tr>
-                                      <td>Number</td>
-                                      <td>Claim Number</td>
+                                      <td>{{ idclaim }}</td>
                                       <td>R0.00</td>
-                                      <td>Name Surname</td>
-                                      <td>yyyy/mm/dd</td>
-                                      <td>type</td>
+                                      <td>{{ name}} {{ surname }} </td>
+                                      <td>{{ date }}</td>
+                                      <td>{{ type }}</td>
                                   </tr>
                               </tbody>
                         </table>
 
                       </div>
                   </div>
-              </div><!--
+              </div>
+              <div class="row pull-right">
+
+                  <button mat-raised-button class="btn btn-sm btn-success">Approve claim</button>
+                  <button mat-raised-button class="btn btn-sm btn-danger">Decline claim</button>
+                  
+              </div>
+
+          </div>
+      </div>
+  </div>
+</div>
+
+
+              <!--
               <div class="col-md-12">
                   <div class="card card-plain">
                     <div class="card-header card-header-icon card-header-rose">
@@ -112,7 +124,3 @@
                   </div>
               </div>
             -->
-          </div>
-      </div>
-  </div>
-</div>

@@ -1,25 +1,132 @@
 <div class="main-content">
-    <div class="container-fluid">
-      <div class="row">
-        <div class="col-md-8 ml-auto mr-auto">
-          <div class="card ">
-            <div class="card-header card-header-icon card-header-rose">
-              <div class="card-icon">
-                <i class="material-icons">perm_identity</i>
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-md-8 ml-auto mr-auto">
+        <div class="card ">
+          <div class="card-header card-header-icon card-header-rose">
+            <div class="card-icon">
+              <i class="material-icons">perm_identity</i>
+            </div>
+            <h4 class="card-title">Creating Claim for<b>:</b>
+              <small class="category">Name Surname</small>
+            </h4>
+          </div>
+          <div class="card-body">
+            <!----------*ngFor="let member of singleMember"------------------------------------------------------------------------------------------------------------->
+
+            <form>
+              <div class="row">
+                <div class="col-md-6">
+                  <div class="form-group">
+                    <label class="bmd-label-floating">First Name</label>
+                    <input type="text" class="form-control" id="name" name="name" placeholder="Name of deceased">
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div class="form-group">
+                    <label class="bmd-label-floating">Last Name</label>
+                    <input type="text" class="form-control" id="surname" name="surname"
+                      placeholder="Surname of the deceased">
+                  </div>
+                </div>
               </div>
-              <h4 class="card-title">Creating Claim for<b>:</b> 
-                <small class="category">Name Surname</small>
-              </h4>
-            </div>
-            <div class="card-body">
-              <!----------*ngFor="let member of singleMember"------------------------------------------------------------------------------------------------------------->
+              <div class="row">
+                <div class="col-md-6">
+                  <div class="form-group">
+                    <label class="bmd-label-floating">Identity Number</label>
+                    <input type="number" class="form-control" id="idnumber" name="idnumber"
+                      placeholder="ID Number of deceased">
+                  </div>
+                </div>
+
+              </div>
+
+
+
+              <label class="bmd-label-floating" style="text-align: center; margin-left: 45%"><b> TYPES </b></label>
+              <div class="row">
+
+                <div class="col-md-6">
+                  <label class="bmd-label-floating">Claims Types</label>
+                  <div>
+                    <mat-form-field>
+                      <mat-select placeholder="Select the type of claim" id="claimType" name="claimType"
+                        [(ngModel)]="selectedClaimType">
+                        <mat-option *ngFor="let claimT of dropdownClaimType" [value]="claimT.idclaimtype">
+                          {{ claimT.name | titlecase }}
+                        </mat-option>
+                      </mat-select>
+                    </mat-form-field>
+                  </div>
+                </div>
+
+                
+                <div class="col-md-6">
+                    <label class="bmd-label-floating">Payout Type</label>
+                    <div>
+                      <mat-form-field>
+                        <mat-select placeholder="Select payout type" id="payoutType" name="payoutType"
+                          [(ngModel)]="selectedPayOutType">
+                          <mat-option *ngFor="let payout of dropdownPayOutType" [value]="payout.idpayouttype">
+                            {{ payout.name | titlecase }}
+                          </mat-option>
+                        </mat-select>
+                      </mat-form-field>
+                    </div>
+                  </div>
+
+
+              </div>
+
+
+              <label class="bmd-label-floating" style="text-align: center; margin-left: 45%"><b>Funeral details</b></label>
+              <div class="row">
+
+                                  
+                  <div class="col-md-7">
+                      <label class="bmd-label-floating">Place of death</label>
+                      <input type="text" class="form-control" id="pod" name="pod" placeholder="name of place where the deceased passed on">
+                
+                    </div>
+
+                    <div class="col-md-5 mr-auto">
+                        <label class="bmd-label-floating">Date of date</label>
+                        <mat-form-field >
+                          <input matInput [matDatepicker]="picker2" class="form-control" id="dod" name="dod" placeholder="Select date of date" (click)="picker2.open()">
+                          <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+                          <mat-datepicker #picker2></mat-datepicker>
+                        </mat-form-field>
+                      </div>
   
-              <!----------------------------------------------------------------------------------------------------------------------->
-          
-          
-            </div>
+                    <div class="col-md-5 mr-auto">
+                        <label class="bmd-label-floating">Proposed burial date</label>
+                        <mat-form-field >
+                          <input matInput [matDatepicker]="picker" class="form-control" placeholder="Select burial date" id="burialdate" name="burialdate" (click)="picker.open()">
+                          <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                          <mat-datepicker #picker></mat-datepicker>
+                        </mat-form-field>
+                    </div>
+
+
+                </div>
+
+              <br />
+              <button mat-raised-button type="submit" class="btn btn-rose pull-right" (click)="createClaim()">Update
+                Profile</button>
+              <div class="clearfix"></div>
+            </form>
+
+            <!----------
+                
+              
+                ------------------------------------------------------------------------------------------------------------->
+            <!--
+            
+          -->
+
           </div>
         </div>
       </div>
     </div>
   </div>
+</div>

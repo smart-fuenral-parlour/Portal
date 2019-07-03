@@ -103,8 +103,7 @@ export class CreateClaimComponent implements OnInit {
               err => {console.log(err)}
             )
 
-        } else
-          if ( this.selectedSearchType == 'ID Number') {
+        } else {
             if(this.searchInput.value.length == 13){
               this._service.searchMemberByIdNumber(this.searchInput.value)
               .subscribe(res => {
@@ -148,10 +147,11 @@ export class CreateClaimComponent implements OnInit {
   }
 
     // Create Claim
-    createClaim(index) {
+    createClaim(index, id) {
       this.selectedrow = index;
+
       //console.log('Member ID: ' + id);
-     // localStorage.setItem('id', JSON.stringify(id));
+      localStorage.setItem('id', JSON.stringify(id));
       this._router.navigate(['/claims/createclaimformember']);
     }
 

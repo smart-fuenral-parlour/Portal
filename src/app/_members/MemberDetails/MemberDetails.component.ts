@@ -43,6 +43,7 @@ export class MemberDetailsComponent implements OnInit {
   lifestatus
   creator
   payments
+  claims
   Nopayment = false;
 
 
@@ -53,6 +54,8 @@ export class MemberDetailsComponent implements OnInit {
   fromDate
   toDate
   selectedClaim
+
+  iduser
 
   constructor(private fb: FormBuilder, private _service: ServiceService, private _router: Router, private app: AppComponent) {
 
@@ -76,7 +79,9 @@ export class MemberDetailsComponent implements OnInit {
       this.society = true
     }
 
-
+    if (localStorage.getItem('iduser') != null) {
+      this.iduser = localStorage.getItem('iduser')
+    }
 
     if (localStorage.getItem('id') != null) {
       this.ID = JSON.parse(localStorage.getItem('id'));
@@ -84,9 +89,9 @@ export class MemberDetailsComponent implements OnInit {
 
 
       this._service.getSingleMember(this.ID)
-        .subscribe(res => {
+        .subscribe(member1 => {
 
-          this.singleMember = res
+          this.singleMember = member1
           this.firstName = this.singleMember[0].name
           this.lastName = this.singleMember[0].surname
           this.idnumber = this.singleMember[0].identitynumber
@@ -100,16 +105,15 @@ export class MemberDetailsComponent implements OnInit {
           this.memberId = this.singleMember[0].idmember
           this.policystatus = 'Active'//this.singleMember[0].policystatus
           this.date = this.singleMember[0].createddate
-          this.createdby = 'SYSTEM' //this.singleMember[0].createdby
+         // this.createdby = 'SYSTEM' //this.singleMember[0].createdby
           this.gender = this.singleMember[0].gender
           this.noBeneficiary = false
 
 
           this._service.getMemberBeneficiary(this.memberId)
-            .subscribe(res => {
-              this.response = res;
-              this.beneficiaries = res
-              console.log(res)
+            .subscribe(ben => {
+              this.beneficiaries = ben
+              console.log(ben)
 
 
               if (this.beneficiaries.length == 0) {
@@ -118,27 +122,23 @@ export class MemberDetailsComponent implements OnInit {
                 this.noBeneficiary = false
               }
 
-
               this.app.loading = false
+              console.log(this.memberId)
 
-              this._service.payments(this.membershipNumber)
+              this._service.getUser(this.iduser)
                 .subscribe(res => {
-                  this.response = res
-
-                  this.payments = this.response.response
-                  if (this.payments.length > 0) {
-                    this.Nopayment = false
-                    console.log('Number of payments: ' + this.payments.length)
-                    console.log(this.payments)
-                  } else {
-                    this.Nopayment = true
-                  }
+                  this.createdby = res[0]
+                  console.log(this.createdby)
+                  console.log(this.createdby.name)
                 }, err => {
 
-                  console.log(err)
                 })
 
-              console.log(this.beneficiaries)
+              /**
+               * 
+               */
+
+
             }, err => {
 
               this.app.loading = false
@@ -496,10 +496,10 @@ export class MemberDetailsComponent implements OnInit {
   }
 
   // View member details
-  claimInfo(index) {
+  claimInfo(index, id) {
     this.selectedClaim = index;
     // console.log('Member ID: ' + id);
-    //  localStorage.setItem('id', JSON.stringify(id));
+    localStorage.setItem('claimID', JSON.stringify(id));
     this._router.navigate(['/claims/claiminfo']);
   }
 

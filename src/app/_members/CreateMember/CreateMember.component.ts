@@ -287,7 +287,7 @@ export class CreateMemberComponent implements OnInit {
         this.phone = document.querySelector('#phone')
         this.date = document.querySelector('#date')
 
-        this._servive.getPolicyType()
+        this._servive.getAllPolicyType()
             .subscribe(res => {
                 this.policies = res
             })

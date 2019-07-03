@@ -336,9 +336,9 @@
                   </thead>
                   <tbody>
                     <tr *ngFor="let payment of payments">
-                      <td class="text-info">{{payment.idlastPaid}}</td>
+                      <td class="text-info">{{payment.idpayment}}</td>
                       <td>{{createdby}}</td>
-                      <td>cash</td>
+                      <td>{{payment.channel}}</td>
                       <td> {{ payment.date | date }}</td>
                       <td>{{ payment.amount | currency:  'ZAR':"symbol-narrow" }}</td>
 
@@ -362,7 +362,7 @@
 
       </div>
       <div class="tab-pane" id="myclaims">
-        <div class="row">
+        <div class="row" hidden>
           <div class="col-md-12 ml-auto mr-auto">
             <div class="card">
               <div class="card-body">
@@ -451,7 +451,8 @@
             </div>
           </div>
         </div>
-        <div class="row" *ngIf="claimTable">
+        <!--   *ngIf="claimTable"   -->
+        <div class="row" *ngIf="true">
           <div class="col-md-12">
             <div class="card">
               <div class="card-header card-header-primary card-header-icon">
@@ -471,22 +472,22 @@
                     <thead>
                       <tr>
                         <th>Claim No.</th>
-                        <th>Name</th>
-                        <th>Surname</th>
+                        <th>Name of deceased</th>
+                        <th>Surname of deceased</th>
                         <th>Date</th>
-                        <th>Paid</th>
+                        <th>Claim Status</th>
                         <th class="disabled-sorting text-right">Action</th>
                       </tr>
                     </thead>
                     <tbody>
-                      <tr ><!--  *ngFor="let member of response.response; let i = index" -->
-                        <td>Claim No.</td>
-                        <td>Name</td>
-                        <td>Surname</td>
-                        <td>Date</td>
-                        <td>Paid</td>
+                      <tr *ngFor="let claim of claims; let i = index" ><!--  *ngFor="let member of response.response; let i = index" -->
+                        <td>{{ claim.idclaim }}</td>
+                        <td>{{ claim.deceasedname }}</td>
+                        <td>{{ claim.deceasedsurname }}</td>
+                        <td>{{ claim.createddate }}</td>  <!--   | date: 'dd MMMM, yyyy'  -->
+                        <td>{{ claim.idclaimstatus }}</td>
                         <td class="text-right">
-                          <button (click)="claimInfo(i)"
+                          <button (click)="claimInfo(i, claim.idclaim )"
                             class="btn btn-link btn-info "><i class="material-icons"
                               [class.active]="i == selectedClaim" data-toggle="tooltip" data-placement="down" title="view claim info">info</i> Claim Info</button>
                         </td>

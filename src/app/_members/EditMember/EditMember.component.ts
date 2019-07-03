@@ -114,7 +114,7 @@ export class EditMemberComponent implements OnInit {
           this.idmember = this.response[0].idmember
           this.idlifestatus = this.response[0].idlifestatus
          // this.idpolicytype = this.response[0].idpolicytype
-         this._service.getPolicyType()
+         this._service.getAllPolicyType()
          .subscribe(policyT => {
            this.policyType = policyT
          }, err => {
