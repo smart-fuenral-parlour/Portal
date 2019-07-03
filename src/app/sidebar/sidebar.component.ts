@@ -25,6 +25,17 @@ export interface ChildrenItems {
 //Menu Items
 export const ROUTES: RouteInfo[] = [
     {
+        path: '/notification',
+        title: 'Notification',
+        type: 'sub',
+        icontype: 'notifications',
+        collapse: 'notification',
+        children: [
+            {path: 'claimsinbox' , title: 'Claims Inbox', ab:'CI'},
+            {path: 'policyinbox' , title: 'Policy Inbox', ab:'PI'}
+        ]
+    },
+    {
         path: '/members',
         title: 'Individual Members',
         type: 'sub',

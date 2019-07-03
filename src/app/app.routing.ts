@@ -43,10 +43,16 @@ export const AppRoutes: Routes = [
                 loadChildren: './_payments/payments.module#PaymentsModule'
             },
             {
-                // CLAIMS MODULE
+                // CLAIMS MODULE NotificationsModule
                 path: 'claims',
                 loadChildren: './_claims/claims.module#ClaimsModule'
             },
+            {
+                // NOTIFICATIONS MODULE 
+                path: 'notification',
+                loadChildren: './_notification/notification.module#NotificationsModule'
+            },
+            //////////////////////////////////////////////////////////////////////////
             {
                 path: 'DASHboard',
                 loadChildren: './dashboard/dashboard.module#DashboardModule'
