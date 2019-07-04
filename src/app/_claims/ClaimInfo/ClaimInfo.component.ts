@@ -11,6 +11,7 @@ export class ClaimInfoComponent implements OnInit {
 
   idclaim
   claims
+  noClaims
 
   name
   surname
@@ -21,22 +22,31 @@ export class ClaimInfoComponent implements OnInit {
 
   ngOnInit() {
 
-    this.idclaim = JSON.parse(localStorage.getItem('claimID'));
+    if( localStorage.getItem('idclaim') != null ) {
+      this.idclaim = JSON.parse(localStorage.getItem('idclaim'));
+    }
+ 
     
     console.log('ID:' + parseInt(this.idclaim) )
 
-    this._service.getSingleClaim(this.idclaim)
+    this._service.getSingleClaimInfo(this.idclaim)
       .subscribe(res => {
         console.log(res)
         this.claims = res
 
         console.log(this.claims)
-        console.log(res)
+        if(this.claims.length > 0) {
+          this.name = this.claims[0].deceasedname
+          this.surname = this.claims[0].deceasedsurname
+          this.date = this.claims[0].createddate
+          this.type = this.claims[0].placeofdeath
+          this.noClaims = false
+        } else {
+          this.noClaims = true
+        }
+/*
 
-        this.name = this.claims[0].deceasedname
-        this.surname = this.claims[0].deceasedsurname
-        this.date = this.claims[0].createddate
-        this.type = this.claims[0].placeofdeath
+        */
 
       }, err => {
         console.log(err)
@@ -48,8 +58,10 @@ export class ClaimInfoComponent implements OnInit {
 
   approveClaim(){
 
-    
+
   }
+
+  
 
 
 

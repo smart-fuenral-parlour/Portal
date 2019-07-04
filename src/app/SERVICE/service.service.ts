@@ -187,13 +187,13 @@ export class ServiceService {
     return this._http.get(this.url + '/getclaimbyidmember/' + id, { headers: this.Header })
   }
 
-  getSingleClaim(id) {
+  getSingleClaimInfo(id) {
     return this._http.get(this.url + '/claim/' + id, { headers: this.Header })
   }
 
   
 
-  /////////////////  POLICY API  ////////////////////////////////
+  /////////////////  POLICY API  //////////////////////////////// idclaim
 
   getPolicyTypeDetails(idpolicytype)  {
     return this._http.get(this.url + '/policytype/' + idpolicytype, { headers: this.Header })

@@ -5,26 +5,29 @@
       <div class="col-md-12 ml-auto mr-auto">
         <div class="card">
           <div class="card-body">
-            <!--
+     
             <div class="col-6">
               <mat-form-field>
-                <mat-select placeholder="Search Member By: " name="searchType" id="searchType"
-                  [(ngModel)]="selectedSearchType" (click)="changeEmpty()" (select)="changeEmpty()">
+                <mat-select placeholder="Select claim status " name="searchType" id="searchType"
+                  [(ngModel)]="selectedClaimType" (click)="changeEmpty()" (select)="changeEmpty()">
                   <mat-option *ngFor="let type of Types" [value]="type.value" (click)="selectSearchType()">
                     {{ type.viewValue }}
                   </mat-option>
                 </mat-select>
               </mat-form-field>
             </div>
-
+<!--
+  
             <div class="col-6">
               <mat-form-field class="example-full-width">
-                <input matInput placeholder="Search {{ searchText }}" type="search" id="searchBox" name="searchBox"
+                <input matInput placeholder="Search Claim" type="search" id="searchBox" name="searchBox"
                   (focus)="changeEmpty()" required>
               </mat-form-field>
             </div>
-          -->
-            <div class="col-12">
+-->
+            
+         
+            <div class="col-12" hidden>
 
               <!-- From Date -->
               <div class="col-6 input-group-prepend mr-auto">
@@ -45,7 +48,7 @@
               </div>
             </div>
 
-            <div class="col-12">
+            <div class="col-12" hidden>
 
               <!-- To Date  
               <legend>Datepicker Year</legend> -->
@@ -82,8 +85,8 @@
       <div class="col-12 ml-auto mr-auto">
         <div class="card">
           <div class="card-body text-center">
-            <h5><b>Member(s) Not Found.</b> <span class="text-info">
-                <h6>Try searching by using a different category</h6>
+            <h5><b>There are currently no {{selectedClaimType}} Claims</b> <span class="text-info">
+                <h6></h6>
               </span></h5>
           </div>
         </div>

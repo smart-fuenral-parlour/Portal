@@ -10,7 +10,7 @@ import { NotificationsRoutes } from './notification.routing';
 import { PolicyComponent } from './Policy/Policy.component';
 import { Funeral_arragementComponent } from './Funeral_arragement/Funeral_arragement.component';
 import { ClaimsComponent } from './Claims/Claims.component';
-
+import { EditClaimComponent } from './EditClaim/EditClaim.component';
 
 @NgModule({
     imports: [
@@ -22,7 +22,8 @@ import { ClaimsComponent } from './Claims/Claims.component';
     declarations: [
         PolicyComponent,
         ClaimsComponent,
-        Funeral_arragementComponent
+        Funeral_arragementComponent,
+        EditClaimComponent
     ]
 })
 

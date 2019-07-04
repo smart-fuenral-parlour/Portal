@@ -2,7 +2,7 @@
   <div class="container-fluid">
       <div class="row">
           <div class="col-md-12">
-              <div class="card">
+              <div class="card" *ngIf="noClaims">
                 <div class="card-header card-header-icon card-header-rose">
                   <div class="card-icon">
                     <i class="material-icons">assignment</i>
@@ -35,7 +35,17 @@
                       </div>
                   </div>
               </div>
-              <div class="row pull-right">
+              
+              <div class="row" *ngIf="noClaims">
+                  <div class="col-12 ml-auto mr-auto">
+                    <div class="card" style="background-color: lightgray">
+                      <div class="card-body text-center card-description">
+                        <h3><b>No Claim made yet</b></h3>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              <div class="row pull-right" hidden>
 
                   <button mat-raised-button class="btn btn-sm btn-success">Approve claim</button>
                   <button mat-raised-button class="btn btn-sm btn-danger">Decline claim</button>

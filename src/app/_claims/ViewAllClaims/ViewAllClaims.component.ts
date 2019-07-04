@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router'
 import { AppComponent } from 'src/app/app.component'
+import { isNullOrUndefined } from 'util';
 
 @Component({
   selector: 'app-ViewAllClaims',
@@ -11,13 +12,26 @@ export class ViewAllClaimsComponent implements OnInit {
 
   toNULL = false
   fromNULL = false
-  table = false
 
   fromDate
   toDate
   selectedClaim
+  selectedClaimType
+
+
+  isEmpty = false
+  invalidID = false
+  table = false
+  notFound = false
 
   constructor(private app: AppComponent, private _router: Router) { }
+
+  Types = [
+    { id: 1, value: 'Approved', viewValue: 'Approved' },
+    { id: 2, value: 'Declined', viewValue: 'Declined' },
+    { id: 3, value: 'Pending', viewValue: 'Pending' }
+  ];
+
 
   ngOnInit() {
     this.app.loading = false
@@ -36,20 +50,16 @@ export class ViewAllClaimsComponent implements OnInit {
   }
 
   searchClaim() {
+    console.log(this.selectedClaimType)
 
-
-    if (this.toDate.value == '') {
-      this.toNULL = true
-    }
-
-    if (this.fromDate.value == '') {
-      this.fromNULL = true
-    }
-
-    if(!this.fromNULL && !this.toNULL) {
-      this.table = true
-    } else {
+    if(isNullOrUndefined(this.selectedClaimType)) {
       this.table = false
+      this.notFound = true
+      
+    } else {
+      this.notFound = false
+      this.table = false
+      
     }
 
   }
@@ -58,8 +68,15 @@ export class ViewAllClaimsComponent implements OnInit {
     claimInfo(index) {
       this.selectedClaim = index;
      // console.log('Member ID: ' + id);
-    //  localStorage.setItem('id', JSON.stringify(id));
+      localStorage.setItem('idclaim', JSON.stringify(5));
       this._router.navigate(['/claims/claiminfo']);
     }
+
+
+    changeEmpty() {
+      this.isEmpty = false
+      this.invalidID = false
+    }
+
 
 }
