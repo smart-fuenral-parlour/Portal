@@ -52,6 +52,11 @@ export const AppRoutes: Routes = [
                 path: 'notification',
                 loadChildren: './_notification/notification.module#NotificationsModule'
             },
+            {
+                // POLICY MODULE 
+                path: 'policy',
+                loadChildren: './_policy/policy.module#PolicyModule'
+            },
             //////////////////////////////////////////////////////////////////////////
             {
                 path: 'DASHboard',

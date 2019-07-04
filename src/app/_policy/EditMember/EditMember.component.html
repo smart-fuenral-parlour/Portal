@@ -1,0 +1,174 @@
+<div class="main-content">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-md-8 ml-auto mr-auto">
+        <div class="card ">
+          <div class="card-header card-header-icon card-header-rose">
+            <div class="card-icon">
+              <i class="material-icons">perm_identity</i>
+            </div>
+            <h4 class="card-title">Edit Member Profile -
+              <small class="category">Complete your profile</small>
+            </h4>
+          </div>
+          <div class="card-body">
+            <form *ngFor="let member of response">
+              <div class="row">
+                <div class="col-md-6">
+                  <div class="form-group">
+                    <label class="bmd-label-floating">First Name</label>
+                    <input type="text" class="form-control" id="name" name="name" placeholder="{{ myLifeStatus }}">
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div class="form-group">
+                    <label class="bmd-label-floating">Last Name</label>
+                    <input type="text" class="form-control" id="surname" name="surname"
+                      placeholder="{{ member.surname }}">
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-6">
+                  <div class="form-group">
+                    <label class="bmd-label-floating">Identity Number</label>
+                    <input type="number" class="form-control" id="idnumber" name="idnumber"
+                      placeholder="{{ member.identitynumber }}">
+                  </div>
+                </div>
+
+                <div class="col-md-4">
+                  <label class="bmd-label-floating">Gender</label>
+                  <div>
+                    <mat-form-field>
+                      <mat-select placeholder="{{ member.gender }}" id="gender" name="gender"
+                        [(ngModel)]="selectedGender">
+                        <mat-option *ngFor="let gender of myGenders" [value]="gender.value">
+                          {{ gender.name | titlecase }}
+                        </mat-option>
+                      </mat-select>
+                    </mat-form-field>
+                  </div>
+                </div>
+
+              </div>
+
+              
+              <div class="row" hidden>
+                  <div class="col-md-4">
+                      <label class="bmd-label-floating">Policy Type</label>
+                      <div>
+                        <mat-form-field>
+                          <mat-select placeholder="Famile plan" id="policyType" name="policyType"
+                            [(ngModel)]="selectedPolicyType">
+                            <mat-option *ngFor="let policy of policyType" [value]="policy.idlifestatus">
+                              {{ policy.name | titlecase }}
+                            </mat-option>
+                          </mat-select>
+                        </mat-form-field>
+                      </div>
+                    </div>    
+                
+  
+                  <div class="col-md-4">
+                    <label class="bmd-label-floating">Life status</label>
+                    <div>
+                      <mat-form-field>
+                        <mat-select placeholder="alive" id="lifestatus" name="lifestatus"
+                          [(ngModel)]="selectedLifeStatus">
+                          <mat-option *ngFor="let life of lifestatus" [value]="life.idpolicytype">
+                            {{ life.name | titlecase }}
+                          </mat-option>
+                        </mat-select>
+                      </mat-form-field>
+                    </div>
+                  </div>
+  
+                </div>
+
+              <div class="row">
+
+                <div class="col-md-5">
+                  <div class="form-group">
+                    <label class="bmd-label-floating">Email address</label>
+                    <input type="text" class="form-control" id="email" name="email" placeholder="{{ member.email }}">
+                  </div>
+                </div>
+                <div class="col-3">
+                  <div class="form-group">
+                    <label class="bmd-label-floating">Contact Number</label>
+                    <input type="number" class="form-control" id="contact" name="contact"
+                      placeholder="{{ member.contactnumber }}">
+                  </div>
+                </div>
+
+              </div>
+              <label class="bmd-label-floating" style="text-align: center; margin-left: 45%"><b>Address</b></label>
+              <div class="row">
+                <!-- <label class="bmd-label-floating" style="text-align: center; margin-left: 45%">Address</label> -->
+                <div class="col-md-4">
+                  <div class="form-group">
+                    <label class="bmd-label-floating">House Number</label>
+                    <input type="number" class="form-control" id="house" name="house"
+                      placeholder="{{ member.housenumber }}">
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div class="form-group">
+                    <label class="bmd-label-floating">Street Name</label>
+                    <input type="text" class="form-control" id="street" name="street"
+                      placeholder="{{ member.streetname }}">
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-5">
+                  <div class="form-group">
+                    <label class="bmd-label-floating">Suburb</label>
+                    <input type="text" class="form-control" id="suburb" name="suburb" placeholder="{{ member.suburb }}">
+                  </div>
+                </div>
+
+                <div class="col-md-4">
+                  <label class="bmd-label-floating">Province</label>
+                  <div>
+                    <mat-form-field>
+                      <mat-select placeholder="{{ member.province }}" id="province" name="province"
+                        [(ngModel)]="selectedProvince">
+                        <mat-option *ngFor="let province of myProvinces" [value]="province.value">
+                          {{ province.name | titlecase }}
+                        </mat-option>
+                      </mat-select>
+                    </mat-form-field>
+                  </div>
+                </div>
+
+              </div>
+              <div class="row">
+
+                <div class="col-8" *ngIf="society">
+                  <div class="input-group-prepend">
+                    <span class="input-group-text">
+                      <i class="material-icons">people</i>
+                    </span>
+                    <mat-form-field>
+                      <mat-select placeholder="((SOCIETY NAME))" id="society" name="society" class="society">
+                        <mat-option *ngFor="let society of societies" [value]="society.idSociety">
+                          {{ society.name }}
+                        </mat-option>
+                      </mat-select>
+                    </mat-form-field>
+                  </div>
+                </div>
+              </div>
+              <br />
+              <button mat-raised-button type="submit" class="btn btn-rose pull-right" (click)="updateMember()">Update
+                Profile</button>
+              <div class="clearfix"></div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

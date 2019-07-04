@@ -66,7 +66,18 @@ export const ROUTES: RouteInfo[] = [
             {path: 'createclaim' , title: 'Create Claim', ab:'CC'}
         ]
     },
-    
+    {
+        path: '/policy',
+        title: 'Policy',
+        type: 'sub',
+        icontype: 'person_add',
+        collapse: 'policy',
+        children: [
+            {path: 'createpolicytype' , title: 'Create Policy', ab:'CP'},
+            {path: 'updatepolicytype' , title: 'Edit Policy', ab:'EP'},
+            {path: 'viewpolicytypedetails' , title: 'View Policy Type', ab:'VPT'}            
+        ]
+    },
     
 
 
