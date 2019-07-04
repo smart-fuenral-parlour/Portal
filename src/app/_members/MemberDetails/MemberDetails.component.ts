@@ -112,6 +112,57 @@ export class MemberDetailsComponent implements OnInit {
           this.noBeneficiary = false
 
 
+          this._service.getMemberBeneficiary(this.memberId)
+            .subscribe(ben => {
+              this.beneficiaries = ben
+              console.log(ben)
+
+
+              if (this.beneficiaries.length == 0) {
+                this.noBeneficiary = true
+              } else {
+                this.noBeneficiary = false
+              }
+
+              this.app.loading = false
+              console.log(this.memberId)
+
+              this._service.getUser(this.iduser)
+                .subscribe(res => {
+                  this.createdby = res[0]
+                  console.log(this.createdby)
+                  console.log(this.createdby.name)
+
+                  this._service.getMemberPayments(this.membershipNumber)
+                    .subscribe(pays => {
+                      this.payments = pays
+/*
+                      this._service.getMemberPolicyDetails(this.memberId)
+                        .subscribe(policyD => {
+
+                        }, err => {
+
+                        })
+*/
+                    }, err => {
+                      console.log(err)
+                    })
+
+
+                }, err => {
+                  console.log(err)
+                })
+
+              /**
+               * idmember
+               */
+
+
+            }, err => {
+
+              this.app.loading = false
+              console.log(err)
+            })
 
 
           if (this.policystatus = 'Active') {

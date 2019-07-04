@@ -203,4 +203,12 @@ export class ServiceService {
     return this._http.post<any>(this.url + '/policydetails', data, { headers: this.Header });
  }
 
+ getMemberPolicyDetails(id) {
+  return this._http.get(this.url + '/getpolicydetailsbyidmember/'+ id, { headers: this.Header });
+ }
+
+ getMemberPolicyStatus(id) {
+  return this._http.get(this.url + '/getpolicydetailsbyidmember/'+ id, { headers: this.Header });
+ }
+
 }
