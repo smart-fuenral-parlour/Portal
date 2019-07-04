@@ -10,12 +10,18 @@
               <mat-form-field>
                 <mat-select placeholder="Select claim status " name="searchType" id="searchType"
                   [(ngModel)]="selectedClaimType" (click)="changeEmpty()" (select)="changeEmpty()">
-                  <mat-option *ngFor="let type of Types" [value]="type.value" (click)="selectSearchType()">
+                  <mat-option *ngFor="let type of Types" [value]="type.value">
                     {{ type.viewValue }}
                   </mat-option>
                 </mat-select>
               </mat-form-field>
             </div>
+            
+              <div class="col-6" *ngIf='isEmpty'>
+                <mat-error>
+                  Please select claim status
+                </mat-error>
+              </div>
 <!--
   
             <div class="col-6">
@@ -63,9 +69,9 @@
                   <mat-datepicker #picker2 startView="year"></mat-datepicker>
                 </mat-form-field>
               </div>
-              <div class="col-6" *ngIf='toNULL'>
+              <div class="col-6" *ngIf='isEmpty'>
                 <mat-error>
-                  Please To Select Date
+                  Please select claim status
                 </mat-error>
               </div>
             </div>
@@ -85,7 +91,7 @@
       <div class="col-12 ml-auto mr-auto">
         <div class="card">
           <div class="card-body text-center">
-            <h5><b>There are currently no {{selectedClaimType}} Claims</b> <span class="text-info">
+            <h5><b>There are currently no {{ selectedClaimType }} Claims</b> <span class="text-info">
                 <h6></h6>
               </span></h5>
           </div>

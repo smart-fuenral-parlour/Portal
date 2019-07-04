@@ -1,131 +1,181 @@
 <div class="main-content">
   <div class="container-fluid">
     <div class="row">
-      <div class="col-md-8 ml-auto mr-auto">
-        <div class="card ">
-          <div class="card-header card-header-icon card-header-rose">
-            <div class="card-icon">
-              <i class="material-icons">perm_identity</i>
-            </div>
-            <h4 class="card-title">Creating Claim for<b>:</b>
-              <small class="category">Name Surname</small>
-            </h4>
-          </div>
-          <div class="card-body">
-            <!----------*ngFor="let member of singleMember"------------------------------------------------------------------------------------------------------------->
-
-            <form>
-              <div class="row">
-                <div class="col-md-6">
-                  <div class="form-group">
-                    <label class="bmd-label-floating">First Name</label>
-                    <input type="text" class="form-control" id="name" name="name" placeholder="Name of deceased">
-                  </div>
-                </div>
-                <div class="col-md-6">
-                  <div class="form-group">
-                    <label class="bmd-label-floating">Last Name</label>
-                    <input type="text" class="form-control" id="surname" name="surname"
-                      placeholder="Surname of the deceased">
-                  </div>
-                </div>
+      <div class="col-md-8 mr-auto ml-auto">
+        <!--      Wizard container        -->
+        <div class="wizard-container">
+          <div class="card card-wizard" data-color="rose" id="wizardProfile">
+            <form [formGroup]="claimForm" action="" method="">
+              <!--        You can switch " data-color="primary" "  with one of the next bright colors: "green", "orange", "red", "blue"       -->
+              <div class="card-header text-center">
+                <h3 class="card-title">
+                  Build Your Profile
+                </h3>
+                <h5 class="card-description">This information will let us know more about you.</h5>
               </div>
-              <div class="row">
-                <div class="col-md-6">
-                  <div class="form-group">
-                    <label class="bmd-label-floating">Identity Number</label>
-                    <input type="number" class="form-control" id="idnumber" name="idnumber"
-                      placeholder="ID Number of deceased">
-                  </div>
-                </div>
-
+              <div class="wizard-navigation">
+                <ul class="nav nav-pills">
+                  <li class="nav-item">
+                    <a class="nav-link active" href="#about" data-toggle="tab" role="tab">
+                      About
+                    </a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link" href="#account" data-toggle="tab" role="tab">
+                      Account
+                    </a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link" href="#address" data-toggle="tab" role="tab">
+                      Address
+                    </a>
+                  </li>
+                </ul>
               </div>
-
-
-
-              <label class="bmd-label-floating" style="text-align: center; margin-left: 45%"><b> TYPES </b></label>
-              <div class="row">
-
-                <div class="col-md-6">
-                  <label class="bmd-label-floating">Claims Types</label>
-                  <div>
-                    <mat-form-field>
-                      <mat-select placeholder="Select the type of claim" id="claimType" name="claimType"
-                        [(ngModel)]="selectedClaimType">
-                        <mat-option *ngFor="let claimT of dropdownClaimType" [value]="claimT.idclaimtype">
-                          {{ claimT.name | titlecase }}
-                        </mat-option>
-                      </mat-select>
-                    </mat-form-field>
-                  </div>
-                </div>
-
-                
-                <div class="col-md-6">
-                    <label class="bmd-label-floating">Payout Type</label>
-                    <div>
-                      <mat-form-field>
-                        <mat-select placeholder="Select payout type" id="payoutType" name="payoutType"
-                          [(ngModel)]="selectedPayOutType">
-                          <mat-option *ngFor="let payout of dropdownPayOutType" [value]="payout.idpayouttype">
-                            {{ payout.name | titlecase }}
-                          </mat-option>
-                        </mat-select>
-                      </mat-form-field>
+              <div class="card-body">
+                <div class="tab-content">
+                  <div class="tab-pane active" id="about">
+                    <h5 class="info-text"> Let's start with the basic information (with validation)</h5>
+                    <div class="row justify-content-center">
+                      <div class="col-sm-4">
+                        <div class="picture-container">
+                          <div class="picture">
+                            <img src="./assets/img/default-avatar.png" class="picture-src" id="wizardPicturePreview" title="" />
+                            <input type="file" id="wizard-picture">
+                          </div>
+                          <h6 class="description">Choose Picture</h6>
+                        </div>
+                      </div>
+                      <div class="col-sm-6">
+                        <div class="input-group form-control-lg">
+                          <div class="input-group-prepend">
+                            <span class="input-group-text">
+                              <i class="material-icons">face</i>
+                            </span>
+                          </div>
+                          <mat-form-field class="example-full-width has-label" [ngClass]="displayFieldCss(claimForm, 'firstName')">
+                            <input type="text"
+                            name="firstname"
+                            matInput
+                            id="text"
+                            placeholder="First Name"
+                            formControlName="firstName">
+                          </mat-form-field>
+                        </div>
+                        <div class="input-group form-control-lg">
+                          <div class="input-group-prepend">
+                            <span class="input-group-text">
+                              <i class="material-icons">record_voice_over</i>
+                            </span>
+                          </div>
+                          <mat-form-field class="example-full-width has-label" [ngClass]="displayFieldCss(claimForm, 'lastName')">
+                            <input type="text"
+                            name="lastname"
+                            matInput
+                            id="text"
+                            placeholder="last Name"
+                            formControlName="lastName">
+                          </mat-form-field>
+                        </div>
+                      </div>
+                      <div class="col-lg-10 mt-3">
+                        <div class="input-group form-control-lg">
+                          <div class="input-group-prepend">
+                            <span class="input-group-text">
+                              <i class="material-icons">email</i>
+                            </span>
+                          </div>
+                          <mat-form-field class="example-full-width">
+                             <input matInput placeholder="Email (required)" [formControl]="emailFormControl"
+                               type="email" id="exampleemalil" name="email">
+                           </mat-form-field>
+                        </div>
+                      </div>
                     </div>
                   </div>
-
-
-              </div>
-
-
-              <label class="bmd-label-floating" style="text-align: center; margin-left: 45%"><b>Funeral details</b></label>
-              <div class="row">
-
-                                  
-                  <div class="col-md-7">
-                      <label class="bmd-label-floating">Place of death</label>
-                      <input type="text" class="form-control" id="pod" name="pod" placeholder="name of place where the deceased passed on">
-                
+                  <div class="tab-pane" id="account">
+                    <h5 class="info-text"> What are you doing? (checkboxes) </h5>
+                    <div class="row justify-content-center">
+                      <div class="col-lg-10">
+                        <div class="row">
+                          <div class="col-sm-4">
+                            <div class="choice" data-toggle="wizard-checkbox">
+                              <input type="checkbox" name="jobb" value="Design">
+                              <div class="icon">
+                                <i class="fa fa-pencil"></i>
+                              </div>
+                              <h6>Design</h6>
+                            </div>
+                          </div>
+                          <div class="col-sm-4">
+                            <div class="choice" data-toggle="wizard-checkbox">
+                              <input type="checkbox" name="jobb" value="Code">
+                              <div class="icon">
+                                <i class="fa fa-terminal"></i>
+                              </div>
+                              <h6>Code</h6>
+                            </div>
+                          </div>
+                          <div class="col-sm-4">
+                            <div class="choice" data-toggle="wizard-checkbox">
+                              <input type="checkbox" name="jobb" value="Develop">
+                              <div class="icon">
+                                <i class="fa fa-laptop"></i>
+                              </div>
+                              <h6>Develop</h6>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
                     </div>
-
-                    <div class="col-md-5 mr-auto">
-                        <label class="bmd-label-floating">Date of date</label>
-                        <mat-form-field >
-                          <input matInput [matDatepicker]="picker2" class="form-control" id="dod" name="dod" placeholder="Select date of date" (click)="picker2.open()">
-                          <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
-                          <mat-datepicker #picker2></mat-datepicker>
+                  </div>
+                  <div class="tab-pane" id="address">
+                    <div class="row justify-content-center">
+                      <div class="col-sm-12">
+                        <h5 class="info-text"> Are you living in a nice area? </h5>
+                      </div>
+                      <div class="col-sm-7">
+                        <mat-form-field class="example-full-width">
+                          <input matInput type="text" placeholder="Street Name">
                         </mat-form-field>
                       </div>
-  
-                    <div class="col-md-5 mr-auto">
-                        <label class="bmd-label-floating">Proposed burial date</label>
-                        <mat-form-field >
-                          <input matInput [matDatepicker]="picker" class="form-control" placeholder="Select burial date" id="burialdate" name="burialdate" (click)="picker.open()">
-                          <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-                          <mat-datepicker #picker></mat-datepicker>
+                      <div class="col-sm-3">
+                        <mat-form-field class="example-full-width">
+                          <input matInput type="text" placeholder="Street No.">
                         </mat-form-field>
+                      </div>
+                      <div class="col-sm-5">
+                        <mat-form-field class="example-full-width">
+                          <input matInput type="text" placeholder="City">
+                        </mat-form-field>
+                      </div>
+                      <div class="col-sm-5">
+                          <mat-form-field>
+                              <mat-select placeholder="Single City" name="city">
+                                <mat-option *ngFor="let city of cities" [value]="city.value">
+                                  {{ city.viewValue }}
+                                </mat-option>
+                              </mat-select>
+                          </mat-form-field>
+                      </div>
                     </div>
-
-
+                  </div>
                 </div>
-
-              <br />
-              <button mat-raised-button type="submit" class="btn btn-rose pull-right" (click)="createClaim()">Update
-                Profile</button>
-              <div class="clearfix"></div>
+              </div>
+              <div class="card-footer">
+                <div class="mr-auto">
+                  <input type="button" class="btn btn-previous btn-fill btn-default btn-wd disabled" name="previous" value="Previous">
+                </div>
+                <div class="ml-auto">
+                  <input type="button" class="btn btn-next btn-fill btn-rose btn-wd" name="next" value="Next">
+                  <input type="button" class="btn btn-finish btn-fill btn-rose btn-wd" name="finish" value="Finish" style="display: none;">
+                </div>
+                <div class="clearfix"></div>
+              </div>
             </form>
-
-            <!----------
-                
-              
-                ------------------------------------------------------------------------------------------------------------->
-            <!--
-            
-          -->
-
           </div>
         </div>
+        <!-- wizard container -->
       </div>
     </div>
   </div>

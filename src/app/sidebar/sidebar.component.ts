@@ -31,8 +31,7 @@ export const ROUTES: RouteInfo[] = [
         icontype: 'notifications',
         collapse: 'notification',
         children: [
-            {path: 'claimsinbox' , title: 'Claims Inbox', ab:'CI'},
-            {path: 'policyinbox' , title: 'Policy Inbox', ab:'PI'}
+            {path: 'claimsinbox' , title: 'Inbox', ab:'I'}
         ]
     },
     {

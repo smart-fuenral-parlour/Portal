@@ -17,6 +17,7 @@ export class ViewAllClaimsComponent implements OnInit {
   toDate
   selectedClaim
   selectedClaimType
+  selectedClaimTypeText
 
 
   isEmpty = false
@@ -51,14 +52,18 @@ export class ViewAllClaimsComponent implements OnInit {
 
   searchClaim() {
     console.log(this.selectedClaimType)
+    console.log(isNullOrUndefined(this.selectedClaimType))
+    this.selectedClaimTypeText = this.selectedClaimType
 
-    if(isNullOrUndefined(this.selectedClaimType)) {
+    if( isNullOrUndefined(this.selectedClaimType) ) {
       this.table = false
-      this.notFound = true
+      this.notFound = false
+      this.isEmpty = true
       
     } else {
       this.notFound = false
-      this.table = false
+      this.isEmpty = false
+      this.table = true
       
     }
 

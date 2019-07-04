@@ -57,6 +57,7 @@ export class MemberDetailsComponent implements OnInit {
 
   iduser
 
+
   constructor(private fb: FormBuilder, private _service: ServiceService, private _router: Router, private app: AppComponent) {
 
 
@@ -77,7 +78,7 @@ export class MemberDetailsComponent implements OnInit {
     this.app.loading = true
     // test if member is from a society
     if (!isNullOrUndefined(sessionStorage.getItem('greenlinks'))) {
-      this.society = true  
+      this.society = true
     }
 
     if (localStorage.getItem('iduser') != null) {
@@ -111,40 +112,6 @@ export class MemberDetailsComponent implements OnInit {
           this.noBeneficiary = false
 
 
-          this._service.getMemberBeneficiary(this.memberId)
-            .subscribe(ben => {
-              this.beneficiaries = ben
-              console.log(ben)
-
-
-              if (this.beneficiaries.length == 0) {
-                this.noBeneficiary = true
-              } else {
-                this.noBeneficiary = false
-              }
-
-              this.app.loading = false
-              console.log(this.memberId)
-
-              this._service.getUser(this.iduser)
-                .subscribe(res => {
-                  this.createdby = res[0]
-                  console.log(this.createdby)
-                  console.log(this.createdby.name)
-                }, err => {
-
-                })
-
-              /**
-               * idmember
-               */
-
-
-            }, err => {
-
-              this.app.loading = false
-              console.log(err)
-            })
 
 
           if (this.policystatus = 'Active') {
@@ -450,7 +417,7 @@ export class MemberDetailsComponent implements OnInit {
   // View member details
   claimInfo(index, idclaim) {
     this.selectedClaim = index;
-    
+
     localStorage.setItem('idclaim', JSON.stringify(idclaim));
     this._router.navigate(['/claims/claiminfo']);
   }
