@@ -118,8 +118,8 @@
                             <i class="material-icons">wc</i>
                           </span>
                           <mat-form-field class="example-full-width has-label">
-                            <mat-select placeholder="Select Gender" id="selectedGender" name="selectedGender"
-                              class="selectedGender" formControlName="selectedGender" [(ngModel)]="selectedGender"
+                            <mat-select placeholder="Select Gender" id="gender" name="gender"
+                             formControlName="selectedGender" [(ngModel)]="gender"
                               required>
                               <mat-option *ngFor="let gender of genders" [value]=" gender.value ">
                                 {{ gender.name }}
@@ -151,7 +151,7 @@
                         <!-- upload file -->
                         <div class="col-md-3 col-sm-4  fileinput-new thumbnail ">
                           <div class="col-6 input-group-prepend mr-auto">
-                            <input type="file" value="upload document" id="document" >
+                            <input type="file" value="upload document" id="document" name="document" [(ngModel)]="document" >
                             <div class="fileinput-preview fileinput-exists thumbnail"></div>
                           </div>
                         </div>
@@ -159,24 +159,6 @@
                       </div>
 
                       <!--
-                        
-                    <div class="col-3 pull-left">
-                      <div class="fileinput fileinput-new text-center" data-provides="fileinput">
-                          <div class="fileinput-new thumbnail img-circle">
-                            
-                          </div>
-                          <div class="fileinput-preview fileinput-exists thumbnail img-circle"></div>
-                          <div>
-                              <span class="btn btn-round btn-rose btn-file">
-                                  <span class="fileinput-new">Add Photo</span>
-                                  <span class="fileinput-exists">Change</span>
-                                  <input type="file" name="..." />
-                              </span>
-                              <br />
-                              <a href="#pablo" class="btn btn-danger btn-round fileinput-exists" data-dismiss="fileinput"><i class="fa fa-times"></i> Remove</a>
-                          </div>
-                      </div>
-                  </div>
      -->
                     </div>
                   </div>
@@ -217,7 +199,7 @@
                                 </span>
                                 <mat-form-field class="example-full-width has-label">
                                   <input type="number" name="beneficiaryID" matInput id="{{'beneficiaryID'+i}}"
-                                    placeholder="ID Number" class="form-control" (keyup)="key()">
+                                    placeholder="ID Number" class="form-control" (keyup)="checkBeneficiaryAge()">
                                 </mat-form-field>
                               </div>
                               <button mat-raised-button type="button" class="btn btn-danger btn-just-icon btn-link"
@@ -300,7 +282,7 @@
                           </span>
                           <mat-form-field [ngClass]="displayFieldCss(type, 'province')">
                             <mat-select placeholder="Select Province" matInput id="province" name="province"
-                              class="province" formControlName="province" [(ngModel)]="selectedProvince">
+                             formControlName="selectedProvince" [(ngModel)]="province">
                               <mat-option *ngFor="let province of provinces" [value]=" province.value ">
                                 {{ province.viewValue }}
                               </mat-option>
@@ -373,8 +355,8 @@
                       <div class="col-8">
 
                         <mat-form-field class="example-full-width has-label">
-                          <mat-select placeholder="Choose PolIcy type" name="policytype" id="policytype"
-                            formControlName="selectedPolicyType" [(ngModel)]="selectedPolicyType" required>
+                          <mat-select placeholder="Choose PolIcy type" name="idpolicytype" id="idpolicytype"
+                            formControlName="selectedPolicyType" [(ngModel)]="idpolicytype" required>
                             <mat-option *ngFor="let policy of policies; let i = index" value="{{policy.idpolicytype}}"
                               [class.active]="i == selecteType" (click)="selectPolicyType()">
                               {{ policy.name }}
@@ -418,8 +400,8 @@
                       <div class="col-sm-12 col-sm-offset-1 checkbox-radios pull-center">
                         <div class="form-check">
                           <label class="form-check-label">
-                            <input class="form-check-input" pull-center type="checkbox" name="extraCheckbox"
-                              id="extraCheckbox" value="" (click)="checkExtra()" [(ngModel)]="name"> Add extra policy
+                            <input class="form-check-input" pull-center type="checkbox" name="idextrapolicy"
+                              id="idextrapolicy" value="" (click)="checkExtra()" [(ngModel)]="idextrapolicy"> Add extra policy
                             <span class="form-check-sign">
                               <span class="check"></span>
                             </span>
@@ -448,11 +430,12 @@
                         </div>
                       </div>
 
-                      <div class="col-8" *ngIf="extraPolicy.checked">
+                      <!--  extraPolicy.checked  -->
+                      <div class="col-8" *ngIf="true">
 
                         <mat-form-field class="example-full-width has-label">
-                          <mat-select placeholder="Select extra Policy" name="extrapolicytype" id="extrapolicytype"
-                            formControlName="selectedPolicyType" [(ngModel)]="selectedPolicyType" required>
+                          <mat-select placeholder="Select extra Policy" name="idpolicytype" id="idpolicytype"
+                            formControlName="selectedPolicyType" [(ngModel)]="idpolicytype" required>
                             <mat-option *ngFor="let policy of policies; let i = index" value="{{policy.idpolicytype}}"
                               [class.active]="i == selecteType">
                               {{ policy.name }}
@@ -533,7 +516,7 @@
                   <input type="button" class="btn btn-next btn-fill btn-info btn-wd" name="next" id="next"
                     (click)="mytestfunction()" value="Next">
                   <input type="button" class="btn btn-finish btn-fill btn-success btn-wd" name="finish" id="finish"
-                    value="Finish" style="display: none;" (click)="finishCreate()">
+                    value="Finish" style="display: none;" (click)="finishCreate(name, surname, identitynumber, gender, createddate,  housenumber,  streetname,  suburb,  province, contactnumber, email, idpolicytype, extraPolicy,  idextrapolicy, checkTerms)">
                 </div>
                 <div class="clearfix"></div>
               </div>
