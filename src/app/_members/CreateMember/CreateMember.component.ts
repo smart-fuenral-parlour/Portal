@@ -43,6 +43,8 @@ export class CreateMemberComponent implements OnInit {
     invalidID = false
     typeSelected = false
 
+    
+
     constructor(private formBuilder: FormBuilder, private _service: ServiceService, private _routet: Router, private app: AppComponent) { }
 
         // province drop downkzn
@@ -398,12 +400,12 @@ export class CreateMemberComponent implements OnInit {
     }
 
 
-    // check if the age of beneficiary is allowed
+    // check if the age of beneficiary is allowed  {{'beneficiaryID'+i}}
     checkBeneficiaryAge(BenefitIDnum) {
         
         let x = 0
         let myValue: string
-
+        
         myValue = BenefitIDnum.value + x
         let year = 0
         let age = 0
@@ -452,14 +454,16 @@ export class CreateMemberComponent implements OnInit {
         }
     }
 
-
+test(idextrapolicy) {
+    console.log(idextrapolicy.checked)
+}
     // check the age of member to determine policy type
-    checkMemberAge(BenefitIDnum) {
+    checkMemberAge(BenefitIDnum0) {
         
         let x = 0
         let myValue: string
 
-        myValue = BenefitIDnum.value + x
+        myValue = BenefitIDnum0.value + x
         let year = 0
         let age = 0
         let currentYear = parseInt(moment(new Date()).format('YYYY'))
@@ -467,7 +471,7 @@ export class CreateMemberComponent implements OnInit {
         
 
 
-        if ((BenefitIDnum.value.length + x) == 13) {
+        if ((BenefitIDnum0.value.length + x) == 13) {
             console.log('correct id number length')    
             
             if (parseInt(myValue.slice(0, 2)) <= testYearInput) {
@@ -534,8 +538,11 @@ export class CreateMemberComponent implements OnInit {
 
     }
 
+    testfunc() {
 
-    finishCreate(name, surname, identitynumber, gender, createddate,  housenumber,  streetname,  suburb,  province, contactnumber, email, idpolicytype, extraPolicy,  idextrapolicy, checkTerms) {
+    }
+
+    finishCreate(name, surname, identitynumber, gender, housenumber,  streetname,  suburb,  province, contactnumber, email, idpolicytype) {
 
         let beneficiary ;
         let policydetails
@@ -560,7 +567,7 @@ export class CreateMemberComponent implements OnInit {
         
         // UPLOAD DOCUMENT
         // {'document': document}
-       
+       console.log(member)
 
         swal({
             title: 'Finish Create',
