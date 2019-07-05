@@ -9,6 +9,7 @@ import { AppComponent } from 'src/app/app.component'
 export class ClaimInfoComponent implements OnInit {
 
   constructor(private app: AppComponent) { }
+///
 
   ngOnInit() {
     this.app.loading = false
