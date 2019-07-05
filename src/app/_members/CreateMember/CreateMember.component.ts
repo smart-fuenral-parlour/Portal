@@ -82,6 +82,9 @@ export class CreateMemberComponent implements OnInit {
     extraPolicy
     selectExtra = false
 
+    /// string value for string porperties and operation
+    myValue: string
+
     constructor(private formBuilder: FormBuilder, private _service: ServiceService, private _routet: Router, private app: AppComponent) { }
 
 
@@ -208,17 +211,107 @@ export class CreateMemberComponent implements OnInit {
             })
 
     }
-    lop() {
-        this.doc = document.querySelector('#document')
+    key() {
         
-        console.log(this.doc.role)
-        console.log(this.doc.title)
-        console.log(this.doc.itemid)
-        console.log(this.doc.itemprop)
-        console.log(this.doc.itemref)
-        console.log(this.doc.itemscope)
-        console.log(this.doc.formnovalidate)
+        let x = 0
+        this.BenefitIDnum = document.querySelector('#beneficiaryID' + x)
+
+        this.myValue = this.BenefitIDnum.value + x
+        let year = 0
+        let age = 0
+        let currentYear = parseInt(moment(new Date()).format('YYYY'))
+        let testYearInput = parseInt(moment(new Date()).format('YY'))
+        
+
+
+        if ((this.BenefitIDnum.value.length + x) == 13) {
+            console.log('correct id number length')    
+            
+            if (parseInt(this.myValue.slice(0, 2)) <= testYearInput) {
+                // for those born from the year 2000
+                year = parseInt('20' + this.myValue.slice(0, 2))
+                age = currentYear - year
+                if (age < 18) {
+                    console.log('member aged ' + age + ' is not allowed')
+                    swal({
+                        title: "beneficiaryName not allowed as Beneficiary",
+                        text: "Beneficiary must be older than  {maxAge (18)} years older",
+                        timer: 2000,
+                        showConfirmButton: true
+                    }).catch(swal.noop)                    
+                } else {
+                    console.log('member aged ' + age + ' is allowed')
+                }
+            } else {
+                // for those born before the year 2000
+                year = parseInt('19' + this.myValue.slice(0, 2))
+                age = currentYear - year
+                if (age < 18) {
+                    console.log('member aged ' + age + ' is not allowed')
+                    swal({
+                        title: "beneficiaryName not allowed as Beneficiary",
+                        text: "Beneficiary must be older than  {maxAge (18)} years older",
+                        timer: 2000,
+                        showConfirmButton: true
+                    }).catch(swal.noop)   
+                } else {
+                    console.log('member aged ' + age + ' is allowed')
+                }
+            }
+            
+        } else {
+            console.log('id number is short')
+        }
     }
+
+    mytestfunction() {
+
+        let x = 0
+        this.BenefitIDnum = document.querySelector('#beneficiaryID' + x)
+
+
+        this.myValue = this.BenefitIDnum.value + x
+        let year = 0
+        let currentYear = parseInt(moment(new Date()).format('YYYY'))
+        let age = 0
+
+        console.log(parseInt(this.myValue.slice(0, 2)))
+
+        if (parseInt(this.myValue.slice(0, 2)) <= 20) {
+            // for those born from the year 2000
+            year = parseInt('20' + this.myValue.slice(0, 2))
+            age = currentYear - year
+            if (age < 18) {
+                console.log('member aged ' + age + ' is not allowed')
+            } else {
+                console.log('member aged ' + age + ' is allowed')
+            }
+        } else {
+            // for those born before the year 2000
+            year = parseInt('19' + this.myValue.slice(0, 2))
+            age = currentYear - year
+            if (age < 18) {
+                console.log('member aged ' + age + ' is not allowed')
+            } else {
+                console.log('member aged ' + age + ' is allowed')
+            }
+        }
+
+        //let year = parseInt('20'+this.myValue.slice(0,2)) 
+        /**
+         *         console.log('ID number: '+this.BenefitIDnum.value + x)
+                console.log('year: '+year)
+                console.log('current year: '+currentYear)
+                console.log('Age: '+age)
+         */
+
+
+
+
+
+
+    }
+
     onNextPanel() {
 
 

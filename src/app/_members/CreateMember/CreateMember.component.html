@@ -132,13 +132,13 @@
                           <!-- Birthyear -->
                           <div class="col-12 input-group-prepend mr-auto">
                             <span class="input-group-text"  >
-                              <i class="material-icons" (input)="lop()"></i>
+                              <i class="material-icons" ></i>
                             </span>
-                            <mat-form-field [ngClass]="displayFieldCss(type, 'date')" oninput="lop()" >
+                            <mat-form-field [ngClass]="displayFieldCss(type, 'date')"  >
                               <input matInput [matDatepicker]="picker" placeholder="Data of Birth" readonly id="date"
                                 class="date" name="date" (click)="picker.open()" formControlName="date">
                               <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-                              <mat-datepicker #picker (click)="lop()" startView="year"></mat-datepicker>
+                              <mat-datepicker #picker startView="year"></mat-datepicker>
                             </mat-form-field>
                           </div>
                         </div>
@@ -217,7 +217,7 @@
                                   <i class="material-icons">record_voice_over</i>
                                 </span>
                                 <mat-form-field class="example-full-width has-label">
-                                  <input type="text" name="beneficiarySurname" matInput id="{{'beneficiarySurname'+i}}"
+                                  <input type="text" name="beneficiarySurname" matInput  id="{{'beneficiarySurname'+i}}"
                                     placeholder="Surname" class="form-control">
                                 </mat-form-field>
                               </div>
@@ -227,7 +227,7 @@
                                 </span>
                                 <mat-form-field class="example-full-width has-label">
                                   <input type="number" name="beneficiaryID" matInput id="{{'beneficiaryID'+i}}"
-                                    placeholder="ID Number" class="form-control">
+                                    placeholder="ID Number" class="form-control" (keyup)="key()" >
                                 </mat-form-field>
                               </div>
                               <button mat-raised-button type="button" class="btn btn-danger btn-just-icon btn-link"
@@ -304,7 +304,7 @@
                           </span>
                           <mat-form-field class="example-full-width has-label"
                             [ngClass]="displayFieldCss(type, 'streetname')">
-                            <input type="text" name="streetname" matInput id="streetname" class="streetname"
+                            <input type="text" name="streetname" matInput id="streetname"  class="streetname"
                               placeholder="Street Name" formControlName="streetname">
                           </mat-form-field>
                         </div>
@@ -316,7 +316,7 @@
                           </span>
                           <mat-form-field class="example-full-width has-label"
                             [ngClass]="displayFieldCss(type, 'suburb')">
-                            <input type="text" name="suburb" matInput id="suburb" class="suburb" placeholder="Suburb"
+                            <input type="text" name="suburb" matInput [(ngModel)]="suburb" id="suburb" class="suburb" placeholder="Suburb"
                               formControlName="suburb">
                           </mat-form-field>
                         </div>
@@ -556,7 +556,7 @@
                 </div>
                 <div class="ml-auto">
                   <input type="button" class="btn btn-next btn-fill btn-info btn-wd" name="next" id="next"
-                    (click)="lop()" value="Next">
+                    (click)="mytestfunction()" value="Next">
                   <input type="button" class="btn btn-finish btn-fill btn-success btn-wd" name="finish" id="finish"
                     value="Finish" style="display: none;" (click)="finishCreate()">
                 </div>

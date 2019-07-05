@@ -215,7 +215,7 @@ export class ServiceService {
     return this._http.get(this.url + '/getpolicytypebyage/' + age, { headers: this.Header });
   }
   
-
+ 
   uploadFileDocument(file) {
     return this._http.post(this.url + '/upload', file, { headers: this.Header });
   }
