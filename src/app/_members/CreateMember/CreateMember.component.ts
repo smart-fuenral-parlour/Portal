@@ -106,8 +106,8 @@ export class CreateMemberComponent implements OnInit {
             firstName: [null, Validators.required],
             idnumber: [null, Validators.required],
             selectedPolicyType: [null, Validators.requiredTrue],// drop down list
-            date: [null, Validators.required],
-            selectedGender: [null, Validators.required], // drop down list
+            createddate: [null, Validators.required],
+            gender: [null, Validators.required], // drop down list
             selectedProvince: [null, Validators.required], // drop down list
             province: [null, Validators.required], // drop down list
             society: [null, Validators.required], // drop down list
@@ -139,7 +139,7 @@ export class CreateMemberComponent implements OnInit {
                                minlength: 13,
                                maxlength: 13
                            },
-                           selectedGender: {
+                          gender: {
                                required: true,
                                minlength: 2
                            },

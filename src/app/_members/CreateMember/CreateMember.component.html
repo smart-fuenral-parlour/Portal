@@ -6,7 +6,7 @@
         <div class="wizard-container">
           <div class="card card-wizard" data-color="blue" id="wizardProfile">
             <form [formGroup]="type" action="" method="">
-              <!--        You can switch " data-color="primary" "  with one of the next bright colors: "green", "orange", "red", "blue"       -->
+              <!--        You can switch " data-color="primary" "  with one of the next bright colors: "green", "orange", "red", "blue" , "rose"      -->
               <div class="card-header text-center">
                 <h3 class="card-title">
                   Build Your Profile
@@ -14,47 +14,50 @@
                 <h5 class="card-description">This information will let us know more about you.</h5>
               </div>
               <div class="wizard-navigation">
-                <ul class="nav nav-pills">
-                  <li class="nav-item">
-                    <!--personalInfo active-->
-                    <a class="nav-link active" href="#personalInfoTab" data-toggle="tab" role="tab" (click)="test()">
-                      Info
-                    </a>
-                  </li>
-                  <li class="nav-item">
-                    <a class="nav-link" href="#addressTab" data-toggle="tab" role="tab">
-                      Address
-                    </a>
-                  </li>
-                  <li class="nav-item">
-                    <a class="nav-link" href="#policyTab" data-toggle="tab" role="tab">
-                      Policy
-                      <!-- Beneficiaries  #additionalInfo policyTab -->
-                    </a>
-                  </li>
-                  <li class="nav-item">
-                    <a class="nav-link nav-primary" href="#beneficiaryTab" data-toggle="tab" role="tab">
-                      Beneficiaries
-                      <!-- Beneficiaries  #additionalInfo policyTab -->
-                    </a>
-                  </li>
-                  <li class="nav-item">
-                    <a class="nav-link " href="#contactsTab" data-toggle="tab" role="tab">
-                      Contacts
-                    </a>
-                  </li>
-                  <li class="nav-item">
-                    <a class="nav-link " href="#contractInfoTab" data-toggle="tab" role="tab">
-                      Contract Info
-                    </a>
-                  </li>
-                </ul>
+                <div class="wizard-navigation">
+                  <ul class="nav nav-pills">
+                    <li class="nav-item">
+                      <!--personalInfo active-->
+                      <a class="nav-link active" href="#personalInfoTab" data-toggle="tab" role="tab" (click)="test()">
+                        Info
+                      </a>
+                    </li>
+                    <li class="nav-item">
+                      <a class="nav-link" href="#addressTab" data-toggle="tab" role="tab">
+                        Address
+                      </a>
+                    </li>
+                    <li class="nav-item">
+                      <a class="nav-link" href="#policyTab" data-toggle="tab" role="tab">
+                        Policy
+                        <!-- Beneficiaries  #additionalInfo policyTab -->
+                      </a>
+                    </li>
+                    <li class="nav-item">
+                      <a class="nav-link nav-primary" href="#beneficiaryTab" data-toggle="tab" role="tab">
+                        Beneficiaries
+                        <!-- Beneficiaries  #additionalInfo policyTab -->
+                      </a>
+                    </li>
+                    <li class="nav-item">
+                      <a class="nav-link " href="#contactsTab" data-toggle="tab" role="tab">
+                        Contacts
+                      </a>
+                    </li>
+                    <li class="nav-item">
+                      <a class="nav-link " href="#contractInfoTab" data-toggle="tab" role="tab">
+                        Contract Info
+                      </a>
+                    </li>
+                  </ul>
+                </div>
               </div>
               <div class="card-body">
                 <div class="tab-content">
+
                   <!-- PERSONAL INFORMATION -->
                   <div class="tab-pane active" id="personalInfoTab">
-                    <h5 class="info-text"> Let's start with YOUR PERSONAL INFORMATION</h5>
+                    <h5 class="info-text"> Let's start with the basic information (with validation)</h5>
                     <div class="row justify-content-center">
 
                       <!-- name -->
@@ -89,6 +92,7 @@
                         </div>
                       </div>
 
+
                       <!-- ID number -->
                       <div class="col-sm-6">
                         <div class="input-group-prepend">
@@ -97,8 +101,8 @@
                           </span>
                           <mat-form-field class="example-full-width has-label"
                             [ngClass]="displayFieldCss(type, 'idnumber')">
-                            <input type="number" name="identitynumber" matInput [(ngModel)]="identitynumber" id="identitynumber"
-                              placeholder="ID Number" formControlName="idnumber" minlength="13">
+                            <input type="number" name="identitynumber" matInput [(ngModel)]="identitynumber"
+                              id="identitynumber" placeholder="ID Number" formControlName="idnumber" minlength="13">
                           </mat-form-field>
 
                         </div>
@@ -118,9 +122,8 @@
                             <i class="material-icons">wc</i>
                           </span>
                           <mat-form-field class="example-full-width has-label">
-                            <mat-select placeholder="Select Gender" id="gender" name="gender"
-                             formControlName="selectedGender" [(ngModel)]="gender"
-                              required>
+                            <mat-select placeholder="Select Gender" id="gender" name="gender" formControlName="gender"
+                              [(ngModel)]="gender" required>
                               <mat-option *ngFor="let gender of genders" [value]=" gender.value ">
                                 {{ gender.name }}
                               </mat-option>
@@ -130,98 +133,21 @@
 
                       </div>
 
-                      <div class="row">
 
-                        <!-- Birthyear -->
-                        <div class="col-6 pull-left">
-                          <div class="col-12 input-group-prepend mr-auto">
-                            <span class="input-group-text">
-                              <i class="material-icons"></i>
-                            </span>
-                            <mat-form-field [ngClass]="displayFieldCss(type, 'date')">
-                              <input matInput [matDatepicker]="picker" placeholder="Data of Birth" readonly
-                                id="createddate" name="createddate" (click)="picker.open()"
-                                [(ngModel)]="createddate" formControlName="date">
-                              <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-                              <mat-datepicker #picker startView="year"></mat-datepicker>
-                            </mat-form-field>
-                          </div>
+                      <h5 class="info-text"><b>Upload Member Identity Document: </b></h5>
+                      <!-- upload file -->
+                      <div class="col-12  fileinput-new thumbnail ">
+                        <div class="col-6 input-group-prepend mr-auto">
+                          <input type="file" value="upload document" id="document" name="document">
+                          <div class="fileinput-preview fileinput-exists thumbnail"></div>
                         </div>
-
-                        <!-- upload file -->
-                        <div class="col-md-3 col-sm-4  fileinput-new thumbnail ">
-                          <div class="col-6 input-group-prepend mr-auto">
-                            <input type="file" value="upload document" id="document" name="document" [(ngModel)]="document" >
-                            <div class="fileinput-preview fileinput-exists thumbnail"></div>
-                          </div>
-                        </div>
-
                       </div>
 
-                      <!--
-     -->
+
+
                     </div>
                   </div>
 
-
-                  <!-- BENEFICIARY INFORMATION -->
-                  <div class="tab-pane" id="beneficiaryTab">
-                    <h5 class="info-text"> Add Beneficiaries to your policy </h5>
-                    <div class="row" style="margin-top: 0%">
-                      <div class="col-md-12">
-                        <div formGroupName="BeneficiaryGroup" class="card" id="cardit">
-                          <div formArrayName="beneficiary" class="card-body text-center" style="padding: 0%">
-
-                            <div class="input-group form-control-lg"
-                              *ngFor="let benefit of BeneficiaryForm; let i = index">
-
-                              <div class="col-4 input-group-prepend">
-                                <span class="input-group-text">
-                                  <i class="material-icons">face</i>
-                                </span>
-                                <mat-form-field class="example-full-width has-label">
-                                  <input type="text" name="beneficiaryName" matInput id="{{'beneficiaryName'+i}}"
-                                    placeholder="Name" class="form-control">
-                                </mat-form-field>
-                              </div>
-                              <div class="col-4 input-group-prepend">
-                                <span class="input-group-text">
-                                  <i class="material-icons">record_voice_over</i>
-                                </span>
-                                <mat-form-field class="example-full-width has-label">
-                                  <input type="text" name="beneficiarySurname" matInput id="{{'beneficiarySurname'+i}}"
-                                    placeholder="Surname" class="form-control">
-                                </mat-form-field>
-                              </div>
-                              <div class="col-3 input-group-prepend">
-                                <span class="input-group-text">
-                                  <i class="material-icons">perm_identity</i>
-                                </span>
-                                <mat-form-field class="example-full-width has-label">
-                                  <input type="number" name="beneficiaryID" matInput id="{{'beneficiaryID'+i}}"
-                                    placeholder="ID Number" class="form-control" (keyup)="checkBeneficiaryAge()">
-                                </mat-form-field>
-                              </div>
-                              <button mat-raised-button type="button" class="btn btn-danger btn-just-icon btn-link"
-                                (click)="removeBeneficiary(i)" [formGroupName]="i">
-                                <i class="material-icons">close</i>
-                              </button>
-                            </div>
-                            <br />
-
-
-                          </div>
-
-                        </div>
-                      </div>
-                    </div>
-                    <div>
-                      <button mat-raised-button type="button" class="btn  btn-sm" (click)="addBeneficiary()" class="add"
-                        id="add" name="add" style="background-color: lightgrey"><i class="material-icons"
-                          [class.active]="i == selectedClaim">add</i>Add
-                        Benefeciary</button>
-                    </div>
-                  </div>
 
                   <!-- ADDRESS -->
                   <div class="tab-pane" id="addressTab">
@@ -255,8 +181,8 @@
                           </span>
                           <mat-form-field class="example-full-width has-label"
                             [ngClass]="displayFieldCss(type, 'streetname')">
-                            <input type="text" name="streetname" matInput id="streetname" 
-                              placeholder="Street Name" formControlName="streetname" [(ngModel)]="streetname">
+                            <input type="text" name="streetname" matInput id="streetname" placeholder="Street Name"
+                              formControlName="streetname" [(ngModel)]="streetname">
                           </mat-form-field>
                         </div>
                       </div>
@@ -282,7 +208,7 @@
                           </span>
                           <mat-form-field [ngClass]="displayFieldCss(type, 'province')">
                             <mat-select placeholder="Select Province" matInput id="province" name="province"
-                             formControlName="selectedProvince" [(ngModel)]="province">
+                              formControlName="selectedProvince" [(ngModel)]="province">
                               <mat-option *ngFor="let province of provinces" [value]=" province.value ">
                                 {{ province.viewValue }}
                               </mat-option>
@@ -293,230 +219,50 @@
                     </div>
                   </div>
 
-                  <!-- CONTACTS -->
-                  <div class="tab-pane" id="contactsTab">
+                  
+
+                  <div class="tab-pane" id="address">
                     <div class="row justify-content-center">
                       <div class="col-sm-12">
-                        <h5 class="info-text"> CONTACT INFORMATION</h5>
+                        <h5 class="info-text"> Are you living in a nice area? </h5>
                       </div>
-
-                      <!--fff
-                      <div class="col-sm-4" hidden>
-                        <div class="input-group-prepend">
-                          <span class="input-group-text">
-                            <i class="material-icons">home</i>
-                          </span>
-                          <mat-form-field class="example-full-width has-label"
-                            [ngClass]="displayFieldCss(type, 'housenumber')">
-                            <input type="number" name="housenumber" matInput id="housenumber" class="housenumber"
-                              placeholder="House No." formControlName="housenumber">
-                          </mat-form-field>
-                        </div>
-                      </div>
-                      -->
-
                       <div class="col-sm-7">
-                        <div class="input-group form-control-lg">
-                          <div class="input-group-prepend">
-                            <span class="input-group-text">
-                              <i class="material-icons">phone</i>
-                            </span>
-                          </div>
-                          <mat-form-field class="example-full-width" [ngClass]="displayFieldCss(type, 'phone')">
-                            <input matInput type="number" placeholder="Phone No." name="contactnumber" matInput
-                              id="contactnumber" formControlName="phone" [(ngModel)]="contactnumber">
-                          </mat-form-field>
-                        </div>
+                        <mat-form-field class="example-full-width">
+                          <input matInput type="text" placeholder="Street Name">
+                        </mat-form-field>
                       </div>
-
-                      <div class="col-lg-10 mt-3">
-                        <div class="input-group form-control-lg">
-                          <div class="input-group-prepend">
-                            <span class="input-group-text">
-                              <i class="material-icons">email</i>
-                            </span>
-                          </div>
-                          <mat-form-field class="example-full-width">
-                            <input matInput placeholder="Email (required)" [formControl]="emailFormControl" type="email"
-                              id="email" name="email" [(ngModel)]="email">
-                          </mat-form-field>
-                        </div>
+                      <div class="col-sm-3">
+                        <mat-form-field class="example-full-width">
+                          <input matInput type="text" placeholder="Street No.">
+                        </mat-form-field>
                       </div>
-                    </div>
-                  </div>
-
-                  <!-- SELECT POLICY TYPE -->
-                  <div class="tab-pane" id="policyTab">
-                    <div class="row justify-content-center">
-                      <div class="col-sm-12">
-                        <h5 class="info-text"> POLICY DETAILS </h5>
+                      <div class="col-sm-5">
+                        <mat-form-field class="example-full-width">
+                          <input matInput type="text" placeholder="City">
+                        </mat-form-field>
                       </div>
-
-                      <div class="col-8">
-
-                        <mat-form-field class="example-full-width has-label">
-                          <mat-select placeholder="Choose PolIcy type" name="idpolicytype" id="idpolicytype"
-                            formControlName="selectedPolicyType" [(ngModel)]="idpolicytype" required>
-                            <mat-option *ngFor="let policy of policies; let i = index" value="{{policy.idpolicytype}}"
-                              [class.active]="i == selecteType" (click)="selectPolicyType()">
-                              {{ policy.name }}
+                      <div class="col-sm-5">
+                        <mat-form-field>
+                          <mat-select placeholder="Single City" name="city">
+                            <mat-option *ngFor="let city of cities" [value]="city.value">
+                              {{ city.viewValue }}
                             </mat-option>
                           </mat-select>
                         </mat-form-field>
-
-                      </div>
-
-                      <div class="col-md-12">
-                        <div class="card" style="background-color: whitesmoke" *ngIf="typeSelected">
-                          <div class="card-body">
-                            <div id="typography">
-                              <div class="row">
-
-                                <div>
-
-                                  <div class="text-center">
-                                    <h5><b>Policy Type Details</b></h5>
-                                  </div>
-
-                                  <p class="card-description">
-                                    Policy Type: {{ name }} <br />
-                                    Policy Description: this policy is for {{ description }}<br />
-                                    Maximum number of beneficiaries: {{ maximumbeneficiaries }} <br />
-                                    Premium payment: R{{ premium }} p/m<br /> <!--  currency pipes -->
-                                    Lapses day: lapse after <span class="text-primary">{{ lapsedays }}</span> days
-                                    without payment <br />
-                                    Minimum age: <span class="text-primary">{{ minimumage }}</span> years old<br />
-                                    Trail Period: {{ trialperiod }} days <br />
-                                  </p>
-
-                                </div>
-
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-
-                      <div class="col-sm-12 col-sm-offset-1 checkbox-radios pull-center">
-                        <div class="form-check">
-                          <label class="form-check-label">
-                            <input class="form-check-input" pull-center type="checkbox" name="idextrapolicy"
-                              id="idextrapolicy" value="" (click)="checkExtra()" [(ngModel)]="idextrapolicy"> Add extra policy
-                            <span class="form-check-sign">
-                              <span class="check"></span>
-                            </span>
-                          </label>
-                        </div>
-                      </div>
-
-                      <div class="col-sm-12 col-sm-offset-1 checkbox-radios" hidden>
-                        <div class="form-check">
-                          <label class="form-check-label">
-                            <input class="form-check-input" type="checkbox" name="check1" id="check1" value=""> I
-                            agree to the Terms of Service
-                            <span class="form-check-sign">
-                              <span class="check"></span>
-                            </span>
-                          </label>
-                        </div>
-                        <div class="form-check">
-                          <label class="form-check-label">
-                            <input class="form-check-input" type="checkbox" name="check2" id="check2" value="">
-                            Receive Newsletter
-                            <span class="form-check-sign">
-                              <span class="check"></span>
-                            </span>
-                          </label>
-                        </div>
-                      </div>
-
-                      <!--  extraPolicy.checked  -->
-                      <div class="col-8" *ngIf="true">
-
-                        <mat-form-field class="example-full-width has-label">
-                          <mat-select placeholder="Select extra Policy" name="idpolicytype" id="idpolicytype"
-                            formControlName="selectedPolicyType" [(ngModel)]="idpolicytype" required>
-                            <mat-option *ngFor="let policy of policies; let i = index" value="{{policy.idpolicytype}}"
-                              [class.active]="i == selecteType">
-                              {{ policy.name }}
-                            </mat-option>
-                          </mat-select>
-                        </mat-form-field>
-
-                      </div>
-
-
-                    </div>
-                  </div>
-
-
-                  <!-- CONTRACT INFORMATION -->
-                  <div class="tab-pane" id="contractInfoTab">
-                    <div class="row justify-content-center">
-                      <div class="col-sm-12">
-                        <h5 class="info-text"> CONTRACT INFORMATION </h5>
-                      </div>
-
-                      <div class="row">
-
-                        <div class="col-md-12">
-                          <div class="card" style="background-color: whitesmoke">
-                            <div class="card-body">
-                              <div id="typography">
-                                <div class="row">
-
-                                  <div>
-                                    <p>But I must explain to you how all this mistaken idea of
-                                      denouncing pleasure
-                                      and praising pain was born and I will give you a complete account of the
-                                      system, and expound the actual teachings of the great explorer of the truth,
-                                      the master-builder of human happiness. No one rejects, dislikes, or avoids
-                                      pleasure itself, because it is pleasure, but because those who do not know how
-                                      to pursue pleasure rationally encounter consequences that are extremely
-                                      painful. Nor again is there anyone who loves or pursues or desires to obtain
-                                      pain of itself, because it is pain, but because occasionally circumstances
-                                      occur in which toil and pain can procure him some great pleasure. To take a
-                                      trivial example, which of us ever undertakes laborious physical exercise,
-                                      except to obtain some advantage from it? But who has any right to find fault
-                                      with a man who chooses to enjoy a pleasure that has no annoying consequences,
-                                      or one who avoids a pain that produces no resultant pleasure?</p>
-                                  </div>
-
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                        <div class="col-sm-12 col-sm-offset-1 checkbox-radios">
-                          <div class="form-check">
-                            <label class="form-check-label">
-                              <input class="form-check-input" [(ngModel)]="checkTerms" type="checkbox" name="checkTerms"
-                                id="checkTerms" value=""> I
-                              agree to the Terms of Service
-                              <span class="form-check-sign">
-                                <span class="check"></span>
-                              </span>
-                            </label>
-                          </div>
-                        </div>
-
                       </div>
                     </div>
                   </div>
-
-                  <!--   -->
                 </div>
               </div>
               <div class="card-footer">
                 <div class="mr-auto">
                   <input type="button" class="btn btn-previous btn-fill btn-default btn-wd disabled" name="previous"
-                    value="previous" id="prev">
+                    value="Previous">
                 </div>
                 <div class="ml-auto">
-                  <input type="button" class="btn btn-next btn-fill btn-info btn-wd" name="next" id="next"
-                    (click)="mytestfunction()" value="Next">
-                  <input type="button" class="btn btn-finish btn-fill btn-success btn-wd" name="finish" id="finish"
-                    value="Finish" style="display: none;" (click)="finishCreate(name, surname, identitynumber, gender, createddate,  housenumber,  streetname,  suburb,  province, contactnumber, email, idpolicytype, extraPolicy,  idextrapolicy, checkTerms)">
+                  <input type="button" class="btn btn-next btn-fill btn-info btn-wd" name="next" value="Next">
+                  <input type="button" class="btn btn-finish btn-fill btn-rose btn-wd" name="finish" value="Finish"
+                    style="display: none;">
                 </div>
                 <div class="clearfix"></div>
               </div>
@@ -527,32 +273,4 @@
       </div>
     </div>
   </div>
-
-
 </div>
-
-
-
-
-
-
-<!--
-                                    
-                                  <div>
-                                    <p style="margin: 3%">But I must explain to you how all this mistaken idea of
-                                      denouncing pleasure
-                                      and praising pain was born and I will give you a complete account of the
-                                      system, and expound the actual teachings of the great explorer of the truth,
-                                      the master-builder of human happiness. No one rejects, dislikes, or avoids
-                                      pleasure itself, because it is pleasure, but because those who do not know how
-                                      to pursue pleasure rationally encounter consequences that are extremely
-                                      painful. Nor again is there anyone who loves or pursues or desires to obtain
-                                      pain of itself, because it is pain, but because occasionally circumstances
-                                      occur in which toil and pain can procure him some great pleasure. To take a
-                                      trivial example, which of us ever undertakes laborious physical exercise,
-                                      except to obtain some advantage from it? But who has any right to find fault
-                                      with a man who chooses to enjoy a pleasure that has no annoying consequences,
-                                      or one who avoids a pain that produces no resultant pleasure?</p>
-                                  </div>
-
-                                  -->

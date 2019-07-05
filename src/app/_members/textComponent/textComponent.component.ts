@@ -1,9 +1,9 @@
-// IMPORTANT: this is a plugin which requires jQuery for initialisation and data manipulation
-
 import { Component, OnInit, OnChanges, AfterViewInit, SimpleChanges } from '@angular/core';
 import {FormControl, FormGroupDirective, NgForm, Validators, FormGroup} from '@angular/forms';
 import {ErrorStateMatcher} from '@angular/material/core';
 import { FormBuilder } from '@angular/forms';
+import { Member } from 'src/app/services/member/member'
+import { MemberService } from 'src/app/services/member/member.service'
 
 declare const $: any;
 interface FileReaderEventTarget extends EventTarget {
@@ -22,14 +22,14 @@ export class MyErrorStateMatcher implements ErrorStateMatcher {
   }
 }
 
-@Component({
-    selector: 'app-wizard-cmp',
-    templateUrl: 'wizard.component.html',
-    styleUrls: ['wizard.component.css']
-})
 
-export class WizardComponent implements OnInit, OnChanges, AfterViewInit {
-    
+@Component({
+  selector: 'app-textComponent',
+  templateUrl: './textComponent.component.html',
+  styleUrls: ['./textComponent.component.css']
+})
+export class TextComponentComponent implements OnInit {
+
   cities = [
     {value: 'paris-0', viewValue: 'Paris'},
     {value: 'miami-1', viewValue: 'Miami'},
@@ -47,7 +47,7 @@ export class WizardComponent implements OnInit, OnChanges, AfterViewInit {
   matcher = new MyErrorStateMatcher();
 
   type : FormGroup;
-  constructor(private formBuilder: FormBuilder) {}
+  constructor(private formBuilder: FormBuilder, private memberService: MemberService) {}
 
   isFieldValid(form: FormGroup, field: string) {
     return !form.get(field).valid && form.get(field).touched;
@@ -354,4 +354,29 @@ export class WizardComponent implements OnInit, OnChanges, AfterViewInit {
             });
         });
     }
+
+  test(name) {
+
+    this.memberService.createMember({   
+       'name': name,
+    "surname": "asdsad",
+    "identitynumber": "9999999999999",
+    "gender": "sdsad",
+    "email": "sdsad",
+    "identitydocument": "asdsad",
+    "contactnumber": "asdsad",
+     "idlifestatus": 1,
+     "idpolicytype": 1,
+    "iduser": 1,
+    "housenumber": "asdsad",
+    "streetname": "asdsad",
+    "suburb": "asdsad",
+    "province": "asdsad"}).subscribe(res => {
+console.log(res)
+    }, err => {
+      console.log(err)
+    })
+    
+  }
+
 }
