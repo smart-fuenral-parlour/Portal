@@ -38,44 +38,47 @@ export class MyErrorStateMatcher implements ErrorStateMatcher {
 })
 export class CreateMemberComponent implements OnInit {
 
+    // DATA OBJECTS
     societies; response
     policies
-    fname; lname;
-    BenefitName; BenefitSurname;
-    BenefitIDnum; dateV: string
-    idNumber; date;
-    houseNo; streetName;
-    suburb; province;
-    phone; email;
-    iduser
-    policyType
     beneficiary = [];
-    i: number;
-    invalid = false
-    invalidID = false
-
-    selectedProvince: string;
-    selectedGender: string;
-    selectedPolicyType: string
-
     memberDATA
     beneficiaryDATA
+    JSONbalance
+    JSONpolicyDetail
+
+    BenefitName; 
+    BenefitSurname;
+    BenefitIDnum; 
+
+    //fname; lname;
+    //idNumber; date;
+    //houseNo; streetName;
+   // suburb; province;
+   // phone; email;
+
+    iduser
+    policyType
+    i: number;
+
+    //invalid = false
+    //invalidID = false
+    typeSelected = false
+
+
     creator
     lifeStatus
     doc
 
     // policy type details  extraPolicycheck  extrapolicytype
-    typeSelected = false
-    name
-    description
-    lapsedays
-    premium
-    maximumbeneficiaries
-    trialperiod
-    minimumage
+   // name
+   // description
+   // lapsedays
+   // premium
+   // maximumbeneficiaries
+   // trialperiod
+   // minimumage
 
-    JSONbalance
-    JSONpolicyDetail
 
     // POLICY TYPE RESTRICTION
     beneficiaryAllowed
@@ -264,37 +267,9 @@ export class CreateMemberComponent implements OnInit {
         }
     }
 
-    mytestfunction() {
+    mytestfunction(data) {
 
-        let x = 0
-        this.BenefitIDnum = document.querySelector('#beneficiaryID' + x)
-
-
-        this.myValue = this.BenefitIDnum.value + x
-        let year = 0
-        let currentYear = parseInt(moment(new Date()).format('YYYY'))
-        let age = 0
-
-        console.log(parseInt(this.myValue.slice(0, 2)))
-
-        if (parseInt(this.myValue.slice(0, 2)) <= 20) {
-            // for those born from the year 2000
-            year = parseInt('20' + this.myValue.slice(0, 2))
-            age = currentYear - year
-            if (age < 18) {
-                console.log('member aged ' + age + ' is not allowed')
-            } else {
-                console.log('member aged ' + age + ' is allowed')
-            }
-        } else {
-            // for those born before the year 2000
-            year = parseInt('19' + this.myValue.slice(0, 2))
-            age = currentYear - year
-            if (age < 18) {
-                console.log('member aged ' + age + ' is not allowed')
-            } else {
-                console.log('member aged ' + age + ' is allowed')
-            }
+      console.log(data)
         }
 
         //let year = parseInt('20'+this.myValue.slice(0,2)) 
@@ -495,6 +470,11 @@ export class CreateMemberComponent implements OnInit {
     }
 
     selectPolicyType() {
+        /**
+         *     selectedProvince: string;
+    selectedGender: string;
+    selectedPolicyType: string
+         */
         console.log(this.selectedPolicyType)
         this.typeSelected = false
         this._service.getPolicyTypeDetails(this.selectedPolicyType)

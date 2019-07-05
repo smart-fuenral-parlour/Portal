@@ -56,8 +56,9 @@
                   <div class="tab-pane active" id="personalInfoTab">
                     <h5 class="info-text"> Let's start with YOUR PERSONAL INFORMATION</h5>
                     <div class="row justify-content-center">
+
+                      <!-- name -->
                       <div class="col-sm-6">
-                        <!-- name -->
                         <div class="input-group form-control-lg">
                           <div class="input-group-prepend">
                             <span class="input-group-text">
@@ -65,14 +66,15 @@
                             </span>
                             <mat-form-field class="example-full-width has-label"
                               [ngClass]="displayFieldCss(type, 'firstName')">
-                              <input type="text" name="firstname" matInput id="firstname" placeholder="First Name"
-                                formControlName="firstName">
+                              <input type="text" name="name" [(ngModel)]="name" matInput id="name"
+                                placeholder="First Name" formControlName="firstName">
                             </mat-form-field>
                           </div>
                         </div>
                       </div>
+
+                      <!-- surname -->
                       <div class="col-sm-6">
-                        <!-- surname -->
                         <div class="input-group form-control-lg">
                           <div class="input-group-prepend">
                             <span class="input-group-text">
@@ -80,22 +82,23 @@
                             </span>
                             <mat-form-field class="example-full-width has-label"
                               [ngClass]="displayFieldCss(type, 'lastName')">
-                              <input type="text" name="lastname" matInput id="lastname" placeholder="last Name"
-                                formControlName="lastName">
+                              <input type="text" name="surname" [(ngModel)]="surname" matInput id="surname"
+                                placeholder="last Name" formControlName="lastName">
                             </mat-form-field>
                           </div>
                         </div>
                       </div>
+
+                      <!-- ID number -->
                       <div class="col-sm-6">
-                        <!-- ID number -->
                         <div class="input-group-prepend">
                           <span class="input-group-text">
                             <i class="material-icons">perm_identity</i>
                           </span>
                           <mat-form-field class="example-full-width has-label"
                             [ngClass]="displayFieldCss(type, 'idnumber')">
-                            <input type="number" name="idnumber" on matInput id="idnumber" placeholder="ID Number"
-                              formControlName="idnumber" minlength="13">
+                            <input type="number" name="identitynumber" matInput [(ngModel)]="identitynumber" id="identitynumber"
+                              placeholder="ID Number" formControlName="idnumber" minlength="13">
                           </mat-form-field>
 
                         </div>
@@ -107,8 +110,9 @@
 
 
                       </div>
+
+                      <!-- Gender -->
                       <div class="col-sm-6">
-                        <!-- Gender -->
                         <div class="input-group-prepend">
                           <span class="input-group-text">
                             <i class="material-icons">wc</i>
@@ -127,24 +131,25 @@
                       </div>
 
                       <div class="row">
-                        <div class="col-6 pull-left">
 
-                          <!-- Birthyear -->
+                        <!-- Birthyear -->
+                        <div class="col-6 pull-left">
                           <div class="col-12 input-group-prepend mr-auto">
-                            <span class="input-group-text"  >
-                              <i class="material-icons" ></i>
+                            <span class="input-group-text">
+                              <i class="material-icons"></i>
                             </span>
-                            <mat-form-field [ngClass]="displayFieldCss(type, 'date')"  >
-                              <input matInput [matDatepicker]="picker" placeholder="Data of Birth" readonly id="date"
-                                class="date" name="date" (click)="picker.open()" formControlName="date">
+                            <mat-form-field [ngClass]="displayFieldCss(type, 'date')">
+                              <input matInput [matDatepicker]="picker" placeholder="Data of Birth" readonly
+                                id="createddate" name="createddate" (click)="picker.open()"
+                                [(ngModel)]="createddate" formControlName="date">
                               <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
                               <mat-datepicker #picker startView="year"></mat-datepicker>
                             </mat-form-field>
                           </div>
                         </div>
 
+                        <!-- upload file -->
                         <div class="col-md-3 col-sm-4  fileinput-new thumbnail ">
-                          <!-- upload file -->
                           <div class="col-6 input-group-prepend mr-auto">
                             <input type="file" value="upload document" id="document" >
                             <div class="fileinput-preview fileinput-exists thumbnail"></div>
@@ -153,22 +158,7 @@
 
                       </div>
 
-                      
-
                       <!--
-                           <div class="col-3 pull-left">
-                      <div class="fileinput fileinput-new text-center" data-provides="fileinput">
-                          <div class="fileinput-new thumbnail img-circle">
-                            
-                          </div>
-                          <div class="fileinput-preview fileinput-exists thumbnail img-circle"></div>
-                          <div>
-                             
-                              <br />
-                              <a href="#pablo" class="btn btn-danger btn-round fileinput-exists" data-dismiss="fileinput"><i class="fa fa-times"></i> Remove</a>
-                          </div>
-                      </div>
-                  </div>
                         
                     <div class="col-3 pull-left">
                       <div class="fileinput fileinput-new text-center" data-provides="fileinput">
@@ -188,7 +178,7 @@
                       </div>
                   </div>
      -->
-                  </div>
+                    </div>
                   </div>
 
 
@@ -217,7 +207,7 @@
                                   <i class="material-icons">record_voice_over</i>
                                 </span>
                                 <mat-form-field class="example-full-width has-label">
-                                  <input type="text" name="beneficiarySurname" matInput  id="{{'beneficiarySurname'+i}}"
+                                  <input type="text" name="beneficiarySurname" matInput id="{{'beneficiarySurname'+i}}"
                                     placeholder="Surname" class="form-control">
                                 </mat-form-field>
                               </div>
@@ -227,7 +217,7 @@
                                 </span>
                                 <mat-form-field class="example-full-width has-label">
                                   <input type="number" name="beneficiaryID" matInput id="{{'beneficiaryID'+i}}"
-                                    placeholder="ID Number" class="form-control" (keyup)="key()" >
+                                    placeholder="ID Number" class="form-control" (keyup)="key()">
                                 </mat-form-field>
                               </div>
                               <button mat-raised-button type="button" class="btn btn-danger btn-just-icon btn-link"
@@ -251,7 +241,6 @@
                     </div>
                   </div>
 
-
                   <!-- ADDRESS -->
                   <div class="tab-pane" id="addressTab">
                     <div class="row justify-content-center">
@@ -262,28 +251,7 @@
                         <h5 class="info-text"> </h5>
                       </div>
 
-                      <!--fff
-                        <div class="col-sm-3" hidden>
-                            <div class="input-group-prepend">
-                                <span class="input-group-text">
-                                  <i class="material-icons">home</i>
-                                </span>
-                                <mat-form-field class="example-full-width has-label"
-                                  [ngClass]="displayFieldCss(type, 'housenumber')">
-                                  <input type="number" name="housenumber" matInput id="housenumber" class="housenumber" placeholder="House No."
-                                    formControlName="housenumber">
-                                </mat-form-field>
-                              </div>
-                        </div> 
--->
-
-                      <div class="col-sm-7" hidden>
-                        <mat-form-field class="example-full-width">
-                          <input matInput type="text" placeholder="Street Name" name="streetname" class="streetname">
-                        </mat-form-field>
-                      </div>
-
-                      <!--fff-->
+                      <!-- House number -->
                       <div class="col-sm-4">
                         <div class="input-group-prepend">
                           <span class="input-group-text">
@@ -291,12 +259,13 @@
                           </span>
                           <mat-form-field class="example-full-width has-label"
                             [ngClass]="displayFieldCss(type, 'housenumber')">
-                            <input type="number" name="housenumber" matInput id="housenumber" class="housenumber"
-                              placeholder="House No." formControlName="housenumber">
+                            <input type="number" name="housenumber" matInput id="housenumber" placeholder="House No."
+                              formControlName="housenumber" [(ngModel)]="housenumber">
                           </mat-form-field>
                         </div>
                       </div>
 
+                      <!-- Street name -->
                       <div class="col-sm-7">
                         <div class="input-group-prepend">
                           <span class="input-group-text">
@@ -304,11 +273,13 @@
                           </span>
                           <mat-form-field class="example-full-width has-label"
                             [ngClass]="displayFieldCss(type, 'streetname')">
-                            <input type="text" name="streetname" matInput id="streetname"  class="streetname"
-                              placeholder="Street Name" formControlName="streetname">
+                            <input type="text" name="streetname" matInput id="streetname" 
+                              placeholder="Street Name" formControlName="streetname" [(ngModel)]="streetname">
                           </mat-form-field>
                         </div>
                       </div>
+
+                      <!-- House number -->
                       <div class="col-sm-6">
                         <div class="input-group-prepend">
                           <span class="input-group-text">
@@ -316,11 +287,12 @@
                           </span>
                           <mat-form-field class="example-full-width has-label"
                             [ngClass]="displayFieldCss(type, 'suburb')">
-                            <input type="text" name="suburb" matInput [(ngModel)]="suburb" id="suburb" class="suburb" placeholder="Suburb"
-                              formControlName="suburb">
+                            <input type="text" name="suburb" matInput [(ngModel)]="suburb" id="suburb"
+                              placeholder="Suburb" formControlName="suburb">
                           </mat-form-field>
                         </div>
                       </div>
+
                       <div class="col-sm-6">
                         <div class="input-group-prepend">
                           <span class="input-group-text">
@@ -360,6 +332,7 @@
                         </div>
                       </div>
                       -->
+
                       <div class="col-sm-7">
                         <div class="input-group form-control-lg">
                           <div class="input-group-prepend">
@@ -368,11 +341,12 @@
                             </span>
                           </div>
                           <mat-form-field class="example-full-width" [ngClass]="displayFieldCss(type, 'phone')">
-                            <input matInput type="number" placeholder="Phone No." name="phone" matInput id="phone"
-                              class="phone" formControlName="phone">
+                            <input matInput type="number" placeholder="Phone No." name="contactnumber" matInput
+                              id="contactnumber" formControlName="phone" [(ngModel)]="contactnumber">
                           </mat-form-field>
                         </div>
                       </div>
+
                       <div class="col-lg-10 mt-3">
                         <div class="input-group form-control-lg">
                           <div class="input-group-prepend">
@@ -382,7 +356,7 @@
                           </div>
                           <mat-form-field class="example-full-width">
                             <input matInput placeholder="Email (required)" [formControl]="emailFormControl" type="email"
-                              id="email" name="email">
+                              id="email" name="email" [(ngModel)]="email">
                           </mat-form-field>
                         </div>
                       </div>
@@ -445,7 +419,7 @@
                         <div class="form-check">
                           <label class="form-check-label">
                             <input class="form-check-input" pull-center type="checkbox" name="extraCheckbox"
-                              id="extraCheckbox" value="" (click)="checkExtra()"> Add extra policy
+                              id="extraCheckbox" value="" (click)="checkExtra()" [(ngModel)]="name"> Add extra policy
                             <span class="form-check-sign">
                               <span class="check"></span>
                             </span>
@@ -509,7 +483,7 @@
                                 <div class="row">
 
                                   <div>
-                                    <p style="margin: 3%">But I must explain to you how all this mistaken idea of
+                                    <p>But I must explain to you how all this mistaken idea of
                                       denouncing pleasure
                                       and praising pain was born and I will give you a complete account of the
                                       system, and expound the actual teachings of the great explorer of the truth,
@@ -533,7 +507,8 @@
                         <div class="col-sm-12 col-sm-offset-1 checkbox-radios">
                           <div class="form-check">
                             <label class="form-check-label">
-                              <input class="form-check-input" type="checkbox" name="check1" id="check1" value=""> I
+                              <input class="form-check-input" [(ngModel)]="checkTerms" type="checkbox" name="checkTerms"
+                                id="checkTerms" value=""> I
                               agree to the Terms of Service
                               <span class="form-check-sign">
                                 <span class="check"></span>

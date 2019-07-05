@@ -16,4 +16,7 @@ export class Members {
     suburb: string;
     province: string;
     birthyear: string;
+    /**
+     * 
+     */
 }
