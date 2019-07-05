@@ -10,6 +10,7 @@ import { Moment } from 'moment'
 import * as moment from 'moment';
 import { isNullOrUndefined } from 'util';
 import { AppComponent } from 'src/app/app.component'
+import { type } from 'os';
 
 declare const $: any;
 
@@ -61,8 +62,9 @@ export class CreateMemberComponent implements OnInit {
     beneficiaryDATA
     creator
     lifeStatus
+    doc
 
-    // policy type details
+    // policy type details  extraPolicycheck  extrapolicytype
     typeSelected = false
     name
     description
@@ -75,7 +77,10 @@ export class CreateMemberComponent implements OnInit {
     JSONbalance
     JSONpolicyDetail
 
-
+    // POLICY TYPE RESTRICTION
+    beneficiaryAllowed
+    extraPolicy
+    selectExtra = false
 
     constructor(private formBuilder: FormBuilder, private _service: ServiceService, private _routet: Router, private app: AppComponent) { }
 
@@ -92,8 +97,6 @@ export class CreateMemberComponent implements OnInit {
         { value: 'Western Cape', viewValue: 'Western Cape', abrv: 'WC' },
         { value: 'Kwazulu Natal', viewValue: 'Kwazulu Natal', abrv: 'KZN' },
     ];
-
-
 
 
     genders = [
@@ -120,14 +123,44 @@ export class CreateMemberComponent implements OnInit {
         };
     }
 
-    ///////////////////////////////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////////////////////////////////////////////
     test() {
-        console.log('Test function')
 
-    }
+        let x = 0
+        this.BenefitName = document.querySelector('#beneficiaryName' + x)
+        this.BenefitSurname = document.querySelector('#beneficiarySurname' + x)
+        this.BenefitIDnum = document.querySelector('#beneficiaryID' + x)
+        this.beneficiaryAllowed = document.querySelector('#add')
 
-    nextPan() {
 
+        const year = parseInt(moment(this.date.value).format('YYYY'))
+
+        const year2 = parseInt(moment(new Date()).format('YYYY'))
+
+        let sum = year2 - year
+        console.log(sum)
+
+        if (sum >= 18) {
+
+            this.BenefitName.disabled = true
+            this.BenefitSurname.disabled = true
+            this.BenefitIDnum.disabled = true
+            this.beneficiaryAllowed.disabled = true
+
+
+        } else {
+
+            this.BenefitName.disabled = false
+            this.BenefitSurname.disabled = false
+            this.BenefitIDnum.disabled = false
+            this.beneficiaryAllowed.disabled = false
+        }
+
+        if (!isNullOrUndefined(year) && sum > 57) {
+            console.log('Have beneficiary')
+        } else {
+            console.log('Have no beneficiary')
+        }
 
         //   this.idNumber = document.querySelector('#idnumber')
         if (this.idNumber.value.length == 13) {
@@ -136,6 +169,60 @@ export class CreateMemberComponent implements OnInit {
             return true
         }
         // console.log(this.idNumber)
+
+
+    }
+
+    checkExtra() {
+        this.extraPolicy = document.querySelector('#extraCheckbox')
+
+        console.log(this.extraPolicy.checked)
+        if (this.extraPolicy.checked == true) {
+            this.selectExtra = false
+        } else {
+            this.selectExtra = true
+
+        }
+
+    }
+
+    // calls the get policy type base onthe member age onselect D.O.B
+    getPolicyType() {
+
+        console.log('change')
+        const x = 0
+        this.BenefitName = document.querySelector('#beneficiaryName' + x)
+        this.BenefitSurname = document.querySelector('#beneficiarySurname' + x)
+        this.BenefitIDnum = document.querySelector('#beneficiaryID' + x)
+        this.beneficiaryAllowed = document.querySelector('#add')
+
+        let selectedYear = parseInt(moment(this.date.value).format('YYYY'))
+        let currentYear = parseInt(moment(new Date()).format('YYYY'))
+        let Age = currentYear - selectedYear
+
+        this._service.getPolicyType(Age)
+            .subscribe(res => {
+                this.policies = res;
+            }, err => {
+                console.log(err)
+            })
+
+    }
+    lop() {
+        this.doc = document.querySelector('#document')
+        
+        console.log(this.doc.role)
+        console.log(this.doc.title)
+        console.log(this.doc.itemid)
+        console.log(this.doc.itemprop)
+        console.log(this.doc.itemref)
+        console.log(this.doc.itemscope)
+        console.log(this.doc.formnovalidate)
+    }
+    onNextPanel() {
+
+
+
     }
 
 
@@ -209,15 +296,15 @@ export class CreateMemberComponent implements OnInit {
                         this.JSONpolicyDetail = {
                             'idmember': this.response[0].idmember,
                             'membershipnumber': memb[0].membershipnumber,
-                            'idpolicystatus':'1',
+                            'idpolicystatus': '1',
                             'iduser': memb[0].iduser,
                             'idpolicytype': memb[0].idpolicytype
                         }
-                      //cc  console.log(this.JSONpolicyDetail)
+                        //cc  console.log(this.JSONpolicyDetail)
 
                         this._service.getPolicyTypeDetails(memb[0].idpolicytype)
                             .subscribe(policyT => {
-                            //cc     console.log(policyT)
+                                //cc     console.log(policyT)
 
 
                                 this._service.createMemberPolicyDetails(this.JSONpolicyDetail)
@@ -255,7 +342,7 @@ export class CreateMemberComponent implements OnInit {
                             }, err => {
                                 console.log(err)
                             })
-                            
+
 
                         this.app.loading = false
                     }, err => console.log(err))
@@ -268,15 +355,16 @@ export class CreateMemberComponent implements OnInit {
                         confirmButtonClass: "btn btn-success",
                         buttonsStyling: false
 
-                    }).then((result) => console.log('done')) ///window.location.reload())
+                    }).then((result) => window.location.reload()) //console.log('done'))
             }
         })
 
 
-        console.log(this.memberDATA)
 
 
     }
+
+
 
     get BeneficiaryForm() {
         return (<FormArray>(<FormGroup>this.type.get('BeneficiaryGroup')).get('beneficiary')).controls;
@@ -341,6 +429,9 @@ export class CreateMemberComponent implements OnInit {
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     ngOnInit() {
 
+        this.extraPolicy = document.querySelector('#extraCheckbox')
+        this.fname = document.querySelector('#firstname')
+
         this.fname = document.querySelector('#firstname')
         this.lname = document.querySelector('#lastname')
         this.idNumber = document.querySelector('#idnumber')
@@ -359,9 +450,10 @@ export class CreateMemberComponent implements OnInit {
         this.phone = document.querySelector('#phone')
         this.date = document.querySelector('#date')
 
+
         this._service.getAllPolicyType()
             .subscribe(res => {
-                this.policies = res
+                // this.policies = res
             }, err => {
                 console.log(err)
             })
