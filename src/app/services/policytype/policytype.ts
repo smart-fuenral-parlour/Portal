@@ -1,4 +1,4 @@
-export class Policytype
+    export class Policytype
 {   
     name: string;
     description: string;

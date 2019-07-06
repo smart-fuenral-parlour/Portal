@@ -6,15 +6,19 @@ import { patchComponentDefWithScope } from '@angular/core/src/render3/jit/module
 import { Router } from '@angular/router';
 import swal from 'sweetalert2';
 import { Moment } from 'moment'
+///////////////////// MY SERVICE CALL ///////////////////
+import { ServiceService } from 'src/app/SERVICE/service.service'; // service link here
+import { MemberService } from 'src/app/services/member/member.service'
+import { PolicytypeService } from 'src/app/services/policytype/policytype.service'
+import { PolicydetailsService } from 'src/app/services/policydetails/policydetails.service'
+import { BalanceService } from 'src/app/services/balance/balance.service'
+import { BeneficiaryService } from 'src/app/services/beneficiary/beneficiary.service'
+/////////////////////////////////////////////////////////
 import * as moment from 'moment';
 import { isNullOrUndefined } from 'util';
 import { AppComponent } from 'src/app/app.component'
 import { type } from 'os';
 
-// MY SERVICE CALL
-import { ServiceService } from 'src/app/SERVICE/service.service'; // service link here
-import { MemberService } from 'src/app/services/member/member.service'
-import { PolicytypeService } from 'src/app/services/policytype/policytype.service'
 
 
 declare const $: any;
@@ -50,14 +54,20 @@ export class CreateMemberComponent implements OnInit {
 
     policyTypes
 
+    BenefitName
+    BenefitSurname
     BenefitIDnum
+    maxAge
 
     constructor(
         private formBuilder: FormBuilder,
-        private _service: ServiceService,
-        private _meberService: MemberService,
-        private _policytypeService: PolicytypeService,
-        private _routet: Router,
+        private service: ServiceService,
+        private memberService: MemberService,
+        private policytypeService: PolicytypeService,
+        private policydetailsService: PolicydetailsService,
+        private balanceService: BalanceService,
+        private beneficiaryService: BeneficiaryService,
+        private router: Router,
         private app: AppComponent
     ) { }
 
@@ -512,11 +522,10 @@ export class CreateMemberComponent implements OnInit {
             birthyear = this.BenefitIDnum.value
 
 
-            console.log('test')
             // for those born from the year 2000
             if (parseInt(birthyear.slice(0, 2)) <= parseInt(moment(new Date()).format('YY'))) {
-                
-            age = parseInt(moment(new Date()).format('YYYY')) - parseInt('19' + birthyear.slice(0, 2))
+
+                age = parseInt(moment(new Date()).format('YYYY')) - parseInt('19' + birthyear.slice(0, 2))
 
                 if (age < maxAge) {
 
@@ -535,8 +544,8 @@ export class CreateMemberComponent implements OnInit {
 
             } else {
 
-                
-            age = parseInt(moment(new Date()).format('YYYY')) - parseInt('19' + birthyear.slice(0, 2))
+
+                age = parseInt(moment(new Date()).format('YYYY')) - parseInt('19' + birthyear.slice(0, 2))
 
                 if (age < maxAge) {
 
@@ -561,20 +570,21 @@ export class CreateMemberComponent implements OnInit {
     // testing the age of the member to determine their policy types
     testMemberAge(identitynumber) {
 
-        console.log(identitynumber.toString().length)
+
+        let set: number
 
         // storing id number on string function to access string properties   
-        if ( identitynumber.toString().length == 13) {
+        if (identitynumber.toString().length == 13) {
 
             let age = 0
 
-            if (parseInt(identitynumber.toString().slice(0, 2)) <= parseInt(moment(new Date()).format('YY'))) {
+            if ((parseInt(identitynumber.toString().slice(0, 2)) <= parseInt(moment(new Date()).format('YY'))) || parseInt(identitynumber.toString().slice(0, 2))) {
 
                 // for those born after the year 2000
                 age = parseInt(moment(new Date()).format('YYYY')) - parseInt('20' + identitynumber.toString().slice(0, 2))
-                console.log('20: ' + age)
+                console.log('1: ' + age)
 
-                this._policytypeService.getPolicytypebyage(age)
+                this.policytypeService.getPolicytypebyage(age)
                     .subscribe(policytype_res => {
                         console.log(policytype_res)
                     }, err => {
@@ -585,9 +595,9 @@ export class CreateMemberComponent implements OnInit {
 
                 // for those born before the year 2000
                 age = parseInt(moment(new Date()).format('YYYY')) - parseInt('19' + identitynumber.toString().slice(0, 2))
-                console.log('19: ' + age)
+                console.log('2: ' + age)
 
-                this._policytypeService.getPolicytypebyage(age)
+                this.policytypeService.getPolicytypebyage(age)
                     .subscribe(policytype_res => {
                         console.log(policytype_res)
                     }, err => {
@@ -611,27 +621,10 @@ export class CreateMemberComponent implements OnInit {
         let beneficiary;
         let policydetails
         let balance
-
-        let member = {
-            'name': name,
-            'surname': surname,
-            'identitynumber': identitynumber,
-            'email': email,
-            'contactnumber': contactnumber,
-            'gender': gender,
-            'housenumber': housenumber,
-            'streetname': streetname,
-            'suburb': suburb,
-            'province': province,
-            'idpolicytype': idpolicytype,
-            'iduser': 1,
-            'idlifestatus': 1,
-            //membershipnumber
-        }
+        let member
 
         // UPLOAD DOCUMENT
         // {'document': document}
-        console.log(member)
 
         swal({
             title: 'Finish Create',
@@ -647,64 +640,141 @@ export class CreateMemberComponent implements OnInit {
             if (result.value) {
                 this.app.loading = true
 
-                this._service.createMember(member)
+                member = {
+                    'name': name,
+                    'surname': surname,
+                    'identitynumber': identitynumber,
+                    'email': email,
+                    'contactnumber': contactnumber,
+                    'gender': gender,
+                    'housenumber': housenumber,
+                    'streetname': streetname,
+                    'suburb': suburb,
+                    'province': province,
+                    'idpolicytype': idpolicytype,
+                    'iduser': 1,
+                    'idlifestatus': 1,
+                    //'membershipnumber':
+                }
+                console.log(member)
+
+                // this.service.createMember(member)
+                this.memberService.createMember(member)
                     .subscribe(member_res => {
-                        //let response = member_res
-
-                        console.log(member_res[0].idmember)
-
 
                         policydetails = {
                             'idmember': member_res[0].idmember,
                             'membershipnumber': member_res[0].membershipnumber,
-                            'idpolicystatus': 1,
+                            'idpolicystatus': member_res[0].idlifestatus,
                             'iduser': member_res[0].iduser,
-                            'idpolicytype': member_res[0].idpolicytype
+                            'idpolicytype': member_res[0].idpolicytype,
+                            'idextras': 1
                         }
+                        console.log(policydetails)
 
 
+                        this.policydetailsService.createPolicydetails(policydetails)
+                            .subscribe(policydetails_res => {
+                                console.log(policydetails_res[0].idpolicytype)
 
-                        this._service.getPolicyTypeDetails(member_res[0].idpolicytype)
-                            .subscribe(policytupe_res => {
-
-
-
-                                this._service.createMemberPolicyDetails(policydetails)
-                                    .subscribe(policyD => {
-                                        console.log(policyD)
+                                this.policytypeService.getPolicytype(policydetails_res[0].idpolicytype)
+                                    .subscribe(policytype_res => {
 
                                         balance = {
-
-                                            'idpolicydetails': policyD[0].idpolicydetails,
-                                            'amount': member_res[0].premium,
-                                            'lastpaiddate': '20/06/19' //new Date()
+                                            'idpolicydetails': policydetails_res[0].idpolicydetails,
+                                            'amount': policytype_res[0].premium,
+                                            'lastpaiddate': 'date'
                                         }
                                         console.log(balance)
-                                        this._service.createMemberBalanceDetails(balance)
-                                            .subscribe(balance => {
-                                                console.log(balance)
 
-                                                for (let i = 0; i < this.BeneficiaryForm.length; i++) {
-                                                    beneficiary[i].idmember = this.response[0].idmember
-                                                    beneficiary[i].createddate = this.response[0].createddate
+                                        this.balanceService.createBalance(balance)
+                                            .subscribe(balance_res => {
+                                                console.log(balance_res)
 
-                                                    this._service.createMemberBeneficiary(beneficiary[i])
-                                                        .subscribe(ben => {
-                                                            console.log(ben)
+                                                // creating beneficiary for a member
+                                                for (let x = 0; x < this.BeneficiaryForm.length; x++) {
 
+                                                    this.BenefitName = document.querySelector('#beneficiaryName' + x)
+                                                    this.BenefitSurname = document.querySelector('#beneficiarySurname' + x)
+                                                    this.BenefitIDnum = document.querySelector('#beneficiaryID' + x)
+
+                                                    beneficiary = {
+                                                        'idmember': member_res[0].idmember,
+                                                        'name': this.BenefitName.value,
+                                                        'surname': this.BenefitSurname.value,
+                                                        'identitynumber': this.BenefitIDnum.value,
+                                                        'idlifestatus': 1
+                                                    }
+                                                    console.log(beneficiary)
+
+                                                    this.beneficiaryService.createBeneficiary(beneficiary)
+                                                        .subscribe(beneficiary_res => {
+                                                            console.log(beneficiary_res)
                                                         }, err => {
                                                             console.log(err)
                                                         })
+
+                                                    // tslint:disable-next-line: max-line-length
                                                 }
-                                            }, err => { console.log(err) })
+
+
+
+
+
+                                            }, err => {
+                                                console.log(err)
+                                            })
 
                                     }, err => {
                                         console.log(err)
                                     })
+
                             }, err => {
                                 console.log(err)
                             })
 
+                        /*
+                                                this.service.getPolicyTypeDetails(member_res[0].idpolicytype)
+                                                    .subscribe(policytupe_res => {
+                        
+                        
+                        
+                                                        this.service.createMemberPolicyDetails(policydetails)
+                                                            .subscribe(policyD => {
+                                                                console.log(policyD)
+                        
+                                                                balance = {
+                        
+                                                                    'idpolicydetails': policyD[0].idpolicydetails,
+                                                                    'amount': member_res[0].premium,
+                                                                    'lastpaiddate': '20/06/19' //new Date()
+                                                                }
+                                                                console.log(balance)
+                                                                this.service.createMemberBalanceDetails(balance)
+                                                                    .subscribe(balance => {
+                                                                        console.log(balance)
+                        
+                                                                        for (let i = 0; i < this.BeneficiaryForm.length; i++) {
+                                                                            beneficiary[i].idmember = this.response[0].idmember
+                                                                            beneficiary[i].createddate = this.response[0].createddate
+                        
+                                                                            this.service.createMemberBeneficiary(beneficiary[i])
+                                                                                .subscribe(ben => {
+                                                                                    console.log(ben)
+                        
+                                                                                }, err => {
+                                                                                    console.log(err)
+                                                                                })
+                                                                        }
+                                                                    }, err => { console.log(err) })
+                        
+                                                            }, err => {
+                                                                console.log(err)
+                                                            })
+                                                    }, err => {
+                                                        console.log(err)
+                                                    })
+                        */
 
                         this.app.loading = false
                     }, err => console.log(err))
