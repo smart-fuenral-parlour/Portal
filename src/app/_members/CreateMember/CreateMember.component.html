@@ -102,7 +102,7 @@
                           <mat-form-field class="example-full-width has-label"
                             [ngClass]="displayFieldCss(type, 'idnumber')">
                             <input type="number" name="identitynumber" matInput [(ngModel)]="identitynumber"
-                              id="identitynumber" placeholder="ID Number" formControlName="idnumber" minlength="13">
+                              id="identitynumber" placeholder="ID Number" formControlName="idnumber" (keyup)="testMemberAge(identitynumber)" minlength="13">
                           </mat-form-field>
 
                         </div>
@@ -292,8 +292,7 @@
                         <div class="form-check">
                           <label class="form-check-label">
                             <input class="form-check-input" pull-center type="checkbox" name="idextrapolicy"
-                              id="idextrapolicy" value="1"
-                              ngChecked="test(idextrapolicy)"> Add extra policy
+                              id="idextrapolicy" value="1" ngChecked="test(idextrapolicy)"> Add extra policy
                             <!-- (click)="checkExtra()"  -->
                             <span class="form-check-sign">
                               <span class="check"></span>
@@ -314,10 +313,10 @@
                     <div class="row" style="margin-top: 0%">
                       <div class="col-md-12">
                         <div formGroupName="BeneficiaryGroup" class="card" id="cardit">
-                          <div formArrayName="beneficiary" class="card-body text-center" style="padding: 0%">
+                          <div formArrayName="beneficiaryArray" class="card-body text-center" style="padding: 0%">
 
                             <div class="input-group form-control-lg"
-                              *ngFor="let benefit of BeneficiaryForm; let i = index">
+                              *ngFor="let beneficiary of BeneficiaryForm; let i = index">
 
                               <div class="col-4 input-group-prepend">
                                 <span class="input-group-text">
@@ -328,6 +327,7 @@
                                     id="{{'beneficiaryName'+i}}" placeholder="Name" class="form-control">
                                 </mat-form-field>
                               </div>
+
                               <div class="col-4 input-group-prepend">
                                 <span class="input-group-text">
                                   <i class="material-icons">record_voice_over</i>
@@ -337,16 +337,17 @@
                                     id="{{'beneficiarySurname'+i}}" placeholder="Surname" class="form-control">
                                 </mat-form-field>
                               </div>
+
                               <div class="col-3 input-group-prepend">
                                 <span class="input-group-text">
                                   <i class="material-icons">perm_identity</i>
                                 </span>
                                 <mat-form-field class="example-full-width has-label">
                                   <input type="number" id="{{'beneficiaryID'+i}}" name="{{'beneficiaryID'+i}}" matInput
-                                    [(ngModel)]="beneficiaryID" placeholder="ID Number" class="form-control"
-                                    (keyup)="test(sss)" [ngModelOptions]="{standalone: true}">
+                                    placeholder="ID Number" class="form-control" (keyup)="testBeneficiaryAge(i)">
                                 </mat-form-field>
                               </div>
+
                               <button mat-raised-button type="button" class="btn btn-danger btn-just-icon btn-link"
                                 [formGroupName]="i" (click)="removeBeneficiary(i)">
                                 <!--    -->
@@ -354,7 +355,6 @@
                               </button>
                             </div>
                             <br />
-
 
                           </div>
 
@@ -506,8 +506,7 @@
                   <input type="button" class="btn btn-next btn-fill btn-info btn-wd" name="next" value="Next"
                     (click)="testfunc()">
                   <input type="button" class="btn btn-finish btn-fill btn-success btn-wd" name="finish" value="Finish"
-                    style="display: none;"
-                    (click)="finishCreate(name, surname, identitynumber, gender, housenumber,  streetname,  suburb,  province, contactnumber, email, idpolicytype) ">
+                    style="display: none;" (click)="test() ">
                 </div>
                 <div class="clearfix"></div>
               </div>

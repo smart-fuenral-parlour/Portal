@@ -37,7 +37,6 @@ export class ViewMembersComponent implements OnInit {
   invalidID = false;
   iduser
   members
-  mem : Member
  
 
   constructor(private memberSerice: MemberService, private _service: ServiceService, private _router: Router, private app: AppComponent) {
@@ -83,8 +82,8 @@ export class ViewMembersComponent implements OnInit {
 
       if (selectedSearchType == 'Membership Number') {
         this.app.loading = true
-
-        this._service.searchMemberByMembershipNumber(searchInput)
+this.memberSerice.getMember(searchInput)
+        //this._service.searchMemberByMembershipNumber(searchInput)
           .subscribe(member_res => {
             this.response = member_res
 
@@ -271,10 +270,7 @@ console.log(lifeS)
     this.selectedrow = index;
 
    // localStorage.setItem('idmember', JSON.stringify(idmember));
-    this.mem.idmember = 'idmember'
-    console.log(this.mem)
-    console.log(idmember)
-    console.log(this.mem.idmember)
+   
     sessionStorage.clear()
     //this._router.navigate(['/members/editmember']);
   }

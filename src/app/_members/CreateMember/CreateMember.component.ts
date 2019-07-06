@@ -4,13 +4,19 @@ import { FormControl, FormGroupDirective, NgForm, Validators, FormArray, FormGro
 import { ErrorStateMatcher } from '@angular/material/core';
 import { patchComponentDefWithScope } from '@angular/core/src/render3/jit/module';
 import { Router } from '@angular/router';
-import { ServiceService } from 'src/app/SERVICE/service.service'; // service link here
 import swal from 'sweetalert2';
 import { Moment } from 'moment'
 import * as moment from 'moment';
 import { isNullOrUndefined } from 'util';
 import { AppComponent } from 'src/app/app.component'
 import { type } from 'os';
+
+// MY SERVICE CALL
+import { ServiceService } from 'src/app/SERVICE/service.service'; // service link here
+import { MemberService } from 'src/app/services/member/member.service'
+import { PolicytypeService } from 'src/app/services/policytype/policytype.service'
+import { stringify } from '@angular/compiler/src/util';
+
 
 declare const $: any;
 
@@ -38,52 +44,61 @@ export class MyErrorStateMatcher implements ErrorStateMatcher {
 })
 export class CreateMemberComponent implements OnInit {
 
-    response    
+    response
     invalid = false
     invalidID = false
     typeSelected = false
 
-    
+    policyTypes
 
-    constructor(private formBuilder: FormBuilder, private _service: ServiceService, private _routet: Router, private app: AppComponent) { }
+    BenefitIDnum
 
-        // province drop downkzn
-        provinces = [
-            { value: 'Gauteng', viewValue: 'Gauteng', abrv: 'GP' },
-            { value: 'Limpopo', viewValue: 'Limpopo', abrv: 'L' },
-            { value: 'Mpumalanga', viewValue: 'Mpumalanga', abrv: 'MP' },
-            { value: 'Free State', viewValue: 'Free State', abrv: 'FS' },
-            { value: 'North West', viewValue: 'North West', abrv: 'NW' },
-            { value: 'Northern Cape', viewValue: 'Northern Cape', abrv: 'NC' },
-            { value: 'Eastern Cape', viewValue: 'Eastern Cape', abrv: 'EC' },
-            { value: 'Western Cape', viewValue: 'Western Cape', abrv: 'WC' },
-            { value: 'Kwazulu Natal', viewValue: 'Kwazulu Natal', abrv: 'KZN' },
-        ];
+    constructor(
+        private formBuilder: FormBuilder,
+        private _service: ServiceService,
+        private _meberService: MemberService,
+        private _policytypeService: PolicytypeService,
+        private _routet: Router,
+        private app: AppComponent
+    ) { }
 
-        genders = [
-            { value: 'Male', name: 'Male', abrv: 'M' },
-            { value: 'Female', name: 'Female', abrv: 'F' }
-        ]
-        emailFormControl = new FormControl('', [
-            Validators.required,
-            Validators.email
-    
-        ]);
-    
-        matcher = new MyErrorStateMatcher();
-    
-        type: FormGroup;
-        isFieldValid(form: FormGroup, field: string) {
-            return !form.get(field).valid && form.get(field).touched;
-        }
-    
-        displayFieldCss(form: FormGroup, field: string) {
-            return {
-                'has-error': this.isFieldValid(form, field),
-                'has-feedback': this.isFieldValid(form, field)
-            };
-        }
-    
+    // province drop downkzn
+    provinces = [
+        { value: 'Gauteng', viewValue: 'Gauteng', abrv: 'GP' },
+        { value: 'Limpopo', viewValue: 'Limpopo', abrv: 'L' },
+        { value: 'Mpumalanga', viewValue: 'Mpumalanga', abrv: 'MP' },
+        { value: 'Free State', viewValue: 'Free State', abrv: 'FS' },
+        { value: 'North West', viewValue: 'North West', abrv: 'NW' },
+        { value: 'Northern Cape', viewValue: 'Northern Cape', abrv: 'NC' },
+        { value: 'Eastern Cape', viewValue: 'Eastern Cape', abrv: 'EC' },
+        { value: 'Western Cape', viewValue: 'Western Cape', abrv: 'WC' },
+        { value: 'Kwazulu Natal', viewValue: 'Kwazulu Natal', abrv: 'KZN' },
+    ];
+
+    genders = [
+        { value: 'Male', name: 'Male', abrv: 'M' },
+        { value: 'Female', name: 'Female', abrv: 'F' }
+    ]
+    emailFormControl = new FormControl('', [
+        Validators.required,
+        Validators.email
+
+    ]);
+
+    matcher = new MyErrorStateMatcher();
+
+    type: FormGroup;
+    isFieldValid(form: FormGroup, field: string) {
+        return !form.get(field).valid && form.get(field).touched;
+    }
+
+    displayFieldCss(form: FormGroup, field: string) {
+        return {
+            'has-error': this.isFieldValid(form, field),
+            'has-feedback': this.isFieldValid(form, field)
+        };
+    }
+
 
     ngOnInit() {
 
@@ -95,7 +110,7 @@ export class CreateMemberComponent implements OnInit {
             // To add a validator, we must first convert the string value into an array. The first item in the array is the default value if any, then the next item in the array is the validator. Here we are adding a required validator meaning that the firstName attribute must have a value in it.
 
             BeneficiaryGroup: this.formBuilder.group({
-                beneficiary: this.formBuilder.array([
+                beneficiaryArray: this.formBuilder.array([
                     this.formBuilder.control({
                         beneficiaryName: [null, Validators.required],
                         beneficiarySurname: [null, Validators.required],
@@ -402,21 +417,21 @@ export class CreateMemberComponent implements OnInit {
 
     // check if the age of beneficiary is allowed  {{'beneficiaryID'+i}}
     checkBeneficiaryAge(BenefitIDnum) {
-        
+
         let x = 0
         let myValue: string
-        
+
         myValue = BenefitIDnum.value + x
         let year = 0
         let age = 0
         let currentYear = parseInt(moment(new Date()).format('YYYY'))
         let testYearInput = parseInt(moment(new Date()).format('YY'))
-        
+
 
 
         if ((BenefitIDnum.value.length + x) == 13) {
-            console.log('correct id number length')    
-            
+            console.log('correct id number length')
+
             if (parseInt(myValue.slice(0, 2)) <= testYearInput) {
                 // for those born from the year 2000
                 year = parseInt('20' + myValue.slice(0, 2))
@@ -428,7 +443,7 @@ export class CreateMemberComponent implements OnInit {
                         text: "Beneficiary must be older than  {maxAge (18)} years older",
                         timer: 2000,
                         showConfirmButton: true
-                    }).catch(swal.noop)                    
+                    }).catch(swal.noop)
                 } else {
                     console.log('member aged ' + age + ' is allowed')
                 }
@@ -443,76 +458,27 @@ export class CreateMemberComponent implements OnInit {
                         text: "Beneficiary must be older than  {maxAge (18)} years older",
                         timer: 2000,
                         showConfirmButton: true
-                    }).catch(swal.noop)   
+                    }).catch(swal.noop)
                 } else {
                     console.log('member aged ' + age + ' is allowed')
                 }
             }
-            
+
         } else {
             console.log('id number is short')
         }
     }
 
-test(idextrapolicy) {
-    console.log(idextrapolicy)
-}
-    // check the age of member to determine policy type
-    checkMemberAge(BenefitIDnum0) {
-        
-        let x = 0
-        let myValue: string
 
-        myValue = BenefitIDnum0.value + x
-        let year = 0
-        let age = 0
-        let currentYear = parseInt(moment(new Date()).format('YYYY'))
-        let testYearInput = parseInt(moment(new Date()).format('YY'))
-        
+    test(i) {
 
-
-        if ((BenefitIDnum0.value.length + x) == 13) {
-            console.log('correct id number length')    
-            
-            if (parseInt(myValue.slice(0, 2)) <= testYearInput) {
-                // for those born from the year 2000
-                year = parseInt('20' + myValue.slice(0, 2))
-                age = currentYear - year
-                if (age < 18) {
-                    console.log('member aged ' + age + ' is not allowed')
-                    swal({
-                        title: "beneficiaryName not allowed as Beneficiary",
-                        text: "Beneficiary must be older than  {maxAge (18)} years older",
-                        timer: 2000,
-                        showConfirmButton: true
-                    }).catch(swal.noop)                    
-                } else {
-                    console.log('member aged ' + age + ' is allowed')
-                }
-            } else {
-                // for those born before the year 2000
-                year = parseInt('19' + myValue.slice(0, 2))
-                age = currentYear - year
-                if (age < 18) {
-                    console.log('member aged ' + age + ' is not allowed')
-                    swal({
-                        title: "beneficiaryName not allowed as Beneficiary",
-                        text: "Beneficiary must be older than  {maxAge (18)} years older",
-                        timer: 2000,
-                        showConfirmButton: true
-                    }).catch(swal.noop)   
-                } else {
-                    console.log('member aged ' + age + ' is allowed')
-                }
-            }
-            
-        } else {
-            console.log('id number is short')
-        }
+        console.log(i)
     }
+
+
 
     get BeneficiaryForm() {
-        return (<FormArray>(<FormGroup>this.type.get('BeneficiaryGroup')).get('beneficiary')).controls;
+        return (<FormArray>(<FormGroup>this.type.get('BeneficiaryGroup')).get('beneficiaryArray')).controls;
     }
 
     addBeneficiary() {
@@ -524,27 +490,121 @@ test(idextrapolicy) {
                 beneficiarySurname: [null, Validators.required],
                 beneficiaryID: [null, Validators.required],
             })
+
         ))
 
     }
 
     removeBeneficiary(index): void {
-        //  (<FormArray>this.type.get('beneficiary')).removeAt(index)
-        (((this.type.get('BeneficiaryGroup') as FormGroup).get('beneficiary')) as FormArray).removeAt(index)
+        (((this.type.get('BeneficiaryGroup') as FormGroup).get('beneficiaryArray')) as FormArray).removeAt(index)
 
     }
 
-    onNextPanel() {
+    testBeneficiaryAge(i) {
+
+        let birthyear: string
+        let maxAge = 57;
+        this.BenefitIDnum = document.querySelector('#beneficiaryID' + i)
+        let name
+
+
+        if (this.BenefitIDnum.value.length == 13) {
+            let age = 0
+            birthyear = this.BenefitIDnum.value
+
+            age = parseInt(moment(new Date()).format('YYYY')) - parseInt('19' + birthyear.slice(0, 2))
+
+            console.log('test')
+            // for those born from the year 2000
+            if (parseInt(birthyear.slice(0, 2)) <= parseInt(moment(new Date()).format('YY'))) {
+
+                if (age < maxAge) {
+
+                    console.log('successp')
+
+                } else {
+
+                    swal({
+                        title: " not allowed as Beneficiary",
+                        text: "Beneficiary must not be older than " + maxAge + " years older",
+                        timer: 2000,
+                        showConfirmButton: true
+                    }).catch(swal.noop)
+
+                }
+
+            } else {
+                if (age < maxAge) {
+
+                    console.log('successp')
+
+                } else {
+
+                    swal({
+                        title: " cannot be added as a Beneficiary",
+                        text: "Beneficiary must not be older than " + maxAge + " years older",
+                        timer: 5500,
+                        showConfirmButton: true
+                    }).catch(swal.noop)
+
+                }
+            }
+
+        }
 
     }
 
-    testfunc() {
+    // testing the age of the member to determine their policy types
+    testMemberAge(identitynumber) {
+
+        console.log(stringify(identitynumber).length)
+
+        // storing id number on string function to access string properties   
+        if (stringify(identitynumber).length == 13) {
+
+            let age = 0
+
+            if (parseInt(stringify(identitynumber).slice(0, 2)) <= parseInt(moment(new Date()).format('YY'))) {
+
+                // for those born after the year 2000
+                age = parseInt(moment(new Date()).format('YYYY')) - parseInt('20' + stringify(identitynumber).slice(0, 2))
+                console.log('20: ' + age)
+
+                this._policytypeService.getPolicytypebyage(age)
+                    .subscribe(policytype_res => {
+                        console.log(policytype_res)
+                    }, err => {
+                        console.log(err)
+                    })
+
+            } else {
+
+                // for those born before the year 2000
+                age = parseInt(moment(new Date()).format('YYYY')) - parseInt('19' + stringify(identitynumber).slice(0, 2))
+                console.log('19: ' + age)
+
+                this._policytypeService.getPolicytypebyage(age)
+                    .subscribe(policytype_res => {
+                        console.log(policytype_res)
+                    }, err => {
+                        console.log(err)
+                    })
+
+            }
+
+
+
+
+
+
+        }
 
     }
 
-    finishCreate(name, surname, identitynumber, gender, housenumber,  streetname,  suburb,  province, contactnumber, email, idpolicytype) {
 
-        let beneficiary ;
+    finishCreate(name, surname, identitynumber, gender, housenumber, streetname, suburb, province, contactnumber, email, idpolicytype) {
+
+        let beneficiary;
         let policydetails
         let balance
 
@@ -564,10 +624,10 @@ test(idextrapolicy) {
             'idlifestatus': 1,
             //membershipnumber
         }
-        
+
         // UPLOAD DOCUMENT
         // {'document': document}
-       console.log(member)
+        console.log(member)
 
         swal({
             title: 'Finish Create',
@@ -584,23 +644,25 @@ test(idextrapolicy) {
                 this.app.loading = true
 
                 this._service.createMember(member)
-                    .subscribe(memberRes => {
-                        let response = memberRes
-                        console.log( response[0].idmember)
+                    .subscribe(member_res => {
+                        //let response = member_res
+
+                        console.log(member_res[0].idmember)
 
 
                         policydetails = {
-                            'idmember': response[0].idmember,
-                            'membershipnumber': memberRes[0].membershipnumber,
-                            'idpolicystatus': '1',
-                            'iduser': memberRes[0].iduser,
-                            'idpolicytype': memberRes[0].idpolicytype
+                            'idmember': member_res[0].idmember,
+                            'membershipnumber': member_res[0].membershipnumber,
+                            'idpolicystatus': 1,
+                            'iduser': member_res[0].iduser,
+                            'idpolicytype': member_res[0].idpolicytype
                         }
-                        //cc  console.log(this.JSONpolicyDetail)
 
-                        this._service.getPolicyTypeDetails(memberRes[0].idpolicytype)
-                            .subscribe(policyT => {
-                                //cc     console.log(policyT)
+
+
+                        this._service.getPolicyTypeDetails(member_res[0].idpolicytype)
+                            .subscribe(policytupe_res => {
+
 
 
                                 this._service.createMemberPolicyDetails(policydetails)
@@ -610,7 +672,7 @@ test(idextrapolicy) {
                                         balance = {
 
                                             'idpolicydetails': policyD[0].idpolicydetails,
-                                            'amount': policyT[0].premium,
+                                            'amount': member_res[0].premium,
                                             'lastpaiddate': '20/06/19' //new Date()
                                         }
                                         console.log(balance)
@@ -619,8 +681,8 @@ test(idextrapolicy) {
                                                 console.log(balance)
 
                                                 for (let i = 0; i < this.BeneficiaryForm.length; i++) {
-                                                     beneficiary[i].idmember = this.response[0].idmember
-                                                     beneficiary[i].createddate = this.response[0].createddate
+                                                    beneficiary[i].idmember = this.response[0].idmember
+                                                    beneficiary[i].createddate = this.response[0].createddate
 
                                                     this._service.createMemberBeneficiary(beneficiary[i])
                                                         .subscribe(ben => {
@@ -659,75 +721,75 @@ test(idextrapolicy) {
 
 
 
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-  
-ngOnChanges(changes: SimpleChanges) {
-    const input = $(this);
+    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    if (input[0].files && input[0].files[0]) {
-        const reader: any = new FileReader();
+    ngOnChanges(changes: SimpleChanges) {
+        const input = $(this);
 
-        reader.onload = function (e: any) {
-            $('#wizardPicturePreview').attr('src', e.target.result).fadeIn('slow');
-        };
-        reader.readAsDataURL(input[0].files[0]);
+        if (input[0].files && input[0].files[0]) {
+            const reader: any = new FileReader();
+
+            reader.onload = function (e: any) {
+                $('#wizardPicturePreview').attr('src', e.target.result).fadeIn('slow');
+            };
+            reader.readAsDataURL(input[0].files[0]);
+        }
     }
-}
-ngAfterViewInit() {
+    ngAfterViewInit() {
 
-    $(window).resize(() => {
-        $('.card-wizard').each(function () {
+        $(window).resize(() => {
+            $('.card-wizard').each(function () {
 
-            const $wizard = $(this);
-            const index = $wizard.bootstrapWizard('currentIndex');
-            let $total = $wizard.find('.nav li').length;
-            let $li_width = 100 / $total;
+                const $wizard = $(this);
+                const index = $wizard.bootstrapWizard('currentIndex');
+                let $total = $wizard.find('.nav li').length;
+                let $li_width = 100 / $total;
 
-            let total_steps = $wizard.find('.nav li').length;
-            let move_distance = $wizard.width() / total_steps;
-            let index_temp = index;
-            let vertical_level = 0;
+                let total_steps = $wizard.find('.nav li').length;
+                let move_distance = $wizard.width() / total_steps;
+                let index_temp = index;
+                let vertical_level = 0;
 
-            let mobile_device = $(document).width() < 600 && $total > 3;
+                let mobile_device = $(document).width() < 600 && $total > 3;
 
-            if (mobile_device) {
-                move_distance = $wizard.width() / 2;
-                index_temp = index % 2;
-                $li_width = 50;
-            }
+                if (mobile_device) {
+                    move_distance = $wizard.width() / 2;
+                    index_temp = index % 2;
+                    $li_width = 50;
+                }
 
-            $wizard.find('.nav li').css('width', $li_width + '%');
+                $wizard.find('.nav li').css('width', $li_width + '%');
 
-            let step_width = move_distance;
-            move_distance = move_distance * index_temp;
+                let step_width = move_distance;
+                move_distance = move_distance * index_temp;
 
-            let $current = index + 1;
+                let $current = index + 1;
 
-            if ($current == 1 || (mobile_device == true && (index % 2 == 0))) {
-                move_distance -= 8;
-            } else if ($current == total_steps || (mobile_device == true && (index % 2 == 1))) {
-                move_distance += 8;
-            }
+                if ($current == 1 || (mobile_device == true && (index % 2 == 0))) {
+                    move_distance -= 8;
+                } else if ($current == total_steps || (mobile_device == true && (index % 2 == 1))) {
+                    move_distance += 8;
+                }
 
-            if (mobile_device) {
-                let x: any = index / 2;
-                vertical_level = parseInt(x);
-                vertical_level = vertical_level * 38;
-            }
+                if (mobile_device) {
+                    let x: any = index / 2;
+                    vertical_level = parseInt(x);
+                    vertical_level = vertical_level * 38;
+                }
 
-            $wizard.find('.moving-tab').css('width', step_width);
-            $('.moving-tab').css({
-                'transform': 'translate3d(' + move_distance + 'px, ' + vertical_level + 'px, 0)',
-                'transition': 'all 0.5s cubic-bezier(0.29, 1.42, 0.79, 1)'
-            });
+                $wizard.find('.moving-tab').css('width', step_width);
+                $('.moving-tab').css({
+                    'transform': 'translate3d(' + move_distance + 'px, ' + vertical_level + 'px, 0)',
+                    'transition': 'all 0.5s cubic-bezier(0.29, 1.42, 0.79, 1)'
+                });
 
-            $('.moving-tab').css({
-                'transition': 'transform 0s'
+                $('.moving-tab').css({
+                    'transition': 'transform 0s'
+                });
             });
         });
-    });
-}
+    }
 
 
 }
