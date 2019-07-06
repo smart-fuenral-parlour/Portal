@@ -15,7 +15,6 @@ import { type } from 'os';
 import { ServiceService } from 'src/app/SERVICE/service.service'; // service link here
 import { MemberService } from 'src/app/services/member/member.service'
 import { PolicytypeService } from 'src/app/services/policytype/policytype.service'
-import { stringify } from '@angular/compiler/src/util';
 
 
 declare const $: any;
@@ -512,11 +511,12 @@ export class CreateMemberComponent implements OnInit {
             let age = 0
             birthyear = this.BenefitIDnum.value
 
-            age = parseInt(moment(new Date()).format('YYYY')) - parseInt('19' + birthyear.slice(0, 2))
 
             console.log('test')
             // for those born from the year 2000
             if (parseInt(birthyear.slice(0, 2)) <= parseInt(moment(new Date()).format('YY'))) {
+                
+            age = parseInt(moment(new Date()).format('YYYY')) - parseInt('19' + birthyear.slice(0, 2))
 
                 if (age < maxAge) {
 
@@ -534,6 +534,10 @@ export class CreateMemberComponent implements OnInit {
                 }
 
             } else {
+
+                
+            age = parseInt(moment(new Date()).format('YYYY')) - parseInt('19' + birthyear.slice(0, 2))
+
                 if (age < maxAge) {
 
                     console.log('successp')
@@ -557,17 +561,17 @@ export class CreateMemberComponent implements OnInit {
     // testing the age of the member to determine their policy types
     testMemberAge(identitynumber) {
 
-        console.log(stringify(identitynumber).length)
+        console.log(identitynumber.toString().length)
 
         // storing id number on string function to access string properties   
-        if (stringify(identitynumber).length == 13) {
+        if ( identitynumber.toString().length == 13) {
 
             let age = 0
 
-            if (parseInt(stringify(identitynumber).slice(0, 2)) <= parseInt(moment(new Date()).format('YY'))) {
+            if (parseInt(identitynumber.toString().slice(0, 2)) <= parseInt(moment(new Date()).format('YY'))) {
 
                 // for those born after the year 2000
-                age = parseInt(moment(new Date()).format('YYYY')) - parseInt('20' + stringify(identitynumber).slice(0, 2))
+                age = parseInt(moment(new Date()).format('YYYY')) - parseInt('20' + identitynumber.toString().slice(0, 2))
                 console.log('20: ' + age)
 
                 this._policytypeService.getPolicytypebyage(age)
@@ -580,7 +584,7 @@ export class CreateMemberComponent implements OnInit {
             } else {
 
                 // for those born before the year 2000
-                age = parseInt(moment(new Date()).format('YYYY')) - parseInt('19' + stringify(identitynumber).slice(0, 2))
+                age = parseInt(moment(new Date()).format('YYYY')) - parseInt('19' + identitynumber.toString().slice(0, 2))
                 console.log('19: ' + age)
 
                 this._policytypeService.getPolicytypebyage(age)
