@@ -8,9 +8,9 @@
 
             <div class="col-6">
               <mat-form-field>
-                <mat-select placeholder="Search Member By: " name="searchType" id="searchType"
+                <mat-select placeholder="Search Member By: " name="selectedSearchType" id="selectedSearchType"
                   [(ngModel)]="selectedSearchType" (click)="changeEmpty()" (select)="changeEmpty()">
-                  <mat-option *ngFor="let type of Types" [value]="type.value" (click)="selectSearchType()">
+                  <mat-option *ngFor="let type of Types" [value]="type.value" (click)="selectSearchType(selectedSearchType)">
                     {{ type.viewValue }}
                   </mat-option>
                 </mat-select>
@@ -19,8 +19,8 @@
 
             <div class="col-6">
               <mat-form-field class="example-full-width">
-                <input matInput placeholder="Search {{ searchText }}" type="search" id="searchBox" name="searchBox"
-                  (focus)="changeEmpty()" required>
+                <input matInput placeholder="Search {{ searchText }}" type="search" id="searchInput" name="searchInput"
+                  (focus)="changeEmpty()" [(ngModel)]="searchInput" required>
               </mat-form-field>
             </div>
 
@@ -37,32 +37,15 @@
 
             <div class="col-2">
               <button mat-raised-button type="submit" class="btn btn-sm" id="searchButton" name="searchButton"
-                (click)="searchMember()"> <i class="material-icons">search</i> Search Member</button>
+                (click)="searchMember(searchInput, selectedSearchType)"> <i class="material-icons">search</i> Search Member</button>
 
             </div>
           </div>
         </div>
       </div>
     </div>
-    <!-- div class="loader-wrapper" (load)="">
-        <span class="loader"><span class="loader-inner"></span></span>
-    </div>
-    <script>
-        $(window).on("load",function(){
-          $(".loader-wrapper").fadeOut("slow");
-        });
-    </script     
     
     
-    <mat-progress-spinner
-      class = "tp-margin"
-      [color] = "color"
-      [mode] = "mode"
-      [value] = "value">
-   </mat-progress-spinner> -->
-    <div class="row load-wrapper" id="load-wrapper" *ngIf="load" >
-      <mat-spinner [diameter]="50" [strokeWidth]="2" id="load" class="load"  width="150px"></mat-spinner>   <span>  Loading...</span>
-    </div>
     <div class="row" *ngIf="notFound">
       <div class="col-12 ml-auto mr-auto">
         <div class="card">
@@ -72,6 +55,7 @@
         </div>
       </div>
     </div>
+
     <div class="row" *ngIf="searchResult">
       <div class="col-md-12">
         <div class="card">

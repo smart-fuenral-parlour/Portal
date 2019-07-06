@@ -5,6 +5,8 @@ import swal from 'sweetalert2';
 import { isNullOrUndefined } from 'util';
 import { AppComponent } from 'src/app/app.component'
 import { jsonpCallbackContext } from '@angular/common/http/src/module';
+import {  Member } from 'src/app/services/member/member'
+import {  MemberService } from 'src/app/services/member/member.service'
 
 declare var $: any;
 
@@ -25,26 +27,20 @@ export class ViewMembersComponent implements OnInit {
 
   public dataTable: DataTable;
   response;
-  members
   lifestatus;
-  i: number;
-  x = 0;y=0; z=0;
+  
   selectedrow;
-  selectedSearchType
   searchText = 'ID Number';
   isEmpty = false
   searchResult = false;
   notFound = false;
   invalidID = false;
-  searchInput
   iduser
+  members
+  mem : Member
+ 
 
-  title = 'materialApp';
-  color = 'primary';
-  mode = 'determinate';
-  value = 80;
-
-  constructor(private _service: ServiceService, private _router: Router, private app: AppComponent) {
+  constructor(private memberSerice: MemberService, private _service: ServiceService, private _router: Router, private app: AppComponent) {
 
   }
 
@@ -52,17 +48,12 @@ export class ViewMembersComponent implements OnInit {
     { id: 1, value: 'Membership Number', viewValue: 'Membership Number' },
     { id: 2, value: 'ID Number', viewValue: 'ID Number' },
     { id: 3, value: 'Surname', viewValue: 'Surname' }
-  ];/*
-  $(window).on("load",function(){
-    $(".loader-wrapper").fadeOut("slow");
-});
-*/
-
+  ];
 
 
 
   ngOnInit() {
-    
+
     if (localStorage.getItem('iduser') != '') {
       this.iduser = JSON.parse(localStorage.getItem('iduser'))
       console.log(this.iduser)
@@ -72,25 +63,16 @@ export class ViewMembersComponent implements OnInit {
     sessionStorage.clear()
   }
 
-  click() {
-
-    this.app.loading = true
-    window.onloadstart
-  }
-
   //Search member
-  searchMember() {
+  searchMember(searchInput, selectedSearchType) {
 
     this.isEmpty = false
     this.searchResult = false
-    this.notFound = false
-    //this.load = true
+    this.notFound = false 
+    console.log(searchInput)
+  
 
-    this.searchInput = document.querySelector('#searchBox')
-
-
-
-    if (this.searchInput.value == '' || isNullOrUndefined(this.searchInput.value)) {
+    if (searchInput == '' || isNullOrUndefined(searchInput)) {
       this.searchResult = false
       this.notFound = false
       this.isEmpty = true;
@@ -99,38 +81,37 @@ export class ViewMembersComponent implements OnInit {
       this.searchResult = false
       this.notFound = false
 
-      if (this.selectedSearchType == 'Membership Number') {
+      if (selectedSearchType == 'Membership Number') {
         this.app.loading = true
 
-        this._service.searchMemberByMembershipNumber(this.searchInput.value)
-          .subscribe(res => {
-            this.response = res
-
+        this._service.searchMemberByMembershipNumber(searchInput)
+          .subscribe(member_res => {
+            this.response = member_res
 
             if (this.response.length > 0) {
               console.log('Search By Membership Number')
-              this.members = []
-              this.z = 0;
+               let x = 0;
 
-              for (this.i = 0; this.i < this.response.length; this.i++) {
-                this._service.getLifestatus(this.response[this.i].idlifestatus)
-                .subscribe(lifeS => { 
+              for (let i = 0; i < this.response.length;  i++) {
+                this._service.getLifestatus(this.response[i].idlifestatus)
+                  .subscribe(lifestatus_res => {
 
-                  this.members.push({
-                    'idmember': this.response[this.z].idmember,
-                    'membershipnumber': this.response[this.z].membershipnumber,
-                    'name': this.response[this.z].name,
-                    'surname': this.response[this.z].surname,
-                    'createddate': this.response[this.z].createddate,
-                    'identitynumber': this.response[this.z].identitynumber,
-                    'lifestatus': lifeS[0].name
+                    
+                    this.members.push({
+                      'idmember': this.response[x].idmember,
+                      'membershipnumber': this.response[x].membershipnumber,
+                      'name': this.response[x].name,
+                      'surname': this.response[x].surname,
+                      'createddate': this.response[x].createddate,
+                      'identitynumber': this.response[x].identitynumber,
+                      'lifestatus': lifestatus_res[0].name
+                    })
+                    x++
+
+
+                  }, err => {
+                    console.log(err)
                   })
-                  this.z++
-
-                  
-                }, err => {
-                  console.log()
-                })
 
 
               }
@@ -150,46 +131,42 @@ export class ViewMembersComponent implements OnInit {
               console.log(err)
             }
           )
-
       } else
-        if (this.selectedSearchType == 'Surname') {
+        if (selectedSearchType == 'Surname') {
           this.app.loading = true
 
-          this._service.searchMemberBySurname(this.searchInput.value)
+          this._service.searchMemberBySurname(searchInput)
             .subscribe(res => {
               this.response = res
 
               if (this.response.length > 0) {
                 console.log('Search By Surname')
-                
+
                 this.members = []
-                this.z = 0
+                let x = 0
 
-                for (this.i = 0; this.i < this.response.length; this.i++) {
-                  
-                  this._service.getLifestatus(this.response[this.i].idlifestatus)
-                  .subscribe(lifeS => {
+                for (let i = 0;  i < this.response.length; i++) {
 
-                    
-                    this.members.push({
-                      'idmember': this.response[this.z].idmember,
-                      'membershipnumber': this.response[this.z].membershipnumber,
-                      'name': this.response[this.z].name,
-                      'surname': this.response[this.z].surname,
-                      'createddate': this.response[this.z].createddate,
-                      'identitynumber': this.response[this.z].identitynumber,
-                      'lifestatus': lifeS[0].name
+                  this._service.getLifestatus(this.response[ i ].idlifestatus)
+                    .subscribe(lifeS => {
+
+
+                      this.members.push({
+                        'idmember': this.response[x].idmember,
+                        'membershipnumber': this.response[x].membershipnumber,
+                        'name': this.response[x].name,
+                        'surname': this.response[x].surname,
+                        'createddate': this.response[x].createddate,
+                        'identitynumber': this.response[x].identitynumber,
+                        'lifestatus': lifeS[0].name
+                      })
+                      x++
+
+
+                    }, err => {
+                      console.log(err)
                     })
-                    this.z++
 
-                    
-                  }, err => {
-                    console.log()
-                  })
-                  
-
-/*
-*/
                 }
 
 
@@ -210,9 +187,9 @@ export class ViewMembersComponent implements OnInit {
             )
 
         } else
-          if (this.searchInput.value.length == 13 || this.selectedSearchType == 'ID Number') {
+          if (searchInput.length == 13 || selectedSearchType == 'ID Number') {
             this.app.loading = true
-            this._service.searchMemberByIdNumber(this.searchInput.value)
+            this._service.searchMemberByIdNumber(searchInput)
               .subscribe(res => {
                 this.response = res
 
@@ -220,41 +197,41 @@ export class ViewMembersComponent implements OnInit {
                   console.log('Search By ID Number')
 
                   this.members = []
-                  this.z = 0
-                  
-                  for (this.i = 0; this.i < this.response.length; this.i++) {
+                  let x = 0
+
+                  for (let i = 0;  i < this.response.length;  i++) {
                     this.members.push({
-                      'idmember': this.response[this.i].idmember,
-                      'membershipnumber': this.response[this.i].membershipnumber,
-                      'name': this.response[this.i].name,
-                      'surname': this.response[this.i].surname,
-                      'createddate': this.response[this.i].createddate,
-                      'identitynumber': this.response[this.i].identitynumber
+                      'idmember': this.response[x].idmember,
+                      'membershipnumber': this.response[x].membershipnumber,
+                      'name': this.response[i].name,
+                      'surname': this.response[i].surname,
+                      'createddate': this.response[i].createddate,
+                      'identitynumber': this.response[i].identitynumber
                     })
-                    this._service.getLifestatus(this.response[this.i].idlifestatus)
-                    .subscribe(lifeS => {
-  
- /*                     
+                    this._service.getLifestatus(this.response[i].idlifestatus)
+                      .subscribe(lifeS => {
+console.log(lifeS)
+                        /*                     
                       this.members.push({
-                        'idmember': this.response[this.z].idmember,
-                        'membershipnumber': this.response[this.z].membershipnumber,
-                        'name': this.response[this.z].name,
-                        'surname': this.response[this.z].surname,
-                        'createddate': this.response[this.z].createddate,
-                        'identitynumber': this.response[this.z].identitynumber,
+                        'idmember': this.response[x].idmember,
+                        'membershipnumber': this.response[x].membershipnumber,
+                        'name': this.response[x].name,
+                        'surname': this.response[x].surname,
+                        'createddate': this.response[x].createddate,
+                        'identitynumber': this.response[x].identitynumber,
                         'lifestatus': lifeS[0].name
                       })
-                      this.z++
-  */
-                      
-                    }, err => {
-                      console.log()
-                    })
+                      x++
+                         */
+
+                      }, err => {
+                        console.log()
+                      })
 
 
 
                   }
-                  
+
 
                   this.app.loading = false
                   this.notFound = false
@@ -278,8 +255,9 @@ export class ViewMembersComponent implements OnInit {
 
   }
 
-  selectSearchType() {
-    this.searchText = this.selectedSearchType
+  selectSearchType(selectedSearchType) {
+    this.searchText = selectedSearchType
+    console.log(this.searchText)
   }
 
   changeEmpty() {
@@ -291,16 +269,20 @@ export class ViewMembersComponent implements OnInit {
   // Edit a member
   editMember(index, idmember) {
     this.selectedrow = index;
-    
-    localStorage.setItem('idmember', JSON.stringify(idmember));
+
+   // localStorage.setItem('idmember', JSON.stringify(idmember));
+    this.mem.idmember = 'idmember'
+    console.log(this.mem)
+    console.log(idmember)
+    console.log(this.mem.idmember)
     sessionStorage.clear()
-    this._router.navigate(['/members/editmember']);
+    //this._router.navigate(['/members/editmember']);
   }
 
   // View full member details
   viewMember(index, idmember) {
     this.selectedrow = index;
-    
+
     localStorage.setItem('idmember', JSON.stringify(idmember));
     this._router.navigate(['/members/viewmemberdetails']);
   }
@@ -344,80 +326,3 @@ export class ViewMembersComponent implements OnInit {
 }
 
 
-/*
-
-                  console.log(isNullOrUndefined(this.response[this.i].idlifestatus))
-                  if (isNullOrUndefined(this.response[this.i].idlifestatus)) {
-                    this.members.push({
-                      'idmember': this.response[this.i].idmember,
-                      'membershipnumber': this.response[this.i].membershipnumber,
-                      'name': this.response[this.i].name,
-                      'surname': this.response[this.i].surname,
-                      'createddate': this.response[this.i].createddate,
-                      'lifestatus': 'NOT DEFINED'
-                    })
-                  } else {
-
-                    this._service.getLifestatus(this.response[this.i].idlifestatus)
-                      .subscribe(lifeS => {
-                        this.lifestatus = lifeS[0].name
-                        console.log(this.lifestatus)
-                        console.log(this.i)
-                        console.log(this.response[0])
-                        
-                      })
-                    //  console.log(this.lifestatus)
-                    this.members.push({
-                      'idmember': this.response[this.i].idmember,
-                      'membershipnumber': this.response[this.i].membershipnumber,
-                      'name': this.response[this.i].name,
-                      'surname': this.response[this.i].surname,
-                      'createddate': this.response[this.i].createddate,
-                      'lifestatus': 'DEFINED'
-                    })
-                  }
-
-  ngAfterViewInit() {
-
-    $('#datatables').DataTable({
-      "pagingType": "full_numbers",
-      "lengthMenu": [
-        [10, 25, 50, -1],
-        [10, 25, 50, "All"]
-      ],
-      responsive: true,
-      language: {
-        search: "_INPUT_",
-        searchPlaceholder: "Search records",
-      }
-
-    });
-
-const table = $('#datatables').DataTable();
-
- Edit record
-table.on('click', '.edit', function(e) {
-  const $tr = $(this).closest('tr');
-  const data = table.row($tr).data();
-  alert('You press on Row: ' + data[0] + ' ' + data[1] + ' ' + data[2] + '\'s row.');
-  e.preventDefault();
-});
-
-// Delete a record
-table.on('click', '.remove', function(e) {
-  const $tr = $(this).closest('tr');
-  table.row($tr).remove().draw();
-  e.preventDefault();
-});
-
-//Like record
-table.on('click', '.like', function (e) {
-  alert('You clicked on Like button');
-  e.preventDefault();
-});
-
-$('.card .material-datatables label').addClass('form-group');
-}
-
-
-*/

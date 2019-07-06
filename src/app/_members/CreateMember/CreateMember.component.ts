@@ -455,7 +455,7 @@ export class CreateMemberComponent implements OnInit {
     }
 
 test(idextrapolicy) {
-    console.log(idextrapolicy.checked)
+    console.log(idextrapolicy)
 }
     // check the age of member to determine policy type
     checkMemberAge(BenefitIDnum0) {
