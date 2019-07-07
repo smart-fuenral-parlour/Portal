@@ -7,7 +7,11 @@ import { Injectable } from '@angular/core';
 const httpOptions = {
   headers: new HttpHeaders({'Content-Type': 'application/json'})
 };
+
 const apiUrl = "http://greenlinks1.dedicated.co.za:3002/api/member";
+const getmemberbyidentitynumberUrl = "http://greenlinks1.dedicated.co.za:3002/api/getmemberbyidentitynumber";
+const getmemberbymembershipnumberUrl = "http://greenlinks1.dedicated.co.za:3002/api/getmemberbymembershipnumber";
+const getmemberbysurnameUrl = "http://greenlinks1.dedicated.co.za:3002/api/getmemberbysurname";
 
 @Injectable({
   providedIn: 'root'
@@ -43,7 +47,6 @@ export class MemberService {
       catchError(this.handleError<Member>(`getMember id=${id}`))
     );
   }
-  
 
 
 
@@ -53,6 +56,8 @@ export class MemberService {
       catchError(this.handleError<Member>('addMember'))
     );
   }
+
+
   
   updateMember (id, member): Observable<any> {
     const url = `${apiUrl}/${id}`;
@@ -61,6 +66,8 @@ export class MemberService {
       catchError(this.handleError<any>('updateMember'))
     );
   }
+
+
   
   deleteMember (id): Observable<Member> {
     const url = `${apiUrl}/${id}`;

@@ -4,9 +4,7 @@ import { ServiceService } from 'src/app/SERVICE/service.service'; // service lin
 import swal from 'sweetalert2';
 import { isNullOrUndefined } from 'util';
 import { AppComponent } from 'src/app/app.component'
-import { jsonpCallbackContext } from '@angular/common/http/src/module';
-import {  Member } from 'src/app/services/member/member'
-import {  MemberService } from 'src/app/services/member/member.service'
+import { MemberService } from 'src/app/services/member/member.service'
 
 declare var $: any;
 
@@ -23,13 +21,12 @@ declare interface DataTable {
   templateUrl: './ViewMembers.component.html',
   styleUrls: ['./ViewMembers.component.css']
 })
-export class ViewMembersComponent implements OnInit {
+export class ViewMembersComponent implements OnInit, AfterViewInit {
 
   public dataTable: DataTable;
   response;
-  lifestatus;
-  
-  selectedrow;
+
+
   searchText = 'ID Number';
   isEmpty = false
   searchResult = false;
@@ -37,16 +34,20 @@ export class ViewMembersComponent implements OnInit {
   invalidID = false;
   iduser
   members
- 
 
-  constructor(private memberSerice: MemberService, private _service: ServiceService, private _router: Router, private app: AppComponent) {
+
+  constructor(
+    private service: ServiceService,
+    private memberSerice: MemberService,
+    private router: Router,
+    private app: AppComponent) {
 
   }
 
   Types = [
-    { id: 1, value: 'Membership Number', viewValue: 'Membership Number' },
-    { id: 2, value: 'ID Number', viewValue: 'ID Number' },
-    { id: 3, value: 'Surname', viewValue: 'Surname' }
+    { id: 1, value: 'Membership Number' },
+    { id: 2, value: 'ID Number' },
+    { id: 3, value: 'Surname', }
   ];
 
 
@@ -62,14 +63,14 @@ export class ViewMembersComponent implements OnInit {
     sessionStorage.clear()
   }
 
-  //Search member
+  //Search for member
   searchMember(searchInput, selectedSearchType) {
 
     this.isEmpty = false
     this.searchResult = false
-    this.notFound = false 
+    this.notFound = false
     console.log(searchInput)
-  
+
 
     if (searchInput == '' || isNullOrUndefined(searchInput)) {
       this.searchResult = false
@@ -82,20 +83,19 @@ export class ViewMembersComponent implements OnInit {
 
       if (selectedSearchType == 'Membership Number') {
         this.app.loading = true
-this.memberSerice.getMember(searchInput)
-        //this._service.searchMemberByMembershipNumber(searchInput)
+        this.memberSerice.getMember(searchInput)
           .subscribe(member_res => {
             this.response = member_res
 
             if (this.response.length > 0) {
               console.log('Search By Membership Number')
-               let x = 0;
+              let x = 0;
 
-              for (let i = 0; i < this.response.length;  i++) {
-                this._service.getLifestatus(this.response[i].idlifestatus)
+              for (let i = 0; i < this.response.length; i++) {
+                this.service.getLifestatus(this.response[i].idlifestatus)
                   .subscribe(lifestatus_res => {
 
-                    
+
                     this.members.push({
                       'idmember': this.response[x].idmember,
                       'membershipnumber': this.response[x].membershipnumber,
@@ -125,29 +125,26 @@ this.memberSerice.getMember(searchInput)
               this.notFound = true
             }
 
-          },
-            err => {
-              console.log(err)
-            }
-          )
+          }, err => {
+            console.log(err)
+          })
       } else
         if (selectedSearchType == 'Surname') {
           this.app.loading = true
 
-          this._service.searchMemberBySurname(searchInput)
-            .subscribe(res => {
-              this.response = res
+          this.service.searchMemberBySurname(searchInput)
+            .subscribe(member_res => {
+              this.response = member_res
 
               if (this.response.length > 0) {
-                console.log('Search By Surname')
 
                 this.members = []
                 let x = 0
 
-                for (let i = 0;  i < this.response.length; i++) {
+                for (let i = 0; i < this.response.length; i++) {
 
-                  this._service.getLifestatus(this.response[ i ].idlifestatus)
-                    .subscribe(lifeS => {
+                  this.service.getLifestatus(this.response[i].idlifestatus)
+                    .subscribe(lifestatus_res => {
 
 
                       this.members.push({
@@ -157,7 +154,7 @@ this.memberSerice.getMember(searchInput)
                         'surname': this.response[x].surname,
                         'createddate': this.response[x].createddate,
                         'identitynumber': this.response[x].identitynumber,
-                        'lifestatus': lifeS[0].name
+                        'lifestatus': lifestatus_res[0].name
                       })
                       x++
 
@@ -165,13 +162,13 @@ this.memberSerice.getMember(searchInput)
                     }, err => {
                       console.log(err)
                     })
-
                 }
 
 
                 this.app.loading = false
                 this.notFound = false
                 this.searchResult = true
+
               } else {
                 console.log('NO MEMBERS FOUND')
                 this.app.loading = false
@@ -179,26 +176,25 @@ this.memberSerice.getMember(searchInput)
                 this.notFound = true
               }
 
-            },
-              err => {
-                console.log(err)
-              }
-            )
+            }, err => {
+              console.log(err)
+            })
 
         } else
-          if (searchInput.length == 13 || selectedSearchType == 'ID Number') {
+          if (searchInput.length == 13) {
             this.app.loading = true
-            this._service.searchMemberByIdNumber(searchInput)
-              .subscribe(res => {
-                this.response = res
+
+            this.service.searchMemberByIdNumber(searchInput)
+              .subscribe(member_res => {
+                this.response = member_res
 
                 if (this.response.length > 0) {
-                  console.log('Search By ID Number')
 
                   this.members = []
                   let x = 0
 
-                  for (let i = 0;  i < this.response.length;  i++) {
+                  for (let i = 0; i < this.response.length; i++) {
+
                     this.members.push({
                       'idmember': this.response[x].idmember,
                       'membershipnumber': this.response[x].membershipnumber,
@@ -207,9 +203,10 @@ this.memberSerice.getMember(searchInput)
                       'createddate': this.response[i].createddate,
                       'identitynumber': this.response[i].identitynumber
                     })
-                    this._service.getLifestatus(this.response[i].idlifestatus)
-                      .subscribe(lifeS => {
-console.log(lifeS)
+
+                    this.service.getLifestatus(this.response[i].idlifestatus)
+                      .subscribe(lifestatus_res => {
+                        console.log(lifestatus_res)
                         /*                     
                       this.members.push({
                         'idmember': this.response[x].idmember,
@@ -224,10 +221,8 @@ console.log(lifeS)
                          */
 
                       }, err => {
-                        console.log()
+                        console.log(err)
                       })
-
-
 
                   }
 
@@ -235,6 +230,7 @@ console.log(lifeS)
                   this.app.loading = false
                   this.notFound = false
                   this.searchResult = true
+
                 } else {
                   console.log('NO MEMBERS FOUND')
                   this.app.loading = false
@@ -242,24 +238,24 @@ console.log(lifeS)
                   this.notFound = true
                 }
 
-              },
-                err => console.log(err)
-              )
+              }, err => {
+                console.log(err)
+              })
 
           } else {
             this.invalidID = true;
+            this.app.loading = false
           }
 
     }
 
   }
 
-  selectSearchType(selectedSearchType) {
+  displaySelectedSearchType(selectedSearchType) {
     this.searchText = selectedSearchType
-    console.log(this.searchText)
   }
 
-  changeEmpty() {
+  hideTextError() {
     this.isEmpty = false
     this.invalidID = false
   }
@@ -267,25 +263,21 @@ console.log(lifeS)
 
   // Edit a member
   editMember(index, idmember) {
-    this.selectedrow = index;
 
-   // localStorage.setItem('idmember', JSON.stringify(idmember));
-   
+    localStorage.setItem('idmember', JSON.stringify(idmember));
     sessionStorage.clear()
-    //this._router.navigate(['/members/editmember']);
+    this.router.navigate(['/members/editmember']);
   }
 
   // View full member details
   viewMember(index, idmember) {
-    this.selectedrow = index;
 
     localStorage.setItem('idmember', JSON.stringify(idmember));
-    this._router.navigate(['/members/viewmemberdetails']);
+    this.router.navigate(['/members/viewmemberdetails']);
   }
 
   // Delete a member
   deleteMember(index, idmember) {
-    this.selectedrow = index;
 
     swal({
       title: 'Delete This Member',
@@ -300,15 +292,16 @@ console.log(lifeS)
     }).then((result) => {
       if (result.value) {
 
-        this._service.removeMember(idmember)
+        this.memberSerice.deleteMember(idmember)
           .subscribe(res => {
             console.log(res)
-          }, err => console.log(err))
+          }, err => {
+            console.log(err)
+          })
 
         swal(
           {
             title: 'Member Deleted',
-            //text: 'Member Deleted',
             type: 'success',
             confirmButtonClass: "btn btn-success",
             buttonsStyling: false
@@ -318,6 +311,26 @@ console.log(lifeS)
     })
   }
 
+
+  ngAfterViewInit() {
+    $('#datatables').DataTable({
+      "pagingType": "full_numbers",
+      "lengthMenu": [
+        [10, 25, 50, -1],
+        [10, 25, 50, "All"]
+      ],
+      responsive: true,
+      language: {
+        search: "_INPUT_",
+        searchPlaceholder: "Search records",
+      }
+
+    });
+
+    const table = $('#datatables').DataTable();
+    
+    $('.card .material-datatables label').addClass('form-group');
+  }
 
 }
 

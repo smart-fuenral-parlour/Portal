@@ -8,7 +8,7 @@ const httpOptions = {
   headers: new HttpHeaders({'Content-Type': 'application/json'})
 };
 const apiUrl = "http://greenlinks1.dedicated.co.za:3002/api/policytype";
-const getPolicyTypebyAgeUrl = "http://greenlinks1.dedicated.co.za:3002/api/getpolicytypebyage";
+const getPolicytypebyageUrl = "http://greenlinks1.dedicated.co.za:3002/api/getpolicytypebyage";
 
 @Injectable({
   providedIn: 'root'
@@ -47,7 +47,7 @@ export class PolicytypeService {
 
   getPolicytypebyage(id: number): Observable<Policytype> {
     const url = `${apiUrl}/${id}`;
-    return this.http.get<Policytype>(getPolicyTypebyAgeUrl).pipe(
+    return this.http.get<Policytype>(getPolicytypebyageUrl).pipe(
       tap(_ => console.log(`fetched policytype id=${id}`)),
       catchError(this.handleError<Policytype>(`getPolicytype id=${id}`))
     );

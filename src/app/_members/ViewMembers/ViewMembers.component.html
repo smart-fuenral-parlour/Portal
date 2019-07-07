@@ -9,9 +9,9 @@
             <div class="col-6">
               <mat-form-field>
                 <mat-select placeholder="Search Member By: " name="selectedSearchType" id="selectedSearchType"
-                  [(ngModel)]="selectedSearchType" (click)="changeEmpty()" (select)="changeEmpty()">
-                  <mat-option *ngFor="let type of Types" [value]="type.value" (click)="selectSearchType(selectedSearchType)">
-                    {{ type.viewValue }}
+                  [(ngModel)]="selectedSearchType" (click)="hideTextError()">
+                  <mat-option *ngFor="let type of Types" [value]="type.value" (click)="displaySelectedSearchType(selectedSearchType)">
+                    {{ type.value }}
                   </mat-option>
                 </mat-select>
               </mat-form-field>
@@ -20,7 +20,7 @@
             <div class="col-6">
               <mat-form-field class="example-full-width">
                 <input matInput placeholder="Search {{ searchText }}" type="search" id="searchInput" name="searchInput"
-                  (focus)="changeEmpty()" [(ngModel)]="searchInput" required>
+                  (focus)="hideTextError()" [(ngModel)]="searchInput" required>
               </mat-form-field>
             </div>
 
