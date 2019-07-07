@@ -79,6 +79,7 @@ export class EditMemberComponent implements OnInit {
   ]
 
   ngOnInit() {
+    // FOR VERSION 6.28
     /* SOCIETIES
         this._service.getSociety()
           .subscribe(res => {

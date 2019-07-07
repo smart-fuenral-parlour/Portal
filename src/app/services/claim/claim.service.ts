@@ -7,7 +7,9 @@ import { Injectable } from '@angular/core';
 const httpOptions = {
   headers: new HttpHeaders({'Content-Type': 'application/json'})
 };
+
 const apiUrl = "http://greenlinks1.dedicated.co.za:3002/api/claim";
+const getclaimbyidmemberUrl = "http://greenlinks1.dedicated.co.za:3002/api/getclaimbyidmember";
 
 @Injectable({
   providedIn: 'root'
@@ -37,7 +39,14 @@ export class ClaimService {
     );
   }
   
-
+  
+  getClaimbyidmember(id: number): Observable<Claim> {
+    const url = `${getclaimbyidmemberUrl}/${id}`;
+    return this.http.get<Claim>(url).pipe(
+      tap(_ => console.log(`fetched claim id=${id}`)),
+      catchError(this.handleError<Claim>(`getClaim id=${id}`))
+    );
+  }
 
 
   createClaim (claim): Observable<Claim> {

@@ -57,7 +57,7 @@ export class CreateMemberComponent implements OnInit {
     BenefitName
     BenefitSurname
     BenefitIDnum
-    maxAge
+    maxAge = 57
 
     constructor(
         private formBuilder: FormBuilder,
@@ -512,31 +512,30 @@ export class CreateMemberComponent implements OnInit {
     testBeneficiaryAge(i) {
 
         let birthyear: string
-        let maxAge = 57;
         this.BenefitIDnum = document.querySelector('#beneficiaryID' + i)
-        let name
+        let beneficiaryName 
 
 
         if (this.BenefitIDnum.value.length == 13) {
+
             let age = 0
             birthyear = this.BenefitIDnum.value
-
 
             // for those born from the year 2000
             if (parseInt(birthyear.slice(0, 2)) <= parseInt(moment(new Date()).format('YY'))) {
 
                 age = parseInt(moment(new Date()).format('YYYY')) - parseInt('19' + birthyear.slice(0, 2))
 
-                if (age < maxAge) {
+                if (age < this.maxAge) {
 
-                    console.log('successp')
+                    console.log('success')
 
                 } else {
-
+                    beneficiaryName = document.querySelector('#beneficiaryName' + i)
                     swal({
-                        title: " not allowed as Beneficiary",
-                        text: "Beneficiary must not be older than " + maxAge + " years older",
-                        timer: 2000,
+                        title: beneficiaryName.value+" cannot be added as a Beneficiary",
+                        text: "Beneficiary must not be older than " + this.maxAge + " years",
+                        timer: 5500,
                         showConfirmButton: true
                     }).catch(swal.noop)
 
@@ -544,18 +543,18 @@ export class CreateMemberComponent implements OnInit {
 
             } else {
 
-
+            // for those born after the year 2000
                 age = parseInt(moment(new Date()).format('YYYY')) - parseInt('19' + birthyear.slice(0, 2))
 
-                if (age < maxAge) {
+                if (age < this.maxAge) {
 
                     console.log('successp')
 
                 } else {
 
                     swal({
-                        title: " cannot be added as a Beneficiary",
-                        text: "Beneficiary must not be older than " + maxAge + " years older",
+                        title: beneficiaryName.value+" cannot be added as a Beneficiary",
+                        text: "Beneficiary must not be older than " + this.maxAge + " years",
                         timer: 5500,
                         showConfirmButton: true
                     }).catch(swal.noop)
@@ -570,39 +569,38 @@ export class CreateMemberComponent implements OnInit {
     // testing the age of the member to determine their policy types
     testMemberAge(identitynumber) {
 
-
-        let set: number
+console.log(identitynumber.toString().length)
 
         // storing id number on string function to access string properties   
         if (identitynumber.toString().length == 13) {
 
             let age = 0
-
-            if ((parseInt(identitynumber.toString().slice(0, 2)) <= parseInt(moment(new Date()).format('YY'))) || parseInt(identitynumber.toString().slice(0, 2))) {
+            if ((parseInt(identitynumber.toString().slice(0, 2)) <= parseInt(moment(new Date()).format('YY'))) ) {
 
                 // for those born after the year 2000
                 age = parseInt(moment(new Date()).format('YYYY')) - parseInt('20' + identitynumber.toString().slice(0, 2))
-                console.log('1: ' + age)
-
+                console.log(parseInt('20' + identitynumber.toString().slice(0, 2))+': ' + age)
+/*
                 this.policytypeService.getPolicytypebyage(age)
                     .subscribe(policytype_res => {
                         console.log(policytype_res)
                     }, err => {
                         console.log(err)
-                    })
+                    })*/
 
             } else {
 
                 // for those born before the year 2000
                 age = parseInt(moment(new Date()).format('YYYY')) - parseInt('19' + identitynumber.toString().slice(0, 2))
                 console.log('2: ' + age)
-
+                console.log(parseInt('19' + identitynumber.toString().slice(0, 2))+': ' + age)
+/*
                 this.policytypeService.getPolicytypebyage(age)
                     .subscribe(policytype_res => {
                         console.log(policytype_res)
                     }, err => {
                         console.log(err)
-                    })
+                    })*/
 
             }
 

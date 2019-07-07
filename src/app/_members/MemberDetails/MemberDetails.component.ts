@@ -1,9 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators, FormControl, FormArray, NgForm } from '@angular/forms'
+////////////////// SERVICE CALLS /////////////////////////////////////
+import { MemberService } from 'src/app/services/member/member.service'
+import { PolicystatusService } from 'src/app/services/policystatus/policystatus.service'
+///////////////////////////////////////////////////////////////////////
 import { ServiceService } from 'src/app/SERVICE/service.service'; // service link here
 import { isNullOrUndefined, isNull } from 'util';
-import { isDefined } from '@angular/compiler/src/util';
-import { Key } from 'protractor';
 import { Router } from '@angular/router';
 import swal from 'sweetalert2';
 import { Subscriber } from 'rxjs';
@@ -20,7 +22,7 @@ declare var $: any;
 export class MemberDetailsComponent implements OnInit {
 
   addForm: FormGroup;
-  getID; i: number
+   i: number
   singleMember;
   rows: FormArray;
   itemForm: FormGroup;
@@ -58,7 +60,12 @@ export class MemberDetailsComponent implements OnInit {
   iduser
 
 
-  constructor(private fb: FormBuilder, private _service: ServiceService, private _router: Router, private app: AppComponent) {
+  constructor(private fb: FormBuilder,
+            private service: ServiceService,
+            private memberservice: MemberService,
+            private policystatusService: PolicystatusService,
+            private router: Router,
+            private app: AppComponent) {
 
 
     this.addForm = this.fb.group({
@@ -86,33 +93,36 @@ export class MemberDetailsComponent implements OnInit {
     }
 
     if (localStorage.getItem('idmember') != null) {
-      this.getID = JSON.parse(localStorage.getItem('idmember'));
+      let idmember = JSON.parse(localStorage.getItem('idmember'));
 
 
 
-      this._service.getSingleMember(this.getID)
-        .subscribe(member1 => {
+      //this.service.getSingleMember()
+      this.memberservice.getMember(idmember)
+        .subscribe(member_res => {
 
-          this.singleMember = member1
-          this.firstName = this.singleMember[0].name
-          this.lastName = this.singleMember[0].surname
-          this.idnumber = this.singleMember[0].identitynumber
-          this.email = this.singleMember[0].email
-          this.housenumber = this.singleMember[0].housenumber
-          this.streetname = this.singleMember[0].streetname
-          this.suburb = this.singleMember[0].suburb
-          this.province = this.singleMember[0].province
-          this.contact = this.singleMember[0].contactnumber
-          this.membershipNumber = this.singleMember[0].membershipnumber
-          this.memberId = this.singleMember[0].idmember
-      /**/this.policystatus = 'Active'//this.singleMember[0].policystatus
-          this.date = this.singleMember[0].createddate
-      /***/this.createdby = 'SYSTEM' //this.singleMember[0].createdby
-          this.gender = this.singleMember[0].gender
+          this.singleMember = member_res[0]
+          console.log(this.singleMember)
+          console.log(this.singleMember.name)
+          this.firstName = this.singleMember.name
+          this.lastName = this.singleMember.surname
+          this.idnumber = this.singleMember.identitynumber
+          this.email = this.singleMember.email
+          this.housenumber = this.singleMember.housenumber
+          this.streetname = this.singleMember.streetname
+          this.suburb = this.singleMember.suburb
+          this.province = this.singleMember.province
+          this.contact = this.singleMember.contactnumber
+          this.membershipNumber = this.singleMember.membershipnumber
+          this.memberId = this.singleMember.idmember
+      /**/this.policystatus = 'Active'//this.singleMember.policystatus
+          this.date = this.singleMember.createddate
+      /***/this.createdby = 'SYSTEM' //this.singleMember.createdby
+          this.gender = this.singleMember.gender
           this.noBeneficiary = false
 
 
-          this._service.getMemberBeneficiary(this.memberId)
+          this.service.getMemberBeneficiary(this.memberId)
             .subscribe(ben => {
               this.beneficiaries = ben
               console.log(ben)
@@ -127,23 +137,23 @@ export class MemberDetailsComponent implements OnInit {
               this.app.loading = false
               console.log(this.memberId)
 
-              this._service.getUser(this.iduser)
+              this.service.getUser(this.iduser)
                 .subscribe(res => {
                   this.createdby = res[0]
                   console.log(this.createdby)
                   console.log(this.createdby.name)
 
-                  this._service.getMemberPayments(this.membershipNumber)
+                  this.service.getMemberPayments(this.membershipNumber)
                     .subscribe(pays => {
                       this.payments = pays
-/*
-                      this._service.getMemberPolicyDetails(this.memberId)
-                        .subscribe(policyD => {
-
-                        }, err => {
-
-                        })
-*/
+                      /*
+                                            this.service.getMemberPolicyDetails(this.memberId)
+                                              .subscribe(policyD => {
+                      
+                                              }, err => {
+                      
+                                              })
+                      */
                     }, err => {
                       console.log(err)
                     })
@@ -203,7 +213,7 @@ export class MemberDetailsComponent implements OnInit {
       buttonsStyling: false
     }).then((result) => {
       if (result.value) {
-        this._service.removeBeneficiary(id)
+        this.service.removeBeneficiary(id)
           .subscribe(res => {
             console.log(res)
           }, err => {
@@ -243,7 +253,7 @@ export class MemberDetailsComponent implements OnInit {
     // this.selectedrow = index;
     localStorage.setItem('idmember', JSON.stringify(this.memberId));
     sessionStorage.setItem('fromMemberDetails', JSON.stringify(true));
-    this._router.navigate(['/members/editmember']);
+    this.router.navigate(['/members/editmember']);
   }
 
 
@@ -316,7 +326,7 @@ export class MemberDetailsComponent implements OnInit {
 
 
 
-        this._service.updateBeneficiary(id, { 'idmember': this.memberId, 'name': this.BenefitName, 'surname': this.BenefitSurname, 'identitynumber': this.BenefitIdNumber })
+        this.service.updateBeneficiary(id, { 'idmember': this.memberId, 'name': this.BenefitName, 'surname': this.BenefitSurname, 'identitynumber': this.BenefitIdNumber })
           .subscribe(res => {
             this.app.loading = false
             console.log(res)
@@ -395,7 +405,7 @@ export class MemberDetailsComponent implements OnInit {
       if (result.value) {
 
 
-        this._service.createMemberBeneficiary({ 'idmember': this.memberId, 'createddate': this.date, 'idlifestatus': 1, 'identitynumber': $('#IDNumber').val(), 'name': $('#Name').val(), 'surname': $('#Surname').val() })
+        this.service.createMemberBeneficiary({ 'idmember': this.memberId, 'createddate': this.date, 'idlifestatus': 1, 'identitynumber': $('#IDNumber').val(), 'name': $('#Name').val(), 'surname': $('#Surname').val() })
           .subscribe(ben => {
             console.log(ben)
 
@@ -470,7 +480,7 @@ export class MemberDetailsComponent implements OnInit {
     this.selectedClaim = index;
 
     localStorage.setItem('idclaim', JSON.stringify(idclaim));
-    this._router.navigate(['/claims/claiminfo']);
+    this.router.navigate(['/claims/claiminfo']);
   }
 
 
