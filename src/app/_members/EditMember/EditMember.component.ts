@@ -30,9 +30,7 @@ export class EditMemberComponent implements OnInit {
   constructor(private app: AppComponent,
     private service: ServiceService,
     private memberService: MemberService,
-    private router: Router) {
-
-  }
+    private router: Router) {  }
 
   Provinces = [
     { value: 'Gauteng', name: 'Gauteng', abrv: 'GP' },

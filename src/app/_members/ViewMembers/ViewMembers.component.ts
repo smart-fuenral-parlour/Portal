@@ -215,7 +215,7 @@ export class ViewMembersComponent implements OnInit, AfterViewInit {
 
   // View full member details
   viewMember(index) {
-    localStorage.setItem('viewmember', JSON.stringify(this.members[index]));
+    localStorage.setItem('viewdetails', JSON.stringify(this.members[index]));
     this.router.navigate(['/members/viewmemberdetails']);
   }
 

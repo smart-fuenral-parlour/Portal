@@ -10,6 +10,17 @@ import { BalanceService } from 'src/app/services/balance/balance.service'
 import { PolicydetailsService } from 'src/app/services/policydetails/policydetails.service'
 import { LifestatusService } from 'src/app/services/lifestatus/lifestatus.service'
 import { UserService } from 'src/app/services/user/user.service'
+
+////////////////// MODEL CLASS CALLS /////////////////////////////////////
+import { Member } from 'src/app/services/member/member'
+import { Policystatus } from 'src/app/services/policystatus/policystatus'
+import { Claim } from 'src/app/services/claim/claim'
+import { Beneficiary } from 'src/app/services/beneficiary/beneficiary'
+import { Balance } from 'src/app/services/balance/balance'
+import { Policydetails } from 'src/app/services/policydetails/policydetails'
+import { Lifestatus } from 'src/app/services/lifestatus/lifestatus'
+import { User } from 'src/app/services/user/user'
+
 ///////////////////////////////////////////////////////////////////////
 
 import { ServiceService } from 'src/app/SERVICE/service.service'; // service link here
@@ -35,16 +46,11 @@ export class MemberDetailsComponent implements OnInit {
   rows: FormArray;
   itemForm: FormGroup;
   society = false;
-  beneficiaries;
   selectedrow;
 
   idmember
   createddate
-  policystatus
-  lifestatus
   balances
-  user
-  claims
 
   editTextBox = false;
 
@@ -57,28 +63,17 @@ export class MemberDetailsComponent implements OnInit {
   Beneficiaryname;
   Beneficiarysurname;
   Beneficiaryidumber;
-  /*
-    ;
-    ;
-    ;
-  
-  
-  
-    creator
-    payments
-    claims
-    Nopayment = false;
-  
-  
-    payment_toNULL = false; claim_toNULL = false
-    payment_fromNULL = false; claim_fromNULL = false
-    paymentTable = false; claimTable = false
-  
-    fromDate
-    toDate
-    
-  */
+
   iduser
+  /////////////////////
+  member: Member
+  beneficiary: Beneficiary
+  claims
+  policydetails: Policydetails
+  user: User
+  lifestatus: Lifestatus
+  beneficiaries;
+  policystatus: Policystatus
 
 
   constructor(private fb: FormBuilder,
@@ -104,94 +99,53 @@ export class MemberDetailsComponent implements OnInit {
 
   }
 
+
   ngOnInit() {
-
     this.app.loading = true
-    // test if member is from a society FOR VERSION 6.75
-    if (!isNullOrUndefined(sessionStorage.getItem('greenlinks'))) {
-      this.society = true
-    }
 
-    if (localStorage.getItem('iduser') != null) {
-      this.iduser = localStorage.getItem('iduser')
-    }
+    this.member = JSON.parse(localStorage.getItem('viewdetails'))
+    console.log(this.member)
 
-    if (localStorage.getItem('idmember') != null) {
-      let idmember = JSON.parse(localStorage.getItem('idmember'));
+    if (JSON.parse(localStorage.getItem('viewdetails')) != null) {
+      this.app.loading = false
 
 
+      this.beneficiaryService.getBeneficiarybyidmember(this.member.idmember)
+        .subscribe(beneficiary_res => {
 
-      //this.service.getSingleMember()
-      this.memberService.getMember(idmember)
-        .subscribe(member_res => {
+          this.beneficiaries = beneficiary_res
+          console.log(this.beneficiaries)
 
-          this.singleMember = member_res[0]
-          this.idmember = this.singleMember.idmember
-          //  this.membershipnumber = this.singleMember.membershipnumber
-          this.createddate = this.singleMember.createddate
-          this.noBeneficiary = false
+          this.policydetailsService.getPolicydetailbyidmember(this.member.idmember)
+            .subscribe(policydetail_res => {
 
-
-
-          this.beneficiaryService.getBeneficiary(this.idmember)
-            .subscribe(beneficiaries_res => {
-              this.beneficiaries = beneficiaries_res
-              console.log(beneficiaries_res)
-
-              if (this.beneficiaries.length == 0) {
-                this.noBeneficiary = true
-              } else {
-                this.noBeneficiary = false
-              }
-
-              this.app.loading = false
-              this.createdby = 'Thabang Mabambi'
+              this.policydetails = policydetail_res[0]
+              console.log(this.policydetails)
 
 
+              this.userService.getUser(this.member.iduser)
+                .subscribe(user_res => {
+
+                  this.user = user_res[0]
+                  console.log(this.user)
 
 
-              this.policydetailsService.getPolicydetailbyidmember(this.idmember)
-                .subscribe(policydetails_res => {
+                  this.lifestatusService.getLifestatus(this.member.idlifestatus)
+                    .subscribe(lifestatus_res => {
+
+                      this.lifestatus = lifestatus_res[0]
+                      console.log(this.lifestatus)
 
 
-                  this.policystatusService.getPolicystatus(policydetails_res[0].idpolicystatus)
-                    .subscribe(policystatus_res => {
+                      this.claimService.getClaimbyidmember(this.member.idmember)
+                        .subscribe(claim_res => {
 
-                      this.policystatus = policystatus_res[0].name
+                          this.claims = claim_res
+                          console.log(this.claims)
 
-
-                      this.lifestatusService.getLifestatus(member_res[0].idlifestatus)
-                        .subscribe(lifestatus_res => {
-
-                          this.lifestatus = lifestatus_res[0].name
-
-
-                          this.userService.getUser(member_res[0].iduser)
-                            .subscribe(user_res => {
-
-                              this.user = user_res[0]
-
-                              this.balanceService.getBalancebyidpolicydetails(policydetails_res[0].idpolicydetails)
-                                .subscribe(balance_res => {
-
-                                  this.balances = balance_res
-
-                                  this.claimService.getClaimbyidmember(member_res[0].idmember)
-                                    .subscribe(claim_res => {
-
-                                      this.claims = claim_res
-
-                                    }, err => {
-                                      console.log(err)
-                                    })
-
-
-                                }, err => {
-                                  console.log(err)
-                                })
-
-
-
+                          this.policystatusService.getPolicystatus(this.member.idlifestatus)
+                            .subscribe(policystatus_res => {
+                              this.policystatus = policystatus_res[0]
                             }, err => {
                               console.log(err)
                             })
@@ -200,45 +154,27 @@ export class MemberDetailsComponent implements OnInit {
                           console.log(err)
                         })
 
-
-
                     }, err => {
                       console.log(err)
                     })
-
 
                 }, err => {
                   console.log(err)
                 })
 
 
+              //idpolicydetails
             }, err => {
-
-              this.app.loading = false
               console.log(err)
             })
 
-
-          if (this.policystatus = 'Active') {
-            this.policycolor = 'text-success'
-          } else {
-            this.policycolor = 'text-danger'
-          }
-
-          if (this.lifestatus = 'Alive') {
-            this.lifecolor = 'text-success'
-          } else {
-            this.lifecolor = 'text-danger'
-          }
-
-
         }, err => {
-          this.app.loading = false
           console.log(err)
         })
-    } else {
-      return null;
     }
+    ///  
+    console.log(this.member.idmember)
+
 
   }
 

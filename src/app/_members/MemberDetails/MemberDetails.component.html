@@ -3,13 +3,13 @@
   <h3>
     <div class="row">
       <div class="col-6">
-        <span style="size: 15%">Membership Number: {{singleMember.membershipnumber}}</span>
+        <span style="size: 15%">Membership Number: {{member.membershipnumber}}</span>
       </div>
       <div class="col-5" style="text-align: right;">
-        Policy Status: <span class="{{policycolor}}">{{policystatus}}</span>
+        Policy Status: <span class="{{policycolor}}">{{ policystatus.name }}</span>
       </div>
       <div class="col-5 text-center">
-        Life Status: <span class="text-success">{{lifestatus}}</span>
+        Life Status: <span class="text-success">{{ lifestatus.name }}</span>
       </div>
     </div>
   </h3>
@@ -46,27 +46,27 @@
                 <div class="card-body">
                   <h6 class="card-category"><b>Home Address</b></h6>
                   <p class="card-description">
-                    {{singleMember.housenumber}} {{singleMember.streetname}}
+                    {{member.housenumber}} {{member.streetname}}
                   </p>
                   <p class="card-description">
-                    {{singleMember.suburb}} {{singleMember.province}}
+                    {{member.suburb}} {{member.province}}
                   </p>
                 </div>
               </div>
             </div>
             <p class="card-description">
-              Created date:<b> {{ singleMember.createddate | date: "EEEE MMMM dd, yyyy 'at' HH:mm"}} </b>
+              Created date:<b> {{ member.createddate | date: "EEEE MMMM dd, yyyy 'at' HH:mm"}} </b>
             </p>
           </div>
           <div class="card col-sm-6 card-profile">
 
             <div class="card-body">
               <h5 class="card-category text-gray"><b>Member Details</b></h5>
-              <h4 class="card-title text-black"> {{singleMember.name}} {{singleMember.surname}} </h4>
+              <h4 class="card-title text-black"> {{member.name}} {{member.surname}} </h4>
               <p class="card-description">
-                ID number: <b>{{singleMember.identitynumber}}</b><br /> Gender: <b>{{singleMember.gender}}</b>
-                <br /><br /> email: <b>{{singleMember.email}}</b> <br /> Contact Number:
-                <b>{{singleMember.contactnumber}}</b>
+                ID number: <b>{{member.identitynumber}}</b><br /> Gender: <b>{{member.gender}}</b>
+                <br /><br /> email: <b>{{member.email}}</b> <br /> Contact Number:
+                <b>{{member.contactnumber}}</b>
               </p>
 
             </div>
@@ -80,7 +80,7 @@
                 <div class="card-icon">
                   <i class="material-icons">assignment</i>
                 </div>
-                <h4 class="card-title"><b> Beneficieries of </b>{{singleMember.name}} {{ singleMember.surname }}</h4>
+                <h4 class="card-title"><b> Beneficieries of </b>{{member.name}} {{ member.surname }}</h4>
               </div>
               <div class="card-body">
                 <div class="toolbar">
@@ -154,25 +154,6 @@
           <div class="col-md-12 ml-auto mr-auto">
             <div class="card">
               <div class="card-body">
-                <!--
-                    <div class="col-6">
-                      <mat-form-field>
-                        <mat-select placeholder="Search Member By: " name="searchType" id="searchType"
-                          [(ngModel)]="selectedSearchType" (click)="changeEmpty()" (select)="changeEmpty()">
-                          <mat-option *ngFor="let type of Types" [value]="type.value" (click)="selectSearchType()">
-                            {{ type.viewValue }}
-                          </mat-option>
-                        </mat-select>
-                      </mat-form-field>
-                    </div>
-        
-                    <div class="col-6">
-                      <mat-form-field class="example-full-width">
-                        <input matInput placeholder="Search {{ searchText }}" type="search" id="searchBox" name="searchBox"
-                          (focus)="changeEmpty()" required>
-                      </mat-form-field>
-                    </div>
-                  -->
                 <div class="col-12">
 
                   <!-- From Date -->
