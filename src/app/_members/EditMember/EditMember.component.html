@@ -2,124 +2,126 @@
   <div class="container-fluid">
     <div class="row">
       <div class="col-md-8 ml-auto mr-auto">
-        <div class="card ">
-          <div class="card-header card-header-icon card-header-rose">
-            <div class="card-icon">
-              <i class="material-icons">perm_identity</i>
+
+          <div class="card ">
+              <div class="card-header card-header-icon card-header-rose">
+                <div class="card-icon">
+                  <i class="material-icons">perm_identity</i>
+                </div>
+                <h4 class="card-title">Edit Member Profile -
+                  <small class="category">Complete your profile</small>
+                </h4>
+              </div>
+              <div class="card-body">
+                <form>
+                  <div class="row">
+                    <div class="col-md-6">
+                      <div class="form-group">
+                        <label class="bmd-label-floating">First Name</label>
+                        <input type="text" [ngModelOptions]="{standalone: true}" [(ngModel)]="member.name" class="form-control"  placeholder="{{ setmember.name }}">
+                      </div>
+                    </div>
+                    <div class="col-md-6">
+                      <div class="form-group">
+                        <label class="bmd-label-floating">Last Name</label>
+                        <input type="text" class="form-control"   [ngModelOptions]="{standalone: true}" [(ngModel)]="member.surname" 
+                          placeholder="{{setmember.surname}}">
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-md-6">
+                      <div class="form-group">
+                        <label class="bmd-label-floating">Identity Number</label>
+                        <input type="text" class="form-control"  inputmode="numeric" [ngModelOptions]="{standalone: true}" [(ngModel)]="member.identitynumber" 
+                          placeholder="{{ setmember.identitynumber }}"  >
+                      </div>
+                    </div>
+    
+                    <div class="col-md-4">
+                      <label class="bmd-label-floating">Gender</label>
+                      <div>
+                        <mat-form-field>
+                          <mat-select placeholder="{{ setmember.gender }}" 
+                            [ngModelOptions]="{standalone: true}" [(ngModel)]="member.gender">
+                            <mat-option *ngFor="let Gender of Genders" [value]="Gender.value">
+                              {{ Gender.name | titlecase }}
+                            </mat-option>
+                          </mat-select>
+                        </mat-form-field>
+                      </div>
+                    </div>
+    
+                  </div>
+    
+           
+    
+                  <div class="row">
+    
+                    <div class="col-md-5">
+                      <div class="form-group">
+                        <label class="bmd-label-floating">Email address</label>
+                        <input type="email" class="form-control" [ngModelOptions]="{standalone: true}" [(ngModel)]="member.email" placeholder="{{ setmember.email }}">
+                      </div>
+                    </div>
+                    <div class="col-3">
+                      <div class="form-group">
+                        <label class="bmd-label-floating">Contact Number</label>
+                        <input type="text" inputmode="numeric" [ngModelOptions]="{standalone: true}" [(ngModel)]="member.contactnumber" class="form-control"  
+                          placeholder="{{ setmember.contactnumber }}">
+                      </div>
+                    </div>
+    
+                  </div>
+                  <label class="bmd-label-floating" style="text-align: center; margin-left: 45%"><b>Address</b></label>
+                  <div class="row">
+                    <!-- <label class="bmd-label-floating" style="text-align: center; margin-left: 45%">Address</label> -->
+                    <div class="col-md-4">
+                      <div class="form-group">
+                        <label class="bmd-label-floating">House Number</label>
+                        <input type="number" [ngModelOptions]="{standalone: true}" [(ngModel)]="member.housenumber" class="form-control"  
+                          placeholder="{{ setmember.housenumber }}">
+                      </div>
+                    </div>
+                    <div class="col-md-6">
+                      <div class="form-group">
+                        <label class="bmd-label-floating">Street Name</label>
+                        <input type="text" [ngModelOptions]="{standalone: true}" [(ngModel)]="member.streetname" class="form-control" 
+                          placeholder="{{ setmember.streetname }}">
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-md-5">
+                      <div class="form-group">
+                        <label class="bmd-label-floating">Suburb</label>
+                        <input type="text" class="form-control" [ngModelOptions]="{standalone: true}" [(ngModel)]="member.suburb" placeholder="{{ setmember.suburb }}">
+                      </div>
+                    </div>
+    
+                    <div class="col-md-4">
+                      <label class="bmd-label-floating">Province</label>
+                      <div>
+                        <mat-form-field>
+                          <mat-select placeholder="{{ setmember.province }}"  
+                            [ngModelOptions]="{standalone: true}" [(ngModel)]="member.province">
+                            <mat-option *ngFor="let Province of Provinces" [value]="Province.value">
+                              {{ Province.name | titlecase }}
+                            </mat-option>
+                          </mat-select>
+                        </mat-form-field>
+                      </div>
+                    </div>
+    
+                  </div>
+                  <br />
+                  <button mat-raised-button type="submit" class="btn btn-rose pull-right" (click)="updateMember()">Update
+                    Profile</button>
+                  <div class="clearfix"></div>
+                </form>
+              </div>
             </div>
-            <h4 class="card-title">Edit Member Profile -
-              <small class="category">Complete your profile</small>
-            </h4>
-          </div>
-          <div class="card-body">
-            <form *ngFor="let member of response">
-              <div class="row">
-                <div class="col-md-6">
-                  <div class="form-group">
-                    <label class="bmd-label-floating">First Name</label>
-                    <input type="text"  [(ngModel)]="name" class="form-control" id="name" name="name" placeholder="{{ member.name }}">
-                  </div>
-                </div>
-                <div class="col-md-6">
-                  <div class="form-group">
-                    <label class="bmd-label-floating">Last Name</label>
-                    <input type="text" class="form-control"   [(ngModel)]="surname" id="surname" name="surname"
-                      placeholder="{{ member.surname }}">
-                  </div>
-                </div>
-              </div>
-              <div class="row">
-                <div class="col-md-6">
-                  <div class="form-group">
-                    <label class="bmd-label-floating">Identity Number</label>
-                    <input type="text" class="form-control" id="identitynumber" inputmode="numeric" [(ngModel)]="identitynumber" name="identitynumber"
-                      placeholder="{{ member.identitynumber }}" (key)="test(idnumber)" >
-                  </div>
-                </div>
 
-                <div class="col-md-4">
-                  <label class="bmd-label-floating">Gender</label>
-                  <div>
-                    <mat-form-field>
-                      <mat-select placeholder="{{ member.gender }}" id="gender" name="gender"
-                        [(ngModel)]="gender">
-                        <mat-option *ngFor="let Gender of Genders" [value]="Gender.value">
-                          {{ Gender.name | titlecase }}
-                        </mat-option>
-                      </mat-select>
-                    </mat-form-field>
-                  </div>
-                </div>
-
-              </div>
-
-       
-
-              <div class="row">
-
-                <div class="col-md-5">
-                  <div class="form-group">
-                    <label class="bmd-label-floating">Email address</label>
-                    <input type="text" class="form-control" [(ngModel)]="email" id="email" name="email" placeholder="{{ member.email }}">
-                  </div>
-                </div>
-                <div class="col-3">
-                  <div class="form-group">
-                    <label class="bmd-label-floating">Contact Number</label>
-                    <input type="text" inputmode="numeric" [(ngModel)]="contactnumber" class="form-control" id="contactnumber" name="contactnumber"
-                      placeholder="{{ member.contactnumber }}">
-                  </div>
-                </div>
-
-              </div>
-              <label class="bmd-label-floating" style="text-align: center; margin-left: 45%"><b>Address</b></label>
-              <div class="row">
-                <!-- <label class="bmd-label-floating" style="text-align: center; margin-left: 45%">Address</label> -->
-                <div class="col-md-4">
-                  <div class="form-group">
-                    <label class="bmd-label-floating">House Number</label>
-                    <input type="number" [(ngModel)]="housenumber" class="form-control" id="housenumber" name="housenumber"
-                      placeholder="{{ member.housenumber }}">
-                  </div>
-                </div>
-                <div class="col-md-6">
-                  <div class="form-group">
-                    <label class="bmd-label-floating">Street Name</label>
-                    <input type="text" [(ngModel)]="streetname" class="form-control" id="streetname" name="streetname"
-                      placeholder="{{ member.streetname }}">
-                  </div>
-                </div>
-              </div>
-              <div class="row">
-                <div class="col-md-5">
-                  <div class="form-group">
-                    <label class="bmd-label-floating">Suburb</label>
-                    <input type="text" class="form-control" [(ngModel)]="suburb" id="suburb" name="suburb" placeholder="{{ member.suburb }}">
-                  </div>
-                </div>
-
-                <div class="col-md-4">
-                  <label class="bmd-label-floating">Province</label>
-                  <div>
-                    <mat-form-field>
-                      <mat-select placeholder="{{ member.province }}" id="province" name="province"
-                        [(ngModel)]="province">
-                        <mat-option *ngFor="let Province of Provinces" [value]="Province.value">
-                          {{ Province.name | titlecase }}
-                        </mat-option>
-                      </mat-select>
-                    </mat-form-field>
-                  </div>
-                </div>
-
-              </div>
-              <br />
-              <button mat-raised-button type="submit" class="btn btn-rose pull-right" (click)="updateMember(name,surname,identitynumber,gender,email,contactnumber,housenumber,streetname,suburb,province)">Update
-                Profile</button>
-              <div class="clearfix"></div>
-            </form>
-          </div>
-        </div>
       </div>
     </div>
   </div>

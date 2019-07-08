@@ -13,7 +13,7 @@ import { ViewMembersComponent } from './ViewMembers/ViewMembers.component';
 import { CreateMemberComponent } from './CreateMember/CreateMember.component';
 import { EditMemberComponent } from './EditMember/EditMember.component';
 import { MemberDetailsComponent } from './MemberDetails/MemberDetails.component';
-import { TextComponentComponent } from './textComponent/textComponent.component';
+
 
 @NgModule({
   imports: [
@@ -30,8 +30,7 @@ import { TextComponentComponent } from './textComponent/textComponent.component'
     ViewMembersComponent,
     CreateMemberComponent,
     EditMemberComponent,
-    MemberDetailsComponent,
-    TextComponentComponent
+    MemberDetailsComponent
   ]
 })
 

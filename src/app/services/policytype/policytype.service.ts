@@ -46,8 +46,8 @@ export class PolicytypeService {
   }
 
   getPolicytypebyage(id: number): Observable<Policytype> {
-    const url = `${apiUrl}/${id}`;
-    return this.http.get<Policytype>(getPolicytypebyageUrl).pipe(
+    const url = `${getPolicytypebyageUrl}/${id}`;
+    return this.http.get<Policytype>(url).pipe(
       tap(_ => console.log(`fetched policytype id=${id}`)),
       catchError(this.handleError<Policytype>(`getPolicytype id=${id}`))
     );

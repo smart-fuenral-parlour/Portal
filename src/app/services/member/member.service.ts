@@ -40,6 +40,33 @@ export class MemberService {
       );
   }
   
+  getMemberbyidentitynumber(id: number): Observable<Member> {
+    const url = `${getmemberbyidentitynumberUrl}/${id}`;
+    return this.http.get<Member>(url).pipe(
+      tap(_ => console.log(`fetched member id=${id}`)),
+      catchError(this.handleError<Member>(`getMember id=${id}`))
+    );
+  }
+
+    
+  getMemberbymembershipnumber(id: number): Observable<Member> {
+    const url = `${getmemberbymembershipnumberUrl}/${id}`;
+    return this.http.get<Member>(url).pipe(
+      tap(_ => console.log(`fetched member id=${id}`)),
+      catchError(this.handleError<Member>(`getMember id=${id}`))
+    );
+  }
+
+    
+  getMemberbysurname(id: number): Observable<Member> {
+    const url = `${getmemberbysurnameUrl}/${id}`;
+    return this.http.get<Member>(url).pipe(
+      tap(_ => console.log(`fetched member id=${id}`)),
+      catchError(this.handleError<Member>(`getMember id=${id}`))
+    );
+  }
+
+    
   getMember(id: number): Observable<Member> {
     const url = `${apiUrl}/${id}`;
     return this.http.get<Member>(url).pipe(
@@ -47,7 +74,6 @@ export class MemberService {
       catchError(this.handleError<Member>(`getMember id=${id}`))
     );
   }
-
 
 
   createMember (member): Observable<Member> {

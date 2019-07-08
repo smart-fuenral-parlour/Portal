@@ -1,10 +1,17 @@
 import { Component, OnInit, AfterViewInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { ServiceService } from 'src/app/SERVICE/service.service'; // service link here
+
+///////////////////// SERVICE CALLS  ///////////////////////////////////////////
+import { MemberService } from 'src/app/services/member/member.service'
+
+//////////////////// MODEL/ CLASS CALLS ///////////////////////////////////////
+import { Member } from 'src/app/services/member/member'
+
+///////////////////////////////////////////////////////////////////////////////
 import swal from 'sweetalert2';
 import { isNullOrUndefined } from 'util';
 import { AppComponent } from 'src/app/app.component'
-import { MemberService } from 'src/app/services/member/member.service'
 
 declare var $: any;
 
@@ -262,7 +269,7 @@ export class ViewMembersComponent implements OnInit, AfterViewInit {
 
 
   // Edit a member
-  editMember(index, idmember) {
+  editMember(idmember) {
 
     localStorage.setItem('idmember', JSON.stringify(idmember));
     sessionStorage.clear()

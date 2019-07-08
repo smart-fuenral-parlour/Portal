@@ -91,7 +91,7 @@
                     <td>{{ member.createddate  | date: "dd MMMM, yyyy" }}</td>
                     <td>{{ member.identitynumber }}</td>
                     <td class="text-right">
-                      <a (click)="editMember(i, member.idmember)" class="btn btn-link btn-info btn-just-icon edit"><i
+                      <a (click)="editMember( member.idmember )" class="btn btn-link btn-info btn-just-icon edit"><i
                           class="material-icons" [class.active]="i == selectedrow" data-toggle="tooltip" data-placement="down" title="edit member">edit</i>
                         </a>
                       <a (click)="viewMember(i, member.idmember)"

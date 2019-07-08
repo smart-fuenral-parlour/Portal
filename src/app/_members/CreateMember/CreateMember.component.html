@@ -102,7 +102,7 @@
                           <mat-form-field class="example-full-width has-label"
                             [ngClass]="displayFieldCss(type, 'idnumber')">
                             <input type="text" name="identitynumber" matInput [(ngModel)]="identitynumber"
-                              id="identitynumber" placeholder="ID Number" formControlName="idnumber" (keyup)="testMemberAge(identitynumber)" minlength="13">
+                              id="identitynumber" inputmode="numeric" placeholder="ID Number" formControlName="idnumber" (keyup)="testMemberAge(identitynumber)" minlength="13">
                           </mat-form-field>
 
                         </div>

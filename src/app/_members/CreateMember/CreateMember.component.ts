@@ -580,13 +580,13 @@ console.log(identitynumber.toString().length)
                 // for those born after the year 2000
                 age = parseInt(moment(new Date()).format('YYYY')) - parseInt('20' + identitynumber.toString().slice(0, 2))
                 console.log(parseInt('20' + identitynumber.toString().slice(0, 2))+': ' + age)
-/*
+
                 this.policytypeService.getPolicytypebyage(age)
                     .subscribe(policytype_res => {
                         console.log(policytype_res)
                     }, err => {
                         console.log(err)
-                    })*/
+                    })
 
             } else {
 
@@ -594,13 +594,13 @@ console.log(identitynumber.toString().length)
                 age = parseInt(moment(new Date()).format('YYYY')) - parseInt('19' + identitynumber.toString().slice(0, 2))
                 console.log('2: ' + age)
                 console.log(parseInt('19' + identitynumber.toString().slice(0, 2))+': ' + age)
-/*
+
                 this.policytypeService.getPolicytypebyage(age)
                     .subscribe(policytype_res => {
                         console.log(policytype_res)
                     }, err => {
                         console.log(err)
-                    })*/
+                    })
 
             }
 

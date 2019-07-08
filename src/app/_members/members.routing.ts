@@ -6,8 +6,6 @@ import { EditMemberComponent } from './EditMember/EditMember.component';
 import { MemberDetailsComponent } from './MemberDetails/MemberDetails.component';
 
 
-import { TextComponentComponent } from './textComponent/textComponent.component';
-
 export const MembersRoutes: Routes = [
   {
     path: '',
@@ -21,13 +19,6 @@ export const MembersRoutes: Routes = [
     children: [{
       path: 'createmember',
       component: CreateMemberComponent
-    }]
-  },
-  {
-    path: '',
-    children: [{
-      path: 'testa',
-      component: TextComponentComponent
     }]
   },
   {
