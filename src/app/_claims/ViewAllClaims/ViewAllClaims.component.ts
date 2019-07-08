@@ -1,6 +1,18 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router'
 import { AppComponent } from 'src/app/app.component'
+
+////////////////// SERVICE CALLS /////////////////////////////////////
+import { MemberService } from 'src/app/services/member/member.service'
+import { PolicystatusService } from 'src/app/services/policystatus/policystatus.service'
+import { ClaimService } from 'src/app/services/claim/claim.service'
+import { BeneficiaryService } from 'src/app/services/beneficiary/beneficiary.service'
+import { BalanceService } from 'src/app/services/balance/balance.service'
+import { PolicydetailsService } from 'src/app/services/policydetails/policydetails.service'
+import { LifestatusService } from 'src/app/services/lifestatus/lifestatus.service'
+import { UserService } from 'src/app/services/user/user.service'
+///////////////////////////////////////////////////////////////////////
+
 import { isNullOrUndefined } from 'util';
 
 @Component({
