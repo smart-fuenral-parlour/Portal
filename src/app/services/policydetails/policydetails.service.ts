@@ -8,6 +8,7 @@ const httpOptions = {
   headers: new HttpHeaders({'Content-Type': 'application/json'})
 };
 const apiUrl = "http://greenlinks1.dedicated.co.za:3002/api/policydetails";
+const getpolicydetailsbyidmemberUrl = "http://greenlinks1.dedicated.co.za:3002/api/getpolicydetailsbyidmember";
 
 @Injectable({
   providedIn: 'root'
@@ -22,13 +23,13 @@ export class PolicydetailsService {
       // TODO: send the error to remote logging infrastructure
       console.error(error); // log to console instead
   
-      // Let the app keep running by returning an empty result.
+      // Let the app keep running by returning an empty result.  
       return of(result as T);
     };
   }
 
 
-  getPolicydetailss (): Observable<Policydetails[]> {
+  getPolicydetails (): Observable<Policydetails[]> {
     return this.http.get<Policydetails[]>(apiUrl)
       .pipe(
         tap(heroes => console.log('fetched policydetailss')),
@@ -36,7 +37,7 @@ export class PolicydetailsService {
       );
   }
   
-  getPolicydetails(id: number): Observable<Policydetails> {
+  getPolicydetail(id: number): Observable<Policydetails> {
     const url = `${apiUrl}/${id}`;
     return this.http.get<Policydetails>(url).pipe(
       tap(_ => console.log(`fetched policydetails id=${id}`)),
@@ -44,7 +45,14 @@ export class PolicydetailsService {
     );
   }
   
-
+  
+  getPolicydetailbyidmember(id: number): Observable<Policydetails> {
+    const url = `${getpolicydetailsbyidmemberUrl}/${id}`;
+    return this.http.get<Policydetails>(url).pipe(
+      tap(_ => console.log(`fetched policydetails id=${id}`)),
+      catchError(this.handleError<Policydetails>(`getPolicydetails id=${id}`))
+    );
+  }
 
 
   createPolicydetails (policydetails): Observable<Policydetails> {

@@ -1,9 +1,17 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators, FormControl, FormArray, NgForm } from '@angular/forms'
+
 ////////////////// SERVICE CALLS /////////////////////////////////////
 import { MemberService } from 'src/app/services/member/member.service'
 import { PolicystatusService } from 'src/app/services/policystatus/policystatus.service'
+import { ClaimService } from 'src/app/services/claim/claim.service'
+import { BeneficiaryService } from 'src/app/services/beneficiary/beneficiary.service'
+import { BalanceService } from 'src/app/services/balance/balance.service'
+import { PolicydetailsService } from 'src/app/services/policydetails/policydetails.service'
+import { LifestatusService } from 'src/app/services/lifestatus/lifestatus.service'
+import { UserService } from 'src/app/services/user/user.service'
 ///////////////////////////////////////////////////////////////////////
+
 import { ServiceService } from 'src/app/SERVICE/service.service'; // service link here
 import { isNullOrUndefined, isNull } from 'util';
 import { Router } from '@angular/router';
@@ -22,50 +30,69 @@ declare var $: any;
 export class MemberDetailsComponent implements OnInit {
 
   addForm: FormGroup;
-   i: number
+  i: number
   singleMember;
   rows: FormArray;
   itemForm: FormGroup;
-  response;
   society = false;
   beneficiaries;
   selectedrow;
-  firstName; lastName;
-  idnumber; email;
-  housenumber; streetname
-  suburb; province
-  contact; membershipNumber
-  policystatus; policycolor;
-  createdby; noBeneficiary = false
-  BenefitName; BenefitSurname = []; BenefitIdNumber;
-  memberId
-  editTextBox = false;
-  date
-  gender
-  lifestatus; lifecolor
-  creator
-  payments
+
+  idmember
+  createddate
+  policystatus
+  lifestatus
+  balances
+  user
   claims
-  Nopayment = false;
 
+  editTextBox = false;
 
-  payment_toNULL = false; claim_toNULL = false
-  payment_fromNULL = false; claim_fromNULL = false
-  paymentTable = false; claimTable = false
-
-  fromDate
-  toDate
   selectedClaim
+  createdby
+  lifecolor
+  policycolor
+  noBeneficiary = false
 
+  Beneficiaryname;
+  Beneficiarysurname;
+  Beneficiaryidumber;
+  /*
+    ;
+    ;
+    ;
+  
+  
+  
+    creator
+    payments
+    claims
+    Nopayment = false;
+  
+  
+    payment_toNULL = false; claim_toNULL = false
+    payment_fromNULL = false; claim_fromNULL = false
+    paymentTable = false; claimTable = false
+  
+    fromDate
+    toDate
+    
+  */
   iduser
 
 
   constructor(private fb: FormBuilder,
-            private service: ServiceService,
-            private memberservice: MemberService,
-            private policystatusService: PolicystatusService,
-            private router: Router,
-            private app: AppComponent) {
+    private service: ServiceService,
+    private memberService: MemberService,
+    private policystatusService: PolicystatusService,
+    private lifestatusService: LifestatusService,
+    private claimService: ClaimService,
+    private userService: UserService,
+    private policydetailsService: PolicydetailsService,
+    private balanceService: BalanceService,
+    private beneficiaryService: BeneficiaryService,
+    private router: Router,
+    private app: AppComponent) {
 
 
     this.addForm = this.fb.group({
@@ -75,15 +102,12 @@ export class MemberDetailsComponent implements OnInit {
 
     this.rows = this.fb.array([]);
 
-
-
-
   }
 
   ngOnInit() {
 
     this.app.loading = true
-    // test if member is from a society
+    // test if member is from a society FOR VERSION 6.75
     if (!isNullOrUndefined(sessionStorage.getItem('greenlinks'))) {
       this.society = true
     }
@@ -98,35 +122,21 @@ export class MemberDetailsComponent implements OnInit {
 
 
       //this.service.getSingleMember()
-      this.memberservice.getMember(idmember)
+      this.memberService.getMember(idmember)
         .subscribe(member_res => {
 
           this.singleMember = member_res[0]
-          console.log(this.singleMember)
-          console.log(this.singleMember.name)
-          this.firstName = this.singleMember.name
-          this.lastName = this.singleMember.surname
-          this.idnumber = this.singleMember.identitynumber
-          this.email = this.singleMember.email
-          this.housenumber = this.singleMember.housenumber
-          this.streetname = this.singleMember.streetname
-          this.suburb = this.singleMember.suburb
-          this.province = this.singleMember.province
-          this.contact = this.singleMember.contactnumber
-          this.membershipNumber = this.singleMember.membershipnumber
-          this.memberId = this.singleMember.idmember
-      /**/this.policystatus = 'Active'//this.singleMember.policystatus
-          this.date = this.singleMember.createddate
-      /***/this.createdby = 'SYSTEM' //this.singleMember.createdby
-          this.gender = this.singleMember.gender
+          this.idmember = this.singleMember.idmember
+          //  this.membershipnumber = this.singleMember.membershipnumber
+          this.createddate = this.singleMember.createddate
           this.noBeneficiary = false
 
 
-          this.service.getMemberBeneficiary(this.memberId)
-            .subscribe(ben => {
-              this.beneficiaries = ben
-              console.log(ben)
 
+          this.beneficiaryService.getBeneficiary(this.idmember)
+            .subscribe(beneficiaries_res => {
+              this.beneficiaries = beneficiaries_res
+              console.log(beneficiaries_res)
 
               if (this.beneficiaries.length == 0) {
                 this.noBeneficiary = true
@@ -135,25 +145,63 @@ export class MemberDetailsComponent implements OnInit {
               }
 
               this.app.loading = false
-              console.log(this.memberId)
+              this.createdby = 'Thabang Mabambi'
 
-              this.service.getUser(this.iduser)
-                .subscribe(res => {
-                  this.createdby = res[0]
-                  console.log(this.createdby)
-                  console.log(this.createdby.name)
 
-                  this.service.getMemberPayments(this.membershipNumber)
-                    .subscribe(pays => {
-                      this.payments = pays
-                      /*
-                                            this.service.getMemberPolicyDetails(this.memberId)
-                                              .subscribe(policyD => {
-                      
-                                              }, err => {
-                      
-                                              })
-                      */
+
+
+              this.policydetailsService.getPolicydetailbyidmember(this.idmember)
+                .subscribe(policydetails_res => {
+
+
+                  this.policystatusService.getPolicystatus(policydetails_res[0].idpolicystatus)
+                    .subscribe(policystatus_res => {
+
+                      this.policystatus = policystatus_res[0].name
+
+
+                      this.lifestatusService.getLifestatus(member_res[0].idlifestatus)
+                        .subscribe(lifestatus_res => {
+
+                          this.lifestatus = lifestatus_res[0].name
+
+
+                          this.userService.getUser(member_res[0].iduser)
+                            .subscribe(user_res => {
+
+                              this.user = user_res[0]
+
+                              this.balanceService.getBalancebyidpolicydetails(policydetails_res[0].idpolicydetails)
+                                .subscribe(balance_res => {
+
+                                  this.balances = balance_res
+
+                                  this.claimService.getClaimbyidmember(member_res[0].idmember)
+                                    .subscribe(claim_res => {
+
+                                      this.claims = claim_res
+
+                                    }, err => {
+                                      console.log(err)
+                                    })
+
+
+                                }, err => {
+                                  console.log(err)
+                                })
+
+
+
+                            }, err => {
+                              console.log(err)
+                            })
+
+                        }, err => {
+                          console.log(err)
+                        })
+
+
+
                     }, err => {
                       console.log(err)
                     })
@@ -162,10 +210,6 @@ export class MemberDetailsComponent implements OnInit {
                 }, err => {
                   console.log(err)
                 })
-
-              /**
-               * idmember
-               */
 
 
             }, err => {
@@ -199,7 +243,6 @@ export class MemberDetailsComponent implements OnInit {
   }
 
   deleteBeneficiary(index, id, NAME, SURNAME) {
-    this.selectedrow = index;
 
     swal({
       title: 'Delete ' + NAME + ' ' + SURNAME,
@@ -213,11 +256,14 @@ export class MemberDetailsComponent implements OnInit {
       buttonsStyling: false
     }).then((result) => {
       if (result.value) {
+
+
         this.service.removeBeneficiary(id)
           .subscribe(res => {
-            console.log(res)
-          }, err => {
 
+            console.log(res)
+
+          }, err => {
             console.log(err)
           })
         swal(
@@ -251,14 +297,13 @@ export class MemberDetailsComponent implements OnInit {
   // Edit a member
   editMember() {
     // this.selectedrow = index;
-    localStorage.setItem('idmember', JSON.stringify(this.memberId));
+    localStorage.setItem('idmember', JSON.stringify(this.idmember));
     sessionStorage.setItem('fromMemberDetails', JSON.stringify(true));
     this.router.navigate(['/members/editmember']);
   }
 
 
   editbeneficiary(index, id, NAME, SURNAME, IDNUMBER) {
-    this.selectedrow = index;
 
 
 
@@ -305,28 +350,28 @@ export class MemberDetailsComponent implements OnInit {
 
         // NEW BENEFICIARY NAME
         if ($('#Name').val() == '' || isNullOrUndefined($('#Name').val())) {
-          this.BenefitName = NAME
+          this.Beneficiaryname = NAME
         } else {
-          this.BenefitName = $('#Name').val()
+          this.Beneficiaryname = $('#Name').val()
         }
 
         // NEW BENEFICIARY SURNAME
         if ($('#Surname').val() == '' || isNullOrUndefined($('#Surname').val())) {
-          this.BenefitSurname = SURNAME
+          this.Beneficiarysurname = SURNAME
         } else {
-          this.BenefitSurname = $('#Surname').val()
+          this.Beneficiarysurname = $('#Surname').val()
         }
 
         // NEW BENEFICIARY ID NUMBER
         if ($('#IDNumber').val() == '' || isNullOrUndefined($('#IDNumber').val())) {
-          this.BenefitIdNumber = IDNUMBER
+          this.Beneficiaryidumber = IDNUMBER
         } else {
-          this.BenefitIdNumber = $('#IDNumber').val()
+          this.Beneficiaryidumber = $('#IDNumber').val()
         }
 
 
 
-        this.service.updateBeneficiary(id, { 'idmember': this.memberId, 'name': this.BenefitName, 'surname': this.BenefitSurname, 'identitynumber': this.BenefitIdNumber })
+        this.service.updateBeneficiary(id, { 'idmember': this.idmember, 'name': this.Beneficiaryname, 'surname': this.Beneficiarysurname, 'identitynumber': this.Beneficiaryidumber })
           .subscribe(res => {
             this.app.loading = false
             console.log(res)
@@ -358,8 +403,6 @@ export class MemberDetailsComponent implements OnInit {
 
 
     let nameEmp = 'hidden'
-    let surnameEmp
-    let idnumberEmp
 
     swal({
       title: 'Create Beneficiary',
@@ -405,9 +448,9 @@ export class MemberDetailsComponent implements OnInit {
       if (result.value) {
 
 
-        this.service.createMemberBeneficiary({ 'idmember': this.memberId, 'createddate': this.date, 'idlifestatus': 1, 'identitynumber': $('#IDNumber').val(), 'name': $('#Name').val(), 'surname': $('#Surname').val() })
-          .subscribe(ben => {
-            console.log(ben)
+        this.service.createMemberBeneficiary({ 'idmember': this.idmember, 'createddate': this.createddate, 'idlifestatus': 1, 'identitynumber': $('#IDNumber').val(), 'name': $('#Name').val(), 'surname': $('#Surname').val() })
+          .subscribe(res => {
+            console.log(res)
 
           }, err => {
             console.log(err)
@@ -428,132 +471,84 @@ export class MemberDetailsComponent implements OnInit {
   }
 
 
-
-  fromEnable() {
-
-    if (this.claim_fromNULL) {
-      this.claim_fromNULL = false
+  /*
+    fromEnable() {
+  
+      if (this.claim_fromNULL) {
+        this.claim_fromNULL = false
+      }
+  
+      if (this.payment_fromNULL) {
+        this.payment_fromNULL = false
+      }
+  
     }
-
-    if (this.payment_fromNULL) {
-      this.payment_fromNULL = false
+  
+    toEnable() {
+  
+      if (this.claim_toNULL) {
+        this.claim_toNULL = false
+      }
+  
+      if (this.payment_toNULL) {
+        this.payment_toNULL = false
+      }
+  
     }
-
-  }
-
-  toEnable() {
-
-    if (this.claim_toNULL) {
-      this.claim_toNULL = false
+  
+    searchClaim() {
+  
+  
+      this.toDate = document.querySelector('#ClaimtoDate')
+      this.fromDate = document.querySelector('#ClaimfromDate')
+  
+      if (this.toDate.value == '') {
+        this.claim_toNULL = true
+      }
+  
+      if (this.fromDate.value == '') {
+        this.claim_fromNULL = true
+      }
+  
+      if (!this.claim_fromNULL && !this.claim_toNULL) {
+        this.claimTable = true
+      } else {
+        this.claimTable = false
+      }
+  
     }
-
-    if (this.payment_toNULL) {
-      this.payment_toNULL = false
+  
+  
+    searchPayments() {
+  
+      this.toDate = document.querySelector('#PaymenttoDate')
+      this.fromDate = document.querySelector('#PaymentfromDate')
+  
+      if (this.toDate.value == '') {
+        this.payment_toNULL = true
+      }
+  
+      if (this.fromDate.value == '') {
+        this.payment_fromNULL = true
+      }
+  
+      if (!this.payment_fromNULL && !this.payment_toNULL) {
+        this.paymentTable = true
+      } else {
+        this.paymentTable = false
+      }
+  
     }
-
-  }
-
-  searchClaim() {
-
-
-    this.toDate = document.querySelector('#ClaimtoDate')
-    this.fromDate = document.querySelector('#ClaimfromDate')
-
-    if (this.toDate.value == '') {
-      this.claim_toNULL = true
-    }
-
-    if (this.fromDate.value == '') {
-      this.claim_fromNULL = true
-    }
-
-    if (!this.claim_fromNULL && !this.claim_toNULL) {
-      this.claimTable = true
-    } else {
-      this.claimTable = false
-    }
-
-  }
-
+  
+  */
   // View member details
   claimInfo(index, idclaim) {
-    this.selectedClaim = index;
 
     localStorage.setItem('idclaim', JSON.stringify(idclaim));
     this.router.navigate(['/claims/claiminfo']);
   }
 
 
-  searchPayments() {
-
-    this.toDate = document.querySelector('#PaymenttoDate')
-    this.fromDate = document.querySelector('#PaymentfromDate')
-
-    if (this.toDate.value == '') {
-      this.payment_toNULL = true
-    }
-
-    if (this.fromDate.value == '') {
-      this.payment_fromNULL = true
-    }
-
-    if (!this.payment_fromNULL && !this.payment_toNULL) {
-      this.paymentTable = true
-    } else {
-      this.paymentTable = false
-    }
-
-  }
 
 
 }
-
-
-/*
-
-        // NEW BENEFICIARY NAME
-        if ($('#Name').val() == '' || isNullOrUndefined($('#Name').val())) {
-          this.BenefitName = NAME
-        } else {
-          this.BenefitName = $('#Name').val()
-        }
-
-        // NEW BENEFICIARY SURNAME
-        if ($('#Surname').val() == '' || isNullOrUndefined($('#Surname').val())) {
-          this.BenefitSurname = SURNAME
-        } else {
-          this.BenefitSurname = $('#Surname').val()
-        }
-
-        // NEW BENEFICIARY ID NUMBER
-        if ($('#IDNumber').val() == '' || isNullOrUndefined($('#IDNumber').val())) {
-          this.BenefitIdNumber = IDNUMBER
-        } else {
-          this.BenefitIdNumber = $('#IDNumber').val()
-        }
-PAYMENTS
-            "idlastPaid": 114,
-            "date": "2019-5-31 16:25:30",   Jan 27, 2015
-            "amount": "0",
-            "membershipnumber": "2019162530"
-
-
-January 29, 2015 at 16:58
-
-
-"response": [
-        {
-            "idBeneficiaries": 77,
-            "membershipnumber": "2019163142",
-            "name": "Thato",
-            "surname": "iuurtfy",
-            "idnumber": "123123123123123",
-            "date": "2019-5-31 16:31:42"
-        }
-    ]
-
-.
-
-
-
-*/

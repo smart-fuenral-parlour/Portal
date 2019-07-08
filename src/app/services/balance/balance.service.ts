@@ -8,6 +8,8 @@ const httpOptions = {
   headers: new HttpHeaders({'Content-Type': 'application/json'})
 };
 const apiUrl = "http://greenlinks1.dedicated.co.za:3002/api/balance";
+const getbalancebyidpolicydetailsUrl = "http://greenlinks1.dedicated.co.za:3002/api/getbalancebyidpolicydetails";
+
 
 @Injectable({
   providedIn: 'root'
@@ -45,6 +47,14 @@ export class BalanceService {
   }
   
 
+  getBalancebyidpolicydetails(id: number): Observable<Balance> {
+    const url = `${getbalancebyidpolicydetailsUrl}/${id}`;
+    return this.http.get<Balance>(url).pipe(
+      tap(_ => console.log(`fetched balance id=${id}`)),
+      catchError(this.handleError<Balance>(`getBalance id=${id}`))
+    );
+  }
+  
 
 
   createBalance (balance): Observable<Balance> {
