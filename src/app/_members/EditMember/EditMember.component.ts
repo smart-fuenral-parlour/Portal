@@ -1,6 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+///////////////////  SERCVICE CALLS  /////////////////////////////
 import { ServiceService } from 'src/app/SERVICE/service.service'; // service link here
+import { MemberService } from 'src/app/services/member/member.service'
+
+/////////////////////////////////////////////////////////////////
 import swal from 'sweetalert2';
 import { Moment } from 'moment'
 import * as moment from 'moment';
@@ -15,53 +19,48 @@ declare const $: any;
 })
 export class EditMemberComponent implements OnInit {
 
-  ID;
-  idmember;
-  response;
 
-  testAll;
-  membershipID;
-  JSONData = {};
-  fname; newNAME
-  lname; newSURNAME
-  email; newEMAIL
-  idnumber; newIDNUMBER
-  contact; newCONTACT
-  street; newSTREET
-  province; newPROVINCE
-  house; newHOUSE
-  suburb; newSUBURB
-  gender; newGENDER
-  myLifeStatus
-  idlifestatus
-  idpolicytype
-  creator
-  /////////SOCIETY////////////  
-  society: boolean = false;
-  societies
-  ///////////////////////////
+  /*
+    testAll;
+    
+    fname; newNAME
+    lname; newSURNAME
+    email; newEMAIL
+    idnumber; newIDNUMBER
+    contact; newCONTACT
+    street; newSTREET
+    province; newPROVINCE
+    house; newHOUSE
+    suburb; newSUBURB
+    gender; newGENDER
+    myLifeStatus
+    idlifestatus
+    idpolicytype
+    creator
+    /////////SOCIETY////////////  
+    society: boolean = false;
+    societies
+    ///////////////////////////
+    lifestatus
+    selectedLifeStatus
+    policyType
+    selectedPolicyType
+  */
+  iduser
+  idmember
   selectedGender: string;
   selectedProvince: string
-  lifestatus
-  selectedLifeStatus
-  policyType
-  selectedPolicyType
+  member
 
-  iduser
 
-  constructor(private app: AppComponent, private _service: ServiceService, private _router: Router) {
-    if (!isNullOrUndefined(sessionStorage.getItem('greenlinks'))) {
-      this.society = true
-    }
-    // GETTING NAME OF THE CREATOR
-    if (!isNullOrUndefined(localStorage.getItem('name'))) {
-      this.creator = JSON.parse(localStorage.getItem('name'))
-    } else {
-      this.creator = 'System'
-    }
+  constructor(private app: AppComponent,
+    private service: ServiceService,
+    private memberService: MemberService,
+    private router: Router) {
+
   }
 
-  myProvinces = [
+  Provinces = [
     { value: 'Gauteng', name: 'Gauteng', abrv: 'GP' },
     { value: 'Limpopo', name: 'Limpopo', abrv: 'L' },
     { value: 'Mpumalanga', name: 'Mpumalanga', abrv: 'MP' },
@@ -73,58 +72,30 @@ export class EditMemberComponent implements OnInit {
     { value: 'Kwazulu Natal', name: 'Kwazulu Natal', abrv: 'KZN' },
   ];
 
-  myGenders = [
+  Genders = [
     { value: 'Male', name: 'Male', abrv: 'M' },
     { value: 'Female', name: 'Female', abrv: 'F' }
   ]
 
   ngOnInit() {
-    // FOR VERSION 6.28
-    /* SOCIETIES
-        this._service.getSociety()
-          .subscribe(res => {
-            this.response = res
-            this.societies = this.response.response
-            console.log(this.societies)
-          },
-            err => console.log(err)
-          )
-    */
 
-   if (localStorage.getItem('iduser') != '') {
-    this.iduser = JSON.parse(localStorage.getItem('iduser'))
-    console.log(this.iduser)
-  }
 
-   this.fname = document.querySelector('#name');
-   this.lname = document.querySelector('#surname');
-   this.email = document.querySelector('#email');
-   this.suburb = document.querySelector('#suburb');
-   this.street = document.querySelector('#street');
-   this.idnumber = document.querySelector('#idnumber');
-   this.house = document.querySelector('#house');
-   this.contact = document.querySelector('#contact');
+
+
+    if (localStorage.getItem('iduser') != null) {
+      this.iduser = JSON.parse(localStorage.getItem('iduser'))
+      console.log(this.iduser)
+    }
+
 
     if (localStorage.getItem('idmember') != null) {
-      this.ID = JSON.parse(localStorage.getItem('idmember'));
+      this.idmember = JSON.parse(localStorage.getItem('idmember'));
       this.app.loading = true
-      this._service.getSingleMember(this.ID)
-        .subscribe(res => {
-          this.response = res
 
-          this.gender = this.response[0].gender
-          this.myLifeStatus = this.response[0].name
-          this.province = this.response[0].province
-          this.membershipID = this.response[0].membershipnumber
-          this.idmember = this.response[0].idmember
-          this.idlifestatus = this.response[0].idlifestatus
-         this._service.getAllPolicyType()
-         .subscribe(policyT => {
-           this.policyType = policyT
-         }, err => {
-           console.log(err)
-         })
-         
+
+      this.memberService.getMember(this.idmember)
+        .subscribe(member_res => {
+          this.member = member_res[0]
 
 
           this.app.loading = false
@@ -141,104 +112,95 @@ export class EditMemberComponent implements OnInit {
   }
 
 
-  updateMember() {
+  updateMemberupdateMember(name, surname, identitynumber, gender, email, contactnumber, housenumber, streetname, suburb, province) {
 
-    this.fname = document.querySelector('#name');
-    this.fname = document.querySelector('#name');
-    this.lname = document.querySelector('#surname');
-    this.email = document.querySelector('#email');
-    this.suburb = document.querySelector('#suburb');
-    this.street = document.querySelector('#street');
-    this.idnumber = document.querySelector('#idnumber');
-    this.house = document.querySelector('#house');
-    this.contact = document.querySelector('#contact');
-    
+
+    let member_new  // new updated member object
+
+    // new updated member details
+    let Name
+    let Surname
+    let Identitynumber
+    let Gender
+    let Email
+    let Contactnumber
+    let Housenumber
+    let Streetname
+    let Suburb
+    let Province
 
     // NAME /////////////////
-    if (isNullOrUndefined(this.fname.value) || this.fname.value == "") {
-      this.newNAME = this.fname.placeholder
+    if (isNullOrUndefined(name) || name == "") {
+      Name = this.member.name
     } else {
-      this.newNAME = this.fname.value
+      Name = name
     }
 
 
     // SURNAME /////////////////
-    if (isNullOrUndefined(this.lname.value) || this.lname.value == "") {
-      this.newSURNAME = this.lname.placeholder
+    if (isNullOrUndefined(surname) || surname == "") {
+      Surname = this.member.surname
     } else {
-      this.newSURNAME = this.lname.value
+      Surname = surname
     }
 
     // IDNUMBER ///////////////// 
-    if ( isNullOrUndefined(this.idnumber.value) || this.idnumber.value == "") {
-      this.newIDNUMBER = this.idnumber.placeholder
+    if (isNullOrUndefined(identitynumber) || identitynumber == "") {
+      Identitynumber = this.member.identitynumber
     } else {
-      this.newIDNUMBER = this.idnumber.value
+      Identitynumber = identitynumber
     }
 
     // EMAIL ///////////////// 
-    if (isNullOrUndefined(this.email.value) || this.email.value == "") {
-      this.newEMAIL = this.email.placeholder
+    if (isNullOrUndefined(email) || email == "") {
+      Email = this.member.email
     } else {
-      this.newEMAIL = this.email.value
+      Email = email
     }
 
     // GENDER ///////////////// 
-    if (isNullOrUndefined(this.selectedGender) || this.selectedGender == "") {
-      this.newGENDER = this.gender
+    if (isNullOrUndefined(gender) || gender == "") {
+      Gender = this.member.gender
     } else {
-      this.newGENDER = this.selectedGender
+      Gender = gender
     }
 
     // PROVINCE ///////////////// 
-    if ( isNullOrUndefined(this.selectedProvince) || this.selectedProvince == "") {
-      this.newPROVINCE = this.province
+    if (isNullOrUndefined(province) || province == "") {
+      Province = this.member.province
     } else {
-      this.newPROVINCE = this.selectedProvince
+      Province = province
     }
 
 
     // SUBURB ///////////////// 
-    if (isNullOrUndefined(this.suburb.value) || this.suburb.value == "") {
-      this.newSUBURB = this.suburb.placeholder
+    if (isNullOrUndefined(suburb) || suburb == "") {
+      Suburb = this.member.suburb
     } else {
-      this.newSUBURB = this.suburb.value
+      Suburb = suburb
     }
 
     // HOUSE NUMBER /////////////////
-    if (isNullOrUndefined(this.house.value) || this.house.value == "") {
-      this.newHOUSE = this.house.placeholder
+    if (isNullOrUndefined(housenumber) || housenumber == "") {
+      housenumber = this.member.housenumber
     } else {
-      this.newHOUSE = this.house.value
+      housenumber = housenumber
     }
 
     // CONTACT NUMBER ///////////////// 
-    if (isNullOrUndefined(this.contact.value) || this.contact.value == "") {
-      this.newCONTACT = this.contact.placeholder
+    if (isNullOrUndefined(contactnumber) || contactnumber == "") {
+      Contactnumber = this.member.contactnumber
     } else {
-      this.newCONTACT = this.contact.value
+      Contactnumber = contactnumber
     }
 
     // STREET NAME /////////////////  
-    if ( isNullOrUndefined(this.street.value) || this.street.value == "") {
-      this.newSTREET = this.street.placeholder
+    if (isNullOrUndefined(streetname) || streetname == "") {
+      Streetname = this.member.streetname
     } else {
-      this.newSTREET = this.street.value
+      Streetname = streetname
     }
 
-    this.JSONData = {
-      'name': this.newNAME,
-      'surname': this.newSURNAME,
-      'identitynumber': this.newIDNUMBER,
-      'email': this.newEMAIL,
-      'contactnumber': this.newCONTACT,
-      'gender': this.newGENDER,
-      'housenumber': this.newHOUSE,
-      'streetname': this.newSTREET,
-      'suburb': this.newSUBURB,
-      'province': this.newPROVINCE,
-      'iduser': this.iduser
-    }
 
     //{"name":"YEBO","surname":"","idnumber":"","email":"","contactnumber":"","gender":"","housenumber":"","streetname":"","suburb":"","province":"","birthyear":""}
 
@@ -246,7 +208,7 @@ export class EditMemberComponent implements OnInit {
 
     swal({
       title: 'Update Membership ID:',
-      text: this.membershipID,
+      text: this.member.membershipnumber,
       type: 'warning',
       showCancelButton: true,
       confirmButtonClass: 'btn btn-success',
@@ -256,26 +218,30 @@ export class EditMemberComponent implements OnInit {
       buttonsStyling: false
     }).then((result) => {
       if (result.value) {
-        if (localStorage.getItem('idmember') != null) {
-          this.ID = JSON.parse(localStorage.getItem('idmember'));
-          this.app.loading = true
+        this.app.loading = true
 
-
-          this._service.updateMember(this.ID, this.JSONData)
-            .subscribe(res => {
-              
-              this.response = res
-              if (this.response.length > 0) {
-                console.log(this.response)
-              }
-              console.log('Member Updated')
-              //  window.location.reload()
-            }, err => { console.log(err) })
-
-
-        } else {
-           console.log('NO USER ID')
+        member_new = {
+          'name': Name,
+          'surname': Surname,
+          'identitynumber': Identitynumber,
+          'email': Email,
+          'contactnumber': Contactnumber,
+          'gender': Gender,
+          'housenumber': Housenumber,
+          'streetname': Streetname,
+          'suburb': Suburb,
+          'province': Province,
+          'iduser': this.iduser
         }
+
+        this.memberService.updateMember(this.idmember, member_new)
+          .subscribe(member_updates => {
+            console.log(member_updates)
+
+          }, err => {
+            console.log(err)
+          })
+
 
         swal(
           {
@@ -284,7 +250,7 @@ export class EditMemberComponent implements OnInit {
             confirmButtonClass: "btn btn-success",
             buttonsStyling: false
 
-          }).then((result) => { if (sessionStorage.getItem('fromMemberDetails') == 'true') { this._router.navigate(['/members/viewmemberdetails']) } else { this._router.navigate(['/members/searchmember']) } })
+          }).then((result) => { if (sessionStorage.getItem('fromMemberDetails') == 'true') { this.router.navigate(['/members/viewmemberdetails']) } else { this.router.navigate(['/members/searchmember']) } })
       }
     })
 

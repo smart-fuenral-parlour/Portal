@@ -17,13 +17,13 @@
                 <div class="col-md-6">
                   <div class="form-group">
                     <label class="bmd-label-floating">First Name</label>
-                    <input type="text" class="form-control" id="name" name="name" placeholder="{{ myLifeStatus }}">
+                    <input type="text"  [(ngModel)]="name" class="form-control" id="name" name="name" placeholder="{{ member.name }}">
                   </div>
                 </div>
                 <div class="col-md-6">
                   <div class="form-group">
                     <label class="bmd-label-floating">Last Name</label>
-                    <input type="text" class="form-control" id="surname" name="surname"
+                    <input type="text" class="form-control"   [(ngModel)]="surname" id="surname" name="surname"
                       placeholder="{{ member.surname }}">
                   </div>
                 </div>
@@ -32,8 +32,8 @@
                 <div class="col-md-6">
                   <div class="form-group">
                     <label class="bmd-label-floating">Identity Number</label>
-                    <input type="number" class="form-control" id="idnumber" name="idnumber"
-                      placeholder="{{ member.identitynumber }}">
+                    <input type="text" class="form-control" id="identitynumber" inputmode="numeric" [(ngModel)]="identitynumber" name="identitynumber"
+                      placeholder="{{ member.identitynumber }}" (key)="test(idnumber)" >
                   </div>
                 </div>
 
@@ -42,9 +42,9 @@
                   <div>
                     <mat-form-field>
                       <mat-select placeholder="{{ member.gender }}" id="gender" name="gender"
-                        [(ngModel)]="selectedGender">
-                        <mat-option *ngFor="let gender of myGenders" [value]="gender.value">
-                          {{ gender.name | titlecase }}
+                        [(ngModel)]="gender">
+                        <mat-option *ngFor="let Gender of Genders" [value]="Gender.value">
+                          {{ Gender.name | titlecase }}
                         </mat-option>
                       </mat-select>
                     </mat-form-field>
@@ -53,51 +53,20 @@
 
               </div>
 
-              
-              <div class="row" hidden>
-                  <div class="col-md-4">
-                      <label class="bmd-label-floating">Policy Type</label>
-                      <div>
-                        <mat-form-field>
-                          <mat-select placeholder="Famile plan" id="policyType" name="policyType"
-                            [(ngModel)]="selectedPolicyType">
-                            <mat-option *ngFor="let policy of policyType" [value]="policy.idlifestatus">
-                              {{ policy.name | titlecase }}
-                            </mat-option>
-                          </mat-select>
-                        </mat-form-field>
-                      </div>
-                    </div>    
-                
-  
-                  <div class="col-md-4">
-                    <label class="bmd-label-floating">Life status</label>
-                    <div>
-                      <mat-form-field>
-                        <mat-select placeholder="alive" id="lifestatus" name="lifestatus"
-                          [(ngModel)]="selectedLifeStatus">
-                          <mat-option *ngFor="let life of lifestatus" [value]="life.idpolicytype">
-                            {{ life.name | titlecase }}
-                          </mat-option>
-                        </mat-select>
-                      </mat-form-field>
-                    </div>
-                  </div>
-  
-                </div>
+       
 
               <div class="row">
 
                 <div class="col-md-5">
                   <div class="form-group">
                     <label class="bmd-label-floating">Email address</label>
-                    <input type="text" class="form-control" id="email" name="email" placeholder="{{ member.email }}">
+                    <input type="text" class="form-control" [(ngModel)]="email" id="email" name="email" placeholder="{{ member.email }}">
                   </div>
                 </div>
                 <div class="col-3">
                   <div class="form-group">
                     <label class="bmd-label-floating">Contact Number</label>
-                    <input type="number" class="form-control" id="contact" name="contact"
+                    <input type="text" inputmode="numeric" [(ngModel)]="contactnumber" class="form-control" id="contactnumber" name="contactnumber"
                       placeholder="{{ member.contactnumber }}">
                   </div>
                 </div>
@@ -109,14 +78,14 @@
                 <div class="col-md-4">
                   <div class="form-group">
                     <label class="bmd-label-floating">House Number</label>
-                    <input type="number" class="form-control" id="house" name="house"
+                    <input type="number" [(ngModel)]="housenumber" class="form-control" id="housenumber" name="housenumber"
                       placeholder="{{ member.housenumber }}">
                   </div>
                 </div>
                 <div class="col-md-6">
                   <div class="form-group">
                     <label class="bmd-label-floating">Street Name</label>
-                    <input type="text" class="form-control" id="street" name="street"
+                    <input type="text" [(ngModel)]="streetname" class="form-control" id="streetname" name="streetname"
                       placeholder="{{ member.streetname }}">
                   </div>
                 </div>
@@ -125,7 +94,7 @@
                 <div class="col-md-5">
                   <div class="form-group">
                     <label class="bmd-label-floating">Suburb</label>
-                    <input type="text" class="form-control" id="suburb" name="suburb" placeholder="{{ member.suburb }}">
+                    <input type="text" class="form-control" [(ngModel)]="suburb" id="suburb" name="suburb" placeholder="{{ member.suburb }}">
                   </div>
                 </div>
 
@@ -134,35 +103,18 @@
                   <div>
                     <mat-form-field>
                       <mat-select placeholder="{{ member.province }}" id="province" name="province"
-                        [(ngModel)]="selectedProvince">
-                        <mat-option *ngFor="let province of myProvinces" [value]="province.value">
-                          {{ province.name | titlecase }}
+                        [(ngModel)]="province">
+                        <mat-option *ngFor="let Province of Provinces" [value]="Province.value">
+                          {{ Province.name | titlecase }}
                         </mat-option>
                       </mat-select>
                     </mat-form-field>
                   </div>
                 </div>
 
-              </div>
-              <div class="row">
-
-                <div class="col-8" *ngIf="society">
-                  <div class="input-group-prepend">
-                    <span class="input-group-text">
-                      <i class="material-icons">people</i>
-                    </span>
-                    <mat-form-field>
-                      <mat-select placeholder="((SOCIETY NAME))" id="society" name="society" class="society">
-                        <mat-option *ngFor="let society of societies" [value]="society.idSociety">
-                          {{ society.name }}
-                        </mat-option>
-                      </mat-select>
-                    </mat-form-field>
-                  </div>
-                </div>
               </div>
               <br />
-              <button mat-raised-button type="submit" class="btn btn-rose pull-right" (click)="updateMember()">Update
+              <button mat-raised-button type="submit" class="btn btn-rose pull-right" (click)="updateMember(name,surname,identitynumber,gender,email,contactnumber,housenumber,streetname,suburb,province)">Update
                 Profile</button>
               <div class="clearfix"></div>
             </form>
