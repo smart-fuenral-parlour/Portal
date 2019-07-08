@@ -18,14 +18,14 @@
                     <div class="col-md-6">
                       <div class="form-group">
                         <label class="bmd-label-floating">First Name</label>
-                        <input type="text" [ngModelOptions]="{standalone: true}" [(ngModel)]="member.name" class="form-control"  placeholder="{{ setmember.name }}">
+                        <input type="text" [ngModelOptions]="{standalone: true}" [(ngModel)]="setmember.name" class="form-control"  placeholder="{{ getmember.name }}">
                       </div>
                     </div>
                     <div class="col-md-6">
                       <div class="form-group">
                         <label class="bmd-label-floating">Last Name</label>
-                        <input type="text" class="form-control"   [ngModelOptions]="{standalone: true}" [(ngModel)]="member.surname" 
-                          placeholder="{{setmember.surname}}">
+                        <input type="text" class="form-control"   [ngModelOptions]="{standalone: true}" [(ngModel)]="setmember.surname" 
+                          placeholder="{{getmember.surname}}">
                       </div>
                     </div>
                   </div>
@@ -33,8 +33,8 @@
                     <div class="col-md-6">
                       <div class="form-group">
                         <label class="bmd-label-floating">Identity Number</label>
-                        <input type="text" class="form-control"  inputmode="numeric" [ngModelOptions]="{standalone: true}" [(ngModel)]="member.identitynumber" 
-                          placeholder="{{ setmember.identitynumber }}"  >
+                        <input type="text" class="form-control"  inputmode="numeric" [ngModelOptions]="{standalone: true}" [(ngModel)]="setmember.identitynumber" 
+                          placeholder="{{ getmember.identitynumber }}"  >
                       </div>
                     </div>
     
@@ -42,8 +42,8 @@
                       <label class="bmd-label-floating">Gender</label>
                       <div>
                         <mat-form-field>
-                          <mat-select placeholder="{{ setmember.gender }}" 
-                            [ngModelOptions]="{standalone: true}" [(ngModel)]="member.gender">
+                          <mat-select placeholder="{{ getmember.gender }}" 
+                            [ngModelOptions]="{standalone: true}" [(ngModel)]="setmember.gender">
                             <mat-option *ngFor="let Gender of Genders" [value]="Gender.value">
                               {{ Gender.name | titlecase }}
                             </mat-option>
@@ -61,14 +61,14 @@
                     <div class="col-md-5">
                       <div class="form-group">
                         <label class="bmd-label-floating">Email address</label>
-                        <input type="email" class="form-control" [ngModelOptions]="{standalone: true}" [(ngModel)]="member.email" placeholder="{{ setmember.email }}">
+                        <input type="email" class="form-control" [ngModelOptions]="{standalone: true}" [(ngModel)]="setmember.email" placeholder="{{ getmember.email }}">
                       </div>
                     </div>
                     <div class="col-3">
                       <div class="form-group">
                         <label class="bmd-label-floating">Contact Number</label>
-                        <input type="text" inputmode="numeric" [ngModelOptions]="{standalone: true}" [(ngModel)]="member.contactnumber" class="form-control"  
-                          placeholder="{{ setmember.contactnumber }}">
+                        <input type="text" inputmode="numeric" [ngModelOptions]="{standalone: true}" [(ngModel)]="setmember.contactnumber" class="form-control"  
+                          placeholder="{{ getmember.contactnumber }}">
                       </div>
                     </div>
     
@@ -79,15 +79,15 @@
                     <div class="col-md-4">
                       <div class="form-group">
                         <label class="bmd-label-floating">House Number</label>
-                        <input type="number" [ngModelOptions]="{standalone: true}" [(ngModel)]="member.housenumber" class="form-control"  
-                          placeholder="{{ setmember.housenumber }}">
+                        <input type="number" [ngModelOptions]="{standalone: true}" [(ngModel)]="setmember.housenumber" class="form-control"  
+                          placeholder="{{ getmember.housenumber }}">
                       </div>
                     </div>
                     <div class="col-md-6">
                       <div class="form-group">
                         <label class="bmd-label-floating">Street Name</label>
-                        <input type="text" [ngModelOptions]="{standalone: true}" [(ngModel)]="member.streetname" class="form-control" 
-                          placeholder="{{ setmember.streetname }}">
+                        <input type="text" [ngModelOptions]="{standalone: true}" [(ngModel)]="setmember.streetname" class="form-control" 
+                          placeholder="{{ getmember.streetname }}">
                       </div>
                     </div>
                   </div>
@@ -95,7 +95,7 @@
                     <div class="col-md-5">
                       <div class="form-group">
                         <label class="bmd-label-floating">Suburb</label>
-                        <input type="text" class="form-control" [ngModelOptions]="{standalone: true}" [(ngModel)]="member.suburb" placeholder="{{ setmember.suburb }}">
+                        <input type="text" class="form-control" [ngModelOptions]="{standalone: true}" [(ngModel)]="setmember.suburb" placeholder="{{ getmember.suburb }}">
                       </div>
                     </div>
     
@@ -103,8 +103,8 @@
                       <label class="bmd-label-floating">Province</label>
                       <div>
                         <mat-form-field>
-                          <mat-select placeholder="{{ setmember.province }}"  
-                            [ngModelOptions]="{standalone: true}" [(ngModel)]="member.province">
+                          <mat-select placeholder="{{ getmember.province }}"  
+                            [ngModelOptions]="{standalone: true}" [(ngModel)]="setmember.province">
                             <mat-option *ngFor="let Province of Provinces" [value]="Province.value">
                               {{ Province.name | titlecase }}
                             </mat-option>

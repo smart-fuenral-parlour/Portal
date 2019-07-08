@@ -10,7 +10,8 @@
               <mat-form-field>
                 <mat-select placeholder="Search Member By: " name="selectedSearchType" id="selectedSearchType"
                   [(ngModel)]="selectedSearchType" (click)="hideTextError()">
-                  <mat-option *ngFor="let type of Types" [value]="type.value" (click)="displaySelectedSearchType(selectedSearchType)">
+                  <mat-option *ngFor="let type of Types" [value]="type.value"
+                    (click)="displaySelectedSearchType(selectedSearchType)">
                     {{ type.value }}
                   </mat-option>
                 </mat-select>
@@ -31,26 +32,29 @@
             </div>
             <div class="col-5" *ngIf='invalidID'>
               <mat-error>
-               {{searchText}} must have 13 digits
+                {{searchText}} must have 13 digits
               </mat-error>
             </div>
 
             <div class="col-2">
               <button mat-raised-button type="submit" class="btn btn-sm" id="searchButton" name="searchButton"
-                (click)="searchMember(searchInput, selectedSearchType)"> <i class="material-icons">search</i> Search Member</button>
+                (click)="searchMember(searchInput, selectedSearchType)"> <i class="material-icons">search</i> Search
+                Member</button>
 
             </div>
           </div>
         </div>
       </div>
     </div>
-    
-    
+
+
     <div class="row" *ngIf="notFound">
       <div class="col-12 ml-auto mr-auto">
         <div class="card">
           <div class="card-body text-center">
-            <h5><b>Member(s) Not Found.</b> <span class="text-info"><h6>Try searching by using a different category</h6></span></h5>
+            <h5><b>Member(s) Not Found.</b> <span class="text-info">
+                <h6>Try searching by using a different category</h6>
+              </span></h5>
           </div>
         </div>
       </div>
@@ -91,15 +95,16 @@
                     <td>{{ member.createddate  | date: "dd MMMM, yyyy" }}</td>
                     <td>{{ member.identitynumber }}</td>
                     <td class="text-right">
-                      <a (click)="editMember( member.idmember )" class="btn btn-link btn-info btn-just-icon edit"><i
-                          class="material-icons" [class.active]="i == selectedrow" data-toggle="tooltip" data-placement="down" title="edit member">edit</i>
-                        </a>
-                      <a (click)="viewMember(i, member.idmember)"
-                        class="btn btn-link btn-warning btn-just-icon view"><i class="material-icons"
-                          [class.active]="i == selectedrow" data-toggle="tooltip" data-placement="down" title="view member info">info</i></a>
-                      <a (click)="deleteMember(i, member.idmember)"
-                        class="btn btn-link btn-danger btn-just-icon remove"><i class="material-icons"
-                          [class.active]="i == selectedrow" data-toggle="tooltip" data-placement="down" title="delete member">delete</i></a>
+                      <a (click)="editMember(i, member.idmember )" class="btn btn-link btn-info btn-just-icon edit"><i
+                          class="material-icons" [class.active]="i == selectedrow" data-toggle="tooltip"
+                          data-placement="down" title="edit member">edit</i>
+                      </a>
+                      <a (click)="viewMember(i, member.idmember)" class="btn btn-link btn-warning btn-just-icon view"><i
+                          class="material-icons" [class.active]="i == selectedrow" data-toggle="tooltip"
+                          data-placement="down" title="view member info">info</i></a>
+                      <a (click)="deleteMember(member.idmember)" class="btn btn-link btn-danger btn-just-icon remove"><i
+                          class="material-icons" [class.active]="i == selectedrow" data-toggle="tooltip"
+                          data-placement="down" title="delete member">delete</i></a>
                     </td>
                   </tr>
                 </tbody>

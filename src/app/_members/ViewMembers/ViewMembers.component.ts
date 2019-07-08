@@ -30,22 +30,25 @@ declare interface DataTable {
 })
 export class ViewMembersComponent implements OnInit, AfterViewInit {
 
+
   public dataTable: DataTable;
-  response;
-
-
+  members
+  member: Member
   searchText = 'ID Number';
+
+
+
+  //////////////////
   isEmpty = false
   searchResult = false;
   notFound = false;
   invalidID = false;
   iduser
-  members
-
+  ////////////////////////////
 
   constructor(
     private service: ServiceService,
-    private memberSerice: MemberService,
+    private memberService: MemberService,
     private router: Router,
     private app: AppComponent) {
 
@@ -66,6 +69,8 @@ export class ViewMembersComponent implements OnInit, AfterViewInit {
       console.log(this.iduser)
     }
 
+
+
     this.app.loading = false
     sessionStorage.clear()
   }
@@ -76,60 +81,45 @@ export class ViewMembersComponent implements OnInit, AfterViewInit {
     this.isEmpty = false
     this.searchResult = false
     this.notFound = false
-    console.log(searchInput)
-
 
     if (searchInput == '' || isNullOrUndefined(searchInput)) {
+
       this.searchResult = false
       this.notFound = false
       this.isEmpty = true;
+
     } else {
+
       this.isEmpty = false
       this.searchResult = false
       this.notFound = false
 
       if (selectedSearchType == 'Membership Number') {
-        this.app.loading = true
-        this.memberSerice.getMember(searchInput)
-          .subscribe(member_res => {
-            this.response = member_res
 
-            if (this.response.length > 0) {
+        this.app.loading = true
+
+        this.memberService.getMemberbymembershipnumber(searchInput)
+          .subscribe(member_res => {
+
+            this.members = member_res
+            console.log(member_res)
+
+            if (this.members.length > 0) {
               console.log('Search By Membership Number')
               let x = 0;
 
-              for (let i = 0; i < this.response.length; i++) {
-                this.service.getLifestatus(this.response[i].idlifestatus)
-                  .subscribe(lifestatus_res => {
-
-
-                    this.members.push({
-                      'idmember': this.response[x].idmember,
-                      'membershipnumber': this.response[x].membershipnumber,
-                      'name': this.response[x].name,
-                      'surname': this.response[x].surname,
-                      'createddate': this.response[x].createddate,
-                      'identitynumber': this.response[x].identitynumber,
-                      'lifestatus': lifestatus_res[0].name
-                    })
-                    x++
-
-
-                  }, err => {
-                    console.log(err)
-                  })
-
-
-              }
 
               this.app.loading = false
               this.notFound = false
               this.searchResult = true
+
             } else {
+
               console.log('NO MEMBERS FOUND')
               this.app.loading = false
               this.searchResult = false
               this.notFound = true
+
             }
 
           }, err => {
@@ -137,40 +127,17 @@ export class ViewMembersComponent implements OnInit, AfterViewInit {
           })
       } else
         if (selectedSearchType == 'Surname') {
+
+          console.log('Search By Surname')
           this.app.loading = true
 
-          this.service.searchMemberBySurname(searchInput)
+          this.memberService.getMemberbysurname(searchInput)
             .subscribe(member_res => {
-              this.response = member_res
 
-              if (this.response.length > 0) {
+              this.members = member_res
+              console.log(member_res)
 
-                this.members = []
-                let x = 0
-
-                for (let i = 0; i < this.response.length; i++) {
-
-                  this.service.getLifestatus(this.response[i].idlifestatus)
-                    .subscribe(lifestatus_res => {
-
-
-                      this.members.push({
-                        'idmember': this.response[x].idmember,
-                        'membershipnumber': this.response[x].membershipnumber,
-                        'name': this.response[x].name,
-                        'surname': this.response[x].surname,
-                        'createddate': this.response[x].createddate,
-                        'identitynumber': this.response[x].identitynumber,
-                        'lifestatus': lifestatus_res[0].name
-                      })
-                      x++
-
-
-                    }, err => {
-                      console.log(err)
-                    })
-                }
-
+              if (this.members.length > 0) {
 
                 this.app.loading = false
                 this.notFound = false
@@ -189,60 +156,29 @@ export class ViewMembersComponent implements OnInit, AfterViewInit {
 
         } else
           if (searchInput.length == 13) {
+
             this.app.loading = true
 
-            this.service.searchMemberByIdNumber(searchInput)
+
+            this.memberService.getMemberbyidentitynumber(searchInput)
               .subscribe(member_res => {
-                this.response = member_res
+                this.members = member_res
+                console.log(member_res)
 
-                if (this.response.length > 0) {
-
-                  this.members = []
-                  let x = 0
-
-                  for (let i = 0; i < this.response.length; i++) {
-
-                    this.members.push({
-                      'idmember': this.response[x].idmember,
-                      'membershipnumber': this.response[x].membershipnumber,
-                      'name': this.response[i].name,
-                      'surname': this.response[i].surname,
-                      'createddate': this.response[i].createddate,
-                      'identitynumber': this.response[i].identitynumber
-                    })
-
-                    this.service.getLifestatus(this.response[i].idlifestatus)
-                      .subscribe(lifestatus_res => {
-                        console.log(lifestatus_res)
-                        /*                     
-                      this.members.push({
-                        'idmember': this.response[x].idmember,
-                        'membershipnumber': this.response[x].membershipnumber,
-                        'name': this.response[x].name,
-                        'surname': this.response[x].surname,
-                        'createddate': this.response[x].createddate,
-                        'identitynumber': this.response[x].identitynumber,
-                        'lifestatus': lifeS[0].name
-                      })
-                      x++
-                         */
-
-                      }, err => {
-                        console.log(err)
-                      })
-
-                  }
-
+                if (this.members.length > 0) {
+                  console.log('Search by Id number')
 
                   this.app.loading = false
                   this.notFound = false
                   this.searchResult = true
 
                 } else {
+
                   console.log('NO MEMBERS FOUND')
                   this.app.loading = false
                   this.searchResult = false
                   this.notFound = true
+
                 }
 
               }, err => {
@@ -269,22 +205,22 @@ export class ViewMembersComponent implements OnInit, AfterViewInit {
 
 
   // Edit a member
-  editMember(idmember) {
+  editMember(index, idmember) {
 
-    localStorage.setItem('idmember', JSON.stringify(idmember));
+    localStorage.setItem('editmember', JSON.stringify(this.members[index]));
     sessionStorage.clear()
+
     this.router.navigate(['/members/editmember']);
   }
 
   // View full member details
-  viewMember(index, idmember) {
-
-    localStorage.setItem('idmember', JSON.stringify(idmember));
+  viewMember(index) {
+    localStorage.setItem('viewmember', JSON.stringify(this.members[index]));
     this.router.navigate(['/members/viewmemberdetails']);
   }
 
   // Delete a member
-  deleteMember(index, idmember) {
+  deleteMember(idmember) {
 
     swal({
       title: 'Delete This Member',
@@ -299,7 +235,7 @@ export class ViewMembersComponent implements OnInit, AfterViewInit {
     }).then((result) => {
       if (result.value) {
 
-        this.memberSerice.deleteMember(idmember)
+        this.memberService.deleteMember(idmember)
           .subscribe(res => {
             console.log(res)
           }, err => {
@@ -335,7 +271,7 @@ export class ViewMembersComponent implements OnInit, AfterViewInit {
     });
 
     const table = $('#datatables').DataTable();
-    
+
     $('.card .material-datatables label').addClass('form-group');
   }
 

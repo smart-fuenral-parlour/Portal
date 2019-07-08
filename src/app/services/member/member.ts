@@ -1,5 +1,6 @@
 export class Member 
   {
+  [x: string]: any;
     name: string;
     surname: string;
     identitynumber: string;

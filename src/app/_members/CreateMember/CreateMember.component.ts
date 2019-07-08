@@ -6,6 +6,7 @@ import { patchComponentDefWithScope } from '@angular/core/src/render3/jit/module
 import { Router } from '@angular/router';
 import swal from 'sweetalert2';
 import { Moment } from 'moment'
+
 ///////////////////// MY SERVICE CALL ///////////////////
 import { ServiceService } from 'src/app/SERVICE/service.service'; // service link here
 import { MemberService } from 'src/app/services/member/member.service'
@@ -13,6 +14,15 @@ import { PolicytypeService } from 'src/app/services/policytype/policytype.servic
 import { PolicydetailsService } from 'src/app/services/policydetails/policydetails.service'
 import { BalanceService } from 'src/app/services/balance/balance.service'
 import { BeneficiaryService } from 'src/app/services/beneficiary/beneficiary.service'
+
+///////////////////// MODEL CLASS CALLS ///////////////////
+
+import { Member } from 'src/app/services/member/member'
+import { Policytype } from 'src/app/services/policytype/policytype'
+import { Policydetails } from 'src/app/services/policydetails/policydetails'
+import { Balance } from 'src/app/services/balance/balance'
+import { Beneficiary } from 'src/app/services/beneficiary/beneficiary'
+
 /////////////////////////////////////////////////////////
 import * as moment from 'moment';
 import { isNullOrUndefined } from 'util';
@@ -59,9 +69,16 @@ export class CreateMemberComponent implements OnInit {
     BenefitIDnum
     maxAge = 57
 
+
+    // MODEL CLASS INSTANCE
+    member: Member
+    beneficiary: Beneficiary
+    balance: Balance
+    policydetails: Policydetails
+    policytype: Policytype
+
     constructor(
         private formBuilder: FormBuilder,
-        private service: ServiceService,
         private memberService: MemberService,
         private policytypeService: PolicytypeService,
         private policydetailsService: PolicydetailsService,
@@ -110,6 +127,12 @@ export class CreateMemberComponent implements OnInit {
 
 
     ngOnInit() {
+
+///////////////////////  work here   ////////////////////////////
+
+
+
+        ///////////////////////////////////////////////////////
 
         this.app.loading = false
 

@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+
 ///////////////////  SERCVICE CALLS  /////////////////////////////
 import { ServiceService } from 'src/app/SERVICE/service.service'; // service link here
 import { MemberService } from 'src/app/services/member/member.service'
@@ -8,8 +9,10 @@ import { MemberService } from 'src/app/services/member/member.service'
 import { Member } from 'src/app/services/member/member'
 
 /////////////////////////////////////////////////////////////////
+
 import swal from 'sweetalert2';
 import { AppComponent } from 'src/app/app.component';
+import { JsonPipe } from '@angular/common';
 
 declare const $: any;
 @Component({
@@ -20,16 +23,14 @@ declare const $: any;
 export class EditMemberComponent implements OnInit {
 
 
-  member = new Member
   setmember = new Member
-  //getmember = new Member
-  idmember
+  getmember: Member
+
 
   constructor(private app: AppComponent,
     private service: ServiceService,
     private memberService: MemberService,
-    private router: Router) 
-    {
+    private router: Router) {
 
   }
 
@@ -54,20 +55,14 @@ export class EditMemberComponent implements OnInit {
 
     this.app.loading = true
 
+    this.getmember = JSON.parse(localStorage.getItem('editmember'))
+    console.log(this.getmember.idmember)
 
-    this.idmember = JSON.parse(localStorage.getItem('idmember'));
+    if (JSON.parse(localStorage.getItem('editmember')) != null) {
 
-    this.memberService.getMember(this.idmember)
-      .subscribe(member_res => {
-        
-        this.setmember = member_res[0]
-        console.log(this.setmember)   
+      this.app.loading = false
 
-        this.app.loading = false
-      }, err => {
-        this.app.loading = false
-        console.log(err)
-      })
+    }
 
 
 
@@ -76,12 +71,12 @@ export class EditMemberComponent implements OnInit {
 
   updateMember() {
 
+
     console.log(this.setmember)
-    console.log(this.member)
 
     swal({
       title: 'Update info of: ',
-      text: this.member.name + ' ' + this.member.surname,
+      text: this.getmember.name + ' ' + this.getmember.surname,
       type: 'warning',
       showCancelButton: true,
       confirmButtonClass: 'btn btn-success',
@@ -94,7 +89,7 @@ export class EditMemberComponent implements OnInit {
         this.app.loading = true
 
 
-        this.memberService.updateMember(this.idmember, this.member)
+        this.memberService.updateMember(this.getmember.idmember, this.setmember)
           .subscribe(member_updates => {
             console.log(member_updates)
 
@@ -116,8 +111,6 @@ export class EditMemberComponent implements OnInit {
 
   }
 
-  test(myname) {
-console.log(myname)
-  }
+
 
 }
