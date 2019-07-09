@@ -25,6 +25,17 @@ export interface ChildrenItems {
 //Menu Items
 export const ROUTES: RouteInfo[] = [
     {
+        path: '/user',
+        title: 'User',
+        type: 'sub',
+        icontype: 'person',
+        collapse: 'user',
+        children: [
+            {path: 'createuser' , title: 'Create User', ab:'CU'},
+            {path: 'viewuser' , title: 'View User', ab:'VU'}           
+        ]
+    },
+    {
         path: '/notification',
         title: 'Notification',
         type: 'sub',
@@ -67,21 +78,17 @@ export const ROUTES: RouteInfo[] = [
         ]
     },
     {
-        path: '/policy',
-        title: 'Policy',
+        path: '/policytype',
+        title: 'Policy Type',
         type: 'sub',
         icontype: 'person_add',
         collapse: 'policy',
         children: [
             {path: 'createpolicytype' , title: 'Create Policy', ab:'CP'},
-            {path: 'updatepolicytype' , title: 'Edit Policy', ab:'EP'},
-            {path: 'viewpolicytypedetails' , title: 'View Policy Type', ab:'VPT'}            
+            {path: 'viewpolicytype' , title: 'View Policy Type', ab:'VPT'}            
         ]
-    },
-    
-
-
-           {
+    },    
+     {
         path: '/payments',
         title: 'Payments',
         type: 'sub',

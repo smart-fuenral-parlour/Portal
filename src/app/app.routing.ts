@@ -57,6 +57,16 @@ export const AppRoutes: Routes = [
                 path: 'policy',
                 loadChildren: './_policy/policy.module#PolicyModule'
             },
+            {
+                // POLICY TYPE MODULE 
+                path: 'policytype',
+                loadChildren: './_policytype/policytype.module#PolicytypeModule'
+            },
+            {
+                // USER MODULE 
+                path: 'user',
+                loadChildren: './_user/user.module#UserModule'
+            },
             //////////////////////////////////////////////////////////////////////////
             {
                 path: 'DASHboard',

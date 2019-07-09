@@ -1,0 +1,64 @@
+<div class="main-content">
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-md-9 mr-auto ml-auto">
+          <!--      Wizard container        -->
+     
+          <!-- wizard container -->
+  
+          <div class="col-md-9">
+            <div class="card ">
+              <div class="card-header card-header-rose card-header-icon">
+                <div class="card-icon">
+                  <i class="material-icons">mail_outline</i>
+                </div>
+                <h4 class="card-title">Edit Details</h4>
+              </div>
+              <div class="card-body ">
+                <form method="#" action="#">
+                    <div class="row justify-content-center">
+                        <mat-form-field class="col-md-6">
+                          
+
+
+
+                          
+                          <input matInput placeholder="{{placeholder.name}}" type="text" name="name" [(ngModel)]="user.name">
+                        </mat-form-field>
+                        <mat-form-field class="col-md-6">
+                            <input matInput placeholder="{{placeholder.surname}}" type="text" name="surname" [(ngModel)]="user.surname">
+                          </mat-form-field>
+                       
+                      </div>
+  
+                    <div class="row justify-content-center">
+                  <mat-form-field class="col-md-6">
+                    <input matInput placeholder="{{placeholder.email}}" type="email" name="email" [(ngModel)]="user.email">
+                  </mat-form-field>
+             
+                  <mat-form-field  class="col-md-6">
+                    <mat-select placeholder="{{currentRole}}" name="role" [ngModelOptions]='{standalone: true}' [(ngModel)]='selectedrole.idrole'>
+                      <mat-option *ngFor="let role of roles" [value]="role.idrole">
+                        {{ role.name }}
+                      </mat-option>
+                    </mat-select>
+                </mat-form-field>
+                </div>
+         
+                </form>
+              </div>
+  
+              
+              <div class="card-footer ">
+                <button mat-raised-button type="submit" (click)="updateUser()" class="btn btn-fill btn-rose">Submit</button>
+              </div>
+            </div>
+          </div>
+   <!-- wizard container -->
+  
+        </div>
+      </div>
+    </div>
+  
+  
+  </div>

@@ -13,6 +13,7 @@ import { PolicytypeService } from 'src/app/services/policytype/policytype.servic
 import { PolicydetailsService } from 'src/app/services/policydetails/policydetails.service'
 import { BalanceService } from 'src/app/services/balance/balance.service'
 import { BeneficiaryService } from 'src/app/services/beneficiary/beneficiary.service'
+import { FileService } from 'src/app/services/file/file.service'
 
 ///////////////////// MODEL CLASS CALLS ///////////////////
 import { Member } from 'src/app/services/member/member'
@@ -21,6 +22,7 @@ import { Policydetails } from 'src/app/services/policydetails/policydetails'
 import { Balance } from 'src/app/services/balance/balance'
 import { Beneficiary } from 'src/app/services/beneficiary/beneficiary'
 import { User } from 'src/app/services/user/user'
+import { File } from 'src/app/services/file/file'
 
 /////////////////////////////////////////////////////////
 import * as moment from 'moment';
@@ -61,6 +63,9 @@ export class CreateMemberComponent implements OnInit {
     // MODEL CLASS INSTANCE
     member: Member
     setpolicytype: Policytype
+    file
+    key = "document";
+    data
 
     setmember = new Member
     setbeneficiary = new Beneficiary
@@ -70,26 +75,27 @@ export class CreateMemberComponent implements OnInit {
     invalidID = false
 
     constructor(private formBuilder: FormBuilder,
-                private memberService: MemberService,
-                private policytypeService: PolicytypeService,
-                private policydetailsService: PolicydetailsService,
-                private balanceService: BalanceService,
-                private beneficiaryService: BeneficiaryService,
-                private router: Router,
-                private app: AppComponent
-                ) { }
+        private memberService: MemberService,
+        private policytypeService: PolicytypeService,
+        private policydetailsService: PolicydetailsService,
+        private balanceService: BalanceService,
+        private beneficiaryService: BeneficiaryService,
+        private fileService: FileService,
+        private router: Router,
+        private app: AppComponent
+    ) { }
 
     // province drop downkzn
     provinces = [
         { value: 'Gauteng', abrv: 'GP' },
-        { value: 'Limpopo',abrv: 'L' },
+        { value: 'Limpopo', abrv: 'L' },
         { value: 'Mpumalanga', abrv: 'MP' },
         { value: 'Free State', abrv: 'FS' },
         { value: 'North West', abrv: 'NW' },
         { value: 'Northern Cape', abrv: 'NC' },
         { value: 'Eastern Cape', abrv: 'EC' },
         { value: 'Western Cape', abrv: 'WC' },
-        { value: 'Kwazulu Natal',  abrv: 'KZN' },
+        { value: 'Kwazulu Natal', abrv: 'KZN' },
     ];
 
     Genders = [
@@ -520,12 +526,12 @@ export class CreateMemberComponent implements OnInit {
     testBeneficiaryAge(i) {
 
 
-      
+
     }
 
     // testing the age of the member to determine their policy types
     testMemberAge(identitynumber) {
-     this.setmember.gender
+        this.setmember.gender
 
     }
 
@@ -708,6 +714,23 @@ export class CreateMemberComponent implements OnInit {
 
     }
 
+    files() {
+
+        this.data = {
+            document: this.file
+        }
+
+        this.fileService.createFile(this.file)
+            .subscribe(file_res => {
+                console.log(this.data)
+                console.log(file_res)
+                console.log(this.file)
+            }, err => {
+                console.log(err)
+            })
+
+
+    }
 
 
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

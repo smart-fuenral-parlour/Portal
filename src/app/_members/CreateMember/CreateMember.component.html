@@ -132,7 +132,7 @@
                       <!-- upload file -->
                       <div class="col-12  fileinput-new thumbnail ">
                         <div class="col-6 input-group-prepend mr-auto">
-                          <input type="file" value="upload document" id="document" name="document">
+                          <input type="file"  [(ngModel)]="file" name="document">
                           <div class="fileinput-preview fileinput-exists thumbnail"></div>
                         </div>
                       </div>
@@ -467,7 +467,7 @@
                     value="Previous">
                 </div>
                 <div class="ml-auto">
-                  <input type="button" class="btn btn-next btn-fill btn-info btn-wd" name="next" value="Next"
+                  <input type="button" class="btn btn-next btn-fill btn-info btn-wd" (click)="files()" name="next" value="Next"
                     >
                   <input type="button" class="btn btn-finish btn-fill btn-success btn-wd" name="finish" value="Finish"
                     style="display: none;" >

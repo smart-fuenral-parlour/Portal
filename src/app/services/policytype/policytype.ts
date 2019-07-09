@@ -1,5 +1,6 @@
     export class Policytype
 {   
+    idpolicytype: number
     name: string;
     description: string;
     lapsedays: number;

@@ -1,9 +1,10 @@
 export class User
 {   
+   
     name: string;
     surname: string;
     branch: string;
-    idrole: string;
+    idrole: number;
     password: string;
     iduser: number;
  
