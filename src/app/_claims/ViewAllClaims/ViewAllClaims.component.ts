@@ -4,14 +4,9 @@ import { AppComponent } from 'src/app/app.component'
 
 ////////////////// SERVICE CALLS /////////////////////////////////////
 import { MemberService } from 'src/app/services/member/member.service'
-import { PolicystatusService } from 'src/app/services/policystatus/policystatus.service'
 import { ClaimService } from 'src/app/services/claim/claim.service'
 import { ClaimstatusService } from 'src/app/services/claimstatus/claimstatus.service'
 import { BeneficiaryService } from 'src/app/services/beneficiary/beneficiary.service'
-import { BalanceService } from 'src/app/services/balance/balance.service'
-import { PolicydetailsService } from 'src/app/services/policydetails/policydetails.service'
-import { LifestatusService } from 'src/app/services/lifestatus/lifestatus.service'
-import { UserService } from 'src/app/services/user/user.service'
 
 ////////////////// MODEL CLASS CALLS /////////////////////////////////////
 import { Claim } from 'src/app/services/claim/claim'
@@ -30,9 +25,6 @@ import { isNullOrUndefined } from 'util';
 })
 export class ViewAllClaimsComponent implements OnInit {
 
-  toNULL = false
-  fromNULL = false
-
   selectedClaim
   selectedClaimType
   selectedClaimTypeText
@@ -42,7 +34,7 @@ export class ViewAllClaimsComponent implements OnInit {
   table = false
   notFound = false
 
-  claim: Claim
+  claims: Claim[]
   claimstatuses: Claimstatus[]
 
   constructor(private app: AppComponent,
@@ -71,38 +63,91 @@ export class ViewAllClaimsComponent implements OnInit {
 
   }
 
-  fromEnable() {
-    this.fromNULL = false
-  }
-
-  toEnable() {
-    this.toNULL = false
-  }
 
   searchClaim() {
     console.log(this.selectedClaimType)
-    console.log(isNullOrUndefined(this.selectedClaimType))
-    this.selectedClaimTypeText = this.selectedClaimType
+    this.app.loading = true
+    this.notFound = false
+    this.table = false
+    this.isEmpty = false
 
-    if (isNullOrUndefined(this.selectedClaimType)) {
-      this.table = false
+    if ( isNullOrUndefined(this.selectedClaimType)) {
+      console.log('empty')
+
       this.notFound = false
+      this.table = false
       this.isEmpty = true
 
     } else {
+      console.log('not empty')
       this.notFound = false
+      this.table = false
       this.isEmpty = false
-      this.table = true
+
+      if (this.selectedClaimType == -1) {
+
+        console.log('get all')
+
+
+        this.claimService.getClaims()
+          .subscribe(claim_res => {
+
+            this.claims = claim_res
+            console.log(this.claims)
+            this.app.loading = false
+
+            if (this.claims.length > 0) {
+              this.notFound = false
+              this.table = true
+            } else {
+              this.table = false
+              this.notFound = true
+
+            }
+
+          }, err => {
+            console.log(err)
+          })
+
+      } else {
+
+        console.log('get by status')
+
+        // get claim by the cllaim status id
+        this.claimService.getClaimbyclaimstatus(this.selectedClaimType)
+          .subscribe(claim_res => {
+
+            this.claims = claim_res
+            console.log(this.claims)
+            this.app.loading = false
+
+            if (this.claims.length > 0) {
+              this.notFound = false
+              this.table = true
+            } else {
+              this.table = false
+              this.notFound = true
+
+            }
+
+          }, err => {
+            console.log(err)
+          })
+
+
+
+      }
 
     }
 
+
+
   }
 
-  // View member details
+  // View claims info
   claimInfo(index) {
 
-    //this.claims[index]
-    localStorage.setItem('claiminfo', JSON.stringify(5));
+    localStorage.setItem('claiminfo', JSON.stringify(this.claims[index]));
     this.router.navigate(['/claims/claiminfo']);
   }
 

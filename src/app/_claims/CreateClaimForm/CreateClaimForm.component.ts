@@ -105,7 +105,6 @@ export class CreateClaimFormComponent implements OnInit {
               .subscribe(claimtype_res => {
                 this.claimtypes = claimtype_res
 
-
               }, err => {
                 console.log(err)
               })
@@ -121,19 +120,49 @@ export class CreateClaimFormComponent implements OnInit {
 
   }
 
-  createClaim() {
+  createClaim(selectedDeceased) {
+    console.log(selectedDeceased)
 
     //this.claim.iduser = this.user.iduser
     this.claim.idclaimstatus = 1
     this.claim.idmember = this.member.idmember
     this.claim.idpolicydetails = this.policydetails.idpolicydetails
 
-    console.log(this.claim)
+
+
     swal({
-      title: "Finilize claim",
-      text: "{CLAIM DETAILS HERE}",
-      showConfirmButton: true
-  }).catch(swal.noop)
+      title: 'Submit Claim for ' + this.member.name,
+      text: 'Please note that the claim will be in a pending state, up until the approver approves the claim',
+      type: 'warning',
+      showCancelButton: true,
+      confirmButtonClass: 'btn btn-success',
+      cancelButtonClass: 'btn btn-danger',
+      cancelButtonText: 'Cancel',
+      confirmButtonText: 'Yes, Submit',
+      buttonsStyling: false
+    }).then((result) => {
+      if (result.value) {
+
+        this.claimService.createClaim(this.claim)
+          .subscribe(claim_res => {
+            console.log(claim_res)
+          }, err => {
+            console.log(err)
+          })
+
+        swal(
+          {
+            title: 'Claim Submitted',
+            type: 'success',
+            confirmButtonClass: "btn btn-success",
+            buttonsStyling: false
+
+          }).then((result) => this.router.navigate(['/dashboard']))
+
+      }
+    })
+
+
 
   }
 

@@ -8,7 +8,6 @@ import swal from 'sweetalert2';
 import { Moment } from 'moment'
 
 ///////////////////// MY SERVICE CALL ///////////////////
-import { ServiceService } from 'src/app/SERVICE/service.service'; // service link here
 import { MemberService } from 'src/app/services/member/member.service'
 import { PolicytypeService } from 'src/app/services/policytype/policytype.service'
 import { PolicydetailsService } from 'src/app/services/policydetails/policydetails.service'
@@ -16,12 +15,12 @@ import { BalanceService } from 'src/app/services/balance/balance.service'
 import { BeneficiaryService } from 'src/app/services/beneficiary/beneficiary.service'
 
 ///////////////////// MODEL CLASS CALLS ///////////////////
-
 import { Member } from 'src/app/services/member/member'
 import { Policytype } from 'src/app/services/policytype/policytype'
 import { Policydetails } from 'src/app/services/policydetails/policydetails'
 import { Balance } from 'src/app/services/balance/balance'
 import { Beneficiary } from 'src/app/services/beneficiary/beneficiary'
+import { User } from 'src/app/services/user/user'
 
 /////////////////////////////////////////////////////////
 import * as moment from 'moment';
@@ -57,53 +56,45 @@ export class MyErrorStateMatcher implements ErrorStateMatcher {
 })
 export class CreateMemberComponent implements OnInit {
 
-    response
-    invalid = false
-    invalidID = false
-    typeSelected = false
-
-    policyTypes
-
-    BenefitName
-    BenefitSurname
-    BenefitIDnum
-    maxAge = 57
-
+    beneficiaryNumber
 
     // MODEL CLASS INSTANCE
     member: Member
-    beneficiary: Beneficiary
-    balance: Balance
-    policydetails: Policydetails
-    policytype: Policytype
+    setpolicytype: Policytype
 
-    constructor(
-        private formBuilder: FormBuilder,
-        private memberService: MemberService,
-        private policytypeService: PolicytypeService,
-        private policydetailsService: PolicydetailsService,
-        private balanceService: BalanceService,
-        private beneficiaryService: BeneficiaryService,
-        private router: Router,
-        private app: AppComponent
-    ) { }
+    setmember = new Member
+    setbeneficiary = new Beneficiary
+    setbalance = new Balance
+    setpolicydetails = new Policydetails
+
+    invalidID = false
+
+    constructor(private formBuilder: FormBuilder,
+                private memberService: MemberService,
+                private policytypeService: PolicytypeService,
+                private policydetailsService: PolicydetailsService,
+                private balanceService: BalanceService,
+                private beneficiaryService: BeneficiaryService,
+                private router: Router,
+                private app: AppComponent
+                ) { }
 
     // province drop downkzn
     provinces = [
-        { value: 'Gauteng', viewValue: 'Gauteng', abrv: 'GP' },
-        { value: 'Limpopo', viewValue: 'Limpopo', abrv: 'L' },
-        { value: 'Mpumalanga', viewValue: 'Mpumalanga', abrv: 'MP' },
-        { value: 'Free State', viewValue: 'Free State', abrv: 'FS' },
-        { value: 'North West', viewValue: 'North West', abrv: 'NW' },
-        { value: 'Northern Cape', viewValue: 'Northern Cape', abrv: 'NC' },
-        { value: 'Eastern Cape', viewValue: 'Eastern Cape', abrv: 'EC' },
-        { value: 'Western Cape', viewValue: 'Western Cape', abrv: 'WC' },
-        { value: 'Kwazulu Natal', viewValue: 'Kwazulu Natal', abrv: 'KZN' },
+        { value: 'Gauteng', abrv: 'GP' },
+        { value: 'Limpopo',abrv: 'L' },
+        { value: 'Mpumalanga', abrv: 'MP' },
+        { value: 'Free State', abrv: 'FS' },
+        { value: 'North West', abrv: 'NW' },
+        { value: 'Northern Cape', abrv: 'NC' },
+        { value: 'Eastern Cape', abrv: 'EC' },
+        { value: 'Western Cape', abrv: 'WC' },
+        { value: 'Kwazulu Natal',  abrv: 'KZN' },
     ];
 
-    genders = [
-        { value: 'Male', name: 'Male', abrv: 'M' },
-        { value: 'Female', name: 'Female', abrv: 'F' }
+    Genders = [
+        { value: 'Male', abrv: 'M' },
+        { value: 'Female', abrv: 'F' }
     ]
     emailFormControl = new FormControl('', [
         Validators.required,
@@ -128,7 +119,7 @@ export class CreateMemberComponent implements OnInit {
 
     ngOnInit() {
 
-///////////////////////  work here   ////////////////////////////
+        ///////////////////////  work here   ////////////////////////////
 
 
 
@@ -502,12 +493,6 @@ export class CreateMemberComponent implements OnInit {
     }
 
 
-    test(i) {
-
-        console.log(i)
-    }
-
-
 
     get BeneficiaryForm() {
         return (<FormArray>(<FormGroup>this.type.get('BeneficiaryGroup')).get('beneficiaryArray')).controls;
@@ -534,105 +519,13 @@ export class CreateMemberComponent implements OnInit {
 
     testBeneficiaryAge(i) {
 
-        let birthyear: string
-        this.BenefitIDnum = document.querySelector('#beneficiaryID' + i)
-        let beneficiaryName 
 
-
-        if (this.BenefitIDnum.value.length == 13) {
-
-            let age = 0
-            birthyear = this.BenefitIDnum.value
-
-            // for those born from the year 2000
-            if (parseInt(birthyear.slice(0, 2)) <= parseInt(moment(new Date()).format('YY'))) {
-
-                age = parseInt(moment(new Date()).format('YYYY')) - parseInt('19' + birthyear.slice(0, 2))
-
-                if (age < this.maxAge) {
-
-                    console.log('success')
-
-                } else {
-                    beneficiaryName = document.querySelector('#beneficiaryName' + i)
-                    swal({
-                        title: beneficiaryName.value+" cannot be added as a Beneficiary",
-                        text: "Beneficiary must not be older than " + this.maxAge + " years",
-                        timer: 5500,
-                        showConfirmButton: true
-                    }).catch(swal.noop)
-
-                }
-
-            } else {
-
-            // for those born after the year 2000
-                age = parseInt(moment(new Date()).format('YYYY')) - parseInt('19' + birthyear.slice(0, 2))
-
-                if (age < this.maxAge) {
-
-                    console.log('successp')
-
-                } else {
-
-                    swal({
-                        title: beneficiaryName.value+" cannot be added as a Beneficiary",
-                        text: "Beneficiary must not be older than " + this.maxAge + " years",
-                        timer: 5500,
-                        showConfirmButton: true
-                    }).catch(swal.noop)
-
-                }
-            }
-
-        }
-
+      
     }
 
     // testing the age of the member to determine their policy types
     testMemberAge(identitynumber) {
-
-console.log(identitynumber.toString().length)
-
-        // storing id number on string function to access string properties   
-        if (identitynumber.toString().length == 13) {
-
-            let age = 0
-            if ((parseInt(identitynumber.toString().slice(0, 2)) <= parseInt(moment(new Date()).format('YY'))) ) {
-
-                // for those born after the year 2000
-                age = parseInt(moment(new Date()).format('YYYY')) - parseInt('20' + identitynumber.toString().slice(0, 2))
-                console.log(parseInt('20' + identitynumber.toString().slice(0, 2))+': ' + age)
-
-                this.policytypeService.getPolicytypebyage(age)
-                    .subscribe(policytype_res => {
-                        console.log(policytype_res)
-                    }, err => {
-                        console.log(err)
-                    })
-
-            } else {
-
-                // for those born before the year 2000
-                age = parseInt(moment(new Date()).format('YYYY')) - parseInt('19' + identitynumber.toString().slice(0, 2))
-                console.log('2: ' + age)
-                console.log(parseInt('19' + identitynumber.toString().slice(0, 2))+': ' + age)
-
-                this.policytypeService.getPolicytypebyage(age)
-                    .subscribe(policytype_res => {
-                        console.log(policytype_res)
-                    }, err => {
-                        console.log(err)
-                    })
-
-            }
-
-
-
-
-
-
-        }
+     this.setmember.gender
 
     }
 
@@ -712,7 +605,8 @@ console.log(identitynumber.toString().length)
                                             .subscribe(balance_res => {
                                                 console.log(balance_res)
 
-                                                // creating beneficiary for a member
+                                                /*
+                                         creating beneficiary for a member
                                                 for (let x = 0; x < this.BeneficiaryForm.length; x++) {
 
                                                     this.BenefitName = document.querySelector('#beneficiaryName' + x)
@@ -737,7 +631,7 @@ console.log(identitynumber.toString().length)
 
                                                     // tslint:disable-next-line: max-line-length
                                                 }
-
+*/
 
 
 
@@ -831,6 +725,7 @@ console.log(identitynumber.toString().length)
             reader.readAsDataURL(input[0].files[0]);
         }
     }
+
     ngAfterViewInit() {
 
         $(window).resize(() => {

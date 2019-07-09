@@ -1,7 +1,7 @@
 <div class="main-content">
   <div class="container-fluid">
     <div class="row">
-      <div class="col-md-10 mr-auto ml-auto">
+      <div class="col-8 mr-auto ml-auto">
         <!--      Wizard container        -->
         <div class="wizard-container">
           <div class="card card-wizard" data-color="blue" id="wizardProfile">
@@ -29,13 +29,7 @@
                     </li>
                     <li class="nav-item">
                       <a class="nav-link" href="#policyTab" data-toggle="tab" role="tab">
-                        Policy
-                        <!-- Beneficiaries  #additionalInfo policyTab -->
-                      </a>
-                    </li>
-                    <li class="nav-item">
-                      <a class="nav-link nav-primary" href="#beneficiaryTab" data-toggle="tab" role="tab">
-                        Beneficiaries
+                        Policy contract
                         <!-- Beneficiaries  #additionalInfo policyTab -->
                       </a>
                     </li>
@@ -69,7 +63,7 @@
                             </span>
                             <mat-form-field class="example-full-width has-label"
                               [ngClass]="displayFieldCss(type, 'firstName')">
-                              <input type="text" name="name" [(ngModel)]="name" matInput id="name"
+                              <input type="text" name="name" [(ngModel)]="setmember.name" matInput
                                 placeholder="First Name" formControlName="firstName">
                             </mat-form-field>
                           </div>
@@ -85,7 +79,7 @@
                             </span>
                             <mat-form-field class="example-full-width has-label"
                               [ngClass]="displayFieldCss(type, 'lastName')">
-                              <input type="text" name="surname" [(ngModel)]="surname" matInput id="surname"
+                              <input type="text" name="surname" [(ngModel)]="setmember.surname" matInput
                                 placeholder="last Name" formControlName="lastName">
                             </mat-form-field>
                           </div>
@@ -101,13 +95,13 @@
                           </span>
                           <mat-form-field class="example-full-width has-label"
                             [ngClass]="displayFieldCss(type, 'idnumber')">
-                            <input type="text" name="identitynumber" matInput [(ngModel)]="identitynumber"
-                              id="identitynumber" inputmode="numeric" placeholder="ID Number" formControlName="idnumber" (keyup)="testMemberAge(identitynumber)" minlength="13">
+                            <input type="text" name="identitynumber" matInput [(ngModel)]="setmember.identitynumber"
+                              id="identitynumber" inputmode="numeric" placeholder="ID Number" formControlName="idnumber" minlength="13" maxlength="13">
                           </mat-form-field>
 
                         </div>
-                        <div class="col-12" hidden>
-                          <mat-error name="idText" id="idText">
+                        <div class="col-12" *ngIf="invalidID">
+                          <mat-error >
                             ID number must have 13 digits
                           </mat-error>
                         </div>
@@ -123,9 +117,9 @@
                           </span>
                           <mat-form-field class="example-full-width has-label">
                             <mat-select placeholder="Select Gender" id="gender" name="gender" formControlName="gender"
-                              [(ngModel)]="gender" required>
+                              [(ngModel)]="setmember.gender" required>
                               <mat-option *ngFor="let gender of genders" [value]=" gender.value ">
-                                {{ gender.name }}
+                                {{ gender.value }}
                               </mat-option>
                             </mat-select>
                           </mat-form-field>
@@ -209,7 +203,7 @@
                             <mat-select placeholder="Select Province" matInput id="province" name="province"
                               formControlName="selectedProvince" [(ngModel)]="province">
                               <mat-option *ngFor="let province of provinces" [value]=" province.value ">
-                                {{ province.viewValue }}
+                                {{ province.value }}
                               </mat-option>
                             </mat-select>
                           </mat-form-field>
@@ -219,7 +213,7 @@
                   </div>
 
 
-                  <!-- SELECT POLICY TYPE -->
+                  <!-- POLICY CONTRACT  -->
                   <div class="tab-pane" id="policyTab">
                     <div class="row justify-content-center">
                       <div class="col-sm-12">
@@ -464,37 +458,7 @@
 
                   <!--   -->
 
-                  <div class="tab-pane" id="address">
-                    <div class="row justify-content-center">
-                      <div class="col-sm-12">
-                        <h5 class="info-text"> Are you living in a nice area? </h5>
-                      </div>
-                      <div class="col-sm-7">
-                        <mat-form-field class="example-full-width">
-                          <input matInput type="text" placeholder="Street Name">
-                        </mat-form-field>
-                      </div>
-                      <div class="col-sm-3">
-                        <mat-form-field class="example-full-width">
-                          <input matInput type="text" placeholder="Street No.">
-                        </mat-form-field>
-                      </div>
-                      <div class="col-sm-5">
-                        <mat-form-field class="example-full-width">
-                          <input matInput type="text" placeholder="City">
-                        </mat-form-field>
-                      </div>
-                      <div class="col-sm-5">
-                        <mat-form-field>
-                          <mat-select placeholder="Single City" name="city">
-                            <mat-option *ngFor="let city of cities" [value]="city.value">
-                              {{ city.viewValue }}
-                            </mat-option>
-                          </mat-select>
-                        </mat-form-field>
-                      </div>
-                    </div>
-                  </div>
+
                 </div>
               </div>
               <div class="card-footer">
@@ -504,9 +468,9 @@
                 </div>
                 <div class="ml-auto">
                   <input type="button" class="btn btn-next btn-fill btn-info btn-wd" name="next" value="Next"
-                    (click)="testfunc()">
+                    >
                   <input type="button" class="btn btn-finish btn-fill btn-success btn-wd" name="finish" value="Finish"
-                    style="display: none;" (click)="test() ">
+                    style="display: none;" >
                 </div>
                 <div class="clearfix"></div>
               </div>

@@ -11,7 +11,7 @@
         <div class="col-md-4 text-center">
           <a href="/members/searchmember">
   
-            <div class="card card-pricing card-raised">
+            <div class="card card-pricing card-raised" data-toggle="tooltip" data-placement="down" title="search for member ">
                 <div class="card-body">
     
                   <div class="card-icon icon-rose">
@@ -28,7 +28,7 @@
         </div>
 
       <div class="col-md-4 text-center">
-        <a href="/members/createmember">
+        <a href="/members/createmember" data-toggle="tooltip" data-placement="down" title="create member">
 
           <div class="card card-pricing card-raised">
             <div class="card-body">
@@ -47,7 +47,7 @@
       </div>
 
       <div class="col-md-4 text-center">
-        <a href="/payments/viewpayments">
+        <a href="/payments/viewpayments" data-toggle="tooltip" data-placement="down" title="view payments">
           
           <div class="card card-pricing card-raised">
               <div class="card-body">
@@ -65,121 +65,12 @@
 
       </div>
 
-      <!--
-
-        
-      <div class="col-md-6 ">
-        <a href="/members/searchmember">
-
-          <div class="card card-pricing card-raised">
-            <div class="row card-body">
-
-              <div class="card-icon icon-rose">
-                <i class="material-icons">recent_actors</i>
-              </div>
-              <div class="col-7">
-                <h5>View Members</h5>
-                Search for member(s) registered to the funeral parlour then view or edit their details
-              </div>
-            </div>
-          </div>
-
-        </a>
-
-      </div>
-
-
-      <div class="col-md-6">
-        <a href="/members/createmember">
-
-          <div class="card card-pricing card-raised">
-            <div class="row card-body">
-
-              <div class="card-icon icon-rose">
-                <i class="material-icons">person_add</i>
-              </div>
-              <div class="col-7">
-                <h5>Create Members</h5>
-                Create/register a new member to the funeral parlour
-              </div>
-            </div>
-          </div>
-
-        </a>
-
-      </div>
-
-
-              <div class="col-md-4 text-center">
-        <a href="/members/createmember">
-
-          <div class="card card-pricing card-raised">
-            <div class="card-body">
-
-              <div class="card-icon icon-rose">
-                <i class="material-icons">perm_identity</i>
-              </div>
-              <h3 class="card-title">Create Members</h3>
-              <div class="card-footer">
-                <p class="card-description text-center">
-                  Create a new member to the System/funeral parlour
-                </p>
-              </div>
-            </div>
-          </div>
-
-        </a>
-
-      </div>
-                <a href="/members/searchmember">
-
-          <div class="card card-pricing card-raised">
-            <div class=" row card-body">
-
-              <div class="card-icon icon-rose">
-                <i class="material-icons">person</i>
-              </div>
-              <div>
-                <h3 class="card-title">Search Member(s)</h3>
-                <p class="card-description text-center">
-                  Search for member(s) registered to the funeral parlour then view or edit their details
-                </p>
-              </div>
-
-            </div>
-          </div>
-
-        </a>
-
-        --div class="col-md-4 text-center">
-        <a href="/dashboard">
-
-          <div class="card card-pricing card-raised">
-            <div class="card-body">
-
-              <div class="card-icon icon-rose">
-                <i class="material-icons">dashboard</i>
-              </div>
-              <h3 class="card-title">PLACEHOLDER</h3>
-              <div class="card-footer">
-                <p class="card-description text-center">
-                  DESCRIPTION HERE
-                </p>
-              </div>
-            </div>
-          </div>
-
-        </a>
-
-      </div-->
-
-
     </div>
     <!--       CLAIMS LINKS            -->
     <div class="row">
 
       <div class="col-md-4 text-center">
-        <a href="/claims/viewallclaims">
+        <a href="/claims/viewallclaims"  data-toggle="tooltip" data-placement="down" title="View Claims">
 
           <div class="card card-pricing card-raised">
             <div class="card-body">
@@ -202,7 +93,7 @@
       </div>
 
       <div class="col-md-4 text-center ">
-        <a href="/claims/createclaim">
+        <a href="/claims/createclaim" data-toggle="tooltip" data-placement="down" title="create claim">
 
           <div class="card card-pricing card-raised">
             <div class="card-body">
@@ -221,7 +112,7 @@
 
       </div>
 
-      <div class="col-md-4 text-center">
+      <div class="col-md-4 text-center" data-toggle="tooltip" data-placement="down" title="view report">
         <a href="/dashboard">
 
           <div class="card card-pricing card-raised">
@@ -241,85 +132,8 @@
       </div>
 
     </div>
-
-    <div class="row" hidden>
-
-      <div class="col-lg-6 cards">
-        <a class="" href="/members/createmember">
-          <div class="card card-chart ">
-            <div class="card-body mr-auto ml-auto ">
-              <i style="font-size:110px;" class=" icon-primary material-icons">perm_identity</i>
-              <h5 class="card-title text-center"> <i style="font-size:15px;" class="material-icons">create</i> Create
-                Member </h5>
-            </div>
-
-            <div class="card-footer">
-              <p class="card-description text-center">Create a new member</p>
-            </div>
-          </div>
-        </a>
-      </div>
-
-    </div>
-
-    <div class="row" hidden>
-      <div class="col-md-4">
-        <div class="card card-chart">
-          <div class="card-body">
-            <div class="card-actions">
-              <button mat-raised-button type="button" class="btn btn-danger btn-link fix-broken-card">
-                <i class="material-icons"></i>
-              </button>
-              <!--button mat-raised-button type="button" class="btn btn-info btn-link" matTooltip="Refresh" >  <!-- [matTooltipPosition]="below" >
-                    <i class="material-icons">refresh</i>
-                  </button>
-                  <button mat-raised-button type="button" class="btn btn-default btn-link" matTooltip="Change Date" > <!-- [matTooltipPosition]="below">
-                    <i class="material-icons">edit</i>
-                  </button -->
-            </div>
-            <p class="card-category stats">View or create member</p>
-            <h4 class="card-title"><a href="/members/searchmember">View Member</a></h4>
-          </div>
-          <div class="card-footer">
-            <h4 class="card-title"><a href="/members/createmember">Create Member</a></h4>
-          </div>
-        </div>
-      </div>
-      <div class="col-md-4">
-        <div class="card card-chart">
-          <div class="card-body">
-            <div class="card-actions">
-              <button mat-raised-button type="button" class="btn btn-danger btn-link fix-broken-card">
-                <i class="material-icons"></i>
-              </button>
-            </div>
-            <p class="card-category stats">View or create claim(s) for member</p>
-            <h4 class="card-title"><a href="/claims/viewallclaims">View Claims</a></h4>
-          </div>
-          <div class="card-footer">
-            <h4 class="card-title"><a href="/claims/createclaim">Create Claims</a></h4>
-          </div>
-        </div>
-      </div>
-      <div class="col-md-4">
-        <div class="card card-chart">
-          <div class="card-body">
-            <div class="card-actions">
-              <button mat-raised-button type="button" class="btn btn-danger btn-link fix-broken-card">
-                <i class="material-icons"></i>
-              </button>
-            </div>
-            <p class="card-category stats">View all payments made</p>
-            <h4 class="card-title"><a href="/payments/viewpayments">View Payments</a></h4>
-          </div>
-          <div class="card-footer">
-            <div class="stats">
-              <i class="material-icons">access_time</i> Last Payment: 2 days ago
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
+    
+    
 
     <div class="row">
       <div class="col-lg-3 col-md-6 col-sm-6">
@@ -387,10 +201,7 @@
         </div>
       </div>
     </div>
-
-    <!--div class="loader hidden" (load)="load()">
-    <img src="./assets/img/loading7.gif" alt="Loading... "/>
-    </div-->
+    
   </div>
 </div>
 

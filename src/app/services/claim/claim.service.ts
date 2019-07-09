@@ -9,6 +9,7 @@ const httpOptions = {
 };
 
 const apiUrl = "http://greenlinks1.dedicated.co.za:3002/api/claim";
+const getclaimbyclaimstatusUrl = "http://greenlinks1.dedicated.co.za:3002/api/getclaimbyclaimstatus";
 const getclaimbyidmemberUrl = "http://greenlinks1.dedicated.co.za:3002/api/getclaimbyidmember";
 
 @Injectable({
@@ -30,6 +31,15 @@ export class ClaimService {
   }
 
 
+  getClaims (): Observable<Claim[]> {
+    return this.http.get<Claim[]>(apiUrl)
+      .pipe(
+        tap(heroes => console.log('fetched claim')),
+        catchError(this.handleError('getClaims', []))
+      );
+  }
+
+  
   
   getClaim(id: number): Observable<Claim> {
     const url = `${apiUrl}/${id}`;
@@ -38,13 +48,21 @@ export class ClaimService {
       catchError(this.handleError<Claim>(`getClaim id=${id}`))
     );
   }
+
+  getClaimbyclaimstatus(id: number): Observable<Claim[]> {
+    const url = `${getclaimbyclaimstatusUrl}/${id}`;
+    return this.http.get<Claim[]>(url).pipe(
+      tap(_ => console.log(`fetched claim id=${id}`)),
+      catchError(this.handleError<Claim[]>(`getClaimbyclaimstatus id=${id}`))
+    );
+  }
   
   
   getClaimbyidmember(id: number): Observable<Claim> {
     const url = `${getclaimbyidmemberUrl}/${id}`;
     return this.http.get<Claim>(url).pipe(
       tap(_ => console.log(`fetched claim id=${id}`)),
-      catchError(this.handleError<Claim>(`getClaim id=${id}`))
+      catchError(this.handleError<Claim>(`getClaimbyidmember id=${id}`))
     );
   }
 

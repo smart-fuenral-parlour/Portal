@@ -7,7 +7,7 @@
             <div class="card-icon">
               <i class="material-icons">supervisor_account</i>
             </div>
-            <h4 class="card-title text-center">Select Deceased to continue creating claim
+            <h4 class="card-title text-center">Create Claim for member: <b>{{ member.name | titlecase }} {{ member.surname | titlecase }}</b>
               <small class="category"></small>
             </h4>
           </div>
@@ -46,40 +46,30 @@
                   <label class="bmd-label-floating">Select Deceased to continue creating claim</label>
                   <div>
                     <mat-form-field>
-                      <mat-select placeholder="Name, Surnmae, Identity number" [ngModelOptions]="{standalone: true}"
-                        [(ngModel)]="selectedDeceased" data-toggle="tooltip" data-placement="down">
-                        <mat-option [value]="member.idmember" (click)="selectDeceased()">
+                      <mat-select placeholder="Name, Surname, Identity number" [ngModelOptions]="{standalone: true}"
+                        [(ngModel)]="claim.deceasedidentitynumber" data-toggle="tooltip" data-placement="down">
+                        <mat-option [value]="member.identitynumber" (click)="selectDeceased()">
                           {{ member.name | titlecase }}, {{ member.surname | titlecase }},
                           {{ member.identitynumber | titlecase }}
                         </mat-option>
                         <mat-option *ngFor="let beneficiary of beneficiaries" (click)="selectDeceased()"
-                          [value]="beneficiary.idbeneficiary">
+                          [value]="beneficiary.identitynumber">
                           {{ beneficiary.name | titlecase }}, {{ beneficiary.surname | titlecase }},
                           {{ beneficiary.identitynumber | titlecase }}
                         </mat-option>
                       </mat-select>
                     </mat-form-field>
                   </div>
+                  <br/>
                 </div>
-                <h5 *ngIf="selected" class="bmd-label-floating text-center"><b> Fill in to create
-                    claim </b></h5>
+                
+            <h6 *ngIf="selected" class="bmd-label-floating text-center"><b> Fill in to create
+              claim </b></h6>
+          
                 <div  *ngIf="selected">
 
 
                   <div class="row">
-
-                    <div class="col-md-6">
-                      <div>
-                        <mat-form-field>
-                          <mat-select placeholder="Select the claim type" [ngModelOptions]="{standalone: true}"
-                            [(ngModel)]="claim.idclaimtype">
-                            <mat-option *ngFor="let claimtype of claimtypes" [value]="claimtype.idclaimtype">
-                              {{ claimtype.name | titlecase }}
-                            </mat-option>
-                          </mat-select>
-                        </mat-form-field>
-                      </div>
-                    </div>
 
 
                     <div class="col-md-6">
@@ -100,8 +90,8 @@
                   </div>
 
 
-                  <label class="bmd-label-floating text-center"><b>Funeral
-                      details</b></label>
+                  <h6 class="bmd-label-floating text-center">Funeral
+                    details</h6>
 
                   <div class="row">
                     <div class="col-md-7">
@@ -145,7 +135,7 @@
 
               <br />
               <button mat-raised-button *ngIf="selected" type="submit" class="btn btn-rose pull-right"
-                (click)="createClaim()">Submit
+                (click)="createClaim(selectedDeceased)">Submit
                 Claim</button>
               <div class="clearfix"></div>
             </form>

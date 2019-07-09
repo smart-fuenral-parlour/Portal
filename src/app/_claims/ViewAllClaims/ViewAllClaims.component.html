@@ -8,8 +8,11 @@
      
             <div class="col-6">
               <mat-form-field>
-                <mat-select placeholder="Select claim status " name="searchType" id="searchType"
-                  [(ngModel)]="selectedClaimType" (click)="changeEmpty()" (select)="changeEmpty()">
+                <mat-select placeholder="Select claim status "
+                  [(ngModel)]="selectedClaimType" (click)="changeEmpty()">
+                  <mat-option value="-1">
+                    All
+                  </mat-option>
                   <mat-option *ngFor="let claimstatus of claimstatuses" [value]="claimstatus.idclaimstatus">
                     {{ claimstatus.name }}
                   </mat-option>
@@ -22,63 +25,9 @@
                   Please select claim status
                 </mat-error>
               </div>
-<!--
-  
-            <div class="col-6">
-              <mat-form-field class="example-full-width">
-                <input matInput placeholder="Search Claim" type="search" id="searchBox" name="searchBox"
-                  (focus)="changeEmpty()" required>
-              </mat-form-field>
-            </div>
--->
-            
-         
-            <div class="col-12" hidden>
-
-              <!-- From Date -->
-              <div class="col-6 input-group-prepend mr-auto">
-                <span class="input-group-text">
-                  <i class="material-icons"></i>
-                </span>
-                <mat-form-field  (click)="fromEnable()">
-                  <input matInput [matDatepicker]="picker" placeholder="From" readonly id="fromDate" name="fromDate"
-                    (click)="picker.open()" class="date">
-                  <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-                  <mat-datepicker #picker startView="year"></mat-datepicker>
-                </mat-form-field>
-              </div>
-              <div class="col-6" *ngIf='fromNULL'>
-                <mat-error>
-                  Please From Select Date
-                </mat-error>
-              </div>
-            </div>
-
-            <div class="col-12" hidden>
-
-              <!-- To Date  
-              <legend>Datepicker Year</legend> -->
-              <div class="col-6 input-group-prepend mr-auto">
-                <span class="input-group-text">
-                  <i class="material-icons"></i>
-                </span>
-                <mat-form-field (click)="toEnable()" >
-                  <input matInput [matDatepicker]="picker2" placeholder="To" readonly id="toDate" name="toDate"
-                    (click)="picker2.open()" class="date">
-                  <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
-                  <mat-datepicker #picker2 startView="year"></mat-datepicker>
-                </mat-form-field>
-              </div>
-              <div class="col-6" *ngIf='isEmpty'>
-                <mat-error>
-                  Please select claim status
-                </mat-error>
-              </div>
-            </div>
-
 
             <div class="col-2">
-              <button mat-raised-button type="submit" class="btn btn-sm" id="searchButton" name="searchButton"
+              <button mat-raised-button type="submit" class="btn btn-sm"  name="searchButton"
                 (click)="searchClaim()"> <i class="material-icons">search</i> Search For Claims</button>
 
             </div>
@@ -91,13 +40,14 @@
       <div class="col-12 ml-auto mr-auto">
         <div class="card">
           <div class="card-body text-center">
-            <h5><b>There are currently no {{ selectedClaimType }} Claims</b> <span class="text-info">
+            <h5><b>No Claims found</b> <span class="text-info">
                 <h6></h6>
               </span></h5>
           </div>
         </div>
       </div>
     </div>
+
     <div class="row" *ngIf="table">
       <div class="col-md-12">
         <div class="card">
@@ -117,21 +67,17 @@
                 width="100%" style="width:100%">
                 <thead>
                   <tr>
-                    <th>Claim No.</th>
-                    <th>Name</th>
-                    <th>Surname</th>
+                    <th>Claim Id.</th>
+                    <th>Place of death</th>
                     <th>Date</th>
-                    <th>Paid</th>
                     <th class="disabled-sorting text-right">Action</th>
                   </tr>
                 </thead>
                 <tbody>
-                  <tr ><!--  *ngFor="let member of response.response; let i = index" -->
-                    <td>Claim No.</td>
-                    <td>Name</td>
-                    <td>Surname</td>
-                    <td>Date</td>
-                    <td>Paid</td>
+                  <tr *ngFor="let claim of claims; let i = index" ><!--   -->
+                    <td>{{ claim.idclaim }}</td>
+                    <td>{{ claim.placeofdeath }}</td>
+                    <td>{{ claim.createddate | date: "dd MMMM, yyyy"  }}</td>
                     <td class="text-right">
                       <button (click)="claimInfo(i)"
                         class="btn btn-link btn-info "><i class="material-icons"

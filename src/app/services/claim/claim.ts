@@ -1,6 +1,6 @@
 export class Claim 
 {
-    idclaimtype: number;
+  [x: string]: any;
     idpolicydetails: number;
     deceasedidentitynumber: number;
     placeofdeath:string;
