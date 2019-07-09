@@ -1,6 +1,15 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { ServiceService } from 'src/app/SERVICE/service.service'; // service link here
+//////////////////////////////////////////   SERVICE CALLS   /////////////////////////////////////////////////////////////////////
+import { MemberService } from 'src/app/services/member/member.service'
+
+
+///////////////////////////////////////////   MODEL CLASS CALL   ///////////////////////////////////////////////////////////////////
+import { Member } from 'src/app/services/member/member'
+
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 import { isNullOrUndefined } from 'util';
 import { AppComponent } from 'src/app/app.component'
 
@@ -11,42 +20,40 @@ import { AppComponent } from 'src/app/app.component'
 })
 export class CreateClaimComponent implements OnInit {
 
-  response;
-  members;
-  selectedrow;
-  selectedSearchType
-  searchText = 'ID Number';
-  isEmpty = false
-  searchResult = false;
-  notFound = false;
-  invalidID = false;
-  searchInput
 
-  constructor( private app: AppComponent, private _service: ServiceService, private _router: Router) { }
+  isEmpty = false
+  searchResult = false
+  notFound = false
+  invalidID = false
+
+  selectedSearchType
+  searchText = 'ID Number'
+
+  members: Member
+
+  constructor(private app: AppComponent, private memberService: MemberService, private _service: ServiceService, private _router: Router) { }
 
   Types = [
-    { id: 1, value: 'ID Number', viewValue: 'ID Number' },
-    { id: 2, value: 'Surname', viewValue: 'Surname' }
+    { id: 1, value: 'ID Number' },
+    { id: 2, value: 'Surname' }
   ];
 
   ngOnInit() {
     this.app.loading = false
-   
   }
 
   //Search member
-  searchMember() {
+  searchMember(searchInput) {
 
     this.isEmpty = false
     this.searchResult = false
     this.notFound = false
 
-    this.searchInput = document.querySelector('#searchBox')
 
-    console.log('Search By: '+this.selectedSearchType)
-    console.log(this.searchInput.value)
+    console.log('Search By: ' + this.selectedSearchType)
+    console.log(searchInput)
 
-    if (this.searchInput.value == '' || isNullOrUndefined(this.searchInput.value)) {
+    if (searchInput == '' || isNullOrUndefined(searchInput)) {
       this.searchResult = false
       this.notFound = false
       this.isEmpty = true;
@@ -55,82 +62,59 @@ export class CreateClaimComponent implements OnInit {
       this.searchResult = false
       this.notFound = false
 
-      if (this.selectedSearchType == 'Membership Number') {
+      if (this.selectedSearchType == 'Surname') {
 
-        this._service.searchMemberByMembershipNumber(this.searchInput.value)
-          .subscribe(res => {
-            this.response = res
+        this.memberService.getMemberbysurname(searchInput)
+          .subscribe(surname_res => {
+            this.members = surname_res
 
-            if (this.response.length > 0) {
-              console.log('Search By Membership Number')
+            if (this.members.length > 0) {
+
+              console.log('Search By Surname')
               this.notFound = false
               this.isEmpty = false
               this.searchResult = true
+
             } else {
               console.log('NO MEMBERS FOUND')
               this.searchResult = false
               this.isEmpty = false
               this.notFound = true
             }
+          }, err => {
+            console.log(err)
+          })
 
-          },
-            err => {
-              console.log(err)
-            }
-          )
+      } else
+        if (searchInput.length == 13) {
+          this.memberService.getMemberbyidentitynumber(searchInput)
+            .subscribe(identitynumber_res => {
 
-      } else {
-        if (this.selectedSearchType == 'Surname') {
+              this.members = identitynumber_res
 
-          this._service.searchMemberBySurname(this.searchInput.value)
-            .subscribe(res => {
-              this.response = res
+              if (this.members.length > 0) {
 
-              if (this.response.length > 0) {
-                console.log('Search By Surname')
-                this.notFound = false
+                console.log('Search By ID Number')
                 this.isEmpty = false
+                this.notFound = false
                 this.searchResult = true
               } else {
+
                 console.log('NO MEMBERS FOUND')
-                this.searchResult = false
                 this.isEmpty = false
+                this.searchResult = false
                 this.notFound = true
               }
 
-            },
-              err => {console.log(err)}
-            )
+            }, err => {
+              console.log(err)
+            })
 
         } else {
-            if(this.searchInput.value.length == 13){
-              this._service.searchMemberByIdNumber(this.searchInput.value)
-              .subscribe(res => {
-                this.response = res
-
-                if (this.response.length > 0) {
-                  console.log('Search By ID Number')
-                  this.isEmpty = false
-                  this.notFound = false
-                  this.searchResult = true
-                } else {
-                  console.log('NO MEMBERS FOUND')
-                  this.isEmpty = false
-                  this.searchResult = false
-                  this.notFound = true
-                }
-
-              },
-                err => console.log(err)
-              )
-            }else {
-              this.notFound = false
-              this.searchResult = false
-              this.isEmpty = false
-              this.invalidID = true;
-            }
-
-          } 
+          this.notFound = false
+          this.searchResult = false
+          this.isEmpty = false
+          this.invalidID = true;
         }
 
     }
@@ -146,12 +130,12 @@ export class CreateClaimComponent implements OnInit {
     this.invalidID = false
   }
 
-    // Create Claim
-    createClaim(index, idmember) {
-      this.selectedrow = index;
-      
-      localStorage.setItem('idmember', JSON.stringify(idmember));
-       this._router.navigate(['/claims/createclaimformember']);
-    }
+  // Create Claim
+  createClaim(index) {
+
+    console.log(this.members[index])
+    //localStorage.setItem('idmember', JSON.stringify(this.members[index]));
+    //this._router.navigate(['/claims/createclaimformember']);
+  }
 
 }

@@ -3,16 +3,17 @@
   
       <div class="row">
         <div class="col-md-12 ml-auto mr-auto">
-          <p class="description"> search for member to create claim</p>
+          
+          <p class="description"> <i class="material-icons icons" style="size: 15px">info</i>search for member to create claim</p>
           <div class="card">
             <div class="card-body">
   
               <div class="col-6">
                 <mat-form-field>
-                  <mat-select placeholder="Search Member By: " name="searchType" id="searchType"
-                    [(ngModel)]="selectedSearchType" (click)="changeEmpty()" (select)="changeEmpty()">
+                  <mat-select placeholder="Search Member By: "
+                    [(ngModel)]="selectedSearchType" (click)="changeEmpty()" >
                     <mat-option *ngFor="let type of Types" [value]="type.value" (click)="selectSearchType()">
-                      {{ type.viewValue }}
+                      {{ type.value }}
                     </mat-option>
                   </mat-select>
                 </mat-form-field>
@@ -20,8 +21,8 @@
   
               <div class="col-6">
                 <mat-form-field class="example-full-width">
-                  <input matInput placeholder="Search {{ searchText }}" type="search" id="searchBox" name="searchBox"
-                    (focus)="changeEmpty()" required>
+                  <input matInput placeholder="Search {{ searchText }}" type="search" name="searchInput"
+                    (focus)="changeEmpty()" [(ngModel)]="searchInput" required>
                 </mat-form-field>
               </div>
   
@@ -38,7 +39,7 @@
   
               <div class="col-2">
                 <button mat-raised-button type="submit" class="btn btn-sm" id="searchButton" name="searchButton"
-                  (click)="searchMember()"> <i class="material-icons">search</i> Search Member</button>
+                  (click)="searchMember(searchInput)"> <i class="material-icons">search</i> Search Member</button>
   
               </div>
             </div>
@@ -77,16 +78,18 @@
                       <th>Membership No.</th>
                       <th>Name</th>
                       <th>Surname</th>
+                      <th>Identity Number</th>
                       <th class="disabled-sorting text-right">Action</th>
                     </tr>
                   </thead>
                   <tbody>
-                    <tr *ngFor="let member of response; let i = index">
+                    <tr *ngFor="let member of members; let i = index">
                       <td>{{ member.membershipnumber }}</td>
                       <td>{{ member.name }}</td>
                       <td>{{ member.surname }}</td>
+                      <td>{{ member.identitynumber }}</td>
                       <td class="text-right">
-                        <button (click)="createClaim(i,  member.idmember )" class="btn btn-link btn-info "><i
+                        <button (click)="createClaim(i)" class="btn btn-link btn-info "><i
                             class="material-icons" [class.active]="i == selectedrow" data-toggle="tooltip" data-placement="down" title="create claim" ></i>Create Claim</button>
                       </td>
                     </tr>

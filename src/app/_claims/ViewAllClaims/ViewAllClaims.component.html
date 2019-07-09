@@ -10,8 +10,8 @@
               <mat-form-field>
                 <mat-select placeholder="Select claim status " name="searchType" id="searchType"
                   [(ngModel)]="selectedClaimType" (click)="changeEmpty()" (select)="changeEmpty()">
-                  <mat-option *ngFor="let type of Types" [value]="type.value">
-                    {{ type.viewValue }}
+                  <mat-option *ngFor="let claimstatus of claimstatuses" [value]="claimstatus.idclaimstatus">
+                    {{ claimstatus.name }}
                   </mat-option>
                 </mat-select>
               </mat-form-field>

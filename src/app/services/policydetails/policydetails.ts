@@ -6,4 +6,5 @@ export class Policydetails
       iduser: number;
       idpolicytype: number;
       idextras:number;
+  idpolicydetails: number;
 }

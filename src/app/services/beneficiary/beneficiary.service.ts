@@ -47,13 +47,15 @@ export class BeneficiaryService {
   }
   
 
-  getBeneficiarybyidmember(id: number): Observable<Beneficiary> {
+  getBeneficiarybyidmember(id: number): Observable<Beneficiary[]> {
     const url = `${beneficiarybyidmemberUrl}/${id}`;
-    return this.http.get<Beneficiary>(url).pipe(
+    return this.http.get<Beneficiary[]>(url).pipe(
       tap(_ => console.log(`fetched Beneficiary id=${id}`)),
-      catchError(this.handleError<Beneficiary>(`getBeneficiary id=${id}`))
+      catchError(this.handleError<Beneficiary[]>(`getBeneficiary id=${id}`))
     );
   }
+
+  
 
 
   createBeneficiary (Beneficiary): Observable<Beneficiary> {

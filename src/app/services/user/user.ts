@@ -5,5 +5,6 @@ export class User
     branch: string;
     idrole: string;
     password: string;
+    iduser: number;
  
 }

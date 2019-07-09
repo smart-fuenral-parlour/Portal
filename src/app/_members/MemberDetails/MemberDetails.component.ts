@@ -41,12 +41,13 @@ declare var $: any;
 export class MemberDetailsComponent implements OnInit {
 
   addForm: FormGroup;
-  i: number
-  singleMember;
   rows: FormArray;
-  itemForm: FormGroup;
   society = false;
-  selectedrow;
+
+
+  policystatus_color
+  lifestatus_color
+
 
   idmember
   createddate
@@ -56,8 +57,6 @@ export class MemberDetailsComponent implements OnInit {
 
   selectedClaim
   createdby
-  lifecolor
-  policycolor
   noBeneficiary = false
 
   Beneficiaryname;
@@ -119,7 +118,17 @@ export class MemberDetailsComponent implements OnInit {
           this.policydetailsService.getPolicydetailbyidmember(this.member.idmember)
             .subscribe(policydetail_res => {
 
-              this.policydetails = policydetail_res[0]
+              this.policydetails = policydetail_res
+              if (this.policydetails.idpolicystatus == 2 || this.policydetails.idpolicystatus == 2) {
+                this.policystatus_color = 'text-success'
+
+              } else
+                if (this.policydetails.idpolicystatus == 3 || this.policydetails.idpolicystatus == 5) {
+                  this.policystatus_color = 'text-danger'
+                } else {
+                  this.policystatus_color = 'text-warning'
+
+                }
               console.log(this.policydetails)
 
 
@@ -232,7 +241,7 @@ export class MemberDetailsComponent implements OnInit {
 
   // Edit a member
   editMember() {
-    // this.selectedrow = index;
+
     localStorage.setItem('idmember', JSON.stringify(this.idmember));
     sessionStorage.setItem('fromMemberDetails', JSON.stringify(true));
     this.router.navigate(['/members/editmember']);

@@ -27,6 +27,15 @@ export class ClaimstatusService {
     };
   }
 
+  
+  getClaimstatuses (): Observable<Claimstatus[]> {
+    return this.http.get<Claimstatus[]>(apiUrl)
+      .pipe(
+        tap(heroes => console.log('fetched claimstatus')),
+        catchError(this.handleError('getClaimstatuses', []))
+      );
+  }
+
 
   
   getClaimstatus(id: number): Observable<Claimstatus> {

@@ -27,6 +27,15 @@ export class ClaimtypeService {
     };
   }
 
+  
+
+  getClaimtypes (): Observable<Claimtype[]> {
+    return this.http.get<Claimtype[]>(apiUrl)
+      .pipe(
+        tap(heroes => console.log('fetched policytypes')),
+        catchError(this.handleError('getClaimtypes', []))
+      );
+  }
 
   
   getClaimtype(id: number): Observable<Claimtype> {

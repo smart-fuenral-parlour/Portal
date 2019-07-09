@@ -6,11 +6,19 @@ import { AppComponent } from 'src/app/app.component'
 import { MemberService } from 'src/app/services/member/member.service'
 import { PolicystatusService } from 'src/app/services/policystatus/policystatus.service'
 import { ClaimService } from 'src/app/services/claim/claim.service'
+import { ClaimstatusService } from 'src/app/services/claimstatus/claimstatus.service'
 import { BeneficiaryService } from 'src/app/services/beneficiary/beneficiary.service'
 import { BalanceService } from 'src/app/services/balance/balance.service'
 import { PolicydetailsService } from 'src/app/services/policydetails/policydetails.service'
 import { LifestatusService } from 'src/app/services/lifestatus/lifestatus.service'
 import { UserService } from 'src/app/services/user/user.service'
+
+////////////////// MODEL CLASS CALLS /////////////////////////////////////
+import { Claim } from 'src/app/services/claim/claim'
+import { Claimstatus } from 'src/app/services/claimstatus/claimstatus'
+
+
+
 ///////////////////////////////////////////////////////////////////////
 
 import { isNullOrUndefined } from 'util';
@@ -25,19 +33,23 @@ export class ViewAllClaimsComponent implements OnInit {
   toNULL = false
   fromNULL = false
 
-  fromDate
-  toDate
   selectedClaim
   selectedClaimType
   selectedClaimTypeText
-
 
   isEmpty = false
   invalidID = false
   table = false
   notFound = false
 
-  constructor(private app: AppComponent, private _router: Router) { }
+  claim: Claim
+  claimstatuses: Claimstatus[]
+
+  constructor(private app: AppComponent,
+    private router: Router,
+    private claimService: ClaimService,
+    private claimstatusService: ClaimstatusService
+  ) { }
 
   Types = [
     { id: 1, value: 'Approved', viewValue: 'Approved' },
@@ -48,9 +60,14 @@ export class ViewAllClaimsComponent implements OnInit {
 
   ngOnInit() {
     this.app.loading = false
-    
-    this.toDate = document.querySelector('#toDate')
-    this.fromDate = document.querySelector('#fromDate')
+
+    this.claimstatusService.getClaimstatuses()
+      .subscribe(claimstatus_res => {
+        this.claimstatuses = claimstatus_res
+      }, err => {
+        console.log(err)
+      })
+
 
   }
 
@@ -67,33 +84,33 @@ export class ViewAllClaimsComponent implements OnInit {
     console.log(isNullOrUndefined(this.selectedClaimType))
     this.selectedClaimTypeText = this.selectedClaimType
 
-    if( isNullOrUndefined(this.selectedClaimType) ) {
+    if (isNullOrUndefined(this.selectedClaimType)) {
       this.table = false
       this.notFound = false
       this.isEmpty = true
-      
+
     } else {
       this.notFound = false
       this.isEmpty = false
       this.table = true
-      
+
     }
 
   }
 
-    // View member details
-    claimInfo(index) {
-      this.selectedClaim = index;
-     // console.log('Member ID: ' + id);
-      localStorage.setItem('idclaim', JSON.stringify(5));
-      this._router.navigate(['/claims/claiminfo']);
-    }
+  // View member details
+  claimInfo(index) {
+
+    //this.claims[index]
+    localStorage.setItem('claiminfo', JSON.stringify(5));
+    this.router.navigate(['/claims/claiminfo']);
+  }
 
 
-    changeEmpty() {
-      this.isEmpty = false
-      this.invalidID = false
-    }
+  changeEmpty() {
+    this.isEmpty = false
+    this.invalidID = false
+  }
 
 
 }
