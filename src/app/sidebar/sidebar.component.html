@@ -13,7 +13,7 @@
 -->
            
             <a href="/dashboard" class="simple-text logo-normal text-center">
-              <b>Diale Funeral</b>
+              <b>{{ titleName }}</b>
             </a>
         </div>
 
@@ -31,7 +31,7 @@
                 <div class="user-info text-center">
                     <a data-toggle="collapse" href>
                         <span>
-                            <b >Logged In: {{user}}</b>
+                            <b >Logged In: {{ user.name }} {{ user.surname }}</b>
                         </span>
                     </a>
  

@@ -228,18 +228,8 @@ export class NavbarComponent implements OnInit {
                 
               localStorage.clear();
               sessionStorage.clear();
-            this.router.navigate(['/'])
+              this.router.navigate(['/'])
 
-
-              /*swal(
-                {
-                  title: 'Deleted!',
-                  text: 'Your file has been deleted. TWICE',
-                  type: 'success',
-                  confirmButtonClass: "btn btn-success",
-                  buttonsStyling: false
-                }
-              )*/
             }
           })
     }
