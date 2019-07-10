@@ -13,9 +13,11 @@ import { FormControl, FormGroupDirective, NgForm, Validators, FormGroup } from '
 import { ErrorStateMatcher } from '@angular/material/core';
 import { FormBuilder, AbstractControl } from '@angular/forms';
 import { PasswordValidation } from './password-validator.component';
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+import { UserService } from 'src/app/services/user/user.service'
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-import { User } from 'src/app/services/user/user'
+import { User, LoginUser } from 'src/app/services/user/user'
 
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -43,17 +45,24 @@ export class LoginComponent implements OnInit, OnDestroy {
 
     pattern = "https?://.+";
 
-user: User
+    loginuser: LoginUser
+    user: User
     login: FormGroup;
     type: FormGroup;
     //////////////////////////////////////////////////////////////////////////////////////////////////
-    emptyPASS = false
-    emptyNAME = false
+    emptyPassword = false
+    emptyUsername = false
     isIncorrect = false
-response
+    response
 
 
-    constructor(private app: AppComponent, private element: ElementRef, private _service: ServiceService, private router: Router, private formBuilder: FormBuilder) {
+    constructor(private app: AppComponent,
+        private element: ElementRef,
+        private _service: ServiceService,
+        private userService: UserService,
+        private router: Router,
+        private formBuilder: FormBuilder) {
+
         this.nativeElement = element.nativeElement;
         this.sidebarVisible = false;
     }
@@ -82,67 +91,83 @@ response
     }
 
     changeEmpty() {
-        //this.isIncorrect = false;
-        this.emptyNAME = false
-        this.emptyPASS = false
+        this.isIncorrect = false;
+        this.emptyUsername = false
+        this.emptyPassword = false
     }
 
     logins(password, username) {
 
         this.app.loaderClass = 'load-wrapper-spinner'
+        console.log(password)
+        console.log(username)
 
 
 
-        // TESTING USERNAME EMPTY FIELDS 
+        // TESTING USERNAME IS EMPTY FIELDS 
         if (isNullOrUndefined(username) || username == '') {
-            this.emptyNAME = true
+            this.emptyUsername = true
             this.isIncorrect = false
         } else {
-            this.emptyNAME = false
+            this.emptyUsername = false
             this.isIncorrect = false
         }
 
-        // TESTING USERNAME EMPTY FIELDS
+        // TESTING PASSWORD IS EMPTY FIELDS
         if (isNullOrUndefined(password) || password == '') {
-            this.emptyPASS = true
+            this.emptyPassword = true
             this.isIncorrect = false
         } else {
-            this.emptyPASS = false
+            this.emptyPassword = false
             this.isIncorrect = false
         }
 
-        //this.router.navigate(['/dashboard']);  
-        if (!this.emptyNAME && !this.emptyPASS) {
+        // 
+        if (!this.emptyUsername && !this.emptyPassword) {
+
 
             this.isIncorrect = false
             this.app.loading = true
 
-            this._service.loginUser({ 'username': username, 'password': password })
-                .subscribe(login_res => {
-                   
-                    if (this.response.length > 0) {
+            console.log({ 'name': username, 'password': password })
 
+            this.userService.loginUser({ 'name': username, 'password': password })
+                .subscribe(loginuser_res => {
 
-                        //localStorage.setItem('name', JSON.stringify(this.response.response[0].name+' '+this.response.response[0].surname));
-                        // localStorage.setItem('role', JSON.stringify(this.response.response[0].role));     
-                        // NEW API CODE              
-                      
+                    this.loginuser = loginuser_res
+                    this.user = this.loginuser.response[0]
+
+                    if (this.loginuser.status == 200) {
+
+                        this.isIncorrect = false
                         this.app.loading = false
                         this.app.loaderClass = 'load-wrapper'
+                        console.log('correct')
+
+                        localStorage.clear()
+                        sessionStorage.clear()
+
+                        localStorage.setItem('user', JSON.stringify(this.user));
                         this.router.navigate(['/dashboard']);
 
-                    } else {
+                    } else
+                        if (this.loginuser.status == 500) {
+                            console.log('incorrect')
+                            this.isIncorrect = true
+                            this.isIncorrect = true
+                            this.app.loading = false
+                            this.app.loaderClass = 'load-wrapper'
+                        } else {
+                            
+                            console.log('% ERROR %')
+                            this.isIncorrect = true
+                            this.app.loading = false
+                            this.app.loaderClass = 'load-wrapper'
+                        }
 
-                        console.log('Incorrect!')
-                        this.app.loading = false
-                        this.isIncorrect = true
-                        this.app.loaderClass = 'load-wrapper'
-                    }
-                },
-                    err => {
-                        console.log(err)
-
-                    })
+                }, err => {
+                    console.log(err)
+                })
 
 
         }

@@ -1,13 +1,15 @@
 import { Observable, of, throwError } from 'rxjs';
 import { HttpClient, HttpHeaders, HttpErrorResponse } from '@angular/common/http';
 import { catchError, tap, map } from 'rxjs/operators';
-import { User } from './user';
+import { User, LoginUser } from './user';
 import { Injectable } from '@angular/core';
 
 const httpOptions = {
   headers: new HttpHeaders({'Content-Type': 'application/json'})
 };
 const apiUrl = "http://greenlinks1.dedicated.co.za:3002/api/user";
+const loginUrl = "http://greenlinks1.dedicated.co.za:3000/api/login"
+
 
 @Injectable({
   providedIn: 'root'
@@ -26,6 +28,19 @@ export class UserService {
       return of(result as T);
     };
   }
+
+
+
+
+  loginUser (user): Observable<LoginUser> {
+    return this.http.post<LoginUser>(loginUrl, user, httpOptions).pipe(
+      tap((user: LoginUser) => console.log(`added user w/`+user)),
+      catchError(this.handleError<LoginUser>('addUser'))
+    );
+  }
+
+
+
 
 
   getUsers (): Observable<User[]> {
