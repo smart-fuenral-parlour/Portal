@@ -7,6 +7,7 @@ import { MemberService } from 'src/app/services/member/member.service'
 
 //////////////////// MODEL/ CLASS CALLS ///////////////////////////////////////
 import { Member } from 'src/app/services/member/member'
+import { User } from 'src/app/services/user/user'
 
 ///////////////////////////////////////////////////////////////////////////////
 import swal from 'sweetalert2';
@@ -33,7 +34,9 @@ export class ViewMembersComponent implements OnInit, AfterViewInit {
 
   public dataTable: DataTable;
   members
-  member: Member
+  
+  user: User
+  
   searchText = 'ID Number';
 
 
@@ -43,11 +46,9 @@ export class ViewMembersComponent implements OnInit, AfterViewInit {
   searchResult = false;
   notFound = false;
   invalidID = false;
-  iduser
   ////////////////////////////
-
+ 
   constructor(
-    private service: ServiceService,
     private memberService: MemberService,
     private router: Router,
     private app: AppComponent) {
@@ -63,13 +64,6 @@ export class ViewMembersComponent implements OnInit, AfterViewInit {
 
 
   ngOnInit() {
-
-    if (localStorage.getItem('iduser') != '') {
-      this.iduser = JSON.parse(localStorage.getItem('iduser'))
-      console.log(this.iduser)
-    }
-
-
 
     this.app.loading = false
     sessionStorage.clear()
@@ -205,11 +199,10 @@ export class ViewMembersComponent implements OnInit, AfterViewInit {
 
 
   // Edit a member
-  editMember(index, idmember) {
+  editMember(index) {
 
     localStorage.setItem('editmember', JSON.stringify(this.members[index]));
     sessionStorage.clear()
-
     this.router.navigate(['/members/editmember']);
   }
 

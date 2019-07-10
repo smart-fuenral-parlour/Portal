@@ -6,7 +6,7 @@ import { EditMemberComponent } from './EditMember/EditMember.component';
 import { MemberDetailsComponent } from './MemberDetails/MemberDetails.component';
 
 
-export const MembersRoutes: Routes = [
+export const MemberRoutes: Routes = [
   {
     path: '',
     children: [{

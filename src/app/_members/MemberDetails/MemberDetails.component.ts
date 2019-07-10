@@ -63,7 +63,7 @@ export class MemberDetailsComponent implements OnInit {
   Beneficiarysurname;
   Beneficiaryidumber;
 
-  iduser
+  
   /////////////////////
   member: Member
   beneficiary: Beneficiary
@@ -73,6 +73,8 @@ export class MemberDetailsComponent implements OnInit {
   lifestatus: Lifestatus
   beneficiaries;
   policystatus: Policystatus
+  app: AppComponent
+  //////////////////////////////
 
 
   constructor(private fb: FormBuilder,
@@ -85,8 +87,7 @@ export class MemberDetailsComponent implements OnInit {
     private policydetailsService: PolicydetailsService,
     private balanceService: BalanceService,
     private beneficiaryService: BeneficiaryService,
-    private router: Router,
-    private app: AppComponent) {
+    private router: Router) {
 
 
     this.addForm = this.fb.group({

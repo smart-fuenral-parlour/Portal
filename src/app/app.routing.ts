@@ -27,11 +27,6 @@ export const AppRoutes: Routes = [
                 path: 'members',
                 loadChildren: './_members/members.module#MembersModule'
             },
-           /* {
-                // PAYMENTS MODULE
-                path: 'payments',
-                loadChildren: './payments/payments.module#PaymentsModule'
-            },*/
             {
                 // SOCIETY MODULE
                 path: 'society',
@@ -53,7 +48,7 @@ export const AppRoutes: Routes = [
                 loadChildren: './_notification/notification.module#NotificationsModule'
             },
             {
-                // POLICY MODULE 
+                // POLICY MODULE (NOT USED)
                 path: 'policy',
                 loadChildren: './_policy/policy.module#PolicyModule'
             },

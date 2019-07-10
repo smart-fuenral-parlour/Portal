@@ -2,7 +2,6 @@
 import { Component, OnInit, OnChanges, AfterViewInit, SimpleChanges } from '@angular/core';
 import { FormControl, FormGroupDirective, NgForm, Validators, FormArray, FormGroup, FormBuilder } from '@angular/forms';
 import { ErrorStateMatcher } from '@angular/material/core';
-import { patchComponentDefWithScope } from '@angular/core/src/render3/jit/module';
 import { Router } from '@angular/router';
 import swal from 'sweetalert2';
 import { Moment } from 'moment'
@@ -26,7 +25,6 @@ import { File } from 'src/app/services/file/file'
 
 /////////////////////////////////////////////////////////
 import * as moment from 'moment';
-import { isNullOrUndefined } from 'util';
 import { AppComponent } from 'src/app/app.component'
 import { type } from 'os';
 
