@@ -27,6 +27,9 @@ import { File } from 'src/app/services/file/file'
 import * as moment from 'moment';
 import { AppComponent } from 'src/app/app.component'
 import { type } from 'os';
+import { isNullOrUndefined } from 'util';
+import { timestamp } from 'rxjs/operators';
+import { randomBytes } from 'crypto';
 
 
 
@@ -60,7 +63,11 @@ export class CreateMemberComponent implements OnInit {
 
     // MODEL CLASS INSTANCE
     member: Member
-    setpolicytype: Policytype
+    policytypes: Policytype[]
+    policytype: Policytype
+    user: User
+    policydetails: Policydetails
+    balance: Balance
     file
     key = "document";
     data
@@ -71,6 +78,10 @@ export class CreateMemberComponent implements OnInit {
     setpolicydetails = new Policydetails
 
     invalidID = false
+    allowBeneficiary = false
+    beneficiaryChecked
+    beneficiaryFillForm = false
+    buttonClicked = false
 
     constructor(private formBuilder: FormBuilder,
         private memberService: MemberService,
@@ -124,7 +135,7 @@ export class CreateMemberComponent implements OnInit {
     ngOnInit() {
 
         ///////////////////////  work here   ////////////////////////////
-
+        this.user = JSON.parse(localStorage.getItem('user'))
 
 
         ///////////////////////////////////////////////////////
@@ -165,7 +176,7 @@ export class CreateMemberComponent implements OnInit {
         // Code for the Validator  beneficiaryName
 
         const $validator = $('.card-wizard form').validate({
-            /*           rules: {
+                      rules: {
                            firstname: {
                                required: true,
                                minlength: 2
@@ -234,7 +245,7 @@ export class CreateMemberComponent implements OnInit {
                                minlength: 3,
                            }
                        },
-           */
+           
             highlight: function (element) {
                 $(element).closest('.form-group').removeClass('has-success').addClass('has-danger');
             },
@@ -443,98 +454,307 @@ export class CreateMemberComponent implements OnInit {
 
 
     // check if the age of beneficiary is allowed  {{'beneficiaryID'+i}}
-    checkBeneficiaryAge(BenefitIDnum) {
-
-        let x = 0
-        let myValue: string
-
-        myValue = BenefitIDnum.value + x
-        let year = 0
-        let age = 0
-        let currentYear = parseInt(moment(new Date()).format('YYYY'))
-        let testYearInput = parseInt(moment(new Date()).format('YY'))
-
-
-
-        if ((BenefitIDnum.value.length + x) == 13) {
-            console.log('correct id number length')
-
-            if (parseInt(myValue.slice(0, 2)) <= testYearInput) {
-                // for those born from the year 2000
-                year = parseInt('20' + myValue.slice(0, 2))
-                age = currentYear - year
-                if (age < 18) {
-                    console.log('member aged ' + age + ' is not allowed')
-                    swal({
-                        title: "beneficiaryName not allowed as Beneficiary",
-                        text: "Beneficiary must be older than  {maxAge (18)} years older",
-                        timer: 2000,
-                        showConfirmButton: true
-                    }).catch(swal.noop)
-                } else {
-                    console.log('member aged ' + age + ' is allowed')
-                }
-            } else {
-                // for those born before the year 2000
-                year = parseInt('19' + myValue.slice(0, 2))
-                age = currentYear - year
-                if (age < 18) {
-                    console.log('member aged ' + age + ' is not allowed')
-                    swal({
-                        title: "beneficiaryName not allowed as Beneficiary",
-                        text: "Beneficiary must be older than  {maxAge (18)} years older",
-                        timer: 2000,
-                        showConfirmButton: true
-                    }).catch(swal.noop)
-                } else {
-                    console.log('member aged ' + age + ' is allowed')
-                }
-            }
-
-        } else {
-            console.log('id number is short')
-        }
-    }
-
 
 
     get BeneficiaryForm() {
         return (<FormArray>(<FormGroup>this.type.get('BeneficiaryGroup')).get('beneficiaryArray')).controls;
     }
 
-    addBeneficiary() {
+    addBeneficiary(beneficiaryNumber) {
+
+        if (isNullOrUndefined(beneficiaryNumber) || parseInt(beneficiaryNumber) < this.policytype.maximumbeneficiaries) {
 
 
-        this.BeneficiaryForm.push(this.formBuilder.control(
-            this.formBuilder.group({
-                beneficiaryName: [null, Validators.required],
-                beneficiarySurname: [null, Validators.required],
-                beneficiaryID: [null, Validators.required],
-            })
+            let maxNmber = beneficiaryNumber - 1
+            if (this.buttonClicked == true) {
 
-        ))
+
+                // removind components before adding
+                for (let x = 1; x < this.policytype.maximumbeneficiaries; x++) {
+                    (((this.type.get('BeneficiaryGroup') as FormGroup).get('beneficiaryArray')) as FormArray).removeAt(x)
+                }
+
+                // adding components after being removed
+                for (let x = 1; x < maxNmber; x++) {
+
+                    this.BeneficiaryForm.push(this.formBuilder.control(
+                        this.formBuilder.group({
+                            beneficiaryName: [null, Validators.required],
+                            beneficiarySurname: [null, Validators.required],
+                            beneficiaryID: [null, Validators.required],
+                        })
+
+                    ))
+                }
+                this.buttonClicked = true
+            } else {
+
+                for (let x = 0; x < maxNmber; x++) {
+
+
+                    this.BeneficiaryForm.push(this.formBuilder.control(
+                        this.formBuilder.group({
+                            beneficiaryName: [null, Validators.required],
+                            beneficiarySurname: [null, Validators.required],
+                            beneficiaryID: [null, Validators.required],
+                        })
+
+                    ))
+                }
+                this.buttonClicked = true
+            }
+
+            this.beneficiaryFillForm = true
+
+        } else {
+            this.beneficiaryFillForm = false
+        }
 
     }
 
     removeBeneficiary(index): void {
         (((this.type.get('BeneficiaryGroup') as FormGroup).get('beneficiaryArray')) as FormArray).removeAt(index)
+    }
+
+
+    checkBeneficiary() {
+
+        console.log(this.policytype.maximumbeneficiaries)
+        if (this.beneficiaryChecked == true) {
+
+            this.beneficiaryChecked = false
+            console.log('unchecked')
+
+        } else {
+            this.beneficiaryChecked = true
+            console.log('checked')
+
+        }
+    }
+
+    testMaximumBeneficiary() {
+
+        // the selected poliy type
+        this.policytypeService.getPolicytype(this.setmember.idpolicytype)
+            .subscribe(res => {
+
+                this.policytype = res[0]
+
+                console.log(this.policytype.maximumbeneficiaries)
+
+                if (this.policytype.maximumbeneficiaries == 0) {
+                    this.allowBeneficiary = false
+                } else {
+                    this.allowBeneficiary = true
+
+                }
+
+            }, err => {
+                console.log(err)
+            })
+
 
     }
 
     testBeneficiaryAge(i) {
 
+        let beneficiaryID
+        let beneficiaryName
+        beneficiaryID = document.querySelector('#beneficiaryID' + i)
+
+
+        if (beneficiaryID.value.length == 13) {
+
+            let age = 0
+            beneficiaryName = document.querySelector('#beneficiaryName' + i)
+            // for those born from the year 2000
+            if (parseInt(beneficiaryID.toString().slice(0, 2)) <= parseInt(moment(new Date()).format('YY'))) {
+
+                age = parseInt(moment(new Date()).format('YYYY')) - parseInt('20' + beneficiaryID.toString().slice(0, 2))
+                console.log('B: ' + age)
+
+                if (age < this.policytype.maximumbeneficiaryage) {
+
+                    console.log('success')
+
+                } else {
+
+                    beneficiaryName = document.querySelector('#beneficiaryName' + i)
+                    swal({
+                        title: beneficiaryName.value + " cannot be added as a Beneficiary",
+                        text: "Beneficiary must not be older than " + this.policytype.maximumbeneficiaryage + " years",
+                        timer: 5500,
+                        showConfirmButton: true
+                    }).catch(swal.noop)
+
+                }
+
+            } else {
+
+                // for those born after the year 2000
+
+                age = parseInt(moment(new Date()).format('YYYY')) - parseInt('20' + beneficiaryID.toString().slice(0, 2))
+                console.log('B: ' + age)
+
+                if (age < this.policytype.maximumbeneficiaryage) {
+
+                    console.log('success')
+
+                } else {
+
+                    beneficiaryName = document.querySelector('#beneficiaryName' + i)
+                    swal({
+                        title: beneficiaryName.value + " cannot be added as a Beneficiary",
+                        text: "Beneficiary must not be older than " + this.policytype.maximumbeneficiaryage + " years",
+                        timer: 5500,
+                        showConfirmButton: true
+                    }).catch(swal.noop)
+
+                }
+            }
+
+        }
 
 
     }
 
     // testing the age of the member to determine their policy types
     testMemberAge(identitynumber) {
-        this.setmember.gender
+
+
+        if (identitynumber.length == 13) {
+
+
+            let age = 0;
+            this.setmember.identitynumber = identitynumber
+            console.log('Identity number: ' + this.setmember.identitynumber)
+
+            if (parseInt(identitynumber.slice(0, 2)) < parseInt(moment(new Date()).format('YY'))) {
+
+                // people born after the year 2000
+                age = parseInt(moment(new Date()).format('YYYY')) - parseInt('20' + identitynumber.slice(0, 2))
+                console.log(parseInt('20' + identitynumber.slice(0, 2)))
+
+                this.policytypeService.getPolicytypebyage(age)
+                    .subscribe(policytype_res => {
+                        console.log(policytype_res)
+
+                        this.policytypes = policytype_res
+
+
+                    }, err => {
+                        console.log(err)
+                    })
+
+
+            } else {
+
+                // people born before the year 2000
+                age = parseInt(moment(new Date()).format('YYYY')) - parseInt('19' + identitynumber.slice(0, 2))
+                console.log(parseInt('19' + identitynumber.slice(0, 2)))
+
+
+                this.policytypeService.getPolicytypebyage(age)
+                    .subscribe(policytype_res => {
+                        console.log(policytype_res)
+
+                        this.policytypes = policytype_res
+
+                    }, err => {
+                        console.log(err)
+                    })
+
+            }
+
+        }
+
+    }
+
+    finishCreate(number) {
+
+        let BenefitName
+        let BenefitSurname
+        let BenefitIDnum
+        let newDate = new Date
+
+        // creating member
+
+        //this.setmember.iduser = this.user.iduser
+        this.setmember.iduser = this.user.idEmployee
+        this.setmember.idlifestatus = 1
+        this.setmember.membershipnumber = 'MN'+ timestamp()
+
+        this.memberService.createMember(this.setmember)
+        .subscribe(member_res => {
+            this.member = member_res
+            console.log(this.member)
+        }, err => {
+            console.log(err)
+        })
+
+
+        //  creating member polidy
+
+        this.setpolicydetails.idmember = this.member.idmember
+        this.setpolicydetails.membershipnumber = this.member.membershipnumber
+        this.setpolicydetails.idpolicystatus = this.member.idpolicystatus
+        this.setpolicydetails.iduser = this.member.iduser
+        this.setpolicydetails.idpolicytype = this.member.idpolicytype
+
+        this.policydetailsService.createPolicydetails(this.setpolicydetails)
+        .subscribe(policydetails_res => {
+            this.policydetails = policydetails_res
+            console.log(this.policydetails)
+        }, err => {
+            console.log(err)
+        })
+
+        // creating balance for member
+
+        this.setbalance.amount = this.policytype.premium
+        this.setbalance.idpolicydetails = this.policydetails.idpolicydetails
+        this.setbalance.lastpaiddate = this.member.createddate
+        this.setbalance.lastpaiddate = newDate.toTimeString()
+
+        this.balanceService.createBalance(this.setbalance)
+        .subscribe(balance_res => {
+            this.balance = balance_res
+            console.log()
+        }, err => {
+            console.log(err)
+        })
+
+
+        // creating beneficiary
+        for (let x = 0; x < number; x++) {
+
+            BenefitIDnum = document.querySelector('#beneficiaryID' + x)
+            BenefitSurname = document.querySelector('#beneficiarySurname' + x)
+            BenefitName = document.querySelector('#beneficiaryName' + x)
+
+            this.setbeneficiary.identitynumber = BenefitIDnum.value
+            this.setbeneficiary.name = BenefitName.value
+            this.setbeneficiary.surname = BenefitSurname.value
+            this.setbeneficiary.idmember = this.member.idmember
+            this.setbeneficiary.idlifestatus = 1
+
+            this.beneficiaryService.createBeneficiary(this.setbeneficiary)
+            .subscribe(beneficiary_res => {
+                console.log(beneficiary_res)
+            }, err => {
+                console.log(err)
+            })
+
+            console.log(this.setbeneficiary)
+        }
+
+
+
 
     }
 
 
-    finishCreate(name, surname, identitynumber, gender, housenumber, streetname, suburb, province, contactnumber, email, idpolicytype) {
+    finishCreate2(name, surname, identitynumber, gender, housenumber, streetname, suburb, province, contactnumber, email, idpolicytype) {
 
         let beneficiary;
         let policydetails
@@ -559,19 +779,7 @@ export class CreateMemberComponent implements OnInit {
                 this.app.loading = true
 
                 member = {
-                    'name': name,
-                    'surname': surname,
-                    'identitynumber': identitynumber,
-                    'email': email,
-                    'contactnumber': contactnumber,
-                    'gender': gender,
-                    'housenumber': housenumber,
-                    'streetname': streetname,
-                    'suburb': suburb,
-                    'province': province,
-                    'idpolicytype': idpolicytype,
-                    'iduser': 1,
-                    'idlifestatus': 1,
+
                     //'membershipnumber':
                 }
                 console.log(member)
@@ -580,14 +788,7 @@ export class CreateMemberComponent implements OnInit {
                 this.memberService.createMember(member)
                     .subscribe(member_res => {
 
-                        policydetails = {
-                            'idmember': member_res[0].idmember,
-                            'membershipnumber': member_res[0].membershipnumber,
-                            'idpolicystatus': member_res[0].idlifestatus,
-                            'iduser': member_res[0].iduser,
-                            'idpolicytype': member_res[0].idpolicytype,
-                            'idextras': 1
-                        }
+
                         console.log(policydetails)
 
 
@@ -598,11 +799,6 @@ export class CreateMemberComponent implements OnInit {
                                 this.policytypeService.getPolicytype(policydetails_res[0].idpolicytype)
                                     .subscribe(policytype_res => {
 
-                                        balance = {
-                                            'idpolicydetails': policydetails_res[0].idpolicydetails,
-                                            'amount': policytype_res[0].premium,
-                                            'lastpaiddate': 'date'
-                                        }
                                         console.log(balance)
 
                                         this.balanceService.createBalance(balance)
@@ -612,11 +808,11 @@ export class CreateMemberComponent implements OnInit {
                                                 /*
                                          creating beneficiary for a member
                                                 for (let x = 0; x < this.BeneficiaryForm.length; x++) {
-
+ 
                                                     this.BenefitName = document.querySelector('#beneficiaryName' + x)
                                                     this.BenefitSurname = document.querySelector('#beneficiarySurname' + x)
                                                     this.BenefitIDnum = document.querySelector('#beneficiaryID' + x)
-
+ 
                                                     beneficiary = {
                                                         'idmember': member_res[0].idmember,
                                                         'name': this.BenefitName.value,
@@ -625,14 +821,14 @@ export class CreateMemberComponent implements OnInit {
                                                         'idlifestatus': 1
                                                     }
                                                     console.log(beneficiary)
-
+ 
                                                     this.beneficiaryService.createBeneficiary(beneficiary)
                                                         .subscribe(beneficiary_res => {
                                                             console.log(beneficiary_res)
                                                         }, err => {
                                                             console.log(err)
                                                         })
-
+ 
                                                     // tslint:disable-next-line: max-line-length
                                                 }
 */
@@ -653,7 +849,19 @@ export class CreateMemberComponent implements OnInit {
                             })
 
                         /*
-                                                this.service.getPolicyTypeDetails(member_res[0].idpolicytype)
+                                             for (let x = 0; x < this.BeneficiaryForm.length; x++) {
+ 
+                                                    this.BenefitName = document.querySelector('#beneficiaryName' + x)
+                                                    this.BenefitSurname = document.querySelector('#beneficiarySurname' + x)
+                                                    this.BenefitIDnum = document.querySelector('#beneficiaryID' + x)
+ 
+                                                    beneficiary = {
+                                                        'idmember': member_res[0].idmember,
+                                                        'name': this.BenefitName.value,
+                                                        'surname': this.BenefitSurname.value,
+                                                        'identitynumber': this.BenefitIDnum.value,
+                                                        'idlifestatus': 1
+                                                    }    this.service.getPolicyTypeDetails(member_res[0].idpolicytype)
                                                     .subscribe(policytupe_res => {
                         
                         
