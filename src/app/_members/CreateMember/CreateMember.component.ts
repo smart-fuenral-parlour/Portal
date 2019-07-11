@@ -76,12 +76,12 @@ export class CreateMemberComponent implements OnInit {
     setbeneficiary = new Beneficiary
     setbalance = new Balance
     setpolicydetails = new Policydetails
+    beneficiaryLeft
 
     invalidID = false
-    allowBeneficiary = false
-    beneficiaryChecked
-    beneficiaryFillForm = false
-    buttonClicked = false
+    checkboxEnable = false
+    beneficiaryFormEnable = false
+    limitExceeded = false
 
     constructor(private formBuilder: FormBuilder,
         private memberService: MemberService,
@@ -176,76 +176,76 @@ export class CreateMemberComponent implements OnInit {
         // Code for the Validator  beneficiaryName
 
         const $validator = $('.card-wizard form').validate({
-                      rules: {
-                           firstname: {
-                               required: true,
-                               minlength: 2
-                           },
-                           beneficiaryName: {
-                               required: true,
-                               minlength: 2
-                           },
-                           beneficiarySurname: {
-                               required: true,
-                               minlength: 2
-                           },
-                           beneficiaryID: {
-                               required: true,
-                               minlength: 13,
-                               maxlength: 13
-                           },
-                          gender: {
-                               required: true,
-                               minlength: 2
-                           },
-                           selectedProvince: {
-                               required: true,
-                               minlength: 2
-                           },
-                           selectedPolicyType: {
-                               required: true,
-                               minlength: 2
-                           },
-                           province: {
-                               required: true,
-                               minlength: 2
-                           },
-                           date: {
-                               date: true,
-                               minlength: 1
-                           },
-                           idnumber: {
-                               required: true,
-                               minlength: 13,
-                               invalidID: true
-                           },
-                           streetname: {
-                               required: true,
-                               minlength: 2
-                           },
-                           suburb: {
-                               required: true,
-                               minlength: 2
-                           },
-                           housenumber: {
-                               required: true,
-                               minlength: 1
-                           },
-                           phone: {
-                               required: true,
-                               minlength: 10,
-                               maxlength: 10
-                           },
-                           lastname: {
-                               required: true,
-                               minlength: 3
-                           },
-                           email: {
-                               required: true,
-                               minlength: 3,
-                           }
-                       },
-           
+                  rules: {
+                        firstname: {
+                            required: true,
+                            minlength: 2
+                        },
+                        beneficiaryName: {
+                            required: true,
+                            minlength: 2
+                        },
+                        beneficiarySurname: {
+                            required: true,
+                            minlength: 2
+                        },
+                        beneficiaryID: {
+                            required: true,
+                            minlength: 13,
+                            maxlength: 13
+                        },
+                       gender: {
+                            required: true,
+                            minlength: 2
+                        },
+                        selectedProvince: {
+                            required: true,
+                            minlength: 2
+                        },
+                        selectedPolicyType: {
+                            required: true,
+                            minlength: 2
+                        },
+                        province: {
+                            required: true,
+                            minlength: 2
+                        },
+                        date: {
+                            date: true,
+                            minlength: 1
+                        },
+                        idnumber: {
+                            required: true,
+                            minlength: 13,
+                            invalidID: true
+                        },
+                        streetname: {
+                            required: true,
+                            minlength: 2
+                        },
+                        suburb: {
+                            required: true,
+                            minlength: 2
+                        },
+                        housenumber: {
+                            required: true,
+                            minlength: 1
+                        },
+                        phone: {
+                            required: true,
+                            minlength: 10,
+                            maxlength: 10
+                        },
+                        lastname: {
+                            required: true,
+                            minlength: 3
+                        },
+                        email: {
+                            required: true,
+                            minlength: 3,
+                        }
+                    },
+        
             highlight: function (element) {
                 $(element).closest('.form-group').removeClass('has-success').addClass('has-danger');
             },
@@ -455,97 +455,90 @@ export class CreateMemberComponent implements OnInit {
 
     // check if the age of beneficiary is allowed  {{'beneficiaryID'+i}}
 
+    testmem(identitynumber) {
+
+        if (identitynumber.toString().length == 4) {
+
+            this.setmember.iduser = this.user.idEmployee
+            console.log(this.setmember)
+        }
+
+    }
 
     get BeneficiaryForm() {
         return (<FormArray>(<FormGroup>this.type.get('BeneficiaryGroup')).get('beneficiaryArray')).controls;
     }
 
-    addBeneficiary(beneficiaryNumber) {
 
-        if (isNullOrUndefined(beneficiaryNumber) || parseInt(beneficiaryNumber) < this.policytype.maximumbeneficiaries) {
-
-
-            let maxNmber = beneficiaryNumber - 1
-            if (this.buttonClicked == true) {
+    addBeneficiary() {
 
 
-                // removind components before adding
-                for (let x = 1; x < this.policytype.maximumbeneficiaries; x++) {
-                    (((this.type.get('BeneficiaryGroup') as FormGroup).get('beneficiaryArray')) as FormArray).removeAt(x)
-                }
+        if (this.beneficiaryLeft <= this.policytype.maximumbeneficiaries && this.beneficiaryLeft > 0) {
 
-                // adding components after being removed
-                for (let x = 1; x < maxNmber; x++) {
-
-                    this.BeneficiaryForm.push(this.formBuilder.control(
-                        this.formBuilder.group({
-                            beneficiaryName: [null, Validators.required],
-                            beneficiarySurname: [null, Validators.required],
-                            beneficiaryID: [null, Validators.required],
-                        })
-
-                    ))
-                }
-                this.buttonClicked = true
-            } else {
-
-                for (let x = 0; x < maxNmber; x++) {
+            this.limitExceeded = false
 
 
-                    this.BeneficiaryForm.push(this.formBuilder.control(
-                        this.formBuilder.group({
-                            beneficiaryName: [null, Validators.required],
-                            beneficiarySurname: [null, Validators.required],
-                            beneficiaryID: [null, Validators.required],
-                        })
+            this.BeneficiaryForm.push(this.formBuilder.control(
+                this.formBuilder.group({
+                    beneficiaryName: [null, Validators.required],
+                    beneficiarySurname: [null, Validators.required],
+                    beneficiaryID: [null, Validators.required],
+                })
 
-                    ))
-                }
-                this.buttonClicked = true
-            }
+            ))
 
-            this.beneficiaryFillForm = true
+            this.beneficiaryLeft = this.policytype.maximumbeneficiaries - this.BeneficiaryForm.length
+            console.log(this.BeneficiaryForm.length)
+            console.log('beneficiary left: ' + this.beneficiaryLeft)
 
         } else {
-            this.beneficiaryFillForm = false
+            this.limitExceeded = true
+            console.log('beneficiary left: ' + this.beneficiaryLeft)
+
         }
+
+
 
     }
 
     removeBeneficiary(index): void {
         (((this.type.get('BeneficiaryGroup') as FormGroup).get('beneficiaryArray')) as FormArray).removeAt(index)
+        this.beneficiaryLeft = this.beneficiaryLeft + 1
+        this.limitExceeded = false
     }
 
 
     checkBeneficiary() {
 
-        console.log(this.policytype.maximumbeneficiaries)
-        if (this.beneficiaryChecked == true) {
+        if (this.beneficiaryFormEnable == true) {
 
-            this.beneficiaryChecked = false
+            this.beneficiaryFormEnable = false
             console.log('unchecked')
 
         } else {
-            this.beneficiaryChecked = true
+            this.beneficiaryFormEnable = true
             console.log('checked')
 
         }
     }
 
     testMaximumBeneficiary() {
+        this.beneficiaryFormEnable = false;
+        this.checkboxEnable = false
 
         // the selected poliy type
         this.policytypeService.getPolicytype(this.setmember.idpolicytype)
             .subscribe(res => {
 
                 this.policytype = res[0]
+                this.beneficiaryLeft = this.policytype.maximumbeneficiaries
 
                 console.log(this.policytype.maximumbeneficiaries)
 
                 if (this.policytype.maximumbeneficiaries == 0) {
-                    this.allowBeneficiary = false
+                    this.checkboxEnable = false
                 } else {
-                    this.allowBeneficiary = true
+                    this.checkboxEnable = true
 
                 }
 
@@ -677,92 +670,6 @@ export class CreateMemberComponent implements OnInit {
         let BenefitIDnum
         let newDate = new Date
 
-        // creating member
-
-        //this.setmember.iduser = this.user.iduser
-        this.setmember.iduser = this.user.idEmployee
-        this.setmember.idlifestatus = 1
-        this.setmember.membershipnumber = 'MN'+ timestamp()
-
-        this.memberService.createMember(this.setmember)
-        .subscribe(member_res => {
-            this.member = member_res
-            console.log(this.member)
-        }, err => {
-            console.log(err)
-        })
-
-
-        //  creating member polidy
-
-        this.setpolicydetails.idmember = this.member.idmember
-        this.setpolicydetails.membershipnumber = this.member.membershipnumber
-        this.setpolicydetails.idpolicystatus = this.member.idpolicystatus
-        this.setpolicydetails.iduser = this.member.iduser
-        this.setpolicydetails.idpolicytype = this.member.idpolicytype
-
-        this.policydetailsService.createPolicydetails(this.setpolicydetails)
-        .subscribe(policydetails_res => {
-            this.policydetails = policydetails_res
-            console.log(this.policydetails)
-        }, err => {
-            console.log(err)
-        })
-
-        // creating balance for member
-
-        this.setbalance.amount = this.policytype.premium
-        this.setbalance.idpolicydetails = this.policydetails.idpolicydetails
-        this.setbalance.lastpaiddate = this.member.createddate
-        this.setbalance.lastpaiddate = newDate.toTimeString()
-
-        this.balanceService.createBalance(this.setbalance)
-        .subscribe(balance_res => {
-            this.balance = balance_res
-            console.log()
-        }, err => {
-            console.log(err)
-        })
-
-
-        // creating beneficiary
-        for (let x = 0; x < number; x++) {
-
-            BenefitIDnum = document.querySelector('#beneficiaryID' + x)
-            BenefitSurname = document.querySelector('#beneficiarySurname' + x)
-            BenefitName = document.querySelector('#beneficiaryName' + x)
-
-            this.setbeneficiary.identitynumber = BenefitIDnum.value
-            this.setbeneficiary.name = BenefitName.value
-            this.setbeneficiary.surname = BenefitSurname.value
-            this.setbeneficiary.idmember = this.member.idmember
-            this.setbeneficiary.idlifestatus = 1
-
-            this.beneficiaryService.createBeneficiary(this.setbeneficiary)
-            .subscribe(beneficiary_res => {
-                console.log(beneficiary_res)
-            }, err => {
-                console.log(err)
-            })
-
-            console.log(this.setbeneficiary)
-        }
-
-
-
-
-    }
-
-
-    finishCreate2(name, surname, identitynumber, gender, housenumber, streetname, suburb, province, contactnumber, email, idpolicytype) {
-
-        let beneficiary;
-        let policydetails
-        let balance
-        let member
-
-        // UPLOAD DOCUMENT
-        // {'document': document}
 
         swal({
             title: 'Finish Create',
@@ -778,133 +685,96 @@ export class CreateMemberComponent implements OnInit {
             if (result.value) {
                 this.app.loading = true
 
-                member = {
 
-                    //'membershipnumber':
-                }
-                console.log(member)
+                // creating member
 
-                // this.service.createMember(member)
-                this.memberService.createMember(member)
+                //this.setmember.iduser = this.user.iduser
+                this.setmember.iduser = this.user.idEmployee
+                this.setmember.idlifestatus = 1
+                this.setmember.membershipnumber = ('MN' + (newDate).getTime().toString().slice(0, 3) + (this.setmember.identitynumber).toString().slice(0, 3))
+
+                this.memberService.createMember(this.setmember)
                     .subscribe(member_res => {
+                        this.member = member_res[0]
+                        console.log(this.member)
 
 
-                        console.log(policydetails)
+                        //  creating member policy
+                        this.setpolicydetails.idmember = this.member.idmember
+                        this.setpolicydetails.membershipnumber = this.member.membershipnumber
+                        this.setpolicydetails.idpolicystatus = 1
+                        this.setpolicydetails.iduser = this.member.iduser
+                        this.setpolicydetails.idpolicytype = this.member.idpolicytype
 
 
-                        this.policydetailsService.createPolicydetails(policydetails)
+                        this.policydetailsService.createPolicydetails(this.setpolicydetails)
                             .subscribe(policydetails_res => {
-                                console.log(policydetails_res[0].idpolicytype)
 
-                                this.policytypeService.getPolicytype(policydetails_res[0].idpolicytype)
-                                    .subscribe(policytype_res => {
-
-                                        console.log(balance)
-
-                                        this.balanceService.createBalance(balance)
-                                            .subscribe(balance_res => {
-                                                console.log(balance_res)
-
-                                                /*
-                                         creating beneficiary for a member
-                                                for (let x = 0; x < this.BeneficiaryForm.length; x++) {
- 
-                                                    this.BenefitName = document.querySelector('#beneficiaryName' + x)
-                                                    this.BenefitSurname = document.querySelector('#beneficiarySurname' + x)
-                                                    this.BenefitIDnum = document.querySelector('#beneficiaryID' + x)
- 
-                                                    beneficiary = {
-                                                        'idmember': member_res[0].idmember,
-                                                        'name': this.BenefitName.value,
-                                                        'surname': this.BenefitSurname.value,
-                                                        'identitynumber': this.BenefitIDnum.value,
-                                                        'idlifestatus': 1
-                                                    }
-                                                    console.log(beneficiary)
- 
-                                                    this.beneficiaryService.createBeneficiary(beneficiary)
-                                                        .subscribe(beneficiary_res => {
-                                                            console.log(beneficiary_res)
-                                                        }, err => {
-                                                            console.log(err)
-                                                        })
- 
-                                                    // tslint:disable-next-line: max-line-length
-                                                }
-*/
+                                this.policydetails = policydetails_res[0]
+                                console.log(this.policydetails)
 
 
+                                // creating balance for member
+                                this.setbalance.amount = parseFloat(this.policytype.premium.toString())
+                                this.setbalance.amount = this.policytype.premium
+                                this.setbalance.idpolicydetails = this.policydetails.idpolicydetails
+                                this.setbalance.lastpaiddate = this.member.createddate
+                                // this.setbalance.lastpaiddate = newDate.toTimeString()
 
 
-                                            }, err => {
-                                                console.log(err)
-                                            })
+                                this.balanceService.createBalance(this.setbalance)
+                                    .subscribe(balance_res => {
+
+                                        this.balance = balance_res[0]
+                                        console.log(this.balance)
+
+
+                                        if (this.beneficiaryFormEnable) {
+                                            console.log('Create beneficiery')
+
+
+                                            // creating beneficiary
+                                            for (let x = 0; x < number; x++) {
+
+                                                BenefitIDnum = document.querySelector('#beneficiaryID' + x)
+                                                BenefitSurname = document.querySelector('#beneficiarySurname' + x)
+                                                BenefitName = document.querySelector('#beneficiaryName' + x)
+
+                                                this.setbeneficiary.identitynumber = BenefitIDnum.value
+                                                this.setbeneficiary.name = BenefitName.value
+                                                this.setbeneficiary.surname = BenefitSurname.value
+                                                this.setbeneficiary.idmember = this.member.idmember
+                                                this.setbeneficiary.idlifestatus = 1
+
+                                                this.beneficiaryService.createBeneficiary(this.setbeneficiary)
+                                                    .subscribe(beneficiary_res => {
+                                                        console.log(beneficiary_res)
+                                                    }, err => {
+                                                        console.log(err)
+                                                    })
+
+                                                console.log(this.setbeneficiary)
+                                            }
+
+                                        }
+
+
+                                        this.app.loading = false
+
+
 
                                     }, err => {
                                         console.log(err)
                                     })
 
+
                             }, err => {
                                 console.log(err)
                             })
 
-                        /*
-                                             for (let x = 0; x < this.BeneficiaryForm.length; x++) {
- 
-                                                    this.BenefitName = document.querySelector('#beneficiaryName' + x)
-                                                    this.BenefitSurname = document.querySelector('#beneficiarySurname' + x)
-                                                    this.BenefitIDnum = document.querySelector('#beneficiaryID' + x)
- 
-                                                    beneficiary = {
-                                                        'idmember': member_res[0].idmember,
-                                                        'name': this.BenefitName.value,
-                                                        'surname': this.BenefitSurname.value,
-                                                        'identitynumber': this.BenefitIDnum.value,
-                                                        'idlifestatus': 1
-                                                    }    this.service.getPolicyTypeDetails(member_res[0].idpolicytype)
-                                                    .subscribe(policytupe_res => {
-                        
-                        
-                        
-                                                        this.service.createMemberPolicyDetails(policydetails)
-                                                            .subscribe(policyD => {
-                                                                console.log(policyD)
-                        
-                                                                balance = {
-                        
-                                                                    'idpolicydetails': policyD[0].idpolicydetails,
-                                                                    'amount': member_res[0].premium,
-                                                                    'lastpaiddate': '20/06/19' //new Date()
-                                                                }
-                                                                console.log(balance)
-                                                                this.service.createMemberBalanceDetails(balance)
-                                                                    .subscribe(balance => {
-                                                                        console.log(balance)
-                        
-                                                                        for (let i = 0; i < this.BeneficiaryForm.length; i++) {
-                                                                            beneficiary[i].idmember = this.response[0].idmember
-                                                                            beneficiary[i].createddate = this.response[0].createddate
-                        
-                                                                            this.service.createMemberBeneficiary(beneficiary[i])
-                                                                                .subscribe(ben => {
-                                                                                    console.log(ben)
-                        
-                                                                                }, err => {
-                                                                                    console.log(err)
-                                                                                })
-                                                                        }
-                                                                    }, err => { console.log(err) })
-                        
-                                                            }, err => {
-                                                                console.log(err)
-                                                            })
-                                                    }, err => {
-                                                        console.log(err)
-                                                    })
-                        */
-
-                        this.app.loading = false
-                    }, err => console.log(err))
+                    }, err => {
+                        console.log(err)
+                    })
 
                 swal(
                     {
@@ -914,9 +784,23 @@ export class CreateMemberComponent implements OnInit {
                         confirmButtonClass: "btn btn-success",
                         buttonsStyling: false
 
-                    }).then((result) => window.location.reload()) //console.log('done'))
+                    }).then((result) => document.location.reload() ) //console.log('done'))
             }
         })
+
+    }
+
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    finishCreate2(name, surname, identitynumber, gender, housenumber, streetname, suburb, province, contactnumber, email, idpolicytype) {
+
+        let beneficiary;
+        let policydetails
+        let balance
+        let member
+
+        // UPLOAD DOCUMENT
+        // {'document': document}
+
 
     }
 

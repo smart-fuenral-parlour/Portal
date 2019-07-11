@@ -6,10 +6,11 @@
         <span style="size: 15%">Membership Number: {{member.membershipnumber}}</span>
       </div>
       <div class="col-5" style="text-align: right;">
-        Policy Status: <span class="{{policycolor}}">{{ policystatus.name }}</span>
-      </div>
-      <div class="col-5 text-center">
+        Policy Status: <span class="{{policystatus_color}}">{{ policystatus.name }}</span>
+        <div></div>
         Life Status: <span class="text-success">{{ lifestatus.name }}</span>
+      </div>
+      <div class="col-5 text-right" hidden >
       </div>
     </div>
   </h3>
