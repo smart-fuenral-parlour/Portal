@@ -74,7 +74,7 @@ export class CreateClaimFormComponent implements OnInit {
   ngOnInit() {
     this.app.loading = true
 
-    this.member = JSON.parse(localStorage.getItem('editmember'))
+    this.member = JSON.parse(localStorage.getItem('member'))
     this.user = JSON.parse(localStorage.getItem('user'))
 
     console.log(this.member)
@@ -127,6 +127,7 @@ export class CreateClaimFormComponent implements OnInit {
     this.claim.idclaimstatus = 1
     this.claim.idmember = this.member.idmember
     this.claim.idpolicydetails = this.policydetails.idpolicydetails
+    this.claim.deceasedidentitynumber = selectedDeceased
 
 
 

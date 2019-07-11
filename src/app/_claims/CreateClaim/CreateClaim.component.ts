@@ -134,7 +134,7 @@ export class CreateClaimComponent implements OnInit {
   createClaim(index) {
 
     console.log(this.members[index])
-    localStorage.setItem('idmember', JSON.stringify(this.members[index]));
+    localStorage.setItem('member', JSON.stringify(this.members[index]));
     this._router.navigate(['/claims/createclaimformember']);
   }
 

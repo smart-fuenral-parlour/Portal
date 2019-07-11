@@ -49,7 +49,6 @@ export class ClaimInfoComponent implements OnInit {
   ngOnInit() {
     this.getclaim = JSON.parse(localStorage.getItem('claiminfo'));
     this.user = JSON.parse(localStorage.getItem('user'));
-
     console.log(this.getclaim)
   }
 
