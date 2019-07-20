@@ -72,7 +72,6 @@ export class CreateMemberComponent implements OnInit {
     key = "document";
     data
 
-    // creating new objects
     setmember = new Member
     setbeneficiary = new Beneficiary
     setbalance = new Balance
@@ -80,9 +79,9 @@ export class CreateMemberComponent implements OnInit {
     beneficiaryLeft
 
     invalidID = false
-    unhideCheckBox = false
-    unhideBeneficiaryForm = false
-    limitReached = false
+    checkboxEnable = false
+    beneficiaryFormEnable = false
+    limitExceeded = false
 
     constructor(private formBuilder: FormBuilder,
         private memberService: MemberService,
@@ -92,9 +91,10 @@ export class CreateMemberComponent implements OnInit {
         private beneficiaryService: BeneficiaryService,
         private fileService: FileService,
         private router: Router,
-        private app: AppComponent  ) { }
+        private app: AppComponent
+    ) { }
 
-    // province drop down list
+    // province drop downkzn
     provinces = [
         { value: 'Gauteng', abrv: 'GP' },
         { value: 'Limpopo', abrv: 'L' },
@@ -107,7 +107,6 @@ export class CreateMemberComponent implements OnInit {
         { value: 'Kwazulu Natal', abrv: 'KZN' },
     ];
 
-    // Gender drop down list
     Genders = [
         { value: 'Male', abrv: 'M' },
         { value: 'Female', abrv: 'F' }
@@ -139,12 +138,6 @@ export class CreateMemberComponent implements OnInit {
         this.user = JSON.parse(localStorage.getItem('user'))
 
 
-        this.policytypeService.getPolicytypes()
-            .subscribe(policytype_res => {
-                this.policytypes = policytype_res
-            }, err => {
-                console.log(err)
-            })
         ///////////////////////////////////////////////////////
 
         this.app.loading = false
@@ -165,7 +158,6 @@ export class CreateMemberComponent implements OnInit {
             }),
 
 
-
             firstName: [null, Validators.required],
             idnumber: [null, Validators.required],
             selectedPolicyType: [null, Validators.requiredTrue],// drop down list
@@ -184,76 +176,76 @@ export class CreateMemberComponent implements OnInit {
         // Code for the Validator  beneficiaryName
 
         const $validator = $('.card-wizard form').validate({
-            /*  rules: {
-                    firstname: {
-                        required: true,
-                        minlength: 2
+                  rules: {
+                        firstname: {
+                            required: true,
+                            minlength: 2
+                        },
+                        beneficiaryName: {
+                            required: true,
+                            minlength: 2
+                        },
+                        beneficiarySurname: {
+                            required: true,
+                            minlength: 2
+                        },
+                        beneficiaryID: {
+                            required: true,
+                            minlength: 13,
+                            maxlength: 13
+                        },
+                       gender: {
+                            required: true,
+                            minlength: 2
+                        },
+                        selectedProvince: {
+                            required: true,
+                            minlength: 2
+                        },
+                        selectedPolicyType: {
+                            required: true,
+                            minlength: 2
+                        },
+                        province: {
+                            required: true,
+                            minlength: 2
+                        },
+                        date: {
+                            date: true,
+                            minlength: 1
+                        },
+                        idnumber: {
+                            required: true,
+                            minlength: 13,
+                            invalidID: true
+                        },
+                        streetname: {
+                            required: true,
+                            minlength: 2
+                        },
+                        suburb: {
+                            required: true,
+                            minlength: 2
+                        },
+                        housenumber: {
+                            required: true,
+                            minlength: 1
+                        },
+                        phone: {
+                            required: true,
+                            minlength: 10,
+                            maxlength: 10
+                        },
+                        lastname: {
+                            required: true,
+                            minlength: 3
+                        },
+                        email: {
+                            required: true,
+                            minlength: 3,
+                        }
                     },
-                    beneficiaryName: {
-                        required: true,
-                        minlength: 2
-                    },
-                    beneficiarySurname: {
-                        required: true,
-                        minlength: 2
-                    },
-                    beneficiaryID: {
-                        required: true,
-                        minlength: 13,
-                        maxlength: 13
-                    },
-                   gender: {
-                        required: true,
-                        minlength: 2
-                    },
-                    selectedProvince: {
-                        required: true,
-                        minlength: 2
-                    },
-                    selectedPolicyType: {
-                        required: true,
-                        minlength: 2
-                    },
-                    province: {
-                        required: true,
-                        minlength: 2
-                    },
-                    date: {
-                        date: true,
-                        minlength: 1
-                    },
-                    idnumber: {
-                        required: true,
-                        minlength: 13,
-                        invalidID: true
-                    },
-                    streetname: {
-                        required: true,
-                        minlength: 2
-                    },
-                    suburb: {
-                        required: true,
-                        minlength: 2
-                    },
-                    housenumber: {
-                        required: true,
-                        minlength: 1
-                    },
-                    phone: {
-                        required: true,
-                        minlength: 10,
-                        maxlength: 10
-                    },
-                    lastname: {
-                        required: true,
-                        minlength: 3
-                    },
-                    email: {
-                        required: true,
-                        minlength: 3,
-                    }
-              },*/
-
+        
             highlight: function (element) {
                 $(element).closest('.form-group').removeClass('has-success').addClass('has-danger');
             },
@@ -483,7 +475,8 @@ export class CreateMemberComponent implements OnInit {
 
         if (this.beneficiaryLeft <= this.policytype.maximumbeneficiaries && this.beneficiaryLeft > 0) {
 
-            this.limitReached = false
+            this.limitExceeded = false
+
 
             this.BeneficiaryForm.push(this.formBuilder.control(
                 this.formBuilder.group({
@@ -495,10 +488,12 @@ export class CreateMemberComponent implements OnInit {
             ))
 
             this.beneficiaryLeft = this.policytype.maximumbeneficiaries - this.BeneficiaryForm.length
-
+            console.log(this.BeneficiaryForm.length)
+            console.log('beneficiary left: ' + this.beneficiaryLeft)
 
         } else {
-            this.limitReached = true
+            this.limitExceeded = true
+            console.log('beneficiary left: ' + this.beneficiaryLeft)
 
         }
 
@@ -508,30 +503,28 @@ export class CreateMemberComponent implements OnInit {
 
     removeBeneficiary(index): void {
         (((this.type.get('BeneficiaryGroup') as FormGroup).get('beneficiaryArray')) as FormArray).removeAt(index)
-
         this.beneficiaryLeft = this.beneficiaryLeft + 1
-        this.limitReached = false
+        this.limitExceeded = false
     }
 
-// hides or unhides beneficiary form by click on checkbox
+
     checkBeneficiary() {
 
-        if (this.unhideBeneficiaryForm == true) {
+        if (this.beneficiaryFormEnable == true) {
 
-            this.unhideBeneficiaryForm = false
+            this.beneficiaryFormEnable = false
             console.log('unchecked')
 
         } else {
-            this.unhideBeneficiaryForm = true
+            this.beneficiaryFormEnable = true
             console.log('checked')
 
         }
     }
 
-    // check the maximum number of beneficiary based on the selected policy type
     testMaximumBeneficiary() {
-        this.unhideBeneficiaryForm = false;
-        this.unhideCheckBox = false
+        this.beneficiaryFormEnable = false;
+        this.checkboxEnable = false
 
         // the selected poliy type
         this.policytypeService.getPolicytype(this.setmember.idpolicytype)
@@ -539,14 +532,13 @@ export class CreateMemberComponent implements OnInit {
 
                 this.policytype = res[0]
                 this.beneficiaryLeft = this.policytype.maximumbeneficiaries
-                this.policytype.name
 
                 console.log(this.policytype.maximumbeneficiaries)
 
                 if (this.policytype.maximumbeneficiaries == 0) {
-                    this.unhideCheckBox = false
+                    this.checkboxEnable = false
                 } else {
-                    this.unhideCheckBox = true
+                    this.checkboxEnable = true
 
                 }
 
@@ -619,15 +611,65 @@ export class CreateMemberComponent implements OnInit {
 
     }
 
+    // testing the age of the member to determine their policy types
+    testMemberAge(identitynumber) {
+
+
+        if (identitynumber.length == 13) {
+
+
+            let age = 0;
+            this.setmember.identitynumber = identitynumber
+            console.log('Identity number: ' + this.setmember.identitynumber)
+
+            if (parseInt(identitynumber.slice(0, 2)) < parseInt(moment(new Date()).format('YY'))) {
+
+                // people born after the year 2000
+                age = parseInt(moment(new Date()).format('YYYY')) - parseInt('20' + identitynumber.slice(0, 2))
+                console.log(parseInt('20' + identitynumber.slice(0, 2)))
+
+                this.policytypeService.getPolicytypebyage(age)
+                    .subscribe(policytype_res => {
+                        console.log(policytype_res)
+
+                        this.policytypes = policytype_res
+
+
+                    }, err => {
+                        console.log(err)
+                    })
+
+
+            } else {
+
+                // people born before the year 2000
+                age = parseInt(moment(new Date()).format('YYYY')) - parseInt('19' + identitynumber.slice(0, 2))
+                console.log(parseInt('19' + identitynumber.slice(0, 2)))
+
+
+                this.policytypeService.getPolicytypebyage(age)
+                    .subscribe(policytype_res => {
+                        console.log(policytype_res)
+
+                        this.policytypes = policytype_res
+
+                    }, err => {
+                        console.log(err)
+                    })
+
+            }
+
+        }
+
+    }
 
     finishCreate(number) {
 
         let BenefitName
         let BenefitSurname
         let BenefitIDnum
-        let newDate = new Date 
+        let newDate = new Date
 
-        console.log(this.setmember)
 
         swal({
             title: 'Finish Create',
@@ -650,7 +692,6 @@ export class CreateMemberComponent implements OnInit {
                 this.setmember.iduser = this.user.idEmployee
                 this.setmember.idlifestatus = 1
                 this.setmember.membershipnumber = ('MN' + (newDate).getTime().toString().slice(0, 3) + (this.setmember.identitynumber).toString().slice(0, 3))
-  
 
                 this.memberService.createMember(this.setmember)
                     .subscribe(member_res => {
@@ -688,7 +729,7 @@ export class CreateMemberComponent implements OnInit {
                                         console.log(this.balance)
 
 
-                                        if (this.unhideBeneficiaryForm) {
+                                        if (this.beneficiaryFormEnable) {
                                             console.log('Create beneficiery')
 
 
@@ -743,13 +784,25 @@ export class CreateMemberComponent implements OnInit {
                         confirmButtonClass: "btn btn-success",
                         buttonsStyling: false
 
-                    }).then((result) => document.location.reload()) //console.log('done'))
+                    }).then((result) => document.location.reload() ) //console.log('done'))
             }
         })
 
     }
 
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    finishCreate2(name, surname, identitynumber, gender, housenumber, streetname, suburb, province, contactnumber, email, idpolicytype) {
+
+        let beneficiary;
+        let policydetails
+        let balance
+        let member
+
+        // UPLOAD DOCUMENT
+        // {'document': document}
+
+
+    }
 
     files() {
 

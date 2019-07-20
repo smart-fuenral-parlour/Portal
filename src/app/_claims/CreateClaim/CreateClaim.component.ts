@@ -6,7 +6,7 @@ import { MemberService } from 'src/app/services/member/member.service'
 
 
 ///////////////////////////////////////////   MODEL CLASS CALL   ///////////////////////////////////////////////////////////////////
-import { Member } from 'src/app/services/member/member'
+import { Member, MainMember } from 'src/app/services/member/member'
 
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -29,7 +29,7 @@ export class CreateClaimComponent implements OnInit {
   selectedSearchType
   searchText = 'ID Number'
 
-  members: Member
+  members: MainMember[] // Member
 
   constructor(private app: AppComponent, private memberService: MemberService, private _service: ServiceService, private _router: Router) { }
 
@@ -68,7 +68,7 @@ export class CreateClaimComponent implements OnInit {
           .subscribe(surname_res => {
             this.members = surname_res
 
-            if (this.members.length > 0) {
+            if (this.members.length > 0) { ////  if (this.members.length > 0)
 
               console.log('Search By Surname')
               this.notFound = false
@@ -92,7 +92,7 @@ export class CreateClaimComponent implements OnInit {
 
               this.members = identitynumber_res
 
-              if (this.members.length > 0) {
+              if (!this.members) { //  if (this.members.length > 0)
 
                 console.log('Search By ID Number')
                 this.isEmpty = false

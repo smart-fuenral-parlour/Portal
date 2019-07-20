@@ -128,8 +128,7 @@ export class LoginComponent implements OnInit, OnDestroy {
             this.isIncorrect = false
             this.app.loading = true
 
-            console.log({ 'name': username, 'password': password })
-
+            
             this.userService.loginUser({ 'name': username, 'password': password })
                 .subscribe(loginuser_res => {
 

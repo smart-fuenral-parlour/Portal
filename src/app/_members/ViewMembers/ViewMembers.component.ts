@@ -6,7 +6,7 @@ import { ServiceService } from 'src/app/SERVICE/service.service'; // service lin
 import { MemberService } from 'src/app/services/member/member.service'
 
 //////////////////// MODEL/ CLASS CALLS ///////////////////////////////////////
-import { Member } from 'src/app/services/member/member'
+import { Member, MainMember } from 'src/app/services/member/member'
 import { User } from 'src/app/services/user/user'
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -130,8 +130,8 @@ export class ViewMembersComponent implements OnInit, AfterViewInit {
 
               this.members = member_res
               console.log(member_res)
-
-              if (this.members.length > 0) {
+              
+              if (!isNullOrUndefined(this.members)) { //if (this.members.length > 0)
 
                 this.app.loading = false
                 this.notFound = false
@@ -192,11 +192,11 @@ export class ViewMembersComponent implements OnInit, AfterViewInit {
     this.searchText = selectedSearchType
   }
 
+  
   hideTextError() {
     this.isEmpty = false
     this.invalidID = false
   }
-
 
   // Edit a member
   editMember(index) {

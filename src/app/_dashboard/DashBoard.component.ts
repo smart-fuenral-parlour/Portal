@@ -36,34 +36,47 @@ export class DashBoardComponent implements OnInit {
 
   ngOnInit() {
 
-
+    
+/*
     this.count.getapprovedclaimsCount()
       .subscribe(res => {
         this.appovedclaims = res[0].countvalue;
+
+
+
+        this.count.getdeclinedclaimsCount()
+          .subscribe(res => {
+            this.declinedclaims = res[0].countvalue;
+
+
+            this.count.getmemberCount()
+              .subscribe(res => {
+                this.membercount = res[0].countvalue;
+
+
+                this.count.getpendingclaimsCount()
+                  .subscribe(res => {
+                    this.pendingclaims = res[0].countvalue;
+                  }, err => {
+                    console.log(err);
+                  });
+
+              }, err => {
+                console.log(err);
+              });
+
+
+          }, err => {
+            console.log(err);
+          });
+
+
       }, err => {
         console.log(err);
       });
 
-    this.count.getdeclinedclaimsCount()
-      .subscribe(res => {
-        this.declinedclaims = res[0].countvalue;
-      }, err => {
-        console.log(err);
-      });
+*/
 
-    this.count.getmemberCount()
-      .subscribe(res => {
-        this.membercount = res[0].countvalue;
-      }, err => {
-        console.log(err);
-      });
-
-    this.count.getpendingclaimsCount()
-      .subscribe(res => {
-        this.pendingclaims = res[0].countvalue;
-      }, err => {
-        console.log(err);
-      });
 
   }
 

@@ -34,7 +34,7 @@
                       <div class="form-group">
                         <label class="bmd-label-floating">Identity Number</label>
                         <input type="text" class="form-control"  inputmode="numeric" [ngModelOptions]="{standalone: true}" [(ngModel)]="setmember.identitynumber" 
-                          placeholder="{{ getmember.identitynumber }}"  >
+                          placeholder="{{ getmember.identitynumber }}"  minlength="13" maxlength="13" >
                       </div>
                     </div>
     
@@ -68,7 +68,7 @@
                       <div class="form-group">
                         <label class="bmd-label-floating">Contact Number</label>
                         <input type="text" inputmode="numeric" [ngModelOptions]="{standalone: true}" [(ngModel)]="setmember.contactnumber" class="form-control"  
-                          placeholder="{{ getmember.contactnumber }}">
+                          placeholder="{{ getmember.contactnumber }}" minlength="10" maxlength="10">
                       </div>
                     </div>
     

@@ -95,9 +95,9 @@
                           </span>
                           <mat-form-field class="example-full-width has-label"
                             [ngClass]="displayFieldCss(type, 'idnumber')">
-                            <input type="text" name="identitynumber" matInput [(ngModel)]="setmember.identitynumber"
-                              inputmode="numeric" placeholder="ID Number" formControlName="idnumber" minlength="13"
-                              maxlength="13">
+                            <input type="text" name="identitynumber" matInput [(ngModel)]="identitynumber"
+                              inputmode="numeric" (keyup)="testMemberAge(identitynumber)" placeholder="ID Number"
+                              formControlName="idnumber" minlength="13" maxlength="13">
                           </mat-form-field>
 
                         </div>
@@ -116,8 +116,7 @@
                           <span class="input-group-text">
                             <i class="material-icons">wc</i>
                           </span>
-                          <mat-form-field class="example-full-width has-label"
-                            [ngClass]="displayFieldCss(type, 'gender')">
+                          <mat-form-field class="example-full-width has-label">
                             <mat-select placeholder="Select Gender" id="gender" name="gender" formControlName="gender"
                               [(ngModel)]="setmember.gender" required>
                               <mat-option *ngFor="let Gender of Genders" [value]="Gender.value ">
@@ -162,7 +161,7 @@
                           </span>
                           <mat-form-field class="example-full-width has-label"
                             [ngClass]="displayFieldCss(type, 'housenumber')">
-                            <input type="number" name="housenumber" matInput placeholder="House No."
+                            <input type="number" name="housenumber" matInput id="housenumber" placeholder="House No."
                               formControlName="housenumber" [(ngModel)]="setmember.housenumber">
                           </mat-form-field>
                         </div>
@@ -176,7 +175,7 @@
                           </span>
                           <mat-form-field class="example-full-width has-label"
                             [ngClass]="displayFieldCss(type, 'streetname')">
-                            <input type="text" name="streetname" matInput placeholder="Street Name"
+                            <input type="text" name="streetname" matInput id="streetname" placeholder="Street Name"
                               formControlName="streetname" [(ngModel)]="setmember.streetname">
                           </mat-form-field>
                         </div>
@@ -190,7 +189,7 @@
                           </span>
                           <mat-form-field class="example-full-width has-label"
                             [ngClass]="displayFieldCss(type, 'suburb')">
-                            <input type="text" name="suburb" matInput [(ngModel)]="setmember.suburb"
+                            <input type="text" name="suburb" matInput [(ngModel)]="setmember.suburb" id="suburb"
                               placeholder="Suburb" formControlName="suburb">
                           </mat-form-field>
                         </div>
@@ -202,7 +201,7 @@
                             <i class="material-icons">home</i>
                           </span>
                           <mat-form-field [ngClass]="displayFieldCss(type, 'province')">
-                            <mat-select placeholder="Select Province" matInput name="province"
+                            <mat-select placeholder="Select Province" matInput id="province" name="province"
                               formControlName="selectedProvince" [(ngModel)]="setmember.province">
                               <mat-option *ngFor="let province of provinces" [value]=" province.value ">
                                 {{ province.value }}
@@ -225,12 +224,12 @@
                       <div class=" row col-12">
 
                         <div class="col-8">
-                          <mat-form-field class="example-full-width has-label"  [ngClass]="displayFieldCss(type, 'selectedPolicyType')">
-                            <mat-select placeholder="Select policy type" name="policytype"
+                          <mat-form-field class="example-full-width has-label">
+                            <mat-select placeholder="Choose your policy type" name="policytype"
                               formControlName="selectedPolicyType" [(ngModel)]="setmember.idpolicytype" required>
                               <mat-option *ngFor="let policytype of policytypes; let i = index"
                                 [value]="policytype.idpolicytype" (click)="testMaximumBeneficiary()"
-                                [class.active]="i == selectType">
+                                [class.active]="i == selecteType">
                                 <!-- (click)="selectPolicyType()"  -->
                                 {{ policytype.name }}
                               </mat-option>
@@ -238,11 +237,11 @@
                           </mat-form-field>
                         </div>
 
-                        <div class="col-4 col-sm-offset-1 checkbox-radios pull-center" *ngIf="unhideCheckBox">
+                        <div class="col-4 col-sm-offset-1 checkbox-radios pull-center" *ngIf="checkboxEnable">
                           <div class="form-check">
                             <label class="form-check-label">
                               <input class="form-check-input" pull-center type="checkbox" name="addCheckout"
-                                value="1" (click)="checkBeneficiary()"> Add beneficiary for member
+                                id="idextrapolicy" value="1" (click)="checkBeneficiary()"> Add Beneficiary?
                               <!-- (click)="checkExtra()"  -->
                               <span class="form-check-sign">
                                 <span class="check"></span>
@@ -252,17 +251,47 @@
                         </div>
 
 
+                        <div class="col-md-12" hidden>
+                          <div class="card" style="background-color: whitesmoke" *ngIf="typeSelected">
+                            <div class="card-body">
+                              <div id="typography">
+                                <div class="row">
+
+                                  <div>
+
+                                    <div class="text-center">
+                                      <h5><b>Policy Type Details</b></h5>
+                                    </div>
+
+                                    <p class="card-description">
+                                      Policy Type: {{ name }} <br />
+                                      Policy Description: this policy is for {{ description }}<br />
+                                      Maximum number of beneficiaries: {{ maximumbeneficiaries }} <br />
+                                      Premium payment: R{{ premium }} p/m<br /> <!--  currency pipes -->
+                                      Lapses day: lapse after <span class="text-primary">{{ lapsedays }}</span> days
+                                      without payment <br />
+                                      Minimum age: <span class="text-primary">{{ minimumage }}</span> years old<br />
+                                      Trail Period: {{ trialperiod }} days <br />
+                                    </p>
+
+                                  </div>
+
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
                       </div>
 
 
-                      <div class="col-12 pull-center ml-auto mr-auto" *ngIf="unhideBeneficiaryForm">
+                      <div class="col-12 pull-center ml-auto mr-auto" *ngIf="beneficiaryFormEnable">
                         <label>Maximum number of beneficiaries allowed: <span class="text-primary">
                             {{ beneficiaryLeft }} </span> </label>
 
                       </div>
 
 
-                      <div class="row" style="margin-top: 0%" *ngIf="unhideBeneficiaryForm">
+                      <div class="row" style="margin-top: 0%" *ngIf="beneficiaryFormEnable">
 
                         <div class="col-md-12">
                           <div formGroupName="BeneficiaryGroup" class="card" id="cardit">
@@ -297,7 +326,7 @@
                                   </span>
                                   <mat-form-field class="example-full-width has-label">
                                     <input type="text" id="{{'beneficiaryID'+i}}" name="{{'beneficiaryID'+i}}" matInput
-                                      placeholder="ID Number" class="form-control" maxlength="13" minlength="13" (keyup)="testBeneficiaryAge(i)">
+                                      placeholder="ID Number" class="form-control" (keyup)="testBeneficiaryAge(i)">
                                   </mat-form-field>
                                 </div>
 
@@ -319,8 +348,8 @@
                             Benefeciary</button>
                         </div>
 
-                        <mat-error *ngIf='limitReached'>
-                          <b> Limit Reached</b>
+                        <mat-error *ngIf='limitExceeded'>
+                          <b> Limit Exceeded</b>
                         </mat-error>
                       </div>
 
@@ -330,6 +359,69 @@
                     </div>
                   </div>
 
+
+                  <!-- BENEFICIARY INFORMATION
+                  <div class="tab-pane" id="beneficiaryTab">
+                    <h5 class="info-text"> Add Beneficiaries to your policy </h5>
+                    <div class="row" style="margin-top: 0%">
+                      <div class="col-md-12">
+                        <div formGroupName="BeneficiaryGroup" class="card" id="cardit">
+                          <div formArrayName="beneficiaryArray" class="card-body text-center" style="padding: 0%">
+
+                            <div class="input-group form-control-lg"
+                              *ngFor="let beneficiary of BeneficiaryForm; let i = index">
+
+                              <div class="col-4 input-group-prepend">
+                                <span class="input-group-text">
+                                  <i class="material-icons">face</i>
+                                </span>
+                                <mat-form-field class="example-full-width has-label">
+                                  <input type="text" name="{{'beneficiaryName'+i}}" matInput
+                                    id="{{'beneficiaryName'+i}}" placeholder="Name" class="form-control">
+                                </mat-form-field>
+                              </div>
+
+                              <div class="col-4 input-group-prepend">
+                                <span class="input-group-text">
+                                  <i class="material-icons">record_voice_over</i>
+                                </span>
+                                <mat-form-field class="example-full-width has-label">
+                                  <input type="text" name="{{'beneficiarySurname'+i}}" matInput
+                                    id="{{'beneficiarySurname'+i}}" placeholder="Surname" class="form-control">
+                                </mat-form-field>
+                              </div>
+
+                              <div class="col-3 input-group-prepend">
+                                <span class="input-group-text">
+                                  <i class="material-icons">perm_identity</i>
+                                </span>
+                                <mat-form-field class="example-full-width has-label">
+                                  <input type="text" id="{{'beneficiaryID'+i}}" name="{{'beneficiaryID'+i}}" matInput
+                                    placeholder="ID Number" class="form-control" (keyup)="testBeneficiaryAge(i)">
+                                </mat-form-field>
+                              </div>
+
+                              <button mat-raised-button type="button" class="btn btn-danger btn-just-icon btn-link"
+                                [formGroupName]="i" (click)="removeBeneficiary(i)">
+                            
+                                <i class="material-icons">close</i>
+                              </button>
+                            </div>
+                            <br />
+
+                          </div>
+
+                        </div>
+                      </div>
+                    </div>
+                    <div>
+                      <button mat-raised-button type="button" class="btn  btn-sm" (click)="addBeneficiary()" class="add"
+                        id="add" name="add" style="background-color: lightgrey"><i class="material-icons"
+                          [class.active]="i == selectedClaim">add</i>Add
+                        Benefeciary</button>
+                    </div>
+                  </div>
+             -->
 
                   <!-- CONTACTS -->
                   <div class="tab-pane" id="contactsTab">
@@ -385,26 +477,20 @@
                                 <div class="row">
 
                                   <div>
-<!--
-                                    <p class="card-description">
-                                                                    <b>Member Details</b>
-                                      Firstname: {{ setmember.name }}           Lastname: {{ setmember.surname }}<br />
-                                      Identity number: {{ setmember.identitynumber }} Gender: {{ setmember.gender }}<br />
-
-
-                                                                   <b>Policy Details</b>
-                                      Policy Type: {{ policytype.name }}           Lastname: {{ setmember.surname }}<br />
-                                      Identity number: {{ setmember.identitynumber }} Gender: {{ setmember.gender }}<br />
-
-
-                                                                   <b>Communication Details</b>
-                                      E-mail: {{ setmember.email }}           Contact number: {{ setmember.contactnumber }}<br />
-
-                                      House number: {{ setmember.housenumber }}           Street name: {{ setmember.suburb }}<br />
-                                      Surbubs: {{ ssetmember.province }}           Province: {{ setmember.streetname}}<br />
-
-                                    </p>
-                                  -->
+                                    <p>But I must explain to you how all this mistaken idea of
+                                      denouncing pleasure
+                                      and praising pain was born and I will give you a complete account of the
+                                      system, and expound the actual teachings of the great explorer of the truth,
+                                      the master-builder of human happiness. No one rejects, dislikes, or avoids
+                                      pleasure itself, because it is pleasure, but because those who do not know how
+                                      to pursue pleasure rationally encounter consequences that are extremely
+                                      painful. Nor again is there anyone who loves or pursues or desires to obtain
+                                      pain of itself, because it is pain, but because occasionally circumstances
+                                      occur in which toil and pain can procure him some great pleasure. To take a
+                                      trivial example, which of us ever undertakes laborious physical exercise,
+                                      except to obtain some advantage from it? But who has any right to find fault
+                                      with a man who chooses to enjoy a pleasure that has no annoying consequences,
+                                      or one who avoids a pain that produces no resultant pleasure?</p>
                                   </div>
 
                                 </div>
