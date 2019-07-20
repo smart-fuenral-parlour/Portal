@@ -297,7 +297,7 @@
                                   </span>
                                   <mat-form-field class="example-full-width has-label">
                                     <input type="text" id="{{'beneficiaryID'+i}}" name="{{'beneficiaryID'+i}}" matInput
-                                      placeholder="ID Number" class="form-control" maxlength="13" minlength="13" (keyup)="testBeneficiaryAge(i)">
+                                      placeholder="ID Number" class="form-control" maxlength="13" minlength="13" >
                                   </mat-form-field>
                                 </div>
 
@@ -442,7 +442,7 @@
                 <div class="ml-auto">
                   <input type="button" class="btn btn-next btn-fill btn-info btn-wd" name="next" value="Next">
                   <input type="button" class="btn btn-finish btn-fill btn-success btn-wd" name="finish"
-                    (click)="finishCreate(beneficiaryNumber)" value="Finish" style="display: none;">
+                    (click)="finishCreate()" value="Finish" style="display: none;">
                 </div>
                 <div class="clearfix"></div>
               </div>

@@ -76,10 +76,10 @@ export class MemberService {
   }
 
 
-  createMember (member): Observable<Member> {
-    return this.http.post<Member>(apiUrl, member, httpOptions).pipe(
-      tap((member: Member) => console.log(`added member w/`+member)),
-      catchError(this.handleError<Member>('addMember'))
+  createMember (member): Observable<any> {
+    return this.http.post<any>(apiUrl, member, httpOptions).pipe(
+      tap((member: any) => console.log(`added member w/`+member)),
+      catchError(this.handleError<any>('addMember'))
     );
   }
 
@@ -104,7 +104,15 @@ export class MemberService {
     );
   }
 
-
+/**
+ * 
+  createMember (member): Observable<Member> {
+    return this.http.post<Member>(apiUrl, member, httpOptions).pipe(
+      tap((member: Member) => console.log(`added member w/`+member)),
+      catchError(this.handleError<Member>('addMember'))
+    );
+  }
+ */
 
 
 

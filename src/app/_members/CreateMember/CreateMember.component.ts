@@ -13,23 +13,28 @@ import { PolicydetailsService } from 'src/app/services/policydetails/policydetai
 import { BalanceService } from 'src/app/services/balance/balance.service'
 import { BeneficiaryService } from 'src/app/services/beneficiary/beneficiary.service'
 import { FileService } from 'src/app/services/file/file.service'
+import { PolicystatusService } from 'src/app/services/policystatus/policystatus.service'
+import { LifestatusService } from 'src/app/services/lifestatus/lifestatus.service'
 
 ///////////////////// MODEL CLASS CALLS ///////////////////
-import { Member } from 'src/app/services/member/member'
+import { Member, MainMember } from 'src/app/services/member/member'
 import { Policytype } from 'src/app/services/policytype/policytype'
 import { Policydetails } from 'src/app/services/policydetails/policydetails'
 import { Balance } from 'src/app/services/balance/balance'
 import { Beneficiary } from 'src/app/services/beneficiary/beneficiary'
 import { User } from 'src/app/services/user/user'
 import { File } from 'src/app/services/file/file'
+import { Policystatus } from 'src/app/services/policystatus/policystatus'
+import { Lifestatus } from 'src/app/services/lifestatus/lifestatus'
 
 /////////////////////////////////////////////////////////
 import * as moment from 'moment';
 import { AppComponent } from 'src/app/app.component'
 import { type } from 'os';
-import { isNullOrUndefined } from 'util';
+import { isNullOrUndefined, isObject } from 'util';
 import { timestamp } from 'rxjs/operators';
 import { randomBytes } from 'crypto';
+import { JsonPipe } from '@angular/common';
 
 
 
@@ -62,23 +67,25 @@ export class CreateMemberComponent implements OnInit {
     beneficiaryNumber
 
     // MODEL CLASS INSTANCE
-    member: Member
+    member
     policytypes: Policytype[]
     policytype: Policytype
+    policystatus: Policystatus
+    lifestatus: Lifestatus
     user: User
-    policydetails: Policydetails
-    balance: Balance
     file
     key = "document";
     data
 
     // creating new objects
-    setmember = new Member
-    setbeneficiary = new Beneficiary
+    setmember = new MainMember
+    //setbeneficiary = new Beneficiary
+    setbeneficiary = []
     setbalance = new Balance
     setpolicydetails = new Policydetails
     beneficiaryLeft
 
+    // variables to show and hide 
     invalidID = false
     unhideCheckBox = false
     unhideBeneficiaryForm = false
@@ -86,13 +93,15 @@ export class CreateMemberComponent implements OnInit {
 
     constructor(private formBuilder: FormBuilder,
         private memberService: MemberService,
+        private lifestatusService: LifestatusService,
+        private policystatusService: PolicystatusService,
         private policytypeService: PolicytypeService,
         private policydetailsService: PolicydetailsService,
         private balanceService: BalanceService,
         private beneficiaryService: BeneficiaryService,
         private fileService: FileService,
         private router: Router,
-        private app: AppComponent  ) { }
+        private app: AppComponent) { }
 
     // province drop down list
     provinces = [
@@ -137,7 +146,6 @@ export class CreateMemberComponent implements OnInit {
 
         ///////////////////////  work here   ////////////////////////////
         this.user = JSON.parse(localStorage.getItem('user'))
-
 
         this.policytypeService.getPolicytypes()
             .subscribe(policytype_res => {
@@ -461,17 +469,6 @@ export class CreateMemberComponent implements OnInit {
     }
 
 
-    // check if the age of beneficiary is allowed  {{'beneficiaryID'+i}}
-
-    testmem(identitynumber) {
-
-        if (identitynumber.toString().length == 4) {
-
-            this.setmember.iduser = this.user.idEmployee
-            console.log(this.setmember)
-        }
-
-    }
 
     get BeneficiaryForm() {
         return (<FormArray>(<FormGroup>this.type.get('BeneficiaryGroup')).get('beneficiaryArray')).controls;
@@ -513,12 +510,18 @@ export class CreateMemberComponent implements OnInit {
         this.limitReached = false
     }
 
-// hides or unhides beneficiary form by click on checkbox
+    // hides or unhides beneficiary form by click on checkbox
     checkBeneficiary() {
 
         if (this.unhideBeneficiaryForm == true) {
 
+            this.beneficiaryLeft = this.policytype.maximumbeneficiaries
             this.unhideBeneficiaryForm = false
+            for (let x = 0; x < this.BeneficiaryForm.length; x++) {
+                // removes the added beneficiary form if disable
+                (((this.type.get('BeneficiaryGroup') as FormGroup).get('beneficiaryArray')) as FormArray).removeAt(x)
+
+            }
             console.log('unchecked')
 
         } else {
@@ -539,7 +542,7 @@ export class CreateMemberComponent implements OnInit {
 
                 this.policytype = res[0]
                 this.beneficiaryLeft = this.policytype.maximumbeneficiaries
-                this.policytype.name
+                this.policytype.premium
 
                 console.log(this.policytype.maximumbeneficiaries)
 
@@ -557,75 +560,86 @@ export class CreateMemberComponent implements OnInit {
 
     }
 
-    testBeneficiaryAge(i) {
 
-        let beneficiaryID
-        let beneficiaryName
-        beneficiaryID = document.querySelector('#beneficiaryID' + i)
+    finishCreate() {
 
+        let BeneficiaryName
+        let BeneficiarySurname
+        let BeneficiaryIdNumber
+        let newDate = new Date
 
-        if (beneficiaryID.value.length == 13) {
-
-            let age = 0
-            beneficiaryName = document.querySelector('#beneficiaryName' + i)
-            // for those born from the year 2000
-            if (parseInt(beneficiaryID.toString().slice(0, 2)) <= parseInt(moment(new Date()).format('YY'))) {
-
-                age = parseInt(moment(new Date()).format('YYYY')) - parseInt('20' + beneficiaryID.toString().slice(0, 2))
-                console.log('B: ' + age)
-
-                if (age < this.policytype.maximumbeneficiaryage) {
-
-                    console.log('success')
-
-                } else {
-
-                    beneficiaryName = document.querySelector('#beneficiaryName' + i)
-                    swal({
-                        title: beneficiaryName.value + " cannot be added as a Beneficiary",
-                        text: "Beneficiary must not be older than " + this.policytype.maximumbeneficiaryage + " years",
-                        timer: 5500,
-                        showConfirmButton: true
-                    }).catch(swal.noop)
-
-                }
-
-            } else {
-
-                // for those born after the year 2000
-
-                age = parseInt(moment(new Date()).format('YYYY')) - parseInt('20' + beneficiaryID.toString().slice(0, 2))
-                console.log('B: ' + age)
-
-                if (age < this.policytype.maximumbeneficiaryage) {
-
-                    console.log('success')
-
-                } else {
-
-                    beneficiaryName = document.querySelector('#beneficiaryName' + i)
-                    swal({
-                        title: beneficiaryName.value + " cannot be added as a Beneficiary",
-                        text: "Beneficiary must not be older than " + this.policytype.maximumbeneficiaryage + " years",
-                        timer: 5500,
-                        showConfirmButton: true
-                    }).catch(swal.noop)
-
-                }
-            }
-
-        }
+        this.setmember.idlifestatus = 1
+        this.setmember.membershipnumber = ('MN' + (newDate).getMilliseconds().toString().slice(0, 3) + (this.setmember.identitynumber).toString().slice(6, 9))
+        this.setmember.createdby = (this.user.name + " " + this.user.surname)
+        this.setmember.balance = this.policytype.premium
+        this.setmember.lastpaiddate = moment.parseZone(newDate).utc().format()
 
 
-    }
+        this.policystatusService.getPolicystatus(1)
+            .subscribe(policystatus_res => { // getting the name of the policy status by the idpolicystatus
+                this.setmember.policystatus = policystatus_res[0].name
 
 
-    finishCreate(number) {
+                this.lifestatusService.getLifestatus(this.setmember.idlifestatus)
+                    .subscribe(lifestatus_res => { // getting the name of the life status by the idlifestatus
+                        this.setmember.lifestatus = lifestatus_res[0].name
 
-        let BenefitName
-        let BenefitSurname
-        let BenefitIDnum
-        let newDate = new Date 
+
+
+                        this.setbeneficiary = []
+                        if (this.unhideBeneficiaryForm) {
+
+                            // creating beneficiary
+                            for (let x = 0; x < this.BeneficiaryForm.length; x++) {
+
+                                BeneficiaryIdNumber = document.querySelector('#beneficiaryID' + x)
+                                BeneficiarySurname = document.querySelector('#beneficiarySurname' + x)
+                                BeneficiaryName = document.querySelector('#beneficiaryName' + x)
+
+                                this.setbeneficiary.push(
+                                    {
+                                        name: BeneficiaryName.value,
+                                        surname: BeneficiarySurname.value,
+                                        identitynumber: BeneficiaryIdNumber.value,
+                                        idlifestatus: 1,
+                                        lifestatus: lifestatus_res[0].name
+                                    }
+                                )
+
+
+
+                            }
+
+                        }
+
+                        
+                        this.member =  {
+                            "mainmember": this.setmember,
+                            "beneficiary": this.setbeneficiary
+                        }
+                        
+                        this.memberService.createMember( Object.assign(this.setmember,this.setbeneficiary) )
+                            .subscribe(member_res => {
+                                console.log(member_res)
+                            }, err => {
+                                console.log(err)
+                            })
+
+                        // Object.assign({ "mainmember": this.setmember }, { "beneficiary": this.setbeneficiary }) //(this.setmember +","+ this.setbeneficiary)
+
+                        console.log(this.member)
+
+                        this.app.loading = false
+
+
+
+                    }, err => {
+                        console.log(err)
+                    })
+            }, err => {
+                console.log(err)
+            })
+
 
         console.log(this.setmember)
 
@@ -644,101 +658,57 @@ export class CreateMemberComponent implements OnInit {
                 this.app.loading = true
 
 
+                /***
+                 *  
+                 * 
+            "mainmember": {   
+                "idlifestatus": "1", // hard coded 
+                "membershipnumber": "MN156856", // self generated  
+                "createdby": "3", // user signed in
+                "lifestatus": null, // recommend to get from API by using default idlifestatus(1) by just 1
+                "policystatus": null, //  recommend to get from API by using default idpolicystatus(1) by just 1
+                "balance": null, //  use premium of the selectd policy type
+                "lastpaiddate": null // assign to create date of member / Self generated (correct format)
+            },
+            "beneficiary": [
+            { 
+            "name": "thenos",
+            "surname": "kai",
+            "identitynumber":"asdasd",
+            "idlifestatus": "1", // defaul to 1 (Alive)
+            }
+            ] // store array of objects
+                 */
+
                 // creating member
 
-                //this.setmember.iduser = this.user.iduser
-                this.setmember.iduser = this.user.idEmployee
+
                 this.setmember.idlifestatus = 1
-                this.setmember.membershipnumber = ('MN' + (newDate).getTime().toString().slice(0, 3) + (this.setmember.identitynumber).toString().slice(0, 3))
-  
-
-                this.memberService.createMember(this.setmember)
-                    .subscribe(member_res => {
-                        this.member = member_res[0]
-                        console.log(this.member)
+                this.setmember.membershipnumber = ('MN' + (newDate).getMilliseconds().toString().slice(0, 3) + (this.setmember.identitynumber).toString().slice(6, 9))
+                this.setmember.createdby = (this.user.name + " " + this.user.surname)
 
 
-                        //  creating member policy
-                        this.setpolicydetails.idmember = this.member.idmember
-                        this.setpolicydetails.membershipnumber = this.member.membershipnumber
-                        this.setpolicydetails.idpolicystatus = 1
-                        this.setpolicydetails.iduser = this.member.iduser
-                        this.setpolicydetails.idpolicytype = this.member.idpolicytype
+                this.lifestatusService.getLifestatus(this.setmember.idlifestatus)
+                    .subscribe(lifestatus_res => { // getting the name of the life status by the idlifestatus
+                        this.setmember.lifestatus = lifestatus_res[0].name
 
+                        this.policystatusService.getPolicystatus(1)
+                            .subscribe(policystatus_res => { // getting the name of the policy status by the idpolicystatus
+                                this.setmember.policystatus = policystatus_res[0].name
 
-                        this.policydetailsService.createPolicydetails(this.setpolicydetails)
-                            .subscribe(policydetails_res => {
-
-                                this.policydetails = policydetails_res[0]
-                                console.log(this.policydetails)
-
-
-                                // creating balance for member
-                                this.setbalance.amount = parseFloat(this.policytype.premium.toString())
-                                this.setbalance.amount = this.policytype.premium
-                                this.setbalance.idpolicydetails = this.policydetails.idpolicydetails
-                                this.setbalance.lastpaiddate = this.member.createddate
-                                // this.setbalance.lastpaiddate = newDate.toTimeString()
-
-
-                                this.balanceService.createBalance(this.setbalance)
-                                    .subscribe(balance_res => {
-
-                                        this.balance = balance_res[0]
-                                        console.log(this.balance)
-
-
-                                        if (this.unhideBeneficiaryForm) {
-                                            console.log('Create beneficiery')
-
-
-                                            // creating beneficiary
-                                            for (let x = 0; x < number; x++) {
-
-                                                BenefitIDnum = document.querySelector('#beneficiaryID' + x)
-                                                BenefitSurname = document.querySelector('#beneficiarySurname' + x)
-                                                BenefitName = document.querySelector('#beneficiaryName' + x)
-
-                                                this.setbeneficiary.identitynumber = BenefitIDnum.value
-                                                this.setbeneficiary.name = BenefitName.value
-                                                this.setbeneficiary.surname = BenefitSurname.value
-                                                this.setbeneficiary.idmember = this.member.idmember
-                                                this.setbeneficiary.idlifestatus = 1
-
-                                                this.beneficiaryService.createBeneficiary(this.setbeneficiary)
-                                                    .subscribe(beneficiary_res => {
-                                                        console.log(beneficiary_res)
-                                                    }, err => {
-                                                        console.log(err)
-                                                    })
-
-                                                console.log(this.setbeneficiary)
-                                            }
-
-                                        }
-
-
-                                        this.app.loading = false
-
-
-
-                                    }, err => {
-                                        console.log(err)
-                                    })
-
+                                console.log(this.setmember)
 
                             }, err => {
                                 console.log(err)
                             })
-
                     }, err => {
                         console.log(err)
                     })
 
+
                 swal(
                     {
                         title: 'Member Created',
-                        //text: 'Member Deleted',
                         type: 'success',
                         confirmButtonClass: "btn btn-success",
                         buttonsStyling: false

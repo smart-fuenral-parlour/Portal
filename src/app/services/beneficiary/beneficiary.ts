@@ -5,4 +5,5 @@ export class Beneficiary
     surname: string;
     identitynumber: string;
     idlifestatus: number;
+    createddate: Date;
 }
