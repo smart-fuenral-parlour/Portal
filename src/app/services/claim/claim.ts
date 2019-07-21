@@ -1,17 +1,27 @@
 export class Claim 
 {
-  [x: string]: any;
+    idclaim: number
+    idclaimstatus: number;
+    claimnumber: string;
     idpolicydetails: number;
-    deceasedidentitynumber: number;
+    deceasedidentitynumber: string;
     placeofdeath:string;
     dateofdeath: string;
     deathcertificate: string;
     proposedburialdate: string;
     idpayouttype:number;
     iduser: number;
-    idclaimstatus: number;
+    claimstatus: number;
     idmember: number;
     deceasedname: string;
-    deceasedsurname: string
+    deseasedsurname: string;
+    createddate: Date;
+    membershipnumber: string;
+    informantname: string;
+    informantsurname: string;
+    informantidnumber: string;
+    informantcontactnumber: string;
+    createdby: string;
 }
+
 

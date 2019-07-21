@@ -43,7 +43,7 @@ export class CreateClaimFormComponent implements OnInit {
 
   member: Member
   policydetails: Policydetails
-  claim = new Claim
+  setclaim = new Claim
   user: User
   beneficiaries: Beneficiary[]
   payouttypes: Payouttype[]
@@ -65,9 +65,9 @@ export class CreateClaimFormComponent implements OnInit {
   ) { }
 
 
-  genders = [
-    { value: 'Male', name: 'Male', abrv: 'M' },
-    { value: 'Female', name: 'Female', abrv: 'F' }
+  Genders = [
+    { value: 'Male', abrv: 'M' },
+    { value: 'Female', abrv: 'F' }
   ]
 
 
@@ -79,18 +79,26 @@ export class CreateClaimFormComponent implements OnInit {
 
     console.log(this.member)
 
+    this.payouttypeService.getPayouttypes()
+      .subscribe(payouttype_res => {
+        this.payouttypes = payouttype_res
 
+      }, err => {
+        console.log(err)
+      })
 
   }
 
-  createClaim(selectedDeceased) {
-    console.log(selectedDeceased)
+  createClaim() {
+    
 
-    //this.claim.iduser = this.user.iduser
-    this.claim.idclaimstatus = 1
-    this.claim.idmember = this.member.idmember
-    this.claim.idpolicydetails = this.policydetails.idpolicydetails
-    this.claim.deceasedidentitynumber = selectedDeceased
+    this.setclaim.idclaimstatus = 1
+    this.setclaim.idmember = this.member.idmember
+    this.setclaim.membershipnumber = this.member.membershipnumber
+    this.setclaim.createdby = (this.user.name+ " " +this.user.surname)
+
+    console.log(this.setclaim)
+
 
 
 
@@ -107,7 +115,7 @@ export class CreateClaimFormComponent implements OnInit {
     }).then((result) => {
       if (result.value) {
 
-        this.claimService.createClaim(this.claim)
+        this.claimService.createClaim(this.setclaim)
           .subscribe(claim_res => {
             console.log(claim_res)
           }, err => {
@@ -131,15 +139,16 @@ export class CreateClaimFormComponent implements OnInit {
   }
 
   selectDeceased() {
-    console.log(this.selectedDeceased)
+    this.selected = true
 
-    if (this.selectedDeceased == '' || isNullOrUndefined(this.selectedDeceased)) {
-      this.selected = false
-    } else {
-      console.log(this.selectedDeceased)
-      this.selected = true
-    }
-
+    /*
+        if (this.selectedDeceased == '' || isNullOrUndefined(this.selectedDeceased)) {
+          this.selected = false
+        } else {
+          console.log(this.selectedDeceased)
+          this.selected = true
+        }
+    */
 
   }
 

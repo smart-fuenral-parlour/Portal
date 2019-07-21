@@ -6,12 +6,13 @@ import { MemberService } from 'src/app/services/member/member.service'
 
 
 ///////////////////////////////////////////   MODEL CLASS CALL   ///////////////////////////////////////////////////////////////////
-import { Member, MainMember } from 'src/app/services/member/member'
+import { Members, MainMember } from 'src/app/services/member/member'
 
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 import { isNullOrUndefined } from 'util';
 import { AppComponent } from 'src/app/app.component'
+import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
 
 @Component({
   selector: 'app-CreateClaim',
@@ -29,7 +30,9 @@ export class CreateClaimComponent implements OnInit {
   selectedSearchType
   searchText = 'ID Number'
 
-  members: Member[] // Member
+  mainmember: Members // Member
+  members //=  this.mainmember.mainmember
+  beneficiary
 
   constructor(private app: AppComponent, private memberService: MemberService, private _service: ServiceService, private _router: Router) { }
 
@@ -65,9 +68,10 @@ export class CreateClaimComponent implements OnInit {
       if (this.selectedSearchType == 'Surname') {
 
         this.memberService.getMemberbysurname(searchInput)
-          .subscribe(surname_res => {
-            this.members = surname_res
+          .subscribe(surnameSearch_res => {
 
+            this.members = surnameSearch_res.mainmember
+            this.beneficiary = surnameSearch_res.beneficiary
 
             if (!isNullOrUndefined(this.members)) { //  if (this.members.length > 0)
               console.log(this.members)
@@ -90,9 +94,9 @@ export class CreateClaimComponent implements OnInit {
       } else
         if (searchInput.length == 13) {
           this.memberService.getMemberbyidentitynumber(searchInput)
-            .subscribe(identitynumber_res => {
+            .subscribe(identitynumberSearch_res => {
 
-              this.members = identitynumber_res
+              this.members = identitynumberSearch_res.mainmember
 
               if (!isNullOrUndefined(this.members)) { //  if (this.members.length > 0)
                 console.log(this.members)
@@ -135,8 +139,9 @@ export class CreateClaimComponent implements OnInit {
   // Create Claim
   createClaim(index) {
 
-    console.log(this.members[index])
-    localStorage.setItem('member', JSON.stringify(this.members[0]));// this.members[index]
+    console.log(this.members)
+    localStorage.setItem('member', JSON.stringify(this.members));// this.members[index]
+    localStorage.setItem('beneficiary', JSON.stringify(this.beneficiary) )
     this._router.navigate(['/claims/createclaimformember']);
   }
 

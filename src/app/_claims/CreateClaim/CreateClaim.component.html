@@ -84,10 +84,10 @@
                   </thead>
                   <tbody>
                     <tr> <!--  *ngFor="let member of members; let i = index" -->
-                      <td>{{ members.mainmember.membershipnumber }}</td>
-                      <td>{{ members.mainmember.name }}</td>
-                      <td>{{ members.mainmember.surname }}</td>
-                      <td>{{ members.mainmember.identitynumber }}</td>
+                      <td>{{ members.membershipnumber }}</td>
+                      <td>{{ members.name }}</td>
+                      <td>{{ members.surname }}</td>
+                      <td>{{ members.identitynumber }}</td>
                       <td class="text-right">
                         <button (click)="createClaim(i)" class="btn btn-link btn-info "><i
                             class="material-icons" [class.active]="i == selectedrow" data-toggle="tooltip" data-placement="down" title="create claim" ></i>Create Claim</button>

@@ -1,7 +1,7 @@
 import { Observable, of, throwError } from 'rxjs';
 import { HttpClient, HttpHeaders, HttpErrorResponse } from '@angular/common/http';
 import { catchError, tap, map } from 'rxjs/operators';
-import { Member, MainMember } from './member';
+import { Member, MainMember, Members } from './member';
 import { Injectable } from '@angular/core';
 
 const httpOptions = {
@@ -40,11 +40,11 @@ export class MemberService {
       );
   }
   
-  getMemberbyidentitynumber(id: number): Observable<Member[]> {
+  getMemberbyidentitynumber(id: number): Observable<Members> {
     const url = `${getmemberbyidentitynumberUrl}/${id}`;
-    return this.http.get<Member[]>(url).pipe(
+    return this.http.get<Members>(url).pipe(
       tap(_ => console.log(`fetched member id=${id}`)),
-      catchError(this.handleError<Member[]>(`getMemberbyidentitynumber id=${id}`))
+      catchError(this.handleError<Members>(`getMemberbyidentitynumber id=${id}`))
     );
   }
 
@@ -58,11 +58,20 @@ export class MemberService {
   }
 
     
-  getMemberbysurname(id: number): Observable<Member[]> {
+  getMemberbysurname(id: number): Observable<Members> {
     const url = `${getmemberbysurnameUrl}/${id}`;
-    return this.http.get<Member[]>(url).pipe(
+    return this.http.get<Members>(url).pipe(
       tap(_ => console.log(`fetched member id=${id}`)),
-      catchError(this.handleError<Member[]>(`getMemberbysurname id=${id}`))
+      catchError(this.handleError<Members>(`getMemberbysurname id=${id}`))
+    );
+  }
+
+     
+  getMemberbysurname1(id: number): Observable<Members> {
+    const url = `${getmemberbysurnameUrl}/${id}`;
+    return this.http.get<Members>(url).pipe(
+      tap(_ => console.log(`fetched member id=${id}`)),
+      catchError(this.handleError<Members>(`getMemberbysurname id=${id}`))
     );
   }
 
