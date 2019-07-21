@@ -89,11 +89,11 @@
                 </thead>
                 <tbody>
                   <tr >  <!--  *ngFor="let member of members; let i = index" -->
-                    <td>{{ members.mainmember.membershipnumber }}</td>
-                    <td>{{ members.mainmember.name }}</td>
-                    <td>{{ members.mainmember.surname }}</td>
-                    <td>{{ members.mainmember.createddate  | date: "dd MMMM, yyyy" }}</td>
-                    <td>{{ members.mainmember.identitynumber }}</td>
+                    <td>{{ members.membershipnumber }}</td>
+                    <td>{{ members.name }}</td>
+                    <td>{{ members.surname }}</td>
+                    <td>{{ members.createddate  | date: "dd MMMM, yyyy" }}</td>
+                    <td>{{ members.identitynumber }}</td>
                     <td class="text-right">
                       <a (click)="editMember(i)" class="btn btn-link btn-info btn-just-icon edit"><i
                           class="material-icons" [class.active]="i == selectedrow" data-toggle="tooltip"

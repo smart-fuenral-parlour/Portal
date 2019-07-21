@@ -6,7 +6,7 @@ import { ServiceService } from 'src/app/SERVICE/service.service'; // service lin
 import { MemberService } from 'src/app/services/member/member.service'
 
 //////////////////// MODEL/ CLASS CALLS ///////////////////////////////////////
-import { Member, MainMember } from 'src/app/services/member/member'
+import { Members, MainMember } from 'src/app/services/member/member'
 import { User } from 'src/app/services/user/user'
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -33,6 +33,7 @@ export class ViewMembersComponent implements OnInit, AfterViewInit {
 
 
   public dataTable: DataTable;
+  mainmember: Members
   members
   
   user: User
@@ -95,7 +96,8 @@ export class ViewMembersComponent implements OnInit, AfterViewInit {
         this.memberService.getMemberbymembershipnumber(searchInput)
           .subscribe(member_res => {
 
-            this.members = member_res
+            this.members = member_res.mainmember
+
             console.log(member_res)
 
             if (!isNullOrUndefined(this.members)) { // if (this.members.length > 0)
@@ -128,7 +130,8 @@ export class ViewMembersComponent implements OnInit, AfterViewInit {
           this.memberService.getMemberbysurname(searchInput)
             .subscribe(member_res => {
 
-              this.members = member_res
+              this.members = member_res.mainmember
+
               console.log(member_res)
               
               if (!isNullOrUndefined(this.members)) { //if (this.members.length > 0)
@@ -156,10 +159,12 @@ export class ViewMembersComponent implements OnInit, AfterViewInit {
 
             this.memberService.getMemberbyidentitynumber(searchInput)
               .subscribe(member_res => {
-                this.members = member_res
+
+                this.members = member_res.mainmember
+
                 console.log(member_res)
 
-                if (this.members.length > 0) {
+                if (!isNullOrUndefined(this.members)) {
                   console.log('Search by Id number')
 
                   this.app.loading = false
@@ -201,14 +206,14 @@ export class ViewMembersComponent implements OnInit, AfterViewInit {
   // Edit a member
   editMember(index) {
 
-    localStorage.setItem('editmember', JSON.stringify(this.members.mainmember)); // this.members[index]
+    localStorage.setItem('editmember', JSON.stringify(this.members)); // this.members[index]
     sessionStorage.clear()
     this.router.navigate(['/members/editmember']);
   }
 
   // View full member details
   viewMember(index) {
-    localStorage.setItem('viewdetails', JSON.stringify(this.members.mainmember)); // this.members[index]
+    localStorage.setItem('viewdetails', JSON.stringify(this.members)); // this.members[index]
     this.router.navigate(['/members/viewmemberdetails']);
   }
 

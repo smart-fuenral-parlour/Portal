@@ -49,11 +49,11 @@ export class MemberService {
   }
 
     
-  getMemberbymembershipnumber(id: number): Observable<Member> {
+  getMemberbymembershipnumber(id: number): Observable<Members> {
     const url = `${getmemberbymembershipnumberUrl}/${id}`;
-    return this.http.get<Member>(url).pipe(
+    return this.http.get<Members>(url).pipe(
       tap(_ => console.log(`fetched member id=${id}`)),
-      catchError(this.handleError<Member>(`getMember id=${id}`))
+      catchError(this.handleError<Members>(`getMember id=${id}`))
     );
   }
 

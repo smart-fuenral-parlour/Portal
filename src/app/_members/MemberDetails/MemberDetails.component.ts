@@ -103,27 +103,36 @@ export class MemberDetailsComponent implements OnInit {
     this.member = JSON.parse(localStorage.getItem('viewdetails'))
     this.user = JSON.parse(localStorage.getItem('user'))
 
-    if (this.member.policystatus.toLocaleLowerCase() == ('active').toLocaleLowerCase()) {
-      this.policystatus_color = 'text-success'
-    } else
-      if (this.member.policystatus.toLocaleLowerCase() == ('inactive').toLocaleLowerCase() || this.member.policystatus.toLocaleLowerCase() == ('deactivated').toLocaleLowerCase()) {
-        this.policystatus_color = 'text-danger'
 
-      } else {
-        this.policystatus_color = 'text-warning'
+    if (!isNullOrUndefined(this.member.policystatus)) {
 
-      }
+      if (this.member.policystatus.toLocaleLowerCase() == ('active').toLocaleLowerCase()) {
+        this.policystatus_color = 'text-success'
+      } else
+        if (this.member.policystatus.toLocaleLowerCase() == ('inactive').toLocaleLowerCase() || this.member.policystatus.toLocaleLowerCase() == ('deactivated').toLocaleLowerCase()) {
+          this.policystatus_color = 'text-danger'
 
-    if (this.member.lifestatus.toLocaleLowerCase() == ('alive').toLocaleLowerCase()) {
-      this.lifestatus_color = 'text-success'
-    } else
-      if (this.member.lifestatus.toLocaleLowerCase() == ('deceased').toLocaleLowerCase() || this.member.lifestatus.toLocaleLowerCase() == ('deactivated').toLocaleLowerCase()) {
-        this.lifestatus_color = 'text-danger'
+        } else {
+          this.policystatus_color = 'text-warning'
 
-      } else {
-        this.lifestatus_color = 'text-warning'
+        }
+    }
 
-      }
+    if (!isNullOrUndefined(this.member.lifestatus)) {
+
+      if (this.member.lifestatus.toLocaleLowerCase() == ('alive').toLocaleLowerCase()) {
+        this.lifestatus_color = 'text-success'
+      } else
+        if (this.member.lifestatus.toLocaleLowerCase() == ('deceased').toLocaleLowerCase() || this.member.lifestatus.toLocaleLowerCase() == ('deactivated').toLocaleLowerCase()) {
+          this.lifestatus_color = 'text-danger'
+
+        } else {
+          this.lifestatus_color = 'text-warning'
+
+        }
+
+    }
+
 
     console.log(this.user)
     console.log(this.member)
