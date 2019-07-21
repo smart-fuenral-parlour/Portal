@@ -6,16 +6,18 @@
         <span style="size: 15%">Membership Number: {{member.membershipnumber}}</span>
       </div>
       <div class="col-5" style="text-align: right;">
-        Policy Status: <span class="{{policystatus_color}}">{{ member.policystatus}}</span>
+        Policy Status: <span class="{{policystatus_color}}">{{ policystatus.name }}</span>
         <div></div>
-        Life Status: <span class="text-success">{{ member.lifestatus }}</span>
+        Life Status: <span class="text-success">{{ lifestatus.name }}</span>
+      </div>
+      <div class="col-5 text-right" hidden >
       </div>
     </div>
   </h3>
 
 
 
-  <span>Created By: {{ member.createdby | titlecase}} </span>
+  <span>Created By: {{ user.name | titlecase}} {{ user.surname | titlecase}} </span>
   <br />
   <ul class="nav nav-pills nav-pills-primary nav-pills-icons " role="tablist">
     <li class="nav-item">
@@ -230,11 +232,11 @@
                     </tr>
                   </thead>
                   <tbody>
-                    <tr> <!--  *ngFor="let balance of balances" -->
+                    <tr *ngFor="let balance of balances">
                       <td class="text-info">{{balance.idpayment}}</td>
-                      <td>{{member.createdby}}</td>
-                      <td>{{ member.lastpaiddate | date }}</td>
-                      <td>{{ member.balance | currency:  'ZAR':"symbol-narrow" }}</td>
+                      <td>{{createdby}}</td>
+                      <td> {{ balance.lastpaiddate | date }}</td>
+                      <td>{{ balance.amount | currency:  'ZAR':"symbol-narrow" }}</td>
 
                     </tr>
                   </tbody>
@@ -256,6 +258,61 @@
 
       </div>
       <div class="tab-pane" id="myclaims">
+        <div class="row" hidden>
+          <div class="col-md-12 ml-auto mr-auto">
+            <div class="card">
+              <div class="card-body">
+                <div class="col-12">
+
+                  <!-- From Date -->
+                  <div class="col-6 input-group-prepend mr-auto">
+                    <span class="input-group-text">
+                      <i class="material-icons"></i>
+                    </span>
+                    <mat-form-field (click)="fromEnable()">
+                      <input matInput [matDatepicker]="picker" placeholder="From" readonly id="ClaimfromDate"
+                        name="fromDate" (click)="picker.open()" class="date">
+                      <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                      <mat-datepicker #picker startView="year"></mat-datepicker>
+                    </mat-form-field>
+                  </div>
+                  <div class="col-6" *ngIf='claim_fromNULL'>
+                    <mat-error>
+                      Please From Select Date
+                    </mat-error>
+                  </div>
+                </div>
+
+                <div class="col-12">
+
+                  <div class="col-6 input-group-prepend mr-auto">
+                    <span class="input-group-text">
+                      <i class="material-icons"></i>
+                    </span>
+                    <mat-form-field (click)="toEnable()">
+                      <input matInput [matDatepicker]="picker2" placeholder="To" readonly id="ClaimtoDate" name="toDate"
+                        (click)="picker2.open()" class="date">
+                      <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+                      <mat-datepicker #picker2 startView="year"></mat-datepicker>
+                    </mat-form-field>
+                  </div>
+                  <div class="col-6" *ngIf='claim_toNULL'>
+                    <mat-error>
+                      Please To Select Date
+                    </mat-error>
+                  </div>
+                </div>
+
+
+                <div class="col-2">
+                  <button mat-raised-button type="submit" class="btn btn-sm" id="searchButton" name="searchButton"
+                    (click)="searchClaim()"> <i class="material-icons">search</i> Search For Claims</button>
+
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
 
 
         <div class="row" *ngIf="notFound">

@@ -27,6 +27,7 @@ import { ServiceService } from 'src/app/SERVICE/service.service'; // service lin
 import { isNullOrUndefined, isNull } from 'util';
 import { Router } from '@angular/router';
 import swal from 'sweetalert2';
+import { Subscriber } from 'rxjs';
 import { AppComponent } from 'src/app/app.component'
 
 declare var $: any;
@@ -62,7 +63,7 @@ export class MemberDetailsComponent implements OnInit {
   Beneficiarysurname;
   Beneficiaryidumber;
 
-
+  
   /////////////////////
   member: Member
   beneficiary: Beneficiary
@@ -81,9 +82,11 @@ export class MemberDetailsComponent implements OnInit {
     private policystatusService: PolicystatusService,
     private lifestatusService: LifestatusService,
     private claimService: ClaimService,
+    private userService: UserService,
+    private policydetailsService: PolicydetailsService,
     private balanceService: BalanceService,
     private beneficiaryService: BeneficiaryService,
-    private router: Router,
+    private router: Router,  
     private app: AppComponent) {
 
 
@@ -94,6 +97,9 @@ export class MemberDetailsComponent implements OnInit {
 
     this.rows = this.fb.array([]);
 
+
+   
+
   }
 
 
@@ -103,37 +109,83 @@ export class MemberDetailsComponent implements OnInit {
     this.member = JSON.parse(localStorage.getItem('viewdetails'))
     this.user = JSON.parse(localStorage.getItem('user'))
 
-    if (this.member.policystatus.toLocaleLowerCase() == ('active').toLocaleLowerCase()) {
-      this.policystatus_color = 'text-success'
-    } else
-      if (this.member.policystatus.toLocaleLowerCase() == ('inactive').toLocaleLowerCase() || this.member.policystatus.toLocaleLowerCase() == ('deactivated').toLocaleLowerCase()) {
-        this.policystatus_color = 'text-danger'
-
-      } else {
-        this.policystatus_color = 'text-warning'
-
-      }
-
-    if (this.member.lifestatus.toLocaleLowerCase() == ('alive').toLocaleLowerCase()) {
-      this.lifestatus_color = 'text-success'
-    } else
-      if (this.member.lifestatus.toLocaleLowerCase() == ('deceased').toLocaleLowerCase() || this.member.lifestatus.toLocaleLowerCase() == ('deactivated').toLocaleLowerCase()) {
-        this.lifestatus_color = 'text-danger'
-
-      } else {
-        this.lifestatus_color = 'text-warning'
-
-      }
-
     console.log(this.user)
     console.log(this.member)
 
     if (JSON.parse(localStorage.getItem('viewdetails')) != null) {
 
 
+      this.policystatusService.getPolicystatus(this.member.idlifestatus)
+      .subscribe(policystatus_res => {
+
+        this.policystatus = policystatus_res[0]
+        console.log(this.policystatus)
+
+          this.policydetailsService.getPolicydetailbyidmember(this.member.idmember)
+            .subscribe(policydetail_res => {
+
+              this.policydetails = policydetail_res
+              if (this.policydetails.idpolicystatus == 2 || this.policydetails.idpolicystatus == 2) {
+                this.policystatus_color = 'text-success'
+
+              } else
+                if (this.policydetails.idpolicystatus == 3 || this.policydetails.idpolicystatus == 5) {
+                  this.policystatus_color = 'text-danger'
+                } else {
+                  this.policystatus_color = 'text-warning'
+                }
+              console.log(this.policydetails)
+
+
+
+
+              this.lifestatusService.getLifestatus(this.member.idlifestatus)
+              .subscribe(lifestatus_res => {
+
+                this.lifestatus = lifestatus_res[0]
+                console.log(this.lifestatus)
+
+
+                this.claimService.getClaimbyidmember(this.member.idmember)
+                  .subscribe(claim_res => {
+
+                    this.claims = claim_res[0]
+                    console.log(this.claims)
+                    this.beneficiaryService.getBeneficiarybyidmember(this.member.idmember)
+                    .subscribe(beneficiary_res => {
+            
+                      this.beneficiaries = beneficiary_res
+                      console.log(this.beneficiaries)
+                      
+                      if(this.beneficiaries.length == 0) {
+                        this.noBeneficiary = true
+                      } else {
+                        this.noBeneficiary = true
+                      }
+                      this.app.loading = false
+
+                      }, err => {
+                        console.log(err)
+                      })
+
+                  }, err => {
+                    console.log(err)
+                  })
+
+              }, err => {
+                console.log(err)
+              })
+
+            }, err => {
+              console.log(err)
+            })
+
+        }, err => {
+          console.log(err)
+        })
     }
     ///  
-
+    
 
 
   }
@@ -196,7 +248,7 @@ export class MemberDetailsComponent implements OnInit {
     localStorage.setItem('editmember', JSON.stringify(this.member));
     sessionStorage.setItem('fromMemberDetails', JSON.stringify(true));
     this.router.navigate(['/members/editmember']);
-
+    
   }
 
 
@@ -366,6 +418,76 @@ export class MemberDetailsComponent implements OnInit {
   }
 
 
+  /*
+    fromEnable() {
+  
+      if (this.claim_fromNULL) {
+        this.claim_fromNULL = false
+      }
+  
+      if (this.payment_fromNULL) {
+        this.payment_fromNULL = false
+      }
+  
+    }
+  
+    toEnable() {
+  
+      if (this.claim_toNULL) {
+        this.claim_toNULL = false
+      }
+  
+      if (this.payment_toNULL) {
+        this.payment_toNULL = false
+      }
+  
+    }
+  
+    searchClaim() {
+  
+  
+      this.toDate = document.querySelector('#ClaimtoDate')
+      this.fromDate = document.querySelector('#ClaimfromDate')
+  
+      if (this.toDate.value == '') {
+        this.claim_toNULL = true
+      }
+  
+      if (this.fromDate.value == '') {
+        this.claim_fromNULL = true
+      }
+  
+      if (!this.claim_fromNULL && !this.claim_toNULL) {
+        this.claimTable = true
+      } else {
+        this.claimTable = false
+      }
+  
+    }
+  
+  
+    searchPayments() {
+  
+      this.toDate = document.querySelector('#PaymenttoDate')
+      this.fromDate = document.querySelector('#PaymentfromDate')
+  
+      if (this.toDate.value == '') {
+        this.payment_toNULL = true
+      }
+  
+      if (this.fromDate.value == '') {
+        this.payment_fromNULL = true
+      }
+  
+      if (!this.payment_fromNULL && !this.payment_toNULL) {
+        this.paymentTable = true
+      } else {
+        this.paymentTable = false
+      }
+  
+    }
+  
+  */
   // View member details
   claimInfo(index, idclaim) {
 

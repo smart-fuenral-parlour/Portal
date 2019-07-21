@@ -1,5 +1,3 @@
-export class Policystatus
-  {
-      name: string;  
-      
+export class Policystatus {
+  name: string;
 }

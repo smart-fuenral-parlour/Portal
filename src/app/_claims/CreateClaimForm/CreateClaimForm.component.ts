@@ -79,44 +79,7 @@ export class CreateClaimFormComponent implements OnInit {
 
     console.log(this.member)
 
-    this.beneficiaryService.getBeneficiarybyidmember(this.member.idmember)
-      .subscribe(beneficiary_res => {
 
-        this.beneficiaries = beneficiary_res
-
-
-      }, err => {
-        console.log(err)
-      })
-
-    this.policydetailsService.getPolicydetailbyidmember(this.member.idmember)
-      .subscribe(policydetails_res => {
-
-        this.policydetails = policydetails_res
-        console.log(this.policydetails)
-
-        this.payouttypeService.getPayouttypes()
-          .subscribe(payouttype_res => {
-
-            this.payouttypes = payouttype_res
-            console.log(this.payouttypes)
-
-            this.claimtypeService.getClaimtypes()
-              .subscribe(claimtype_res => {
-                this.claimtypes = claimtype_res
-
-              }, err => {
-                console.log(err)
-              })
-
-
-          }, err => {
-            console.log(err)
-          })
-
-      }, err => {
-        console.log(err)
-      })
 
   }
 

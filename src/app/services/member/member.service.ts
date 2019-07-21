@@ -40,11 +40,11 @@ export class MemberService {
       );
   }
   
-  getMemberbyidentitynumber(id: number): Observable<MainMember[]> {
+  getMemberbyidentitynumber(id: number): Observable<Member[]> {
     const url = `${getmemberbyidentitynumberUrl}/${id}`;
-    return this.http.get<MainMember[]>(url).pipe(
+    return this.http.get<Member[]>(url).pipe(
       tap(_ => console.log(`fetched member id=${id}`)),
-      catchError(this.handleError<MainMember[]>(`getMemberbyidentitynumber id=${id}`))
+      catchError(this.handleError<Member[]>(`getMemberbyidentitynumber id=${id}`))
     );
   }
 
@@ -58,11 +58,11 @@ export class MemberService {
   }
 
     
-  getMemberbysurname(id: number): Observable<MainMember[]> {
+  getMemberbysurname(id: number): Observable<Member[]> {
     const url = `${getmemberbysurnameUrl}/${id}`;
-    return this.http.get<MainMember[]>(url).pipe(
+    return this.http.get<Member[]>(url).pipe(
       tap(_ => console.log(`fetched member id=${id}`)),
-      catchError(this.handleError<MainMember[]>(`getMemberbysurname id=${id}`))
+      catchError(this.handleError<Member[]>(`getMemberbysurname id=${id}`))
     );
   }
 
@@ -76,10 +76,10 @@ export class MemberService {
   }
 
 
-  createMember (member): Observable<any> {
-    return this.http.post<any>(apiUrl, member, httpOptions).pipe(
-      tap((member: any) => console.log(`added member w/`+member)),
-      catchError(this.handleError<any>('addMember'))
+  createMember (member): Observable<Member> {
+    return this.http.post<Member>(apiUrl, member, httpOptions).pipe(
+      tap((member: Member) => console.log(`added member w/`+member)),
+      catchError(this.handleError<Member>('addMember'))
     );
   }
 
@@ -103,6 +103,7 @@ export class MemberService {
       catchError(this.handleError<Member>('deleteMember'))
     );
   }
+
 
 /**
  * 

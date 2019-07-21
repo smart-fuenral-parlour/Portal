@@ -33,20 +33,20 @@ export class EditMemberComponent implements OnInit {
     private router: Router) {  }
 
   Provinces = [
-    { value: 'Gauteng', name: 'Gauteng', abrv: 'GP' },
-    { value: 'Limpopo', name: 'Limpopo', abrv: 'L' },
-    { value: 'Mpumalanga', name: 'Mpumalanga', abrv: 'MP' },
-    { value: 'Free State', name: 'Free State', abrv: 'FS' },
-    { value: 'North West', name: 'North West', abrv: 'NW' },
-    { value: 'Northern Cape', name: 'Northern Cape', abrv: 'NC' },
-    { value: 'Eastern Cape', name: 'Eastern Cape', abrv: 'EC' },
-    { value: 'Western Cape', name: 'Western Cape', abrv: 'WC' },
-    { value: 'Kwazulu Natal', name: 'Kwazulu Natal', abrv: 'KZN' },
+    { value: 'Gauteng', abrv: 'GP' },
+    { value: 'Limpopo', abrv: 'L' },
+    { value: 'Mpumalanga', abrv: 'MP' },
+    { value: 'Free State', abrv: 'FS' },
+    { value: 'North West', abrv: 'NW' },
+    { value: 'Northern Cape', abrv: 'NC' },
+    { value: 'Eastern Cape', abrv: 'EC' },
+    { value: 'Western Cape', abrv: 'WC' },
+    { value: 'Kwazulu Natal', abrv: 'KZN' },
   ];
 
   Genders = [
-    { value: 'Male', name: 'Male', abrv: 'M' },
-    { value: 'Female', name: 'Female', abrv: 'F' }
+    { value: 'Male', abrv: 'M' },
+    { value: 'Female', abrv: 'F' }
   ]
 
   ngOnInit() {

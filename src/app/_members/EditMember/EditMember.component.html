@@ -45,7 +45,7 @@
                           <mat-select placeholder="{{ getmember.gender }}" 
                             [ngModelOptions]="{standalone: true}" [(ngModel)]="setmember.gender">
                             <mat-option *ngFor="let Gender of Genders" [value]="Gender.value">
-                              {{ Gender.name | titlecase }}
+                              {{ Gender.value | titlecase }}
                             </mat-option>
                           </mat-select>
                         </mat-form-field>
@@ -106,7 +106,7 @@
                           <mat-select placeholder="{{ getmember.province }}"  
                             [ngModelOptions]="{standalone: true}" [(ngModel)]="setmember.province">
                             <mat-option *ngFor="let Province of Provinces" [value]="Province.value">
-                              {{ Province.name | titlecase }}
+                              {{ Province.value | titlecase }}
                             </mat-option>
                           </mat-select>
                         </mat-form-field>

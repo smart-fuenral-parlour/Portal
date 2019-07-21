@@ -29,7 +29,7 @@ export class CreateClaimComponent implements OnInit {
   selectedSearchType
   searchText = 'ID Number'
 
-  members: MainMember[] // Member
+  members: Member[] // Member
 
   constructor(private app: AppComponent, private memberService: MemberService, private _service: ServiceService, private _router: Router) { }
 
@@ -68,7 +68,9 @@ export class CreateClaimComponent implements OnInit {
           .subscribe(surname_res => {
             this.members = surname_res
 
-            if (this.members.length > 0) { ////  if (this.members.length > 0)
+
+            if (!isNullOrUndefined(this.members)) { //  if (this.members.length > 0)
+              console.log(this.members)
 
               console.log('Search By Surname')
               this.notFound = false
@@ -92,8 +94,8 @@ export class CreateClaimComponent implements OnInit {
 
               this.members = identitynumber_res
 
-              if (!this.members) { //  if (this.members.length > 0)
-
+              if (!isNullOrUndefined(this.members)) { //  if (this.members.length > 0)
+                console.log(this.members)
                 console.log('Search By ID Number')
                 this.isEmpty = false
                 this.notFound = false
@@ -134,7 +136,7 @@ export class CreateClaimComponent implements OnInit {
   createClaim(index) {
 
     console.log(this.members[index])
-    localStorage.setItem('member', JSON.stringify(this.members[index]));
+    localStorage.setItem('member', JSON.stringify(this.members[0]));// this.members[index]
     this._router.navigate(['/claims/createclaimformember']);
   }
 

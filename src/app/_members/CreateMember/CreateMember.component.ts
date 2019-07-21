@@ -78,7 +78,8 @@ export class CreateMemberComponent implements OnInit {
     data
 
     // creating new objects
-    setmember = new MainMember
+    
+    setmember = new Member
     //setbeneficiary = new Beneficiary
     setbeneficiary = []
     setbalance = new Balance
@@ -598,6 +599,7 @@ export class CreateMemberComponent implements OnInit {
 
                                 this.setbeneficiary.push(
                                     {
+                                        //idbeneficiary: number;
                                         name: BeneficiaryName.value,
                                         surname: BeneficiarySurname.value,
                                         identitynumber: BeneficiaryIdNumber.value,
@@ -606,28 +608,33 @@ export class CreateMemberComponent implements OnInit {
                                     }
                                 )
 
+                                /**
+                                 *                              this.setmember.beneficiary[x].name = BeneficiaryName.value
+                                                                this.setmember.beneficiary[x].surname = BeneficiarySurname.value
+                                                                this.setmember.beneficiary[x].identitynumber = BeneficiaryIdNumber.value
+                                                                this.setmember.beneficiary[x].idlifestatus = 1
+                                                                this.setmember.beneficiary[x].lifestatus = lifestatus_res[0].name
+                                
+                                                                
+                                    {
+                                      //idbeneficiary: number;
+                                      name: string;
+                                      surname: string;
+                                      identitynumber: string;
+                                      idlifestatus: number;
+                                      lifestatus: string;
+                                      createddate: Date;
+                                    }
+                                 */
+
 
 
                             }
 
                         }
 
-                        
-                        this.member =  {
-                            "mainmember": this.setmember,
-                            "beneficiary": this.setbeneficiary
-                        }
-                        
-                        this.memberService.createMember( Object.assign(this.setmember,this.setbeneficiary) )
-                            .subscribe(member_res => {
-                                console.log(member_res)
-                            }, err => {
-                                console.log(err)
-                            })
+                        console.log(this.setmember)
 
-                        // Object.assign({ "mainmember": this.setmember }, { "beneficiary": this.setbeneficiary }) //(this.setmember +","+ this.setbeneficiary)
-
-                        console.log(this.member)
 
                         this.app.loading = false
 
@@ -657,29 +664,6 @@ export class CreateMemberComponent implements OnInit {
             if (result.value) {
                 this.app.loading = true
 
-
-                /***
-                 *  
-                 * 
-            "mainmember": {   
-                "idlifestatus": "1", // hard coded 
-                "membershipnumber": "MN156856", // self generated  
-                "createdby": "3", // user signed in
-                "lifestatus": null, // recommend to get from API by using default idlifestatus(1) by just 1
-                "policystatus": null, //  recommend to get from API by using default idpolicystatus(1) by just 1
-                "balance": null, //  use premium of the selectd policy type
-                "lastpaiddate": null // assign to create date of member / Self generated (correct format)
-            },
-            "beneficiary": [
-            { 
-            "name": "thenos",
-            "surname": "kai",
-            "identitynumber":"asdasd",
-            "idlifestatus": "1", // defaul to 1 (Alive)
-            }
-            ] // store array of objects
-                 */
-
                 // creating member
 
 
@@ -687,7 +671,7 @@ export class CreateMemberComponent implements OnInit {
                 this.setmember.membershipnumber = ('MN' + (newDate).getMilliseconds().toString().slice(0, 3) + (this.setmember.identitynumber).toString().slice(6, 9))
                 this.setmember.createdby = (this.user.name + " " + this.user.surname)
 
-
+                
                 this.lifestatusService.getLifestatus(this.setmember.idlifestatus)
                     .subscribe(lifestatus_res => { // getting the name of the life status by the idlifestatus
                         this.setmember.lifestatus = lifestatus_res[0].name
@@ -695,7 +679,7 @@ export class CreateMemberComponent implements OnInit {
                         this.policystatusService.getPolicystatus(1)
                             .subscribe(policystatus_res => { // getting the name of the policy status by the idpolicystatus
                                 this.setmember.policystatus = policystatus_res[0].name
-
+ 
                                 console.log(this.setmember)
 
                             }, err => {

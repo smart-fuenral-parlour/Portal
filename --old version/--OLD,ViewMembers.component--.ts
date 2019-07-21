@@ -201,14 +201,14 @@ export class ViewMembersComponent implements OnInit, AfterViewInit {
   // Edit a member
   editMember(index) {
 
-    localStorage.setItem('editmember', JSON.stringify(this.members.mainmember)); // this.members[index]
+    localStorage.setItem('editmember', JSON.stringify(this.members[index]));
     sessionStorage.clear()
     this.router.navigate(['/members/editmember']);
   }
 
   // View full member details
   viewMember(index) {
-    localStorage.setItem('viewdetails', JSON.stringify(this.members.mainmember)); // this.members[index]
+    localStorage.setItem('viewdetails', JSON.stringify(this.members[index]));
     this.router.navigate(['/members/viewmemberdetails']);
   }
 
