@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { AdalService } from 'adal-angular4';
 import { HttpClient } from '@angular/common/http';
-declare var $: any;
 @Component({
   selector: 'app-emplyees',
   templateUrl: './emplyees.component.html',
@@ -13,11 +12,11 @@ export class EmplyeesComponent implements OnInit {
   public ImageUpload: string | undefined;
   public currentUser: any;
   public siteurl = window.location.origin;
-  private approvedleave  = [];
-  private allemployees  = [];
-  private rejectedleave  = [];
-  private Pendingleaves  = [];
-  private allLeaves  = [];
+  public approvedleave: any  = [];
+  public allemployees: any  = [];
+  public rejectedleave: any  = [];
+  public Pendingleaves: any  = [];
+  public allLeaves: any  = [];
   constructor(private httpClient: HttpClient, private adalSvc: AdalService) {
     // Display
     this.getAllLeave();
@@ -36,8 +35,7 @@ export class EmplyeesComponent implements OnInit {
 
   // Get All Employees
     getAllEmployees() {
-      // Get current  user email
-      const emails = this.adalSvc.userInfo.userName;
+
       // Get Method for All Employees
       // tslint:disable-next-line:max-line-length
       this.httpClient.get('https://sktleaveapi.herokuapp.com/api/sktleaveusers').subscribe((res: any[]) => {
@@ -47,8 +45,7 @@ export class EmplyeesComponent implements OnInit {
       }
       // Get All Approved leave
     getAllApproveLeave() {
-      // Get current  user email
-      const emails = this.adalSvc.userInfo.userName;
+
       // Get Method for All Approved Leave
       // tslint:disable-next-line:max-line-length
       this.httpClient.get('https://sktleaveapi.herokuapp.com/api/leaveRequesteds?filter={"where":{"status":"Approved"}}').subscribe((res: any[]) => {
@@ -58,8 +55,7 @@ export class EmplyeesComponent implements OnInit {
       }
     // Get All Rejected leave
     getAllRejectedLeave() {
-      // Get current  user email
-      const emails = this.adalSvc.userInfo.userName;
+
       // Get Method for All Rejected Leave
       // tslint:disable-next-line:max-line-length
       this.httpClient.get('https://sktleaveapi.herokuapp.com/api/leaveRequesteds?filter={"where":{"status":"Rejected"}}').subscribe((res: any[]) => {
@@ -69,8 +65,7 @@ export class EmplyeesComponent implements OnInit {
       }
     // Get All Pending leave
     getAllPendingLeave() {
-      // Get current  user email
-      const emails = this.adalSvc.userInfo.userName;
+
       // Get Method for All Pending Leave
       // tslint:disable-next-line:max-line-length
       this.httpClient.get('https://sktleaveapi.herokuapp.com/api/leaveRequesteds?filter={"where":{"status":"Pending"}}').subscribe((res: any[]) => {
@@ -80,8 +75,7 @@ export class EmplyeesComponent implements OnInit {
       }
          // Get All  leaves
     getAllLeave() {
-      // Get current  user email
-      const emails = this.adalSvc.userInfo.userName;
+
       // Get Method for All  Leaves
       // tslint:disable-next-line:max-line-length
       this.httpClient.get('https://sktleaveapi.herokuapp.com/api/leaveRequesteds').subscribe((res: any[]) => {

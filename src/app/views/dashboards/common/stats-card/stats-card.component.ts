@@ -12,14 +12,14 @@ export class StatsCardComponent implements OnInit {
   public ImageUpload: string | undefined;
   public currentUser: any;
   public siteurl = window.location.origin;
-  public allleave;
-  public pending;
-  public rejected;
-  public approved;
-  private approvecount = [];
-  private rejectedcount = [];
-  private pendingcount = [];
-  private allleavestatuscount = [];
+  public allleave: any;
+  public pending: any;
+  public rejected: any;
+  public approved: any;
+  private approvecount: any = [];
+  private rejectedcount: any = [];
+  private pendingcount: any = [];
+  private allleavestatuscount: any = [];
   constructor(private httpClient: HttpClient, private adalSvc: AdalService) {
     // Display
   this.getCountOfApprovedLeaves();

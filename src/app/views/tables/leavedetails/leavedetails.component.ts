@@ -16,11 +16,11 @@ export class LeavedetailsComponent implements OnInit {
   public ImageUpload: string | undefined;
   public currentUser: any;
   public siteurl = window.location.origin;
-  private approvedleave  = [];
-  private rejectedleave  = [];
-  private Pendingleaves  = [];
-  private LeaveDetails  = [];
-  private LeaveBalances  = [];
+  public approvedleave: any  = [];
+  public rejectedleave: any  = [];
+  public Pendingleaves: any  = [];
+  public LeaveDetails: any  = [];
+  public LeaveBalances: any  = [];
   constructor(private httpClient: HttpClient, private adalSvc: AdalService) {
     // Display
     this.getLeave();

@@ -13,13 +13,13 @@ export class StatsCard2Component implements OnInit {
   public ImageUpload: string | undefined;
   public currentUser: any;
   public siteurl = window.location.origin;
-  public annual;
-  public medical;
-  public family;
-  public maternity;
-  public study;
-  public other;
-  private LeaveBalances  = [];
+  public annual: any;
+  public medical: any;
+  public family: any;
+  public maternity: any;
+  public study: any;
+  public other: any;
+  public LeaveBalances: any;
   constructor(private httpClient: HttpClient, private adalSvc: AdalService) {
     // Display
     this.getUserBalance();
@@ -41,7 +41,6 @@ export class StatsCard2Component implements OnInit {
       this.httpClient.get('https://sktleaveapi.herokuapp.com/api/leaves?filter={"where":{"email":"' + emails + '"}}').subscribe((res: any) => {
         // Asign Results to LeaveBalances variable
       this.LeaveBalances = res;
-      console.log('this.annual', this.LeaveBalances);
       });
       }
   }

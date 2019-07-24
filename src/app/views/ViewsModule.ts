@@ -37,7 +37,6 @@ import {LeavedetailsComponent} from './tables/leavedetails/leavedetails.componen
   ],
   declarations: [
     FooterComponent,
-    BasicTableComponent,
     ModalsComponent,
     Map1Component,
     StatsCardComponent,
@@ -54,7 +53,6 @@ import {LeavedetailsComponent} from './tables/leavedetails/leavedetails.componen
   providers: [TablesService],
   exports: [
     FooterComponent,
-    BasicTableComponent,
     ModalsComponent,
     Map1Component,
     StatsCardComponent,
