@@ -70,23 +70,21 @@ export class CreateMemberComponent implements OnInit {
     beneficiaryNumber
 
     // MODEL CLASS INSTANCE
-    member
+    member: Member
     policytypes: Policytype[]
-    policytype: Policytype
+    memberPolicytype: Policytype
+    ////////////////////////
     policystatus: Policystatus
     lifestatus: Lifestatus
     user: User
     file
     key = "document";
     data
+    ///////////////////////
 
-    // creating new objects
-    
+    // creating new objects    
     setmember = new Member
-    //setbeneficiary = new Beneficiary
-    setbeneficiary = []
-    setbalance = new Balance
-    setpolicydetails = new Policydetails
+    setbeneficiary = new Beneficiary
     beneficiaryLeft
 
     // variables to show and hide 
@@ -160,8 +158,7 @@ export class CreateMemberComponent implements OnInit {
         ///////////////////////////////////////////////////////
 
         this.app.loading = false
-
-        // this.setArrayInputs(this.arrayInputs)
+ 
 
         this.type = this.formBuilder.group({
             // To add a validator, we must first convert the string value into an array. The first item in the array is the default value if any, then the next item in the array is the validator. Here we are adding a required validator meaning that the firstName attribute must have a value in it.
@@ -481,7 +478,7 @@ export class CreateMemberComponent implements OnInit {
 
     addBeneficiary() {
 
-
+/*
         if (this.beneficiaryLeft <= this.policytype.maximumbeneficiaries && this.beneficiaryLeft > 0) {
 
             this.limitReached = false
@@ -502,7 +499,7 @@ export class CreateMemberComponent implements OnInit {
             this.limitReached = true
 
         }
-
+*/
 
 
     }
@@ -516,7 +513,7 @@ export class CreateMemberComponent implements OnInit {
 
     // hides or unhides beneficiary form by click on checkbox
     checkBeneficiary() {
-
+        /*
         if (this.unhideBeneficiaryForm == true) {
 
             this.beneficiaryLeft = this.policytype.maximumbeneficiaries
@@ -533,6 +530,7 @@ export class CreateMemberComponent implements OnInit {
             console.log('checked')
 
         }
+        */
     }
 
     // check the maximum number of beneficiary based on the selected policy type
@@ -543,7 +541,7 @@ export class CreateMemberComponent implements OnInit {
         // the selected poliy type
         this.policytypeService.getPolicytype(this.setmember.idpolicytype)
             .subscribe(res => {
-
+/*
                 this.policytype = res[0]
                 this.beneficiaryLeft = this.policytype.maximumbeneficiaries
                 this.policytype.premium
@@ -556,7 +554,7 @@ export class CreateMemberComponent implements OnInit {
                     this.unhideCheckBox = true
 
                 }
-
+*/
             }, err => {
                 console.log(err)
             })
@@ -575,7 +573,7 @@ export class CreateMemberComponent implements OnInit {
         this.setmember.idlifestatus = 1
         this.setmember.membershipnumber = ('MN' + (newDate).getMilliseconds().toString().slice(0, 3) + (this.setmember.identitynumber).toString().slice(6, 9))
         this.setmember.createdby = (this.user.name + " " + this.user.surname)
-        this.setmember.balance = this.policytype.premium
+      //  this.setmember.balance = this.policytype.premium
         this.setmember.lastpaiddate = moment.parseZone(newDate).utc().format()
 
 
@@ -590,7 +588,7 @@ export class CreateMemberComponent implements OnInit {
 
 
 
-                        this.setbeneficiary = []
+                      
                         if (this.unhideBeneficiaryForm) {
 
                             // creating beneficiary
@@ -599,17 +597,7 @@ export class CreateMemberComponent implements OnInit {
                                 BeneficiaryIdNumber = document.querySelector('#beneficiaryID' + x)
                                 BeneficiarySurname = document.querySelector('#beneficiarySurname' + x)
                                 BeneficiaryName = document.querySelector('#beneficiaryName' + x)
-
-                                this.setbeneficiary.push(
-                                    {
-                                        //idbeneficiary: number;
-                                        name: BeneficiaryName.value,
-                                        surname: BeneficiarySurname.value,
-                                        identitynumber: BeneficiaryIdNumber.value,
-                                        idlifestatus: 1,
-                                        lifestatus: lifestatus_res[0].name
-                                    }
-                                )
+ 
 
                                 /**
                                  *                              this.setmember.beneficiary[x].name = BeneficiaryName.value
@@ -673,24 +661,6 @@ export class CreateMemberComponent implements OnInit {
                 this.setmember.idlifestatus = 1
                 this.setmember.membershipnumber = ('MN' + (newDate).getMilliseconds().toString().slice(0, 3) + (this.setmember.identitynumber).toString().slice(6, 9))
                 this.setmember.createdby = (this.user.name + " " + this.user.surname)
-
-                
-                this.lifestatusService.getLifestatus(this.setmember.idlifestatus)
-                    .subscribe(lifestatus_res => { // getting the name of the life status by the idlifestatus
-                        this.setmember.lifestatus = lifestatus_res[0].name
-
-                        this.policystatusService.getPolicystatus(1)
-                            .subscribe(policystatus_res => { // getting the name of the policy status by the idpolicystatus
-                                this.setmember.policystatus = policystatus_res[0].name
- 
-                                console.log(this.setmember)
-
-                            }, err => {
-                                console.log(err)
-                            })
-                    }, err => {
-                        console.log(err)
-                    })
 
 
                 swal(

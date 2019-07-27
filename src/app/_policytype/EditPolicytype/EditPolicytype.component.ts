@@ -58,7 +58,7 @@ console.log(this.policytype)
       buttonsStyling: false
     }).then((result) => {
       if (result.value) {
-        this._policytype.updatePolicytype(this.placeholder.idpolicytype,this.policytype)
+        this._policytype.updatePolicytype(this.placeholder.id,this.policytype)
       .subscribe(res => {
          console.log(res)
         }, (err) => {

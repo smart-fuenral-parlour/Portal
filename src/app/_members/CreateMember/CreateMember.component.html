@@ -241,7 +241,7 @@
                         <div class="col-4 col-sm-offset-1 checkbox-radios pull-center" *ngIf="unhideCheckBox">
                           <div class="form-check">
                             <label class="form-check-label">
-                              <input class="form-check-input" pull-center type="checkbox" name="addCheckout"
+                              <input class="form-check-input"  [(ngModel)]="setmember.idpolicytype" pull-center type="checkbox" name="addCheckout"
                                 value="1" (click)="checkBeneficiary()"> Add beneficiary for member
                               <!-- (click)="checkExtra()"  -->
                               <span class="form-check-sign">

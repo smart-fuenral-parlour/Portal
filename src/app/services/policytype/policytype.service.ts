@@ -7,7 +7,15 @@ import { Injectable } from '@angular/core';
 const httpOptions = {
   headers: new HttpHeaders({'Content-Type': 'application/json'})
 };
+
+/**
+ * 
+ * 
+ * 
 const apiUrl = "http://greenlinks1.dedicated.co.za:3002/api/policytype";
+const getPolicytypebyageUrl = "http://greenlinks1.dedicated.co.za:3002/api/getpolicytypebyage";
+ */
+const apiUrl = "http://greenlinks1.dedicated.co.za:3000/api/Policytypes";
 const getPolicytypebyageUrl = "http://greenlinks1.dedicated.co.za:3002/api/getpolicytypebyage";
 
 @Injectable({

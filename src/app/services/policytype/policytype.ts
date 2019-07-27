@@ -1,4 +1,4 @@
-export class Policytype {
+export class oldPolicytype {
     idpolicytype: number
     name: string;
     description: string;
@@ -13,7 +13,7 @@ export class Policytype {
     maximumbeneficiaryage: number
 }
 
-export class newPolicytype {
+export class Policytype {
     createdby: string;
     description: string;
     id: number;
