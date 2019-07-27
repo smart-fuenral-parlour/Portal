@@ -1,5 +1,4 @@
-    export class Policytype
-{   
+export class Policytype {
     idpolicytype: number
     name: string;
     description: string;
@@ -13,3 +12,18 @@
     minimumbeneficiaryage: number;
     maximumbeneficiaryage: number
 }
+
+export class newPolicytype {
+    createdby: string;
+    description: string;
+    id: number;
+    lapsedays: string;
+    maximumage: string;
+    maximumbeneficiaries: string;
+    maximumbeneficiaryage: string;
+    minimumage: string;
+    minimumbeneficiaryage: string;
+    name: string;
+    premium: string;
+    trialperiod: string;
+}    

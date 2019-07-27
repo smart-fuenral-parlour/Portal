@@ -8,10 +8,19 @@ const httpOptions = {
   headers: new HttpHeaders({'Content-Type': 'application/json'})
 };
 
-const apiUrl = "http://greenlinks1.dedicated.co.za:3002/api/member";
+/**
+ * 
+ * const apiUrl = "http://greenlinks1.dedicated.co.za:3002/api/member";
 const getmemberbyidentitynumberUrl = "http://greenlinks1.dedicated.co.za:3002/api/getmemberbyidentitynumber";
 const getmemberbymembershipnumberUrl = "http://greenlinks1.dedicated.co.za:3002/api/getmemberbymembershipnumber";
 const getmemberbysurnameUrl = "http://greenlinks1.dedicated.co.za:3002/api/getmemberbysurname";
+ */
+
+const apiUrl = "http://greenlinks1.dedicated.co.za:3000/api/Members";
+const getmemberbyidentitynumberUrl = "http://greenlinks1.dedicated.co.za:3002/api/getmemberbyidentitynumber";
+const getmemberbymembershipnumberUrl = "http://greenlinks1.dedicated.co.za:3002/api/getmemberbymembershipnumber";
+const getmemberbysurnameUrl = "http://greenlinks1.dedicated.co.za:3002/api/getmemberbysurname";
+
 
 @Injectable({
   providedIn: 'root'

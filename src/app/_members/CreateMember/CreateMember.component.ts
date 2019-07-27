@@ -28,7 +28,8 @@ import { Policystatus } from 'src/app/services/policystatus/policystatus'
 import { Lifestatus } from 'src/app/services/lifestatus/lifestatus'
 
 /////////////////////////////////////////////////////////
-import {Directive, ElementRef, HostListener, Input} from '@angular/core';
+import {Directive, ElementRef, HostListener, Input} from '@angular/core'; 
+
 ////////////////////////////////////////////////////////
 import * as moment from 'moment';
 import { AppComponent } from 'src/app/app.component'

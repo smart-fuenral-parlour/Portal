@@ -1,6 +1,14 @@
-export class Payouttype 
-  {
-    name: string;
-    
-    
+export class Payouttype {
+  createdby: string;
+  description: string;
+  id: number;
+  lapsedays: string;
+  maximumage: string;
+  maximumbeneficiaries: string;
+  maximumbeneficiaryage: string;
+  minimumage: string;
+  minimumbeneficiaryage: string;
+  name: string;
+  premium: string;
+  trialperiod: string;
 }

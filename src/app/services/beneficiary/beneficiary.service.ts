@@ -8,7 +8,13 @@ const httpOptions = {
   headers: new HttpHeaders({'Content-Type': 'application/json'})
 };
 
-const apiUrl = "http://greenlinks1.dedicated.co.za:3002/api/beneficiary";
+/**
+ * 
+ * const apiUrl = "http://greenlinks1.dedicated.co.za:3002/api/beneficiary";
+const beneficiarybyidmemberUrl = "http://greenlinks1.dedicated.co.za:3002/api/beneficiarybyidmember";
+ */
+
+const apiUrl = "http://greenlinks1.dedicated.co.za:3000/api/Beneficiaries";
 const beneficiarybyidmemberUrl = "http://greenlinks1.dedicated.co.za:3002/api/beneficiarybyidmember";
 
 @Injectable({
