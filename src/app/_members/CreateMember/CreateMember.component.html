@@ -97,7 +97,7 @@
                             [ngClass]="displayFieldCss(type, 'idnumber')">
                             <input type="text" name="identitynumber" matInput [(ngModel)]="setmember.identitynumber"
                               inputmode="numeric" placeholder="ID Number" formControlName="idnumber" minlength="13"
-                              maxlength="13">
+                              maxlength="13" numbersOnly >
                           </mat-form-field>
 
                         </div>
