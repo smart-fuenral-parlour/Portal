@@ -1,6 +1,4 @@
-export class Count 
-{
+export class Count {
     count: number;
-    
 }
 

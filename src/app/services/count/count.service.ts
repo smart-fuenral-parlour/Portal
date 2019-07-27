@@ -8,8 +8,17 @@ const httpOptions = {
   headers: new HttpHeaders({'Content-Type': 'application/json'})
 };
 
+/**
+ * 
+ * 
+ * const membercountUrl = "http://greenlinks1.dedicated.co.za:3002/api/membercount/";
+const declinedclaimsUrl = "http://greenlinks1.dedicated.co.za:3002/api/declinedclaimscount";
+const approvedclaimsUrl = "http://greenlinks1.dedicated.co.za:3002/api/approvedclaimscount";
+const pendingclaimsUrl = "http://greenlinks1.dedicated.co.za:3002/api/pendingclaimscount";
+ */
 
-const membercountUrl = "http://greenlinks1.dedicated.co.za:3002/api/membercount/";
+const membercountUrl = "http://greenlinks1.dedicated.co.za:3000/api/Members/count";
+
 const declinedclaimsUrl = "http://greenlinks1.dedicated.co.za:3002/api/declinedclaimscount";
 const approvedclaimsUrl = "http://greenlinks1.dedicated.co.za:3002/api/approvedclaimscount";
 const pendingclaimsUrl = "http://greenlinks1.dedicated.co.za:3002/api/pendingclaimscount";
@@ -38,7 +47,7 @@ export class CountService {
     const url = `${membercountUrl}`;
     return this.http.get<Count>(url).pipe(
       tap(_ => console.log(`fetched count id=`)),
-      catchError(this.handleError<Count>(`getCount id=`))
+      catchError(this.handleError<Count>(`getmemberCount id=`))
     );
   }
 
