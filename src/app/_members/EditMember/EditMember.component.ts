@@ -54,7 +54,7 @@ export class EditMemberComponent implements OnInit {
     this.app.loading = true
 
     this.getmember = JSON.parse(localStorage.getItem('editmember'))
-    console.log(this.getmember.idmember)
+    console.log(this.getmember.id)
 
     if (JSON.parse(localStorage.getItem('editmember')) != null) {
 
@@ -87,7 +87,7 @@ export class EditMemberComponent implements OnInit {
         this.app.loading = true
 
 
-        this.memberService.updateMember(this.getmember.idmember, this.setmember)
+        this.memberService.updateMember(this.getmember.id, this.setmember)
           .subscribe(member_updates => {
             console.log(member_updates)
 

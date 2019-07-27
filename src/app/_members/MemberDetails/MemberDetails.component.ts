@@ -104,12 +104,12 @@ export class MemberDetailsComponent implements OnInit {
     this.user = JSON.parse(localStorage.getItem('user'))
 
 
-    if (!isNullOrUndefined(this.member.policystatus)) {
+    if (!isNullOrUndefined(this.member.idpolicystatus)) {
 
-      if (this.member.policystatus.toLocaleLowerCase() == ('active').toLocaleLowerCase()) {
+      if (this.member.idpolicystatus = 2) {
         this.policystatus_color = 'text-success'
       } else
-        if (this.member.policystatus.toLocaleLowerCase() == ('inactive').toLocaleLowerCase() || this.member.policystatus.toLocaleLowerCase() == ('deactivated').toLocaleLowerCase()) {
+        if (this.member.idpolicystatus = 3) {
           this.policystatus_color = 'text-danger'
 
         } else {
@@ -118,12 +118,12 @@ export class MemberDetailsComponent implements OnInit {
         }
     }
 
-    if (!isNullOrUndefined(this.member.lifestatus)) {
+    if (!isNullOrUndefined(this.member.idlifestatus)) {
 
-      if (this.member.lifestatus.toLocaleLowerCase() == ('alive').toLocaleLowerCase()) {
+      if (this.member.idlifestatus = 1) {
         this.lifestatus_color = 'text-success'
       } else
-        if (this.member.lifestatus.toLocaleLowerCase() == ('deceased').toLocaleLowerCase() || this.member.lifestatus.toLocaleLowerCase() == ('deactivated').toLocaleLowerCase()) {
+        if (this.member.idlifestatus = 2) {
           this.lifestatus_color = 'text-danger'
 
         } else {

@@ -6,7 +6,7 @@ import { ServiceService } from 'src/app/SERVICE/service.service'; // service lin
 import { MemberService } from 'src/app/services/member/member.service'
 
 //////////////////// MODEL/ CLASS CALLS ///////////////////////////////////////
-import { Members, MainMember } from 'src/app/services/member/member'
+import { Members } from 'src/app/services/member/member'
 import { User } from 'src/app/services/user/user'
 
 ///////////////////////////////////////////////////////////////////////////////

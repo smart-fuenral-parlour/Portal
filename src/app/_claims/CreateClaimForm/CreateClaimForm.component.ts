@@ -93,7 +93,7 @@ export class CreateClaimFormComponent implements OnInit {
     
 
     this.setclaim.idclaimstatus = 1
-    this.setclaim.idmember = this.member.idmember
+    this.setclaim.idmember = this.member.id
     this.setclaim.membershipnumber = this.member.membershipnumber
     this.setclaim.createdby = (this.user.name+ " " +this.user.surname)
 

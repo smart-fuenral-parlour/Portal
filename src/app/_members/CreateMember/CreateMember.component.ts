@@ -17,10 +17,8 @@ import { PolicystatusService } from 'src/app/services/policystatus/policystatus.
 import { LifestatusService } from 'src/app/services/lifestatus/lifestatus.service'
 
 ///////////////////// MODEL CLASS CALLS ///////////////////
-import { Member, MainMember } from 'src/app/services/member/member'
+import { Member } from 'src/app/services/member/member'
 import { Policytype } from 'src/app/services/policytype/policytype'
-import { Policydetails } from 'src/app/services/policydetails/policydetails'
-import { Balance } from 'src/app/services/balance/balance'
 import { Beneficiary } from 'src/app/services/beneficiary/beneficiary'
 import { User } from 'src/app/services/user/user'
 import { File } from 'src/app/services/file/file'
@@ -30,13 +28,9 @@ import { Lifestatus } from 'src/app/services/lifestatus/lifestatus'
 /////////////////////////////////////////////////////////
 import {Directive, ElementRef, HostListener, Input} from '@angular/core'; 
 
-////////////////////////////////////////////////////////
 import * as moment from 'moment';
 import { AppComponent } from 'src/app/app.component'
-import { type } from 'os';
 import { isNullOrUndefined, isObject } from 'util';
-import { timestamp } from 'rxjs/operators';
-import { randomBytes } from 'crypto';
 import { JsonPipe } from '@angular/common';
 
 
@@ -576,68 +570,43 @@ export class CreateMemberComponent implements OnInit {
       //  this.setmember.balance = this.policytype.premium
         this.setmember.lastpaiddate = moment.parseZone(newDate).utc().format()
 
-
-        this.policystatusService.getPolicystatus(1)
-            .subscribe(policystatus_res => { // getting the name of the policy status by the idpolicystatus
-                this.setmember.policystatus = policystatus_res[0].name
-
-
-                this.lifestatusService.getLifestatus(this.setmember.idlifestatus)
-                    .subscribe(lifestatus_res => { // getting the name of the life status by the idlifestatus
-                        this.setmember.lifestatus = lifestatus_res[0].name
-
-
-
                       
-                        if (this.unhideBeneficiaryForm) {
+        if (this.unhideBeneficiaryForm) {
 
-                            // creating beneficiary
-                            for (let x = 0; x < this.BeneficiaryForm.length; x++) {
+            // creating beneficiary
+            for (let x = 0; x < this.BeneficiaryForm.length; x++) {
 
-                                BeneficiaryIdNumber = document.querySelector('#beneficiaryID' + x)
-                                BeneficiarySurname = document.querySelector('#beneficiarySurname' + x)
-                                BeneficiaryName = document.querySelector('#beneficiaryName' + x)
- 
-
-                                /**
-                                 *                              this.setmember.beneficiary[x].name = BeneficiaryName.value
-                                                                this.setmember.beneficiary[x].surname = BeneficiarySurname.value
-                                                                this.setmember.beneficiary[x].identitynumber = BeneficiaryIdNumber.value
-                                                                this.setmember.beneficiary[x].idlifestatus = 1
-                                                                this.setmember.beneficiary[x].lifestatus = lifestatus_res[0].name
-                                
-                                                                
-                                    {
-                                      //idbeneficiary: number;
-                                      name: string;
-                                      surname: string;
-                                      identitynumber: string;
-                                      idlifestatus: number;
-                                      lifestatus: string;
-                                      createddate: Date;
-                                    }
-                                 */
+                BeneficiaryIdNumber = document.querySelector('#beneficiaryID' + x)
+                BeneficiarySurname = document.querySelector('#beneficiarySurname' + x)
+                BeneficiaryName = document.querySelector('#beneficiaryName' + x)
 
 
-
-                            }
-
-                        }
-
-                        console.log(this.setmember)
-
-
-                        this.app.loading = false
+                /**
+                 *                              this.setmember.beneficiary[x].name = BeneficiaryName.value
+                                                this.setmember.beneficiary[x].surname = BeneficiarySurname.value
+                                                this.setmember.beneficiary[x].identitynumber = BeneficiaryIdNumber.value
+                                                this.setmember.beneficiary[x].idlifestatus = 1
+                                                this.setmember.beneficiary[x].lifestatus = lifestatus_res[0].name
+                
+                                                
+                    {
+                      //idbeneficiary: number;
+                      name: string;
+                      surname: string;
+                      identitynumber: string;
+                      idlifestatus: number;
+                      lifestatus: string;
+                      createddate: Date;
+                    }
+                 */
 
 
 
-                    }, err => {
-                        console.log(err)
-                    })
-            }, err => {
-                console.log(err)
-            })
+            }
 
+        }
+
+        console.log(this.setmember)
 
         console.log(this.setmember)
 
