@@ -6,9 +6,9 @@
         <span style="size: 15%">Membership Number: {{member.membershipnumber}}</span>
       </div>
       <div class="col-5" style="text-align: right;">
-        Policy Status: <span class="{{policystatus_color}}">{{ member.policystatus}}</span>
+        Policy Status: <span class="{{policystatus_color}}">{{ policystatus }}</span>
         <div></div>
-        Life Status: <span class="text-success">{{ member.lifestatus }}</span>
+        Life Status: <span class="{{lifestatus_color}}">{{ lifestatus }}</span>
       </div>
     </div>
   </h3>
@@ -53,9 +53,9 @@
                 </div>
               </div>
             </div>
-            <p class="card-description">
-              Created date:<b> {{ member.createddate | date: "EEEE MMMM dd, yyyy 'at' HH:mm"}} </b>
-            </p>
+            <!--p class="card-description">
+              Created date:<b> {{ member.lastpaiddate | date: "EEEE MMMM dd, yyyy 'at' HH:mm"}} </b>
+            </p -->
           </div>
           <div class="card col-sm-6 card-profile">
 

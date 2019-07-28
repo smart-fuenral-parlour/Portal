@@ -7,7 +7,13 @@ import { Injectable } from '@angular/core';
 const httpOptions = {
   headers: new HttpHeaders({'Content-Type': 'application/json'})
 };
+
+/**
+ * 
 const apiUrl = "http://greenlinks1.dedicated.co.za:3002/api/policystatus";
+ */
+
+const apiUrl = "http://greenlinks1.dedicated.co.za:3000/api/Policystatuses";
 
 @Injectable({
   providedIn: 'root'

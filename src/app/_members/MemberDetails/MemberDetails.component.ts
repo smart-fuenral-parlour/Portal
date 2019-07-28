@@ -67,11 +67,10 @@ export class MemberDetailsComponent implements OnInit {
   member: Member
   beneficiary: Beneficiary
   claims
-  policydetails: Policydetails
   user: User
-  lifestatus: Lifestatus
+  lifestatus
   beneficiaries;
-  policystatus: Policystatus
+  policystatus
   //////////////////////////////
 
 
@@ -132,6 +131,24 @@ export class MemberDetailsComponent implements OnInit {
         }
 
     }
+
+    this.lifestatusService.getLifestatus(this.member.idlifestatus)
+      .subscribe(lifestatus_res => {
+
+        this.lifestatus = lifestatus_res.name
+
+        this.policystatusService.getPolicystatus(this.member.idpolicystatus)
+          .subscribe(policystatus_res => {
+
+            this.policystatus = policystatus_res.name
+
+          }, err => {
+            console.log(err)
+          })
+
+      }, err => {
+        console.log(err)
+      })
 
 
     console.log(this.user)
