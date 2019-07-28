@@ -9,12 +9,8 @@ import { Moment } from 'moment'
 ///////////////////// MY SERVICE CALL ///////////////////
 import { MemberService } from 'src/app/services/member/member.service'
 import { PolicytypeService } from 'src/app/services/policytype/policytype.service'
-import { PolicydetailsService } from 'src/app/services/policydetails/policydetails.service'
-import { BalanceService } from 'src/app/services/balance/balance.service'
 import { BeneficiaryService } from 'src/app/services/beneficiary/beneficiary.service'
 import { FileService } from 'src/app/services/file/file.service'
-import { PolicystatusService } from 'src/app/services/policystatus/policystatus.service'
-import { LifestatusService } from 'src/app/services/lifestatus/lifestatus.service'
 
 ///////////////////// MODEL CLASS CALLS ///////////////////
 import { Member } from 'src/app/services/member/member'
@@ -22,16 +18,12 @@ import { Policytype } from 'src/app/services/policytype/policytype'
 import { Beneficiary } from 'src/app/services/beneficiary/beneficiary'
 import { User } from 'src/app/services/user/user'
 import { File } from 'src/app/services/file/file'
-import { Policystatus } from 'src/app/services/policystatus/policystatus'
-import { Lifestatus } from 'src/app/services/lifestatus/lifestatus'
 
 /////////////////////////////////////////////////////////
 import { Directive, ElementRef, HostListener, Input } from '@angular/core';
 
 import * as moment from 'moment';
 import { AppComponent } from 'src/app/app.component'
-import { isNullOrUndefined, isObject } from 'util';
-import { JsonPipe } from '@angular/common';
 
 
 
@@ -66,20 +58,16 @@ export class CreateMemberComponent implements OnInit {
     // MODEL CLASS INSTANCE
     member: Member
     policytypes: Policytype[]
-
-    ////////////////////////
-    policystatus: Policystatus
-    lifestatus: Lifestatus
     user: User
     file
     key = "document";
     data
-    ///////////////////////
 
     // creating new objects    
     setmember = new Member
     setbeneficiary = new Beneficiary
-    beneficiaryLeft = 0
+    beneficiaryCount = 0
+    maxNumberAllowed = 0
 
     // variables to show and hide 
     invalidID = false
@@ -89,11 +77,7 @@ export class CreateMemberComponent implements OnInit {
 
     constructor(private formBuilder: FormBuilder,
         private memberService: MemberService,
-        private lifestatusService: LifestatusService,
-        private policystatusService: PolicystatusService,
         private policytypeService: PolicytypeService,
-        private policydetailsService: PolicydetailsService,
-        private balanceService: BalanceService,
         private beneficiaryService: BeneficiaryService,
         private fileService: FileService,
         private router: Router,
@@ -140,7 +124,6 @@ export class CreateMemberComponent implements OnInit {
 
     ngOnInit() {
 
-        ///////////////////////  work here   ////////////////////////////
         this.user = JSON.parse(localStorage.getItem('user')) // getting user details
 
 
@@ -150,7 +133,6 @@ export class CreateMemberComponent implements OnInit {
             }, err => {
                 console.log(err)
             })
-        ///////////////////////////////////////////////////////
 
         this.app.loading = false
 
@@ -473,28 +455,27 @@ export class CreateMemberComponent implements OnInit {
 
     addBeneficiary() {
 
-        /*
-                if (this.beneficiaryLeft <= this.policytype.maximumbeneficiaries && this.beneficiaryLeft > 0) {
-        
-                    this.limitReached = false
-        
-                    this.BeneficiaryForm.push(this.formBuilder.control(
-                        this.formBuilder.group({
-                            beneficiaryName: [null, Validators.required],
-                            beneficiarySurname: [null, Validators.required],
-                            beneficiaryID: [null, Validators.required],
-                        })
-        
-                    ))
-        
-                    this.beneficiaryLeft = this.policytype.maximumbeneficiaries - this.BeneficiaryForm.length
-        
-        
-                } else {
-                    this.limitReached = true
-        
-                }
-        */
+        console.log(this.maxNumberAllowed)
+
+        if (this.beneficiaryCount <= this.maxNumberAllowed && this.beneficiaryCount > 0) {
+
+            this.limitReached = false
+
+            this.BeneficiaryForm.push(this.formBuilder.control(
+                this.formBuilder.group({
+                    beneficiaryName: [null, Validators.required],
+                    beneficiarySurname: [null, Validators.required],
+                    beneficiaryID: [null, Validators.required],
+                })
+
+            ))
+
+            this.beneficiaryCount = this.maxNumberAllowed - this.BeneficiaryForm.length
+
+        } else {
+            this.limitReached = true
+
+        }
 
 
     }
@@ -502,19 +483,21 @@ export class CreateMemberComponent implements OnInit {
     removeBeneficiary(index): void {
         (((this.type.get('BeneficiaryGroup') as FormGroup).get('beneficiaryArray')) as FormArray).removeAt(index)
 
-        this.beneficiaryLeft = this.beneficiaryLeft + 1
+        if (this.BeneficiaryForm.length >= 0) {
+
+            this.beneficiaryCount = this.beneficiaryCount + 1
+        }
+
         this.limitReached = false
     }
 
     // hides or unhides beneficiary form by click on checkbox
     checkBeneficiary() {
 
-        console.log(this.beneficiaryLeft)
-
-        if (this.unhideBeneficiaryForm == true) {
+        if (this.unhideBeneficiaryForm) {
 
             this.unhideBeneficiaryForm = false
-            for (let x = 0; x < this.BeneficiaryForm.length; x++) {
+            for (let x = 1; x < this.BeneficiaryForm.length; x++) {
                 // removes the added beneficiary form if disable
                 (((this.type.get('BeneficiaryGroup') as FormGroup).get('beneficiaryArray')) as FormArray).removeAt(x)
 
@@ -526,41 +509,29 @@ export class CreateMemberComponent implements OnInit {
             console.log('checked')
         }
 
-        /**
-         *       
-        if (this.unhideBeneficiaryForm == true) {
-           
-            this.unhideBeneficiaryForm = false
-            for (let x = 0; x < this.BeneficiaryForm.length; x++) {
-                // removes the added beneficiary form if disable
-                (((this.type.get('BeneficiaryGroup') as FormGroup).get('beneficiaryArray')) as FormArray).removeAt(x)
 
-            }
-            console.log('unchecked')
-
-        } else {
-            this.unhideBeneficiaryForm = true
-            console.log('checked')
-
-        }
-         */
     }
+
 
     // check the maximum number of beneficiary based on the selected policy type
     testMaximumBeneficiary(index) {
         this.unhideBeneficiaryForm = false;
         this.unhideCheckBox = false
 
+
         // getting the selected poliy type
 
-        this.beneficiaryLeft = parseInt(this.policytypes[index].maximumbeneficiaries)
+        this.maxNumberAllowed = parseInt(this.policytypes[index].maximumbeneficiaries)
+
         this.setmember.balance = this.policytypes[index].premium // parseFloat(this.memberPolicytype.premium)
 
-        
-        if (this.beneficiaryLeft == 0) {
+
+        if (this.maxNumberAllowed == 0) {
             this.unhideCheckBox = false
+            this.beneficiaryCount = 0
         } else {
             this.unhideCheckBox = true
+            this.beneficiaryCount = parseInt(this.policytypes[index].maximumbeneficiaries)
         }
 
 
@@ -569,50 +540,40 @@ export class CreateMemberComponent implements OnInit {
     showit() {
 
 
-    }
-    finishCreate() {
-
-        let BeneficiaryName
-        let BeneficiarySurname
-        let BeneficiaryIdNumber
-
-        let newDate = new Date
-
-
         if (this.unhideBeneficiaryForm) {
+
+
 
             // creating beneficiary
             for (let x = 0; x < this.BeneficiaryForm.length; x++) {
 
-                BeneficiaryIdNumber = document.querySelector('#beneficiaryID' + x)
-                BeneficiarySurname = document.querySelector('#beneficiarySurname' + x)
+                let BeneficiaryName
+                let BeneficiarySurname
+                let BeneficiaryIdNumber
+
                 BeneficiaryName = document.querySelector('#beneficiaryName' + x)
+                BeneficiarySurname = document.querySelector('#beneficiarySurname' + x)
+                BeneficiaryIdNumber = document.querySelector('#beneficiaryID' + x)
+
+                this.setbeneficiary.name = BeneficiaryName.value
+                this.setbeneficiary.surname = BeneficiarySurname.value
+                this.setbeneficiary.identitynumber = BeneficiaryIdNumber.value
+                this.setbeneficiary.idlifestatus = 1
+                this.setbeneficiary.id = 0
+                this.setbeneficiary.idmember = 3
 
 
-                /**
-                 *                              this.setmember.beneficiary[x].name = BeneficiaryName.value
-                                                this.setmember.beneficiary[x].surname = BeneficiarySurname.value
-                                                this.setmember.beneficiary[x].identitynumber = BeneficiaryIdNumber.value
-                                                this.setmember.beneficiary[x].idlifestatus = 1
-                                                this.setmember.beneficiary[x].lifestatus = lifestatus_res[0].name
-                
-                                                
-                    {
-                      //idbeneficiary: number;
-                      name: string;
-                      surname: string;
-                      identitynumber: string;
-                      idlifestatus: number;
-                      lifestatus: string;
-                      createddate: Date;
-                    }
-                 */
-
-
+                console.log(this.setbeneficiary)
 
             }
 
         }
+
+    }
+    finishCreate() {
+
+        let newDate = new Date
+
 
         swal({
             title: 'Finish Create',
@@ -646,6 +607,40 @@ export class CreateMemberComponent implements OnInit {
                         console.log('response')
                         console.log(member_res)
 
+                        if (this.unhideBeneficiaryForm) {
+
+
+                            // creating beneficiary
+                            for (let x = 0; x < this.BeneficiaryForm.length; x++) {
+
+                                let BeneficiaryName
+                                let BeneficiarySurname
+                                let BeneficiaryIdNumber
+
+                                BeneficiaryName = document.querySelector('#beneficiaryName' + x)
+                                BeneficiarySurname = document.querySelector('#beneficiarySurname' + x)
+                                BeneficiaryIdNumber = document.querySelector('#beneficiaryID' + x)
+
+                                this.setbeneficiary.name = BeneficiaryName.value
+                                this.setbeneficiary.surname = BeneficiarySurname.value
+                                this.setbeneficiary.identitynumber = BeneficiaryIdNumber.value
+                                this.setbeneficiary.idlifestatus = 1
+                                this.setbeneficiary.id = 0
+                                this.setbeneficiary.idmember = member_res.id
+
+                                this.beneficiaryService.createBeneficiary(this.setbeneficiary)
+                                    .subscribe(beneficiary_res => {
+
+                                        console.log(beneficiary_res)
+                                    }, err => {
+                                        console.log(err)
+                                    })
+
+                            }
+
+                        }
+
+
                     }, err => {
                         console.log(err)
                     })
@@ -658,7 +653,7 @@ export class CreateMemberComponent implements OnInit {
                         confirmButtonClass: "btn btn-success",
                         buttonsStyling: false
 
-                    }).then((result) => console.log('done: ' + result)) //console.log('done'))  document.location.reload()
+                    }).then((result) => document.location.reload() ) // console.log('done: ' + result.value))  document.location.reload()
             }
         })
 

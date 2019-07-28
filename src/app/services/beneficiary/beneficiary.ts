@@ -1,4 +1,4 @@
-export class Beneficiary {
+export class oldBeneficiary {
     idmember: number;
     name: string;
     surname: string;
@@ -7,7 +7,7 @@ export class Beneficiary {
     createddate: Date;
 }
 
-export class newBeneficiary {
+export class Beneficiary {
     id: number;
     identitynumber: string;
     idlifestatus: number;

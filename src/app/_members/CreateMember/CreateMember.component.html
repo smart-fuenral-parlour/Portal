@@ -230,8 +230,8 @@
                             [ngClass]="displayFieldCss(type, 'selectedPolicyType')">
                             <mat-select placeholder="Select policy type" name="policytype"
                               formControlName="selectedPolicyType" [(ngModel)]="setmember.idpolicytype" required>
-                              <mat-option *ngFor="let policytype of policytypes; let i = index" [value]="policytype.id"
-                                (click)="testMaximumBeneficiary(i)">
+                              <mat-option *ngFor="let policytype of policytypes; let idx = index" [value]="policytype.id"
+                                (click)="testMaximumBeneficiary(idx)">
                                 {{ policytype.name }}
                               </mat-option>
                             </mat-select>
@@ -258,7 +258,7 @@
 
                       <div class="col-12 pull-center ml-auto mr-auto" *ngIf="unhideBeneficiaryForm">
                         <label>Maximum number of beneficiaries allowed: <span class="text-primary">
-                            {{ beneficiaryLeft }} </span> </label>
+                            {{ beneficiaryCount }} </span> </label>
 
                       </div>
 
