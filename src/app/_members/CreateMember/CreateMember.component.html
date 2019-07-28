@@ -69,7 +69,7 @@
                           </div>
                         </div>
                       </div>
- 
+
                       <!-- surname -->
                       <div class="col-sm-6">
                         <div class="input-group form-control-lg">
@@ -97,7 +97,7 @@
                             [ngClass]="displayFieldCss(type, 'idnumber')">
                             <input type="text" name="identitynumber" matInput [(ngModel)]="setmember.identitynumber"
                               inputmode="numeric" placeholder="ID Number" formControlName="idnumber" minlength="13"
-                              maxlength="13" numbersOnly >
+                              maxlength="13" numbersOnly>
                           </mat-form-field>
 
                         </div>
@@ -182,7 +182,7 @@
                         </div>
                       </div>
 
-                      <!-- House number -->
+                      <!-- Suburb -->
                       <div class="col-sm-6">
                         <div class="input-group-prepend">
                           <span class="input-group-text">
@@ -225,24 +225,25 @@
                       <div class=" row col-12">
 
                         <div class="col-8">
-                          <mat-form-field class="example-full-width has-label"  [ngClass]="displayFieldCss(type, 'selectedPolicyType')">
+
+                          <mat-form-field class="example-full-width has-label"
+                            [ngClass]="displayFieldCss(type, 'selectedPolicyType')">
                             <mat-select placeholder="Select policy type" name="policytype"
                               formControlName="selectedPolicyType" [(ngModel)]="setmember.idpolicytype" required>
-                              <mat-option *ngFor="let policytype of policytypes; let i = index"
-                                [value]="policytype.idpolicytype" (click)="testMaximumBeneficiary()"
-                                [class.active]="i == selectType">
-                                <!-- (click)="selectPolicyType()"  -->
+                              <mat-option *ngFor="let policytype of policytypes; let i = index" [value]="policytype.id"
+                                (click)="testMaximumBeneficiary(i)">
                                 {{ policytype.name }}
                               </mat-option>
                             </mat-select>
                           </mat-form-field>
+
                         </div>
 
                         <div class="col-4 col-sm-offset-1 checkbox-radios pull-center" *ngIf="unhideCheckBox">
                           <div class="form-check">
                             <label class="form-check-label">
-                              <input class="form-check-input"  [(ngModel)]="setmember.idpolicytype" pull-center type="checkbox" name="addCheckout"
-                                value="1" (click)="checkBeneficiary()"> Add beneficiary for member
+                              <input class="form-check-input" pull-center type="checkbox" name="addCheckout" value="1"
+                                (click)="checkBeneficiary()"> Add beneficiary for member
                               <!-- (click)="checkExtra()"  -->
                               <span class="form-check-sign">
                                 <span class="check"></span>
@@ -297,7 +298,7 @@
                                   </span>
                                   <mat-form-field class="example-full-width has-label">
                                     <input type="text" id="{{'beneficiaryID'+i}}" name="{{'beneficiaryID'+i}}" matInput
-                                      placeholder="ID Number" class="form-control" maxlength="13" minlength="13" >
+                                      placeholder="ID Number" class="form-control" maxlength="13" minlength="13">
                                   </mat-form-field>
                                 </div>
 
@@ -385,7 +386,7 @@
                                 <div class="row">
 
                                   <div>
-<!--
+                                    <!--
                                     <p class="card-description">
                                                                     <b>Member Details</b>
                                       Firstname: {{ setmember.name }}           Lastname: {{ setmember.surname }}<br />
@@ -415,8 +416,8 @@
                         <div class="col-sm-12 col-sm-offset-1 checkbox-radios">
                           <div class="form-check">
                             <label class="form-check-label">
-                              <input class="form-check-input" type="checkbox" name="checkTerms" id="checkTerms"
-                                value=""> I
+                              <input class="form-check-input" type="checkbox" name="checkTerms" id="checkTerms" value=""
+                                (click)="showit()"> I
                               agree to the Terms of Service
                               <span class="form-check-sign">
                                 <span class="check"></span>

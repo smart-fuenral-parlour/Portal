@@ -26,7 +26,7 @@ import { Policystatus } from 'src/app/services/policystatus/policystatus'
 import { Lifestatus } from 'src/app/services/lifestatus/lifestatus'
 
 /////////////////////////////////////////////////////////
-import {Directive, ElementRef, HostListener, Input} from '@angular/core'; 
+import { Directive, ElementRef, HostListener, Input } from '@angular/core';
 
 import * as moment from 'moment';
 import { AppComponent } from 'src/app/app.component'
@@ -66,7 +66,7 @@ export class CreateMemberComponent implements OnInit {
     // MODEL CLASS INSTANCE
     member: Member
     policytypes: Policytype[]
-    memberPolicytype: Policytype
+
     ////////////////////////
     policystatus: Policystatus
     lifestatus: Lifestatus
@@ -79,7 +79,7 @@ export class CreateMemberComponent implements OnInit {
     // creating new objects    
     setmember = new Member
     setbeneficiary = new Beneficiary
-    beneficiaryLeft
+    beneficiaryLeft = 0
 
     // variables to show and hide 
     invalidID = false
@@ -141,7 +141,8 @@ export class CreateMemberComponent implements OnInit {
     ngOnInit() {
 
         ///////////////////////  work here   ////////////////////////////
-        this.user = JSON.parse(localStorage.getItem('user'))
+        this.user = JSON.parse(localStorage.getItem('user')) // getting user details
+
 
         this.policytypeService.getPolicytypes()
             .subscribe(policytype_res => {
@@ -152,7 +153,7 @@ export class CreateMemberComponent implements OnInit {
         ///////////////////////////////////////////////////////
 
         this.app.loading = false
- 
+
 
         this.type = this.formBuilder.group({
             // To add a validator, we must first convert the string value into an array. The first item in the array is the default value if any, then the next item in the array is the validator. Here we are adding a required validator meaning that the firstName attribute must have a value in it.
@@ -472,28 +473,28 @@ export class CreateMemberComponent implements OnInit {
 
     addBeneficiary() {
 
-/*
-        if (this.beneficiaryLeft <= this.policytype.maximumbeneficiaries && this.beneficiaryLeft > 0) {
-
-            this.limitReached = false
-
-            this.BeneficiaryForm.push(this.formBuilder.control(
-                this.formBuilder.group({
-                    beneficiaryName: [null, Validators.required],
-                    beneficiarySurname: [null, Validators.required],
-                    beneficiaryID: [null, Validators.required],
-                })
-
-            ))
-
-            this.beneficiaryLeft = this.policytype.maximumbeneficiaries - this.BeneficiaryForm.length
-
-
-        } else {
-            this.limitReached = true
-
-        }
-*/
+        /*
+                if (this.beneficiaryLeft <= this.policytype.maximumbeneficiaries && this.beneficiaryLeft > 0) {
+        
+                    this.limitReached = false
+        
+                    this.BeneficiaryForm.push(this.formBuilder.control(
+                        this.formBuilder.group({
+                            beneficiaryName: [null, Validators.required],
+                            beneficiarySurname: [null, Validators.required],
+                            beneficiaryID: [null, Validators.required],
+                        })
+        
+                    ))
+        
+                    this.beneficiaryLeft = this.policytype.maximumbeneficiaries - this.BeneficiaryForm.length
+        
+        
+                } else {
+                    this.limitReached = true
+        
+                }
+        */
 
 
     }
@@ -507,10 +508,28 @@ export class CreateMemberComponent implements OnInit {
 
     // hides or unhides beneficiary form by click on checkbox
     checkBeneficiary() {
-        /*
+
+        console.log(this.beneficiaryLeft)
+
         if (this.unhideBeneficiaryForm == true) {
 
-            this.beneficiaryLeft = this.policytype.maximumbeneficiaries
+            this.unhideBeneficiaryForm = false
+            for (let x = 0; x < this.BeneficiaryForm.length; x++) {
+                // removes the added beneficiary form if disable
+                (((this.type.get('BeneficiaryGroup') as FormGroup).get('beneficiaryArray')) as FormArray).removeAt(x)
+
+            }
+            console.log('unchecked')
+
+        } else {
+            this.unhideBeneficiaryForm = true
+            console.log('checked')
+        }
+
+        /**
+         *       
+        if (this.unhideBeneficiaryForm == true) {
+           
             this.unhideBeneficiaryForm = false
             for (let x = 0; x < this.BeneficiaryForm.length; x++) {
                 // removes the added beneficiary form if disable
@@ -524,53 +543,42 @@ export class CreateMemberComponent implements OnInit {
             console.log('checked')
 
         }
-        */
+         */
     }
 
     // check the maximum number of beneficiary based on the selected policy type
-    testMaximumBeneficiary() {
+    testMaximumBeneficiary(index) {
         this.unhideBeneficiaryForm = false;
         this.unhideCheckBox = false
 
-        // the selected poliy type
-        this.policytypeService.getPolicytype(this.setmember.idpolicytype)
-            .subscribe(res => {
-/*
-                this.policytype = res[0]
-                this.beneficiaryLeft = this.policytype.maximumbeneficiaries
-                this.policytype.premium
+        // getting the selected poliy type
 
-                console.log(this.policytype.maximumbeneficiaries)
+        this.beneficiaryLeft = parseInt(this.policytypes[index].maximumbeneficiaries)
+        this.setmember.balance = this.policytypes[index].premium // parseFloat(this.memberPolicytype.premium)
 
-                if (this.policytype.maximumbeneficiaries == 0) {
-                    this.unhideCheckBox = false
-                } else {
-                    this.unhideCheckBox = true
-
-                }
-*/
-            }, err => {
-                console.log(err)
-            })
+        
+        if (this.beneficiaryLeft == 0) {
+            this.unhideCheckBox = false
+        } else {
+            this.unhideCheckBox = true
+        }
 
 
     }
 
+    showit() {
 
+
+    }
     finishCreate() {
 
         let BeneficiaryName
         let BeneficiarySurname
         let BeneficiaryIdNumber
+
         let newDate = new Date
 
-        this.setmember.idlifestatus = 1
-        this.setmember.membershipnumber = ('MN' + (newDate).getMilliseconds().toString().slice(0, 3) + (this.setmember.identitynumber).toString().slice(6, 9))
-        this.setmember.createdby = (this.user.name + " " + this.user.surname)
-      //  this.setmember.balance = this.policytype.premium
-        this.setmember.lastpaiddate = moment.parseZone(newDate).utc().format()
 
-                      
         if (this.unhideBeneficiaryForm) {
 
             // creating beneficiary
@@ -606,10 +614,6 @@ export class CreateMemberComponent implements OnInit {
 
         }
 
-        console.log(this.setmember)
-
-        console.log(this.setmember)
-
         swal({
             title: 'Finish Create',
             text: "Save Member?",
@@ -626,10 +630,25 @@ export class CreateMemberComponent implements OnInit {
 
                 // creating member
 
-
+                this.setmember.id = 0
+                this.setmember.idpolicystatus = 1
                 this.setmember.idlifestatus = 1
                 this.setmember.membershipnumber = ('MN' + (newDate).getMilliseconds().toString().slice(0, 3) + (this.setmember.identitynumber).toString().slice(6, 9))
                 this.setmember.createdby = (this.user.name + " " + this.user.surname)
+                this.setmember.lastpaiddate = moment.parseZone(newDate).utc().format()
+
+                console.log('Post')
+                console.log(this.setmember)
+
+                this.memberService.createMember(this.setmember)
+                    .subscribe(member_res => {
+
+                        console.log('response')
+                        console.log(member_res)
+
+                    }, err => {
+                        console.log(err)
+                    })
 
 
                 swal(
@@ -639,7 +658,7 @@ export class CreateMemberComponent implements OnInit {
                         confirmButtonClass: "btn btn-success",
                         buttonsStyling: false
 
-                    }).then((result) => document.location.reload()) //console.log('done'))
+                    }).then((result) => console.log('done: ' + result)) //console.log('done'))  document.location.reload()
             }
         })
 
