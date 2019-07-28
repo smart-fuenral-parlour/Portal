@@ -6,7 +6,7 @@ import { ServiceService } from 'src/app/SERVICE/service.service'; // service lin
 import { MemberService } from 'src/app/services/member/member.service'
 
 //////////////////// MODEL/ CLASS CALLS ///////////////////////////////////////
-import { Members } from 'src/app/services/member/member'
+import { Member } from 'src/app/services/member/member'
 import { User } from 'src/app/services/user/user'
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -33,11 +33,11 @@ export class ViewMembersComponent implements OnInit, AfterViewInit {
 
 
   public dataTable: DataTable;
-  mainmember: Members
-  members
   
+  members: Member[]
+
   user: User
-  
+
   searchText = 'ID Number';
 
 
@@ -48,7 +48,7 @@ export class ViewMembersComponent implements OnInit, AfterViewInit {
   notFound = false;
   invalidID = false;
   ////////////////////////////
- 
+
   constructor(
     private memberService: MemberService,
     private router: Router,
@@ -89,105 +89,132 @@ export class ViewMembersComponent implements OnInit, AfterViewInit {
       this.searchResult = false
       this.notFound = false
 
-      if (selectedSearchType == 'Membership Number') {
+      this.memberService.getMembers()
+        .subscribe(members_res => {
 
-        this.app.loading = true
+          if ( members_res.length > 0 ) {  
+            console.log('search all')
+                        
+          this.members = members_res
 
-        this.memberService.getMemberbymembershipnumber(searchInput)
-          .subscribe(member_res => {
-
-            this.members = member_res.mainmember
-
-            console.log(member_res)
-
-            if (!isNullOrUndefined(this.members)) { // if (this.members.length > 0)
-              console.log('Search By Membership Number')
-              let x = 0;
-
-
-              this.app.loading = false
-              this.notFound = false
-              this.searchResult = true
-
-            } else {
-
-              console.log('NO MEMBERS FOUND')
-              this.app.loading = false
-              this.searchResult = false
-              this.notFound = true
-
-            }
-
-          }, err => {
-            console.log(err)
-          })
-      } else
-        if (selectedSearchType == 'Surname') {
-
-          console.log('Search By Surname')
-          this.app.loading = true
-
-          this.memberService.getMemberbysurname(searchInput)
-            .subscribe(member_res => {
-
-              this.members = member_res.mainmember
-
-              console.log(member_res)
-              
-              if (!isNullOrUndefined(this.members)) { //if (this.members.length > 0)
-
-                this.app.loading = false
-                this.notFound = false
-                this.searchResult = true
-
-              } else {
-                console.log('NO MEMBERS FOUND')
-                this.app.loading = false
-                this.searchResult = false
-                this.notFound = true
-              }
-
-            }, err => {
-              console.log(err)
-            })
-
-        } else
-          if (searchInput.length == 13) {
-
-            this.app.loading = true
-
-
-            this.memberService.getMemberbyidentitynumber(searchInput)
-              .subscribe(member_res => {
-
-                this.members = member_res.mainmember
-
-                console.log(member_res)
-
-                if (!isNullOrUndefined(this.members)) {
-                  console.log('Search by Id number')
-
-                  this.app.loading = false
-                  this.notFound = false
-                  this.searchResult = true
-
-                } else {
-
-                  console.log('NO MEMBERS FOUND')
-                  this.app.loading = false
-                  this.searchResult = false
-                  this.notFound = true
-
-                }
-
-              }, err => {
-                console.log(err)
-              })
+            this.app.loading = false
+            this.notFound = false
+            this.searchResult = true
 
           } else {
-            this.invalidID = true;
+
+            console.log('NO MEMBERS FOUND')
             this.app.loading = false
+            this.searchResult = false
+            this.notFound = true
+
           }
+
+        }, err => {
+          console.log(err)
+        })
+
+      /*
+            if (selectedSearchType == 'Membership Number') {
+      
+              this.app.loading = true
+      
+              this.memberService.getMemberbymembershipnumber(searchInput)
+                .subscribe(member_res => {
+      
+                  this.members = member_res.mainmember
+      
+                  console.log(member_res)
+      
+                  if (!isNullOrUndefined(this.members)) { // if (this.members.length > 0)
+                    console.log('Search By Membership Number')
+                    let x = 0;
+      
+      
+                    this.app.loading = false
+                    this.notFound = false
+                    this.searchResult = true
+      
+                  } else {
+      
+                    console.log('NO MEMBERS FOUND')
+                    this.app.loading = false
+                    this.searchResult = false
+                    this.notFound = true
+      
+                  }
+      
+                }, err => {
+                  console.log(err)
+                })
+            } else
+              if (selectedSearchType == 'Surname') {
+      
+                console.log('Search By Surname')
+                this.app.loading = true
+      
+                this.memberService.getMemberbysurname(searchInput)
+                  .subscribe(member_res => {
+      
+                    this.members = member_res.mainmember
+      
+                    console.log(member_res)
+                    
+                    if (!isNullOrUndefined(this.members)) { //if (this.members.length > 0)
+      
+                      this.app.loading = false
+                      this.notFound = false
+                      this.searchResult = true
+      
+                    } else {
+                      console.log('NO MEMBERS FOUND')
+                      this.app.loading = false
+                      this.searchResult = false
+                      this.notFound = true
+                    }
+      
+                  }, err => {
+                    console.log(err)
+                  })
+      
+              } else
+                if (searchInput.length == 13) {
+      
+                  this.app.loading = true
+      
+      
+                  this.memberService.getMemberbyidentitynumber(searchInput)
+                    .subscribe(member_res => {
+      
+                      this.members = member_res.mainmember
+      
+                      console.log(member_res)
+      
+                      if (!isNullOrUndefined(this.members)) {
+                        console.log('Search by Id number')
+      
+                        this.app.loading = false
+                        this.notFound = false
+                        this.searchResult = true
+      
+                      } else {
+      
+                        console.log('NO MEMBERS FOUND')
+                        this.app.loading = false
+                        this.searchResult = false
+                        this.notFound = true
+      
+                      }
+      
+                    }, err => {
+                      console.log(err)
+                    })
+      
+                } else {
+                  this.invalidID = true;
+                  this.app.loading = false
+                }
+      */
 
     }
 
@@ -197,7 +224,7 @@ export class ViewMembersComponent implements OnInit, AfterViewInit {
     this.searchText = selectedSearchType
   }
 
-  
+
   hideTextError() {
     this.isEmpty = false
     this.invalidID = false
@@ -206,19 +233,19 @@ export class ViewMembersComponent implements OnInit, AfterViewInit {
   // Edit a member
   editMember(index) {
 
-    localStorage.setItem('editmember', JSON.stringify(this.members)); // this.members[index]
+    localStorage.setItem('editmember', JSON.stringify(this.members[index])); // this.members[index]
     sessionStorage.clear()
     this.router.navigate(['/members/editmember']);
   }
 
   // View full member details
   viewMember(index) {
-    localStorage.setItem('viewdetails', JSON.stringify(this.members)); // this.members[index]
+    localStorage.setItem('viewdetails', JSON.stringify(this.members[index])); // this.members[index]
     this.router.navigate(['/members/viewmemberdetails']);
   }
 
   // Delete a member
-  deleteMember(idmember) {
+  deleteMember(id) {
 
     swal({
       title: 'Delete This Member',
@@ -233,7 +260,7 @@ export class ViewMembersComponent implements OnInit, AfterViewInit {
     }).then((result) => {
       if (result.value) {
 
-        this.memberService.deleteMember(idmember)
+        this.memberService.deleteMember(id)
           .subscribe(res => {
             console.log(res)
           }, err => {

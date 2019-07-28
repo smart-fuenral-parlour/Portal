@@ -8,6 +8,16 @@ const httpOptions = {
   headers: new HttpHeaders({'Content-Type': 'application/json'})
 };
 
+const patchhttpOptions = {
+  headers: new HttpHeaders({
+    'Content-Type': 'application/json',
+    'responseType': 'json',
+    'Access-Control-Allow-Origin': '*',
+    'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, PATCH, OPTIONS',
+    'Access-Control-Allow-Headers': 'X-Requested-With, content-type, Authorization'
+  })
+};
+
 /**
  * 
  * const apiUrl = "http://greenlinks1.dedicated.co.za:3002/api/member";
@@ -103,12 +113,13 @@ export class MemberService {
 
 
   
-  updateMember (id, member): Observable<any> {
-    const url = `${apiUrl}/${id}`;
-    return this.http.put(url, member, httpOptions).pipe(
-      tap(_ => console.log(`updated member`+member)),
-      catchError(this.handleError<any>('updateMember'))
+  updateMembers (member): Observable<Member> {
+
+    return this.http.patch<Member>(apiUrl, member, patchhttpOptions).pipe(
+      tap((member: Member) => console.log(`updated member`+member)),
+      catchError(this.handleError<Member>('updateMember'))
     );
+
   }
 
 
@@ -124,6 +135,16 @@ export class MemberService {
 
 
 /**
+ * 
+ * 
+ *   
+  updateMember (id, member): Observable<any> {
+    const url = `${apiUrl}/${id}`;
+    return this.http.put(url, member, httpOptions).pipe(
+      tap(_ => console.log(`updated member`+member)),
+      catchError(this.handleError<any>('updateMember'))
+    );
+  }
  * 
   createMember (member): Observable<Member> {
     return this.http.post<Member>(apiUrl, member, httpOptions).pipe(

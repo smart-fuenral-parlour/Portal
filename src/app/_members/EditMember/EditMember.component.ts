@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 
 ///////////////////  SERCVICE CALLS  /////////////////////////////
-import { ServiceService } from 'src/app/SERVICE/service.service'; // service link here
 import { MemberService } from 'src/app/services/member/member.service'
 
 ////////////////// MODEL/CLASS CALLSS ////////////////////////////
@@ -22,13 +21,11 @@ declare const $: any;
 })
 export class EditMemberComponent implements OnInit {
 
-
   setmember = new Member
   getmember: Member
 
 
   constructor(private app: AppComponent,
-    private service: ServiceService,
     private memberService: MemberService,
     private router: Router) {  }
 
@@ -54,7 +51,8 @@ export class EditMemberComponent implements OnInit {
     this.app.loading = true
 
     this.getmember = JSON.parse(localStorage.getItem('editmember'))
-    console.log(this.getmember.id)
+    console.log(this.getmember.id)    
+    this.setmember.id = this.getmember.id
 
     if (JSON.parse(localStorage.getItem('editmember')) != null) {
 
@@ -86,10 +84,10 @@ export class EditMemberComponent implements OnInit {
       if (result.value) {
         this.app.loading = true
 
-
-        this.memberService.updateMember(this.getmember.id, this.setmember)
-          .subscribe(member_updates => {
-            console.log(member_updates)
+//this.getmember.id, this.members[index]
+        this.memberService.updateMembers(this.setmember)
+          .subscribe(member_res => {
+            console.log(member_res)
 
           }, err => {
             console.log(err)

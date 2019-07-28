@@ -82,18 +82,18 @@
                     <th>Membership No.</th>
                     <th>Name</th>
                     <th>Surname</th>
-                    <th>Date Joined</th>
+                    <th>Last Paid Date</th>  <!-- Date Joined -->
                     <th>ID Number</th>
                     <th class="disabled-sorting text-right">Action</th>
                   </tr>
                 </thead>
                 <tbody>
-                  <tr >  <!--  *ngFor="let member of members; let i = index" -->
-                    <td>{{ members.membershipnumber }}</td>
-                    <td>{{ members.name }}</td>
-                    <td>{{ members.surname }}</td>
-                    <td>{{ members.createddate  | date: "dd MMMM, yyyy" }}</td>
-                    <td>{{ members.identitynumber }}</td>
+                  <tr  *ngFor="let member of members; let i = index" >  
+                    <td>{{ member.membershipnumber }}</td>
+                    <td>{{ member.name }}</td>
+                    <td>{{ member.surname }}</td>
+                    <td>{{ member.lastpaiddate  }}</td>  <!--  | date: "dd MMMM, yyyy" -->
+                    <td>{{ member.identitynumber }}</td>
                     <td class="text-right">
                       <a (click)="editMember(i)" class="btn btn-link btn-info btn-just-icon edit"><i
                           class="material-icons" [class.active]="i == selectedrow" data-toggle="tooltip"
@@ -101,7 +101,7 @@
                       <a (click)="viewMember(i)" class="btn btn-link btn-warning btn-just-icon view"><i
                           class="material-icons" [class.active]="i == selectedrow" data-toggle="tooltip"
                           data-placement="down" title="view member info">info</i></a>
-                      <a (click)="deleteMember(member.idmember)" class="btn btn-link btn-danger btn-just-icon remove"><i
+                      <a (click)="deleteMember(member.id)" class="btn btn-link btn-danger btn-just-icon remove"><i
                           class="material-icons" [class.active]="i == selectedrow" data-toggle="tooltip"
                           data-placement="down" title="delete member">delete</i></a>
                     </td>
