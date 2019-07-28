@@ -102,4 +102,22 @@ export class ApplyleaveComponent implements OnInit {
     $('#reason').val('');
 
   }
+
+  calcLeaveDays() {
+
+    let d1 = $('#startdate').val();
+    let d2 = $('#enddate').val();
+
+
+    var date1 = new Date(d1);
+    var date2 = new Date(d2);
+
+    var date1_ms = date1.getTime();
+    var date2_ms = date2.getTime();
+
+    var diff = date2_ms - date1_ms;
+
+    $('#calculated').text(diff / (1000 * 60 * 60 * 24));
+
+  }
 }

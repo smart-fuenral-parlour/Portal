@@ -1,88 +1,96 @@
 <div class="image-container set-full-height" style="background-image: url('assets/img/download.png')">
-  <div class="tab-pane" id="applyleave">
-      <div class="row">
-          <!-- Material form contact -->
-          <div class="col-sm-4" class="card">
-              <!--Card content-->
-              <div class="card-body px-lg-5 pt-0">
+    <div class="tab-pane" id="applyleave">
+        <div class="row">
+            <!-- Material form contact -->
+            <div class="col-sm-4" class="card">
+                <!--Card content-->
+                <div class="card-body px-lg-5 pt-0">
 
-                  <form class="text-center" style="color: #757575;">
-                      <div class="rows">
-                          <div class="col-sm-4">
-                              <label class="pull-left">Name :  </label>
-                              <label class="pull-left"> {{fullnames}}</label>
-                          </div>
-                          <br>
-                          <br>
-                          <div class="col-sm-4">
-                              <label class="pull-left">E-mail :  </label>
-                              <label class="pull-left"> {{email}}</label>
-                          </div>
-                          <br>
-                          <br>
-                          <div  class="pull-right">
-                                  <!-- Subject -->
-                                  <label class="pull-left">Leave Type : </label><br>
-                                  <br>
-                                  <select id="leavetype" class="pull-left" class="mdb-select">
-                                      <option value="" disabled>Choose option</option>
-                                      <option value="annual" selected>Annual Leave</option>
-                                      <option value="medical">Medical Leave</option>
-                                      <option value="family">Family Responsibility Leave</option>
-                                      <option value="maternity">Maternity Leave</option>
-                                      <option value="study">Study Leave</option>
-                                      <option value="other">Other</option>
-                                  </select>
-                              </div>
-                      </div>
-                  
-                      <div class="rows">
-                              <div class="col-sm-6" class="col-sm-4">
-                                      <div class="form-group">
-                                          <label>Reason</label>
-                                          <textarea id = "reason" class="form-control" placeholder=""
-                                              rows="6"></textarea>
-                                      </div>
-                                  </div> <br><br>
-                         
-                          <!--Message-->
+                    <form class="text-center" style="color: #757575;">
+                        <div class="rows">
+                            <div class="col-sm-4">
+                                <label class="pull-left">Name : </label>
+                                <label class="pull-left"> {{fullnames}}</label>
+                            </div>
+                            <br>
+                            <br>
+                            <div class="col-sm-4">
+                                <label class="pull-left">E-mail : </label>
+                                <label class="pull-left"> {{email}}</label>
+                            </div>
+                            <br>
+                            <br>
+                            <div class="pull-right">
+                                <!-- Subject -->
+                                <label class="pull-left">Leave Type : </label><br>
+                                <br>
+                                <select id="leavetype" class="pull-left" class="mdb-select">
+                                    <option value="" disabled>Choose option</option>
+                                    <option value="annual" selected>Annual Leave</option>
+                                    <option value="medical">Medical Leave</option>
+                                    <option value="family">Family Responsibility Leave</option>
+                                    <option value="maternity">Maternity Leave</option>
+                                    <option value="study">Study Leave</option>
+                                    <option value="other">Other</option>
+                                </select>
+                            </div>
+                        </div>
 
-                          <div class="rows">
-                                  <div  class="col-sm-3">
-                                          <input type="date" id="startdate" class="form-control">
-                                          <label for="inputMDEx">Start date</label>
-                                        </div>
-                                  
-                                        <div  class="col-sm-3">
-                                              <input type="date" id="enddate" class="form-control">
-                                              <label for="inputMDEx">End date</label><br>
-                                      
-                                            </div><br><br><br><br><br>
-                                            <div class="pull-right">
-                                                  <span >Number of Days Taken: <label> 5 </label>  Days</span>
-                                              </div>  
-                      </div>
-                  
-                    
-                          
-                       
-                         
-               
-                      </div>
-                  </form>
-                  <!-- Form -->
-                  <br> <br><br><br><br><br><br><br><br><br><br>  <br>
-                  <div>
-                
-                          <button class="btn btn-outline-info btn-rounded" (click)="StartNintexflow();"
-                              type="submit">Send</button>
-                              <button class="btn btn-outline-danger btn-rounded" (click)="clearFormData();"
-                              type="submit">clear</button>
-                          </div>
-              </div>
+                        <div class="rows">
+                            <div class="col-sm-6" class="col-sm-4">
+                                <div class="form-group">
+                                    <label>Reason</label>
+                                    <textarea id="reason" class="form-control" placeholder="" rows="6"></textarea>
+                                </div>
+                            </div> <br><br>
 
-          </div>
-          <!-- Material form contact -->
-      </div>
-  </div>
+                            <!--Message-->
+
+                            <div class="rows">
+                                <div class="col-sm-3">
+                                    <label for="inputMDEx">Start date</label>
+                                    <br><br><br><br>
+                                    <input type="date" id="startdate" class="form-control" (change)="calcLeaveDays()">
+                                </div>
+
+                                <div class="col-sm-3">
+                                    <label for="inputMDEx">End date</label>
+                                    <br><br><br><br>
+                                    <input type="date" id="enddate" class="form-control" (change)="calcLeaveDays()">
+                                </div>
+                                <div class="pull-right">
+                                    <br><br><br><br><br><br>
+
+                                    <p>Total Number Of Day slected: <label id="calculated"></label></p>
+
+                                </div>
+
+                            </div>
+
+                            <div class="custom-file">
+                                <input type="file" class="custom-file-input" id="customFile">
+                                <label class="custom-file-label" for="customFile">Choose file</label>
+                            </div>
+
+
+
+
+
+                        </div>
+                    </form>
+                    <!-- Form -->
+                    <br> <br><br><br><br><br><br><br><br><br><br> <br>
+                    <div>
+
+                        <button class="btn btn-outline-info btn-rounded" (click)="StartNintexflow();"
+                            type="submit">Send</button>
+                        <button class="btn btn-outline-danger btn-rounded" (click)="clearFormData();"
+                            type="submit">clear</button>
+                    </div>
+                </div>
+
+            </div>
+            <!-- Material form contact -->
+        </div>
+    </div>
 </div>
