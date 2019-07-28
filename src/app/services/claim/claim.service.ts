@@ -8,7 +8,13 @@ const httpOptions = {
   headers: new HttpHeaders({'Content-Type': 'application/json'})
 };
 
-const apiUrl = "http://greenlinks1.dedicated.co.za:3002/api/claim";
+/**
+ * const apiUrl = "http://greenlinks1.dedicated.co.za:3002/api/claim";
+const getclaimbyclaimstatusUrl = "http://greenlinks1.dedicated.co.za:3002/api/getclaimbyclaimstatus";
+const getclaimbyidmemberUrl = "http://greenlinks1.dedicated.co.za:3002/api/getclaimbyidmember";
+ */
+
+const apiUrl = "http://greenlinks1.dedicated.co.za:3000/api/Claims";
 const getclaimbyclaimstatusUrl = "http://greenlinks1.dedicated.co.za:3002/api/getclaimbyclaimstatus";
 const getclaimbyidmemberUrl = "http://greenlinks1.dedicated.co.za:3002/api/getclaimbyidmember";
 

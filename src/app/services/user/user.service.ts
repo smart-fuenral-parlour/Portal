@@ -7,7 +7,16 @@ import { Injectable } from '@angular/core';
 const httpOptions = {
   headers: new HttpHeaders({'Content-Type': 'application/json'})
 };
+
+
+/**
+ * 
 const apiUrl = "http://greenlinks1.dedicated.co.za:3002/api/user";
+const loginUrl = "http://greenlinks1.dedicated.co.za:3000/api/login"
+ */
+
+
+const apiUrl = "http://greenlinks1.dedicated.co.za:3000/api/Users";
 const loginUrl = "http://greenlinks1.dedicated.co.za:3000/api/login"
 
 
@@ -28,8 +37,6 @@ export class UserService {
       return of(result as T);
     };
   }
-
-
 
 
   loginUser (user): Observable<LoginUser> {
