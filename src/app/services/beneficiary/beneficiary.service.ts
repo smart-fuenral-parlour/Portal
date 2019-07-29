@@ -65,10 +65,10 @@ export class BeneficiaryService {
 
   
 
-  createBeneficiary (Beneficiary): Observable<Beneficiary[]> {
-    return this.http.post<Beneficiary[]>(apiUrl, Beneficiary, httpOptions).pipe(
-      tap((Beneficiary: Beneficiary[]) => console.log(`added Beneficiary w/`+Beneficiary)),
-      catchError(this.handleError<Beneficiary[]>('addBeneficiary'))
+  createBeneficiary (Beneficiary): Observable<Beneficiary> {
+    return this.http.post<Beneficiary>(apiUrl, Beneficiary, httpOptions).pipe(
+      tap((Beneficiary: Beneficiary) => console.log(`added Beneficiary w/`+Beneficiary)),
+      catchError(this.handleError<Beneficiary>('addBeneficiary'))
     );
   }
 

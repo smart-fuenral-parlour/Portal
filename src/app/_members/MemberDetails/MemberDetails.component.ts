@@ -6,7 +6,6 @@ import { MemberService } from 'src/app/services/member/member.service'
 import { PolicystatusService } from 'src/app/services/policystatus/policystatus.service'
 import { ClaimService } from 'src/app/services/claim/claim.service'
 import { BeneficiaryService } from 'src/app/services/beneficiary/beneficiary.service'
-import { BalanceService } from 'src/app/services/balance/balance.service'
 import { LifestatusService } from 'src/app/services/lifestatus/lifestatus.service'
 import { UserService } from 'src/app/services/user/user.service'
 
@@ -15,14 +14,13 @@ import { Member } from 'src/app/services/member/member'
 import { Policystatus } from 'src/app/services/policystatus/policystatus'
 import { Claim } from 'src/app/services/claim/claim'
 import { Beneficiary } from 'src/app/services/beneficiary/beneficiary'
-import { Balance } from 'src/app/services/balance/balance'
 import { Lifestatus } from 'src/app/services/lifestatus/lifestatus'
 import { User } from 'src/app/services/user/user'
 
 ///////////////////////////////////////////////////////////////////////
 
-import { ServiceService } from 'src/app/SERVICE/service.service'; // service link here
-import { isNullOrUndefined, isNull } from 'util';
+
+import { isNullOrUndefined } from 'util';
 import { Router } from '@angular/router';
 import swal from 'sweetalert2';
 import { AppComponent } from 'src/app/app.component'
@@ -64,6 +62,7 @@ export class MemberDetailsComponent implements OnInit {
   /////////////////////
   member: Member
   beneficiaries: Beneficiary[]
+  setBeneficiary = new Beneficiary
   claims
   user: User
   lifestatus
@@ -72,7 +71,6 @@ export class MemberDetailsComponent implements OnInit {
 
 
   constructor(private fb: FormBuilder,
-    private service: ServiceService,
     private memberService: MemberService,
     private policystatusService: PolicystatusService,
     private lifestatusService: LifestatusService,
@@ -148,7 +146,7 @@ export class MemberDetailsComponent implements OnInit {
                   this.beneficiaries = beneficiary_res
 
                   this.noBeneficiary = false
-                  
+
                 } else {
                   this.noBeneficiary = true
                 }
@@ -175,10 +173,10 @@ export class MemberDetailsComponent implements OnInit {
 
   }
 
-  deleteBeneficiary(index, id, NAME, SURNAME) {
+  deleteBeneficiary(id, name, surname) {
 
     swal({
-      title: 'Delete ' + NAME + ' ' + SURNAME,
+      title: 'Delete ' + name + ' ' + surname,
       text: "As a Beneficiary",
       type: 'warning',
       showCancelButton: true,
@@ -190,34 +188,27 @@ export class MemberDetailsComponent implements OnInit {
     }).then((result) => {
       if (result.value) {
 
-
-        this.service.removeBeneficiary(id)
+        this.beneficiaryService.deleteBeneficiary(id)
           .subscribe(res => {
-
             console.log(res)
+
+            swal(
+              {
+                title: 'Deleted',
+                type: 'success',
+                confirmButtonClass: "btn btn-success",
+                buttonsStyling: false
+
+              }).then((result) => window.location.reload())
 
           }, err => {
             console.log(err)
           })
-        swal(
-          {
-            title: 'Deleted',
-            type: 'success',
-            confirmButtonClass: "btn btn-success",
-            buttonsStyling: false
 
-          }).then((result) => window.location.reload())
       }
     })
   }
 
-  onAddRow() {
-    this.rows.push(this.createItemFormGroup());
-  }
-
-  onRemoveRow(rowIndex: number) {
-    this.rows.removeAt(rowIndex);
-  }
 
   createItemFormGroup(): FormGroup {
     return this.fb.group({
@@ -269,7 +260,7 @@ export class MemberDetailsComponent implements OnInit {
         '<div class="row">' +
         ' <label class=" col-4 col-form-label">ID number: </label>' +
         '<div class="col-8">' +
-        '<input matInput type="number" name="idnumber" minLength id="IDNumber" placeholder="' + IDNUMBER + '" class="form-control" />' +
+        '<input matInput type="text" name="idnumber" minlength="13"  maxlength="13" minLength id="IDNumber" placeholder="' + IDNUMBER + '" class="form-control" />' +
         '</div>' +
         '</div>' +
 
@@ -281,33 +272,37 @@ export class MemberDetailsComponent implements OnInit {
     }).then((result) => {
       if (result.value) {
         this.app.loading = true
+        
+
+        this.setBeneficiary.idlifestatus = 1
+        this.setBeneficiary.idmember = this.member.id
 
         // NEW BENEFICIARY NAME
         if ($('#Name').val() == '' || isNullOrUndefined($('#Name').val())) {
-          this.Beneficiaryname = NAME
+          this.setBeneficiary.name = NAME
         } else {
-          this.Beneficiaryname = $('#Name').val()
+          this.setBeneficiary.name = $('#Name').val()
         }
 
-        // NEW BENEFICIARY SURNAME
+        // NEW BENEFICIARY SURNAME  
         if ($('#Surname').val() == '' || isNullOrUndefined($('#Surname').val())) {
-          this.Beneficiarysurname = SURNAME
+          this.setBeneficiary.surname = SURNAME
         } else {
-          this.Beneficiarysurname = $('#Surname').val()
+          this.setBeneficiary.surname = $('#Surname').val()
         }
 
         // NEW BENEFICIARY ID NUMBER
         if ($('#IDNumber').val() == '' || isNullOrUndefined($('#IDNumber').val())) {
-          this.Beneficiaryidumber = IDNUMBER
+          this.setBeneficiary.identitynumber = IDNUMBER
         } else {
-          this.Beneficiaryidumber = $('#IDNumber').val()
+          this.setBeneficiary.identitynumber = $('#IDNumber').val()
         }
 
 
-
-        this.service.updateBeneficiary(id, { 'idmember': this.idmember, 'name': this.Beneficiaryname, 'surname': this.Beneficiarysurname, 'identitynumber': this.Beneficiaryidumber })
+        this.beneficiaryService.updateBeneficiary(id,this.setBeneficiary)
           .subscribe(res => {
             this.app.loading = false
+
             console.log(res)
 
 
@@ -319,12 +314,12 @@ export class MemberDetailsComponent implements OnInit {
                 buttonsStyling: false
 
               }).then((result) => window.location.reload())
-          }, err => {
 
-            this.app.loading = false
+          }, err => {
             console.log(err)
           })
 
+          this.app.loading = false
 
 
       }
@@ -367,7 +362,7 @@ export class MemberDetailsComponent implements OnInit {
         '<div class="row">' +
         ' <label class=" col-4 col-form-label">ID number: </label>' +
         '<div class="col-8">' +
-        '<input matInput type="number" name="idnumber" minLength id="IDNumber"  class="form-control" />' +
+        '<input matInput type="text" minlength="13"  maxlength="13" name="idnumber" id="IDNumber" class="form-control" />' +
         '</div>' +
         '</div>' +
 
@@ -380,23 +375,33 @@ export class MemberDetailsComponent implements OnInit {
       if (result.value) {
 
 
-        this.service.createMemberBeneficiary({ 'idmember': this.idmember, 'createddate': this.createddate, 'idlifestatus': 1, 'identitynumber': $('#IDNumber').val(), 'name': $('#Name').val(), 'surname': $('#Surname').val() })
-          .subscribe(res => {
-            console.log(res)
+        this.setBeneficiary.name = $('#Name').val()
+        this.setBeneficiary.surname = $('#Surname').val()
+        this.setBeneficiary.identitynumber = $('#IDNumber').val()
+        this.setBeneficiary.idlifestatus = 1
+        this.setBeneficiary.id = 0
+        this.setBeneficiary.idmember = this.member.id 
+
+        this.beneficiaryService.createBeneficiary(this.setBeneficiary)
+          .subscribe(beneficiary_res => {
+
+            console.log(beneficiary_res)
+
+
+            swal(
+              {
+                title: 'Updates Succesfully Saved',
+                type: 'success',
+                confirmButtonClass: "btn btn-success",
+                buttonsStyling: false
+
+              }).then((result) => window.location.reload())
 
           }, err => {
             console.log(err)
           })
 
 
-        swal(
-          {
-            title: 'Updates Succesfully Saved',
-            type: 'success',
-            confirmButtonClass: "btn btn-success",
-            buttonsStyling: false
-
-          }).then((result) => window.location.reload())
 
       }
     })
@@ -410,6 +415,15 @@ export class MemberDetailsComponent implements OnInit {
     this.router.navigate(['/claims/claiminfo']);
   }
 
+
+
+  onAddRow() {
+    this.rows.push(this.createItemFormGroup());
+  }
+
+  onRemoveRow(rowIndex: number) {
+    this.rows.removeAt(rowIndex);
+  }
 
 
 

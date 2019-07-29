@@ -90,23 +90,23 @@
                     cellspacing="0" width="100%" style="width:100%; ">
                     <thead>
                       <tr>
-                        <th>ID Number</th>
                         <th>Name</th>
                         <th>Surname</th>
+                        <th>ID Number</th>
                         <th class="disabled-sorting text-right">Action</th>
                       </tr>
                     </thead>
                     <tbody>
                       <tr *ngFor="let beneficiary of beneficiaries; let i = index">
-                        <td>{{ beneficiary.identitynumber }}</td>
                         <td>{{ beneficiary.name }}</td>
                         <td>{{ beneficiary.surname }}</td>
+                        <td>{{ beneficiary.identitynumber }}</td>
                         <td class="text-right">
                           <a (click)="editbeneficiary(i, beneficiary.id, beneficiary.name, beneficiary.surname, beneficiary.identitynumber)"
                             class="btn btn-link btn-info btn-just-icon edit"><i class="material-icons"
                               [class.active]="i == selectedrow" data-toggle="tooltip" data-placement="down"
                               title="edit beneficiary details">edit</i></a>
-                          <a (click)="deleteBeneficiary(i, beneficiary.id, beneficiary.name, beneficiary.surname)"
+                          <a (click)="deleteBeneficiary( beneficiary.id, beneficiary.name, beneficiary.surname)"
                             class="btn btn-link btn-danger btn-just-icon remove"><i class="material-icons"
                               [class.active]="i == selectedrow" data-toggle="tooltip" data-placement="down"
                               title="remove beneficiary">delete</i></a>
