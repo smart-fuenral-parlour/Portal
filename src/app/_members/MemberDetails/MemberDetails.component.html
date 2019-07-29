@@ -85,7 +85,7 @@
                 <div class="toolbar">
                   <!--        Here you can write extra buttons/actions for the toolbar              -->
                 </div>
-                <div class="material-datatables">
+                <div class="material-datatables" *ngIf="!noBeneficiary">
                   <table id="datatables" class="table table-striped table-no-bordered table-hover text-primary"
                     cellspacing="0" width="100%" style="width:100%; ">
                     <thead>
@@ -93,7 +93,6 @@
                         <th>ID Number</th>
                         <th>Name</th>
                         <th>Surname</th>
-                        <th>Date Joined</th>
                         <th class="disabled-sorting text-right">Action</th>
                       </tr>
                     </thead>
@@ -102,13 +101,12 @@
                         <td>{{ beneficiary.identitynumber }}</td>
                         <td>{{ beneficiary.name }}</td>
                         <td>{{ beneficiary.surname }}</td>
-                        <td>{{ beneficiary.createddate  | date: "dd MMMM, yyyy HH:mm a" }}</td>
                         <td class="text-right">
-                          <a (click)="editbeneficiary(i, beneficiary.idbeneficiary, beneficiary.name, beneficiary.surname, beneficiary.identitynumber)"
+                          <a (click)="editbeneficiary(i, beneficiary.id, beneficiary.name, beneficiary.surname, beneficiary.identitynumber)"
                             class="btn btn-link btn-info btn-just-icon edit"><i class="material-icons"
                               [class.active]="i == selectedrow" data-toggle="tooltip" data-placement="down"
                               title="edit beneficiary details">edit</i></a>
-                          <a (click)="deleteBeneficiary(i, beneficiary.idbeneficiary, beneficiary.name, beneficiary.surname)"
+                          <a (click)="deleteBeneficiary(i, beneficiary.id, beneficiary.name, beneficiary.surname)"
                             class="btn btn-link btn-danger btn-just-icon remove"><i class="material-icons"
                               [class.active]="i == selectedrow" data-toggle="tooltip" data-placement="down"
                               title="remove beneficiary">delete</i></a>

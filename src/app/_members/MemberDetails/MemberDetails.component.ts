@@ -7,7 +7,6 @@ import { PolicystatusService } from 'src/app/services/policystatus/policystatus.
 import { ClaimService } from 'src/app/services/claim/claim.service'
 import { BeneficiaryService } from 'src/app/services/beneficiary/beneficiary.service'
 import { BalanceService } from 'src/app/services/balance/balance.service'
-import { PolicydetailsService } from 'src/app/services/policydetails/policydetails.service'
 import { LifestatusService } from 'src/app/services/lifestatus/lifestatus.service'
 import { UserService } from 'src/app/services/user/user.service'
 
@@ -17,7 +16,6 @@ import { Policystatus } from 'src/app/services/policystatus/policystatus'
 import { Claim } from 'src/app/services/claim/claim'
 import { Beneficiary } from 'src/app/services/beneficiary/beneficiary'
 import { Balance } from 'src/app/services/balance/balance'
-import { Policydetails } from 'src/app/services/policydetails/policydetails'
 import { Lifestatus } from 'src/app/services/lifestatus/lifestatus'
 import { User } from 'src/app/services/user/user'
 
@@ -65,11 +63,10 @@ export class MemberDetailsComponent implements OnInit {
 
   /////////////////////
   member: Member
-  beneficiary: Beneficiary
+  beneficiaries: Beneficiary[]
   claims
   user: User
   lifestatus
-  beneficiaries;
   policystatus
   //////////////////////////////
 
@@ -80,7 +77,6 @@ export class MemberDetailsComponent implements OnInit {
     private policystatusService: PolicystatusService,
     private lifestatusService: LifestatusService,
     private claimService: ClaimService,
-    private balanceService: BalanceService,
     private beneficiaryService: BeneficiaryService,
     private router: Router,
     private app: AppComponent) {
@@ -103,12 +99,12 @@ export class MemberDetailsComponent implements OnInit {
     this.user = JSON.parse(localStorage.getItem('user'))
 
 
-    if (!isNullOrUndefined(this.member.idpolicystatus)) {
+    if (!isNullOrUndefined(this.member.idpolicystatus) || this.member.idpolicystatus > 0) {
 
-      if (this.member.idpolicystatus = 2) {
+      if (this.member.idpolicystatus == 2) {
         this.policystatus_color = 'text-success'
       } else
-        if (this.member.idpolicystatus = 3) {
+        if (this.member.idpolicystatus == 3) {
           this.policystatus_color = 'text-danger'
 
         } else {
@@ -119,10 +115,10 @@ export class MemberDetailsComponent implements OnInit {
 
     if (!isNullOrUndefined(this.member.idlifestatus)) {
 
-      if (this.member.idlifestatus = 1) {
+      if (this.member.idlifestatus == 1) {
         this.lifestatus_color = 'text-success'
       } else
-        if (this.member.idlifestatus = 2) {
+        if (this.member.idlifestatus == 2) {
           this.lifestatus_color = 'text-danger'
 
         } else {
@@ -142,6 +138,25 @@ export class MemberDetailsComponent implements OnInit {
 
             this.policystatus = policystatus_res.name
 
+            this.beneficiaryService.getBeneficiarybyidmember(this.member.id)
+              .subscribe(beneficiary_res => {
+
+                console.log(beneficiary_res)
+
+                if (beneficiary_res.length > 0) {
+
+                  this.beneficiaries = beneficiary_res
+
+                  this.noBeneficiary = false
+                  
+                } else {
+                  this.noBeneficiary = true
+                }
+
+              }, err => {
+                console.log(err)
+              })
+
           }, err => {
             console.log(err)
           })
@@ -154,10 +169,6 @@ export class MemberDetailsComponent implements OnInit {
     console.log(this.user)
     console.log(this.member)
 
-    if (JSON.parse(localStorage.getItem('viewdetails')) != null) {
-
-
-    }
     ///  
 
 
@@ -216,7 +227,7 @@ export class MemberDetailsComponent implements OnInit {
     });
   }
 
-  // Edit a member
+  // goto Edit a member
   editMember() {
 
     localStorage.setItem('editmember', JSON.stringify(this.member));

@@ -15,7 +15,7 @@ const beneficiarybyidmemberUrl = "http://greenlinks1.dedicated.co.za:3002/api/be
  */
 
 const apiUrl = "http://greenlinks1.dedicated.co.za:3000/api/Beneficiaries";
-const beneficiarybyidmemberUrl = "http://greenlinks1.dedicated.co.za:3002/api/beneficiarybyidmember";
+const beneficiarybyidmemberUrl = "http://greenlinks1.dedicated.co.za:3000/api/Beneficiaries?filter=%7B%22where%22%3A%20%7B%22idmember%22%3A%203%7D%20%7D";
 
 @Injectable({
   providedIn: 'root'
@@ -54,11 +54,13 @@ export class BeneficiaryService {
   
 
   getBeneficiarybyidmember(id: number): Observable<Beneficiary[]> {
-    const url = `${beneficiarybyidmemberUrl}/${id}`;
-    return this.http.get<Beneficiary[]>(url).pipe(
+
+    return this.http.get<Beneficiary[]>("http://greenlinks1.dedicated.co.za:3000/api/Beneficiaries?filter=%7B%22where%22%3A%20%7B%22idmember%22%3A%20"+id+"%7D%20%7D")
+    .pipe(
       tap(_ => console.log(`fetched Beneficiary id=${id}`)),
-      catchError(this.handleError<Beneficiary[]>(`getBeneficiary id=${id}`))
+      catchError(this.handleError(`getBeneficiarybyidmember id=${id}`))
     );
+    
   }
 
   
@@ -91,6 +93,18 @@ export class BeneficiaryService {
 
 
 /**  A single object beneficiary
+ * OLD APIs
+ * 
+ * 
+  getBeneficiarybyidmember(id: number): Observable<Beneficiary[]> {
+    const url = `${beneficiarybyidmemberUrl}/${id}`;
+    return this.http.get<Beneficiary[]>(url).pipe(
+      tap(_ => console.log(`fetched Beneficiary id=${id}`)),
+      catchError(this.handleError<Beneficiary[]>(`getBeneficiary id=${id}`))
+    );
+  }
+
+ * 
  * 
   createBeneficiary (Beneficiary): Observable<Beneficiary> {
     return this.http.post<Beneficiary>(apiUrl, Beneficiary, httpOptions).pipe(
