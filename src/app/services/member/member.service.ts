@@ -29,7 +29,7 @@ const getmemberbysurnameUrl = "http://greenlinks1.dedicated.co.za:3002/api/getme
 const apiUrl = "http://greenlinks1.dedicated.co.za:3000/api/Members";
 const getmemberbyidentitynumberUrl = "http://greenlinks1.dedicated.co.za:3002/api/getmemberbyidentitynumber";
 const getmemberbymembershipnumberUrl = "http://greenlinks1.dedicated.co.za:3002/api/getmemberbymembershipnumber";
-const getmemberbysurnameUrl = "http://greenlinks1.dedicated.co.za:3002/api/getmemberbysurname";
+const getmemberbysurnameUrl = "http://greenlinks1.dedicated.co.za:3000/api/Members?filter=%7B%22where%22%3A%20%7B%22surname%22%3A%20%22joko%22%7D%20%7D";
 
 
 @Injectable({
@@ -59,39 +59,29 @@ export class MemberService {
       );
   }
   
-  getMemberbyidentitynumber(id: number): Observable<Members> {
-    const url = `${getmemberbyidentitynumberUrl}/${id}`;
-    return this.http.get<Members>(url).pipe(
-      tap(_ => console.log(`fetched member id=${id}`)),
-      catchError(this.handleError<Members>(`getMemberbyidentitynumber id=${id}`))
-    );
+  getMemberbyidentitynumber (id: any): Observable<Member[]> {
+    return this.http.get<Member[]>("http://greenlinks1.dedicated.co.za:3000/api/Members?filter=%7B%22where%22%3A%20%7B%22identitynumber%22%3A%20%22"+id+"%22%7D%20%7D")
+      .pipe(
+        tap(_ => console.log(`fetched member id=${id}`)),
+        catchError(this.handleError(`getMemberbyidentitynumber id=${id}`))
+      );
   }
 
     
-  getMemberbymembershipnumber(id: number): Observable<Members> {
-    const url = `${getmemberbymembershipnumberUrl}/${id}`;
-    return this.http.get<Members>(url).pipe(
-      tap(_ => console.log(`fetched member id=${id}`)),
-      catchError(this.handleError<Members>(`getMember id=${id}`))
-    );
+  getMemberbymembershipnumber (id: any): Observable<Member[]> {
+    return this.http.get<Member[]>("http://greenlinks1.dedicated.co.za:3000/api/Members?filter=%7B%22where%22%3A%20%7B%22membershipnumber%22%3A%20%22"+id+"%22%7D%20%7D")
+      .pipe(
+        tap(_ => console.log(`fetched member id=${id}`)),
+        catchError(this.handleError(`getMemberbymembershipnumber id=${id}`))
+      );
   }
 
-    
-  getMemberbysurname(id: number): Observable<Members> {
-    const url = `${getmemberbysurnameUrl}/${id}`;
-    return this.http.get<Members>(url).pipe(
-      tap(_ => console.log(`fetched member id=${id}`)),
-      catchError(this.handleError<Members>(`getMemberbysurname id=${id}`))
-    );
-  }
-
-     
-  getMemberbysurname1(id: number): Observable<Members> {
-    const url = `${getmemberbysurnameUrl}/${id}`;
-    return this.http.get<Members>(url).pipe(
-      tap(_ => console.log(`fetched member id=${id}`)),
-      catchError(this.handleError<Members>(`getMemberbysurname id=${id}`))
-    );
+  getMemberbysurname (id: any): Observable<Member[]> {
+    return this.http.get<Member[]>("http://greenlinks1.dedicated.co.za:3000/api/Members?filter=%7B%22where%22%3A%20%7B%22surname%22%3A%20%22"+id+"%22%7D%20%7D")
+      .pipe(
+        tap(_ => console.log(`fetched member id=${id}`)),
+        catchError(this.handleError(`getMemberbysurname id=${id}`))
+      );
   }
 
     
@@ -135,7 +125,34 @@ export class MemberService {
 
 
 /**
+ *  OLD APIs
  * 
+ *   
+  getMemberbyidentitynumber(id: number): Observable<Members> {
+    const url = `${getmemberbyidentitynumberUrl}/${id}`;
+    return this.http.get<Members>(url).pipe(
+      tap(_ => console.log(`fetched member id=${id}`)),
+      catchError(this.handleError<Members>(`getMemberbyidentitynumber id=${id}`))
+    );
+  }
+
+    
+  getMemberbymembershipnumber(id: number): Observable<Members> {
+    const url = `${getmemberbymembershipnumberUrl}/${id}`;
+    return this.http.get<Members>(url).pipe(
+      tap(_ => console.log(`fetched member id=${id}`)),
+      catchError(this.handleError<Members>(`getMember id=${id}`))
+    );
+  }
+ * 
+ *   getMemberbysurname(id: number): Observable<Members> {
+    const url = `${getmemberbysurnameUrl}/${id}`;
+    return this.http.get<Members>(url).pipe(
+      tap(_ => console.log(`fetched member id=${id}`)),
+      catchError(this.handleError<Members>(`getMemberbysurname id=${id}`))
+    );
+  }
+
  * 
  *   
   updateMember (id, member): Observable<any> {

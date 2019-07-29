@@ -71,13 +71,13 @@ export class ViewMembersComponent implements OnInit, AfterViewInit {
   }
 
   //Search for member
-  searchMember(searchInput, selectedSearchType) {
+  searchMember(searchInput: string, selectedSearchType) {
 
     this.isEmpty = false
     this.searchResult = false
     this.notFound = false
 
-    if (searchInput == '' || isNullOrUndefined(searchInput)) {
+    if (searchInput == '' || isNullOrUndefined(searchInput.trim())) {
 
       this.searchResult = false
       this.notFound = false
@@ -87,56 +87,29 @@ export class ViewMembersComponent implements OnInit, AfterViewInit {
 
       this.isEmpty = false
       this.searchResult = false
-      this.notFound = false
+      this.notFound = false 
 
-      this.memberService.getMembers()
-        .subscribe(members_res => {
-
-          if ( members_res.length > 0 ) {  
-            console.log('search all')
-                        
-          this.members = members_res
-
-            this.app.loading = false
-            this.notFound = false
-            this.searchResult = true
-
-          } else {
-
-            console.log('NO MEMBERS FOUND')
-            this.app.loading = false
-            this.searchResult = false
-            this.notFound = true
-
-          }
-
-        }, err => {
-          console.log(err)
-        })
-
-      /*
+   
             if (selectedSearchType == 'Membership Number') {
       
               this.app.loading = true
       
-              this.memberService.getMemberbymembershipnumber(searchInput)
-                .subscribe(member_res => {
+              this.memberService.getMemberbymembershipnumber(searchInput.trim())
+                .subscribe(members_res => { 
+                  
+                  console.log(members_res)
       
-                  this.members = member_res.mainmember
-      
-                  console.log(member_res)
-      
-                  if (!isNullOrUndefined(this.members)) { // if (this.members.length > 0)
-                    console.log('Search By Membership Number')
-                    let x = 0;
-      
-      
+                  if (members_res.length > 0) { 
+                    
+                    console.log('Search members By Membership Number')
+                    
+                    this.members = members_res      
+       
                     this.app.loading = false
                     this.notFound = false
                     this.searchResult = true
       
-                  } else {
-      
+                  } else {      
                     console.log('NO MEMBERS FOUND')
                     this.app.loading = false
                     this.searchResult = false
@@ -150,17 +123,18 @@ export class ViewMembersComponent implements OnInit, AfterViewInit {
             } else
               if (selectedSearchType == 'Surname') {
       
-                console.log('Search By Surname')
                 this.app.loading = true
-      
-                this.memberService.getMemberbysurname(searchInput)
-                  .subscribe(member_res => {
-      
-                    this.members = member_res.mainmember
-      
-                    console.log(member_res)
+                
+                this.memberService.getMemberbysurname(searchInput.trim())
+                  .subscribe(members_res => {       
                     
-                    if (!isNullOrUndefined(this.members)) { //if (this.members.length > 0)
+                    console.log(members_res)
+                    
+                    if ( members_res.length > 0 ) { 
+
+                      console.log('Search members By Surname')
+                      
+                      this.members = members_res
       
                       this.app.loading = false
                       this.notFound = false
@@ -180,25 +154,24 @@ export class ViewMembersComponent implements OnInit, AfterViewInit {
               } else
                 if (searchInput.length == 13) {
       
-                  this.app.loading = true
+                  this.app.loading = true      
       
+                  this.memberService.getMemberbyidentitynumber(searchInput.trim())
+                    .subscribe(members_res => {       
       
-                  this.memberService.getMemberbyidentitynumber(searchInput)
-                    .subscribe(member_res => {
+                      console.log(members_res)
       
-                      this.members = member_res.mainmember
-      
-                      console.log(member_res)
-      
-                      if (!isNullOrUndefined(this.members)) {
-                        console.log('Search by Id number')
+                      if ( members_res.length > 0 ) {
+
+                        console.log('Search members by Id number')
+
+                        this.members = members_res
       
                         this.app.loading = false
                         this.notFound = false
                         this.searchResult = true
       
                       } else {
-      
                         console.log('NO MEMBERS FOUND')
                         this.app.loading = false
                         this.searchResult = false
@@ -213,8 +186,7 @@ export class ViewMembersComponent implements OnInit, AfterViewInit {
                 } else {
                   this.invalidID = true;
                   this.app.loading = false
-                }
-      */
+                } 
 
     }
 

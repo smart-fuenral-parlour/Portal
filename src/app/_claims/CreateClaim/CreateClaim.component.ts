@@ -70,8 +70,7 @@ export class CreateClaimComponent implements OnInit {
         this.memberService.getMemberbysurname(searchInput)
           .subscribe(surnameSearch_res => {
 
-            this.members = surnameSearch_res.mainmember
-            this.beneficiary = surnameSearch_res.beneficiary
+
 
             if (!isNullOrUndefined(this.members)) { //  if (this.members.length > 0)
               console.log(this.members)
@@ -96,7 +95,7 @@ export class CreateClaimComponent implements OnInit {
           this.memberService.getMemberbyidentitynumber(searchInput)
             .subscribe(identitynumberSearch_res => {
 
-              this.members = identitynumberSearch_res.mainmember
+              
 
               if (!isNullOrUndefined(this.members)) { //  if (this.members.length > 0)
                 console.log(this.members)
