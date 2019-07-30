@@ -76,7 +76,6 @@ policy = new Policytype
                 swal(
                     {
                         title: 'New Policy Created',
-                        //text: 'Policytype Deleted',
                         type: 'success',
                         confirmButtonClass: "btn btn-success",
                         buttonsStyling: false

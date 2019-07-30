@@ -1,4 +1,4 @@
-{
+{ // "baseUrl": "src",
   "compileOnSave": false,
   "compilerOptions": {
     "baseUrl": "./",

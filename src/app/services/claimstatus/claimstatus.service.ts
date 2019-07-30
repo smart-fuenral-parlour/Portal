@@ -5,9 +5,15 @@ import { Claimstatus } from './claimstatus';
 import { Injectable } from '@angular/core';
 
 const httpOptions = {
-  headers: new HttpHeaders({'Content-Type': 'application/json'})
+  headers: new HttpHeaders({ 'Content-Type': 'application/json' })
 };
-const apiUrl = "http://greenlinks1.dedicated.co.za:3002/api/claimstatus";
+
+/**
+ * const apiUrl = "http://greenlinks1.dedicated.co.za:3002/api/claimstatus";
+ */
+
+
+const apiUrl = "http://greenlinks1.dedicated.co.za:3000/api/Claimstatuses";
 
 @Injectable({
   providedIn: 'root'
@@ -16,19 +22,19 @@ export class ClaimstatusService {
 
   constructor(private http: HttpClient) { }
 
-  private handleError<T> (operation = 'operation', result?: T) {
+  private handleError<T>(operation = 'operation', result?: T) {
     return (error: any): Observable<T> => {
-  
+
       // TODO: send the error to remote logging infrastructure
       console.error(error); // log to console instead
-  
+
       // Let the app keep running by returning an empty result.
       return of(result as T);
     };
   }
 
-  
-  getClaimstatuses (): Observable<Claimstatus[]> {
+
+  getClaimstatuses(): Observable<Claimstatus[]> {
     return this.http.get<Claimstatus[]>(apiUrl)
       .pipe(
         tap(heroes => console.log('fetched claimstatus')),
@@ -37,7 +43,7 @@ export class ClaimstatusService {
   }
 
 
-  
+
   getClaimstatus(id: number): Observable<Claimstatus> {
     const url = `${apiUrl}/${id}`;
     return this.http.get<Claimstatus>(url).pipe(
@@ -45,28 +51,28 @@ export class ClaimstatusService {
       catchError(this.handleError<Claimstatus>(`getClaimstatus id=${id}`))
     );
   }
-  
 
 
 
-  createClaimstatus (claimstatus): Observable<Claimstatus> {
+
+  createClaimstatus(claimstatus): Observable<Claimstatus> {
     return this.http.post<Claimstatus>(apiUrl, claimstatus, httpOptions).pipe(
-      tap((claimstatus: Claimstatus) => console.log(`added claimstatus w/`+claimstatus)),
+      tap((claimstatus: Claimstatus) => console.log(`added claimstatus w/` + claimstatus)),
       catchError(this.handleError<Claimstatus>('addClaimstatus'))
     );
   }
-  
-  updateClaimstatus (id, claimstatus): Observable<any> {
+
+  updateClaimstatus(id, claimstatus): Observable<any> {
     const url = `${apiUrl}/${id}`;
     return this.http.put(url, claimstatus, httpOptions).pipe(
-      tap(_ => console.log(`updated claimstatus`+claimstatus)),
+      tap(_ => console.log(`updated claimstatus` + claimstatus)),
       catchError(this.handleError<any>('updateClaimstatus'))
     );
   }
-  
-  deleteClaimstatus (id): Observable<Claimstatus> {
+
+  deleteClaimstatus(id): Observable<Claimstatus> {
     const url = `${apiUrl}/${id}`;
-  
+
     return this.http.delete<Claimstatus>(url, httpOptions).pipe(
       tap(_ => console.log(`deleted claimstatus`)),
       catchError(this.handleError<Claimstatus>('deleteClaimstatus'))

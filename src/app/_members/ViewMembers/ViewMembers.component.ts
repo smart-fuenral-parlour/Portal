@@ -1,6 +1,5 @@
 import { Component, OnInit, AfterViewInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { ServiceService } from 'src/app/SERVICE/service.service'; // service link here
 
 ///////////////////// SERVICE CALLS  ///////////////////////////////////////////
 import { MemberService } from 'src/app/services/member/member.service'

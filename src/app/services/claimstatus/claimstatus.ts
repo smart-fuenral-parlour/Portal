@@ -1,5 +1,4 @@
-export class Claimstatus
-  {
-    name: string;
-    reason:string;
+export class Claimstatus {
+  id: number;
+  name: string;
 }
