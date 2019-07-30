@@ -109,13 +109,12 @@ export class MemberService {
 
 
   
-  updateMembers (member): Observable<Member> {
-
-    return this.http.patch<Member>(apiUrl, member,patchhttpOptions).pipe(
-      tap((member: Member) => console.log(`updated member`+member)),
-      catchError(this.handleError<Member>('updateMember'))
+  updateMember (id, member): Observable<any> {
+    const url = `${apiUrl}/${id}`;
+    return this.http.patch(url, member, httpOptions).pipe(
+      tap(_ => console.log(`updated member`+member)),
+      catchError(this.handleError<any>('updateMember'))
     );
-
   }
 
 

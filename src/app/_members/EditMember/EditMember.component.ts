@@ -85,8 +85,9 @@ export class EditMemberComponent implements OnInit {
         this.app.loading = true
 
 //this.getmember.id, this.members[index]
-        this.memberService.updateMembers(this.setmember)
+        this.memberService.updateMember(this.getmember.id,this.setmember)
           .subscribe(member_res => {
+            
             console.log(member_res)
 
           }, err => {

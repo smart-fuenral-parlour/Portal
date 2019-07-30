@@ -45,11 +45,11 @@ export class ClaimstatusService {
 
 
 
-  getClaimstatus(id: number): Observable<Claimstatus> {
+  getClaimstatus(id: number): Observable<Claimstatus[]> {
     const url = `${apiUrl}/${id}`;
-    return this.http.get<Claimstatus>(url).pipe(
+    return this.http.get<Claimstatus[]>(url).pipe(
       tap(_ => console.log(`fetched claimstatus id=${id}`)),
-      catchError(this.handleError<Claimstatus>(`getClaimstatus id=${id}`))
+      catchError(this.handleError<Claimstatus[]>(`getClaimstatus id=${id}`))
     );
   }
 
