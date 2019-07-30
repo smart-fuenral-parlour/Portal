@@ -1,11 +1,10 @@
 import { Component, OnInit, SimpleChanges } from '@angular/core';
 import { AppComponent } from 'src/app/app.component'
-import { ServiceService } from 'src/app/SERVICE/service.service'; // service link here
 import { Router } from '@angular/router'
+import * as moment from 'moment';
 
 //////////////////////////////////////   SERVICE CALLS   //////////////////////////////////////////////////////////
 import { MemberService } from 'src/app/services/member/member.service'
-import { PolicydetailsService } from 'src/app/services/policydetails/policydetails.service'
 import { ClaimService } from 'src/app/services/claim/claim.service'
 import { PayouttypeService } from 'src/app/services/payouttype/payouttype.service'
 import { BeneficiaryService } from 'src/app/services/beneficiary/beneficiary.service'
@@ -15,7 +14,6 @@ import { ClaimtypeService } from 'src/app/services/claimtype/claimtype.service'
 
 ////////////////////////////////////////    MODEL CLASS CALLs   //////////////////////////////////////////////////
 import { Member } from 'src/app/services/member/member'
-import { Policydetails } from 'src/app/services/policydetails/policydetails'
 import { Claim } from 'src/app/services/claim/claim'
 import { User } from 'src/app/services/user/user'
 import { Payouttype } from 'src/app/services/payouttype/payouttype'
@@ -27,9 +25,9 @@ import { Claimtype } from 'src/app/services/claimtype/claimtype'
 
 import { FormControl, FormGroupDirective, NgForm, Validators, FormGroup } from '@angular/forms';
 import { FormBuilder } from '@angular/forms';
-import { ThrowStmt } from '@angular/compiler';
 import { isNullOrUndefined } from 'util';
 import swal from 'sweetalert2';
+import { subscribeOn } from 'rxjs/operators';
 
 
 
@@ -42,7 +40,6 @@ import swal from 'sweetalert2';
 export class CreateClaimFormComponent implements OnInit {
 
   member: Member
-  policydetails: Policydetails
   setclaim = new Claim
   user: User
   beneficiaries: Beneficiary[]
@@ -57,7 +54,6 @@ export class CreateClaimFormComponent implements OnInit {
     private router: Router,
     private claimstatusService: ClaimstatusService,
     private claimtypeService: ClaimtypeService,
-    private policydetailsService: PolicydetailsService,
     private payouttypeService: PayouttypeService,
     private beneficiaryService: BeneficiaryService,
     private claimService: ClaimService,
@@ -79,9 +75,15 @@ export class CreateClaimFormComponent implements OnInit {
 
     console.log(this.member)
 
-    this.payouttypeService.getPayouttypes()
-      .subscribe(payouttype_res => {
-        this.payouttypes = payouttype_res
+
+    this.beneficiaryService.getBeneficiarybyidmember(this.member.id)
+      .subscribe(beneficiaries_res => {
+
+        if (beneficiaries_res.length > 0) {
+
+          this.beneficiaries = beneficiaries_res
+
+        }
 
       }, err => {
         console.log(err)
@@ -90,12 +92,14 @@ export class CreateClaimFormComponent implements OnInit {
   }
 
   createClaim() {
-    
+    let newDate = new Date
 
     this.setclaim.idclaimstatus = 1
-    this.setclaim.idmember = this.member.id
-    this.setclaim.membershipnumber = this.member.membershipnumber
-    this.setclaim.createdby = (this.user.name+ " " +this.user.surname)
+    this.setclaim.id = 0
+    this.setclaim.claimnumber = ('CN' + (newDate).getMilliseconds().toString().slice(0, 3) + (this.setclaim.deceasedidnumber).toString().slice(6, 9))
+    this.setclaim.createddate = moment.parseZone(newDate).utc().format()
+    this.setclaim.createdby = (this.user.name + " " + this.user.surname)
+    this.setclaim.deathcertificate = 'file.pdf'
 
     console.log(this.setclaim)
 
@@ -135,6 +139,35 @@ export class CreateClaimFormComponent implements OnInit {
     })
 
 
+
+  }
+
+  testit() {
+
+    let newDate = new Date
+
+    this.setclaim.idclaimstatus = 1
+    this.setclaim.id = 0
+    this.setclaim.claimnumber = ('CN' + (newDate).getMilliseconds().toString().slice(0, 3) + (this.setclaim.deceasedidnumber).toString().slice(6, 9))
+    this.setclaim.createddate = moment.parseZone(newDate).utc().format()
+    this.setclaim.createdby = (this.user.name + " " + this.user.surname)
+    this.setclaim.deathcertificate = 'file.pdf'
+    this.setclaim.deathofdeath = moment.parseZone(this.setclaim.deathofdeath).utc().format()
+    this.setclaim.proposedburialdate = moment.parseZone(this.setclaim.proposedburialdate).utc().format()
+    this.setclaim.informantname = 'Tebogo'
+    this.setclaim.informantsurname = 'Mollo'
+    this.setclaim.informantidentitynumber = '1232132132156'
+    
+
+
+    this.claimService.createClaim(this.setclaim)
+      .subscribe(claim_res => {
+        console.log(claim_res)
+      }, err => {
+        console.log(err)
+      })
+
+    console.log(this.setclaim)
 
   }
 

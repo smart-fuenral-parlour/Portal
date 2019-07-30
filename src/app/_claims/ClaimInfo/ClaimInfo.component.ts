@@ -51,7 +51,7 @@ export class ClaimInfoComponent implements OnInit {
     this.user = JSON.parse(localStorage.getItem('user'));
     console.log(this.getclaim)
   }
-
+/*
   approveClaim() {
     this.setclaim.idclaimstatus = 2
     this.setclaimaudit.reason = '<CLAIM APPROVED>'
@@ -86,7 +86,10 @@ export class ClaimInfoComponent implements OnInit {
     console.log(this.setclaimaudit)
     //this.claimService.updateClaim(this.getclaim.idclaim, this.setclaim)
   }
+  */
 
+
+  /*
   declineClaim() {
 
     swal({
@@ -135,7 +138,7 @@ export class ClaimInfoComponent implements OnInit {
 
 
   }
-
+*/
 
 
 }

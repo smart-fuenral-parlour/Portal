@@ -4,7 +4,6 @@ import { FormControl, FormGroupDirective, NgForm, Validators, FormArray, FormGro
 import { ErrorStateMatcher } from '@angular/material/core';
 import { Router } from '@angular/router';
 import swal from 'sweetalert2';
-import { Moment } from 'moment'
 
 ///////////////////// MY SERVICE CALL ///////////////////
 import { MemberService } from 'src/app/services/member/member.service'
@@ -539,35 +538,6 @@ export class CreateMemberComponent implements OnInit {
 
     showit() {
 
-
-        if (this.unhideBeneficiaryForm) {
-
-
-
-            // creating beneficiary
-            for (let x = 0; x < this.BeneficiaryForm.length; x++) {
-
-                let BeneficiaryName
-                let BeneficiarySurname
-                let BeneficiaryIdNumber
-
-                BeneficiaryName = document.querySelector('#beneficiaryName' + x)
-                BeneficiarySurname = document.querySelector('#beneficiarySurname' + x)
-                BeneficiaryIdNumber = document.querySelector('#beneficiaryID' + x)
-
-                this.setbeneficiary.name = BeneficiaryName.value
-                this.setbeneficiary.surname = BeneficiarySurname.value
-                this.setbeneficiary.identitynumber = BeneficiaryIdNumber.value
-                this.setbeneficiary.idlifestatus = 1
-                this.setbeneficiary.id = 0
-                this.setbeneficiary.idmember = 3
-
-
-                console.log(this.setbeneficiary)
-
-            }
-
-        }
 
     }
     finishCreate() {
