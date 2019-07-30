@@ -6,7 +6,7 @@ import { MemberService } from 'src/app/services/member/member.service'
 
 
 ///////////////////////////////////////////   MODEL CLASS CALL   ///////////////////////////////////////////////////////////////////
-import { Members } from 'src/app/services/member/member'
+import { Member } from 'src/app/services/member/member'
 
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -29,9 +29,8 @@ export class CreateClaimComponent implements OnInit {
 
   selectedSearchType
   searchText = 'ID Number'
-
-  mainmember: Members // Member
-  members //=  this.mainmember.mainmember
+  
+  members: Member[]
   beneficiary
 
   constructor(private app: AppComponent, private memberService: MemberService, private _service: ServiceService, private _router: Router) { }
@@ -65,15 +64,16 @@ export class CreateClaimComponent implements OnInit {
       this.searchResult = false
       this.notFound = false
 
+
       if (this.selectedSearchType == 'Surname') {
 
         this.memberService.getMemberbysurname(searchInput)
-          .subscribe(surnameSearch_res => {
+          .subscribe(member_res => {
 
 
+            if (member_res.length > 0) { 
 
-            if (!isNullOrUndefined(this.members)) { //  if (this.members.length > 0)
-              console.log(this.members)
+              this.members = member_res            
 
               console.log('Search By Surname')
               this.notFound = false
@@ -93,12 +93,13 @@ export class CreateClaimComponent implements OnInit {
       } else
         if (searchInput.length == 13) {
           this.memberService.getMemberbyidentitynumber(searchInput)
-            .subscribe(identitynumberSearch_res => {
-
+            .subscribe(members_res => {
               
 
-              if (!isNullOrUndefined(this.members)) { //  if (this.members.length > 0)
-                console.log(this.members)
+              if (members_res.length > 0) { //  if (this.members.length > 0)
+                
+                this.members = members_res
+
                 console.log('Search By ID Number')
                 this.isEmpty = false
                 this.notFound = false
@@ -137,10 +138,7 @@ export class CreateClaimComponent implements OnInit {
 
   // Create Claim
   createClaim(index) {
-
-    console.log(this.members)
-    localStorage.setItem('member', JSON.stringify(this.members));// this.members[index]
-    localStorage.setItem('beneficiary', JSON.stringify(this.beneficiary) )
+    localStorage.setItem('member', JSON.stringify(this.members[index]));//     
     this._router.navigate(['/claims/createclaimformember']);
   }
 

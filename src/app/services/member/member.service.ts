@@ -1,19 +1,23 @@
 import { Observable, of, throwError } from 'rxjs';
 import { HttpClient, HttpHeaders, HttpErrorResponse } from '@angular/common/http';
 import { catchError, tap, map } from 'rxjs/operators';
-import { Member, Members } from './member';
+import { Member } from './member';
 import { Injectable } from '@angular/core';
+import { cors } from 'cors'
 
 const httpOptions = {
   headers: new HttpHeaders({'Content-Type': 'application/json'})
 };
 
+
+// XMLHttpRequest
 const patchhttpOptions = {
   headers: new HttpHeaders({
-    'Content-Type': 'application/json',
+    'Content-Type': 'raw',
     'responseType': 'json',
     'Access-Control-Allow-Origin': '*',
-    'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, PATCH, OPTIONS',
+    'Access-Control-Allow-Methods': ' PATCH, GET, POST, PUT, DELETE, OPTIONS',
+    'Access-Control-Max-Age': '86400',
     'Access-Control-Allow-Headers': 'X-Requested-With, content-type, Authorization'
   })
 };
@@ -38,6 +42,8 @@ const getmemberbysurnameUrl = "http://greenlinks1.dedicated.co.za:3000/api/Membe
 export class MemberService {
 
   constructor(private http: HttpClient) { }
+
+
 
   private handleError<T> (operation = 'operation', result?: T) {
     return (error: any): Observable<T> => {
@@ -105,7 +111,7 @@ export class MemberService {
   
   updateMembers (member): Observable<Member> {
 
-    return this.http.patch<Member>(apiUrl, member, patchhttpOptions).pipe(
+    return this.http.patch<Member>(apiUrl, member,patchhttpOptions).pipe(
       tap((member: Member) => console.log(`updated member`+member)),
       catchError(this.handleError<Member>('updateMember'))
     );
