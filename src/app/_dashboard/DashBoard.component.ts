@@ -25,10 +25,10 @@ declare const $: any;
 })
 export class DashBoardComponent implements OnInit {
 
-  membercount 
-  appovedclaims
-  declinedclaims
-  pendingclaims
+  membercount = 0
+  appovedclaims = 0
+  declinedclaims = 0
+  pendingclaims = 0
   user: User
 
   constructor(private countService: CountService,
@@ -40,11 +40,42 @@ export class DashBoardComponent implements OnInit {
     this.countService.getmemberCount()
       .subscribe(membercount_res => {
 
-        if(!isNullOrUndefined(membercount_res)){
+        if(!isNullOrUndefined(membercount_res)  || membercount_res.count > 0){
           this.membercount = membercount_res.count
-        } else {
-          this.membercount = "Undefined"
         }
+
+        this.countService.getapprovedclaimsCount()
+          .subscribe(approved_res => {
+
+            if(!isNullOrUndefined(approved_res)  || approved_res.count > 0){
+              this.appovedclaims = approved_res.count
+            }
+
+            this.countService.getpendingclaimsCount()
+              .subscribe(pending_res => {
+
+                if(!isNullOrUndefined(pending_res)  || pending_res.count > 0){
+                  this.pendingclaims = pending_res.count
+                }
+
+                this.countService.getdeclinedclaimsCount()
+                  .subscribe(declined_res => {
+
+                    if(!isNullOrUndefined(declined_res)  || declined_res.count > 0){
+                      this.declinedclaims = declined_res.count
+                    }
+
+                  }, err => {
+                    console.log(err)
+                  })
+
+              }, err => {
+                console.log(err)
+              })
+
+          }, err => {
+            console.log(err)
+          })
         
       }, err => {
         console.log(err)

@@ -18,10 +18,9 @@ const pendingclaimsUrl = "http://greenlinks1.dedicated.co.za:3002/api/pendingcla
  */
 
 const membercountUrl = "http://greenlinks1.dedicated.co.za:3000/api/Members/count";
-
-const declinedclaimsUrl = "http://greenlinks1.dedicated.co.za:3002/api/declinedclaimscount";
-const approvedclaimsUrl = "http://greenlinks1.dedicated.co.za:3002/api/approvedclaimscount";
-const pendingclaimsUrl = "http://greenlinks1.dedicated.co.za:3002/api/pendingclaimscount";
+const declinedclaimsUrl = "http://greenlinks1.dedicated.co.za:3000/api/Claims/count?where=%7B%22id%22%3A%203%7D";
+const approvedclaimsUrl = "http://greenlinks1.dedicated.co.za:3000/api/Claims/count?where=%7B%22id%22%3A%202%7D";
+const pendingclaimsUrl = "http://greenlinks1.dedicated.co.za:3000/api/Claims/count?where=%7B%22id%22%3A%201%7D";
 
 @Injectable({
   providedIn: 'root'
@@ -57,7 +56,7 @@ export class CountService {
     const url = `${pendingclaimsUrl}`;
     return this.http.get<Count>(url).pipe(
       tap(_ => console.log(`fetched count id=`)),
-      catchError(this.handleError<Count>(`getCount id=`))
+      catchError(this.handleError<Count>(`getpendingclaimsCount`))
     );
   }
 
@@ -65,15 +64,15 @@ export class CountService {
     const url = `${approvedclaimsUrl}`;
     return this.http.get<Count>(url).pipe(
       tap(_ => console.log(`fetched count id=`)),
-      catchError(this.handleError<Count>(`getCount `))
+      catchError(this.handleError<Count>(`getapprovedclaimsCount `))
     );
   }
 
   getdeclinedclaimsCount(): Observable<Count> {
     const url = `${declinedclaimsUrl}`;
     return this.http.get<Count>(url).pipe(
-      tap(_ => console.log(`fetched count `)),
-      catchError(this.handleError<Count>(`getCount `))
+      tap(_ => console.log(`fetched count id=`)),
+      catchError(this.handleError<Count>(`getdeclinedclaimsCount `))
     );
   }
   
