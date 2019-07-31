@@ -27,7 +27,7 @@ export class EditMemberComponent implements OnInit {
 
   constructor(private app: AppComponent,
     private memberService: MemberService,
-    private router: Router) {  }
+    private router: Router) { }
 
   Provinces = [
     { value: 'Gauteng', abrv: 'GP' },
@@ -51,8 +51,8 @@ export class EditMemberComponent implements OnInit {
     this.app.loading = true
 
     this.getmember = JSON.parse(localStorage.getItem('editmember'))
-    console.log(this.getmember.id)    
-    this.setmember.id = this.getmember.id
+    console.log(this.getmember.id)
+
 
     if (JSON.parse(localStorage.getItem('editmember')) != null) {
 
@@ -84,32 +84,33 @@ export class EditMemberComponent implements OnInit {
       if (result.value) {
         this.app.loading = true
 
-//this.getmember.id, this.members[index]
-        this.memberService.updateMember(this.getmember.id,this.setmember)
+        //this.getmember.id, this.members[index]
+        this.memberService.updateMember(this.getmember.id, this.setmember)
           .subscribe(member_res => {
-            
+
             console.log(member_res)
+
+            swal(
+              {
+                title: 'Member Updated',
+                type: 'success',
+                confirmButtonClass: "btn btn-success",
+                buttonsStyling: false
+
+              }).then((result) => {
+
+                if (sessionStorage.getItem('fromMemberDetails') == 'true') {
+
+                  this.router.navigate(['/members/viewmemberdetails'])
+                } else {
+                  this.router.navigate(['/members/searchmember'])
+                }
+              })
 
           }, err => {
             console.log(err)
           })
 
-
-        swal(
-          {
-            title: 'Member Updated',
-            type: 'success',
-            confirmButtonClass: "btn btn-success",
-            buttonsStyling: false
-
-          }).then((result) => { 
-            
-            if (sessionStorage.getItem('fromMemberDetails') == 'true') {
-
-               this.router.navigate(['/members/viewmemberdetails']) 
-              } else {
-                 this.router.navigate(['/members/searchmember']) 
-                }})
       }
     })
 
