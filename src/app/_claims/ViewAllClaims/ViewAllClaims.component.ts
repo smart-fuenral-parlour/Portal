@@ -55,7 +55,12 @@ export class ViewAllClaimsComponent implements OnInit {
 
     this.claimstatusService.getClaimstatuses()
       .subscribe(claimstatus_res => {
+
+        if(claimstatus_res.length > 0) {
+          
         this.claimstatuses = claimstatus_res
+
+        }
       }, err => {
         console.log(err)
       })
@@ -71,7 +76,7 @@ export class ViewAllClaimsComponent implements OnInit {
     this.table = false
     this.isEmpty = false
 
-    if ( isNullOrUndefined(this.selectedClaimType)) {
+    if ( isNullOrUndefined(this.selectedClaimType) || this.selectedClaimType == '') {
       console.log('empty')
 
       this.notFound = false
@@ -83,6 +88,7 @@ export class ViewAllClaimsComponent implements OnInit {
       this.notFound = false
       this.table = false
       this.isEmpty = false
+
 
       if (this.selectedClaimType == -1) {
 
@@ -111,20 +117,22 @@ export class ViewAllClaimsComponent implements OnInit {
 
       } else {
 
-        console.log('get by status')
+        console.log('get by status') 
 
-        // get claim by the cllaim status id
+        // get claim by the claim status id
         this.claimService.getClaimbyclaimstatus(this.selectedClaimType)
           .subscribe(claim_res => {
 
-            this.claims = claim_res
-            console.log(this.claims)
-            this.app.loading = false
+            
 
-            if (this.claims.length > 0) {
+            if (claim_res.length > 0) {
+
+              this.claims = claim_res              
+
               this.notFound = false
               this.table = true
             } else {
+
               this.table = false
               this.notFound = true
 
@@ -146,7 +154,6 @@ export class ViewAllClaimsComponent implements OnInit {
 
   // View claims info
   claimInfo(index) {
-
     localStorage.setItem('claiminfo', JSON.stringify(this.claims[index]));
     this.router.navigate(['/claims/claiminfo']);
   }

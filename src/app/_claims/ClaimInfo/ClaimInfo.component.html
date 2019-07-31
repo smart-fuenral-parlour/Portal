@@ -7,23 +7,23 @@
         <div class="card ">
           <div class="card-body">
             <form>
-              <div class="col-8">
+              <div class="col-12">
                 <div class="form-group text-center">
-                  <h5 class="card-title">Claim No: <b>{{getclaim.idclaim}}</b></h5>
+                  <h5 class="card-title text-center">Claim No: <b class="text-primary">{{getclaim.claimnumber}}</b></h5>
                 </div>
               </div>
               <div class="row">
                 <div class="col-md-6">
                   <div class="form-group">
                     <label class="bmd-label-floating">Created by</label>
-                    <input type="text" readonly class="form-control" placeholder=" {{ user.name |  titlecase }}   {{ user.surname |  titlecase }} ">
+                    <input type="text" readonly class="form-control text-center" placeholder="{{getclaim.createdby}}"> <!--  {{ user.name |  titlecase }}   {{ user.surname |  titlecase }}   -->
                   </div>
                 </div>
 
                 <div class="col-md-6">
                   <div class="form-group">
                     <label class="bmd-label-floating">Created date</label>
-                    <input type="text" readonly class="form-control" placeholder=" {{ getclaim.createddate |  date: 'dd MMMM, yyyy  HH:MM a' }}">
+                    <input type="text" readonly class="form-control text-center" placeholder=" {{ getclaim.createddate |  date: 'dd MMMM, yyyy  HH:MM a' }}">
                   </div>
                 </div>
               </div>
@@ -33,14 +33,14 @@
                   <div class="col-md-6">
                     <div class="form-group">
                       <label class="bmd-label-floating">Date of death</label>
-                      <input type="text" readonly class="form-control" placeholder=" {{ getclaim.dateofdeath | date: 'dd MMMM, yyyy  HH:MM a' }}">
+                      <input type="text" readonly class="form-control text-center" placeholder=" {{ getclaim.deathofdeath | date: 'dd MMMM, yyyy  HH:MM a' }}">
                     </div>
                   </div>
   
                   <div class="col-md-6">
                     <div class="form-group">
                       <label class="bmd-label-floating">Burial date</label>
-                      <input type="text" readonly class="form-control" placeholder=" {{ getclaim.proposedburialdate | date: 'dd MMMM, yyyy  HH:MM a' }}"  >
+                      <input type="text" readonly class="form-control text-center" placeholder=" {{ getclaim.proposedburialdate | date: 'dd MMMM, yyyy  HH:MM a' }}"  >
                     </div>
                   </div>
                 </div
@@ -51,19 +51,38 @@
                   <div class="col-md-6">
                     <div class="form-group">
                       <label class="bmd-label-floating">Place of death</label>
-                      <input type="text" readonly class="form-control" placeholder="{{ getclaim.placeofdeath  | titlecase}}">
+                      <input type="text" readonly class="form-control text-center" placeholder="{{ getclaim.placeofdeath  | titlecase}}">
                     </div>
                   </div>
   
                   <div class="col-md-6">
                     <div class="form-group">
                       <label class="bmd-label-floating">Uploaded Document</label>
-                      <input type="text" readonly class="form-control" placeholder="">
+                      <input type="text" disabled class="form-control" placeholder="{{getclaim.deathcertificate}}">
                     </div>
                   </div>
-                </div
-                >
+                </div>
                 <br/>
+                
+                <h5 class="text-center">Informat/Contact Person info</h5>                
+              
+              <div class="row">
+                  <div class="col-md-6">
+                    <div class="form-group">
+                      <label class="bmd-label-floating">Name & Surname</label>
+                      <input type="text" readonly class="form-control text-center" placeholder="{{ getclaim.informantname  | titlecase}}  {{ getclaim.informantsurname  | titlecase}}">
+                    </div>
+                  </div>
+  
+                  <div class="col-md-6">
+                    <div class="form-group">
+                      <label class="bmd-label-floating">Identity Number</label>
+                      <input type="text" readonly class="form-control text-center" placeholder="{{getclaim.informantidentitynumber}}">
+                    </div>
+                  </div>
+                </div>
+                
+
               <button class="btn btn-danger btn-sm pull-right" (click)="declineClaim()" data-toggle="tooltip" data-placement="down"
                 title="Decline claim">Decline Claim</button>
                 <button class="btn btn-success btn-sm pull-right" title="Approve claim" data-toggle="tooltip" data-placement="down"
@@ -77,65 +96,6 @@
       </div>
     </div>
 
-    <div class="row" *ngIf="false">
-      <div class="col-md-12">
-        <div class="card">
-          <div class="card-header card-header-primary card-header-icon">
-            <div class="card-icon">
-              <i class="material-icons">assignment</i>
-            </div>
-            <h4 class="card-title"><b>List of </b> Claims</h4>
-          </div>
-          <div class="card-body">
-            <div class="toolbar">
-              <!--        Here you can write extra buttons/actions for the toolbar              -->
-
-            </div>
-            <div class="material-datatables">
-              <table id="datatables" class="table table-striped table-no-bordered table-hover" cellspacing="0"
-                width="100%" style="width:100%">
-                <thead>
-                  <tr>
-                    <th>Claim Id.</th>
-                    <th>Place of death</th>
-                    <th>Date</th>
-                    <th class="disabled-sorting text-right">Action</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr *ngFor="let claim of claims; let i = index">
-                    <!--   -->
-                    <td>{{ claim.idclaim }}</td>
-                    <td>{{ claim.placeofdeath }}</td>
-                    <td>{{ claim.createddate | date: "dd MMMM, yyyy"  }}</td>
-                    <td class="text-right">
-                      <button (click)="claimInfo(i)" class="btn btn-round btn-succces "><i class="material-icons"
-                          [class.active]="i == selectedClaim" data-toggle="tooltip" data-placement="down"
-                          title="Approve claim" (click)="approveClaim()">tick</i>Approve Claim</button>
-                      <button (click)="decline(i)" class="btn btn-round btn-danger "><i class="material-icons"
-                          [class.active]="i == selectedClaim" data-toggle="tooltip" data-placement="down"
-                          title="Decline claim" (click)="declineClaim()">close</i>Decling Claim</button>
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-          </div>
-          <!-- end content-->
-          <div class="row" *ngIf="noClaims">
-            <div class="col-12 ml-auto mr-auto">
-              <div class="card" style="background-color: lightgray">
-                <div class="card-body text-center card-description">
-                  <h3><b>No Claim made yet</b></h3>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-        <!--  end card  -->
-      </div>
-      <!-- end col-md-12 -->
-    </div>
   </div>
 </div>
 

@@ -13,7 +13,7 @@
                   <mat-option value="-1">
                     All
                   </mat-option>
-                  <mat-option *ngFor="let claimstatus of claimstatuses" [value]="claimstatus.idclaimstatus">
+                  <mat-option *ngFor="let claimstatus of claimstatuses" [value]="claimstatus.id">
                     {{ claimstatus.name }}
                   </mat-option>
                 </mat-select>
@@ -67,17 +67,19 @@
                 width="100%" style="width:100%">
                 <thead>
                   <tr>
-                    <th>Claim Id.</th>
+                    <th>Claim No.</th>
                     <th>Place of death</th>
-                    <th>Date</th>
+                    <th>Created Date</th>
+                    <th>Contact Person</th>
                     <th class="disabled-sorting text-right">Action</th>
                   </tr>
                 </thead>
                 <tbody>
                   <tr *ngFor="let claim of claims; let i = index" ><!--   -->
-                    <td>{{ claim.idclaim }}</td>
+                    <td>{{ claim.claimnumber }}</td>
                     <td>{{ claim.placeofdeath }}</td>
-                    <td>{{ claim.createddate | date: "dd MMMM, yyyy"  }}</td>
+                    <td>{{ claim.createddate   }}</td> <!-- | date: "dd MMMM, yyyy" -->
+                    <td>{{ claim.informantname }}  {{ claim.informantsurname }}</td>
                     <td class="text-right">
                       <button (click)="claimInfo(i)"
                         class="btn btn-link btn-info "><i class="material-icons"

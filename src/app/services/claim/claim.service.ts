@@ -15,7 +15,7 @@ const getclaimbyidmemberUrl = "http://greenlinks1.dedicated.co.za:3002/api/getcl
  */
 
 const apiUrl = "http://greenlinks1.dedicated.co.za:3000/api/Claims";
-const getclaimbyclaimstatusUrl = "http://greenlinks1.dedicated.co.za:3002/api/getclaimbyclaimstatus";
+const getclaimbyclaimstatusUrl = "http://greenlinks1.dedicated.co.za:3000/api/Claims?filter=%7B%22where%22%3A%20%7B%22idclaimstatus%22%3A%203%7D%20%7D";
 const getclaimbyidmemberUrl = "http://greenlinks1.dedicated.co.za:3002/api/getclaimbyidmember";
 
 @Injectable({
@@ -56,11 +56,13 @@ export class ClaimService {
   }
 
   getClaimbyclaimstatus(id: number): Observable<Claim[]> {
-    const url = `${getclaimbyclaimstatusUrl}/${id}`;
-    return this.http.get<Claim[]>(url).pipe(
-      tap(_ => console.log(`fetched claim id=${id}`)),
-      catchError(this.handleError<Claim[]>(`getClaimbyclaimstatus id=${id}`))
+
+    return this.http.get<Claim[]>('http://greenlinks1.dedicated.co.za:3000/api/Claims?filter=%7B%22where%22%3A%20%7B%22idclaimstatus%22%3A%20'+id+'%7D%20%7D')
+    .pipe(
+      tap(heroes => console.log('fetched claim by status')),
+      catchError(this.handleError('getClaimbyclaimstatus', []))
     );
+
   }
   
   
@@ -79,14 +81,16 @@ export class ClaimService {
       catchError(this.handleError<Claim>('addClaim'))
     );
   }
+
   
   updateClaim (id, claim): Observable<any> {
     const url = `${apiUrl}/${id}`;
-    return this.http.put(url, claim, httpOptions).pipe(
-      tap(_ => console.log(`updated claim`+claim)),
+    return this.http.patch(url, claim, httpOptions).pipe(
+      tap(_ => console.log(`updated claim `+claim)),
       catchError(this.handleError<any>('updateClaim'))
     );
   }
+
   
   deleteClaim (id): Observable<Claim> {
     const url = `${apiUrl}/${id}`;
@@ -98,8 +102,24 @@ export class ClaimService {
   }
 
 
-
-
-
-
 }
+
+/**
+ * 
+ *   updateClaim (id, claim): Observable<any> {
+    const url = `${apiUrl}/${id}`;
+    return this.http.put(url, claim, httpOptions).pipe(
+      tap(_ => console.log(`updated claim`+claim)),
+      catchError(this.handleError<any>('updateClaim'))
+    );
+  }
+ * 
+ *   getClaimbyclaimstatus(id: number): Observable<Claim[]> {
+    const url = `${getclaimbyclaimstatusUrl}/${id}`;
+    return this.http.get<Claim[]>(url).pipe(
+      tap(_ => console.log(`fetched claim id=${id}`)),
+      catchError(this.handleError<Claim[]>(`getClaimbyclaimstatus id=${id}`))
+    );
+  }
+ * 
+ */
