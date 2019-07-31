@@ -46,15 +46,6 @@ export class ClaimInfoComponent implements OnInit {
 
     this.setclaim.idclaimstatus = 2;
     this.setclaim.createdby = (this.user.name + " " + this.user.surname)
-   
-
-    /*
-    this.setclaim.idclaimstatus = 2
-    this.setclaimaudit.reason = '<CLAIM APPROVED>'
-    this.setclaimaudit.iduser = 1//this.user.iduser
-    this.setclaimaudit.idclaimstatus = this.setclaim.idclaimstatus
-    this.setclaimaudit.idclaim = this.getclaim.id
-    */
 
 
     console.log(this.setclaim)
@@ -89,12 +80,10 @@ export class ClaimInfoComponent implements OnInit {
   }
 
 
-
-  /*
   declineClaim() {
 
     swal({
-      title: "Decline claim No. " + this.getclaim.idclaim +
+      title: "Decline claim No. " + this.getclaim.claimnumber +
         ", please provide a reason below",
       html: '<div class="form-group">' +
         '<input id="reason" type="text" class="form-control" />' +
@@ -110,36 +99,40 @@ export class ClaimInfoComponent implements OnInit {
       if (result.value) {
 
         this.setclaim.idclaimstatus = 3
-        this.setclaimaudit.reason = $('#reason').val()
-        this.setclaimaudit.iduser = 1//this.user.iduser
-        this.setclaimaudit.idclaimstatus = this.setclaim.idclaimstatus
-        this.setclaimaudit.idclaim = this.getclaim.idclaim
+        this.setclaim.createdby = (this.user.name + " " + this.user.surname)
 
-        this.claimService.updateClaim(this.getclaim.idclaim, this.setclaim)
+        //this.user.iduser  $('#reason').val()
+
+        this.claimService.updateClaim(this.getclaim.id, this.setclaim)
           .subscribe(update_res => {
+
             console.log(update_res)
-            this.router.navigate(['/claims/viewallclaims'])
+
+            swal({
+
+              title: 'Claim declined and sent back',
+              type: 'success',
+              confirmButtonClass: "btn btn-success",
+              buttonsStyling: false
+
+            }).then((result) => {
+
+              this.router.navigate(['/claims/viewallclaims'])
+              console.log('saved!')
+            
+            }) // this.router.navigate(['/claims/viewallclaims']))
+
+
           }, err => {
-            console.log()
+            console.log(err)
           })
 
-        console.log(this.setclaim)
-        console.log(this.setclaimaudit)
-
-        swal({
-
-          title: 'Claim declined and sent back',
-          type: 'success',
-          confirmButtonClass: "btn btn-success",
-          buttonsStyling: false
-
-        }).then((result) => console.log('saved!')) // this.router.navigate(['/claims/viewallclaims']))
       }
     })
 
 
   }
-*/
+
 
 
 }
