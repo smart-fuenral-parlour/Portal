@@ -100,7 +100,8 @@ export class EditMemberComponent implements OnInit {
               }).then((result) => {
 
                 if (sessionStorage.getItem('fromMemberDetails') == 'true') {
-
+                //  this.member = JSON.parse(localStorage.getItem('viewdetails'))
+                  localStorage.setItem('viewdetails', JSON.stringify(member_res));
                   this.router.navigate(['/members/viewmemberdetails'])
                 } else {
                   this.router.navigate(['/members/searchmember'])

@@ -111,7 +111,7 @@ export class MemberDetailsComponent implements OnInit {
         }
     }
 
-    if (!isNullOrUndefined(this.member.idlifestatus)) {
+    if (!isNullOrUndefined(this.member.idlifestatus || this.member.idlifestatus > 0)) {
 
       if (this.member.idlifestatus == 1) {
         this.lifestatus_color = 'text-success'
