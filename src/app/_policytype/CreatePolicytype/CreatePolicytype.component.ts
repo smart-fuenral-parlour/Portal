@@ -89,10 +89,9 @@ export class CreatePolicytypeComponent implements OnInit {
             if (result.value) {
                 this.app.loading = true
 
-                this.policytypeService.createPolicytype(this.policytype
-                )
-                    .subscribe(res => {
-                        console.log(res)
+                this.policytypeService.createPolicytype(this.policytype)
+                    .subscribe(policytype_res => {
+                        console.log(policytype_res)
                     }, (err) => {
                         console.log(err);
 
@@ -105,7 +104,9 @@ export class CreatePolicytypeComponent implements OnInit {
                         confirmButtonClass: "btn btn-success",
                         buttonsStyling: false
 
-                    }).then((result) => { this.router.navigate(['/policytype/viewpolicytype']) })
+                    }).then((result) => { 
+                        this.router.navigate(['/policytype/viewpolicytype']) 
+                    })
             }
         })
 

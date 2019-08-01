@@ -32,14 +32,13 @@ export class ViewPolicytypeComponent implements OnInit {
     //////Initialized variables  
 
     policytypes: Policytype[];
+    noPolicytype = true
 
 
 
     ////Functions//////////////////////////////////////////
 
     ViewPolicytype(index) {
-
-        localStorage.setItem('selectedPolicyType', JSON.stringify(this.policytypes[index]));
 
 
         swal({
@@ -55,6 +54,7 @@ export class ViewPolicytypeComponent implements OnInit {
         }).then((result) => {
             if (result.value) {
 
+                localStorage.setItem('editpolicytype', JSON.stringify(this.policytypes[index]));
                 this._router.navigate(['/policytype/editpolicytype'])
 
             }
@@ -65,13 +65,21 @@ export class ViewPolicytypeComponent implements OnInit {
 
     ngOnInit() {
 
-
-
         //get all policytypes
         this._policytype.getPolicytypes()
-            .subscribe(res => {
-                this.policytypes = res;
+            .subscribe(policytypes_res => {
+
                 console.log(this.policytypes)
+
+                if (policytypes_res.length > 0) {
+
+                    this.policytypes = policytypes_res;
+                    this.noPolicytype = false
+
+                } else {
+                    this.noPolicytype = true
+                }
+
             }, err => {
                 console.log(err);
             });
