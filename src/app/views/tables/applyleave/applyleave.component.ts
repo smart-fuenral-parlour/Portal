@@ -64,7 +64,7 @@ export class ApplyleaveComponent implements OnInit {
     const startdate = $('#startdate').val();
     const enddate = $('#enddate').val();
     const leaveType = $('#leavetype').val();
-    const numberofdaystaken = 6;
+    const numberofdaystaken = this.calcLeaveDays();
     const reason = $('#reason').val();
 
 
@@ -118,6 +118,7 @@ export class ApplyleaveComponent implements OnInit {
     var diff = date2_ms - date1_ms;
 
     $('#calculated').text(diff / (1000 * 60 * 60 * 24));
+    console.log('date', $('#calculated').text(diff / (1000 * 60 * 60 * 24)));
 
   }
 }
