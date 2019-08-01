@@ -41,7 +41,6 @@ export class EditPolicytypeComponent implements OnInit {
   ngOnInit() {
 
     //policytype from edit page
-
     this.policytype = JSON.parse(localStorage.getItem('editpolicytype'));
   }
 
@@ -63,14 +62,14 @@ export class EditPolicytypeComponent implements OnInit {
       buttonsStyling: false
     }).then((result) => {
       if (result.value) {
-        
+
+        console.log(this.policytype.id)
         this.policytypeService.updatePolicytype(this.policytype.id, this.setpolicytype)
           .subscribe(policytype_res => {
 
-            console.log(policytype_res)            
+            console.log(policytype_res)           
 
-            swal(
-              {
+            swal({
                 title: 'Policytype Updated',
                 type: 'success',
                 confirmButtonClass: "btn btn-success",

@@ -10,9 +10,10 @@ const httpOptions = {
 
 /**
  * 
+ * http://greenlinks1.dedicated.co.za:3000/api/Policytypes/3
+ * http://greenlinks1.dedicated.co.za:3000/api/Policytypes/3
  * 
- * 
-const apiUrl = "http://greenlinks1.dedicated.co.za:3002/api/policytype";
+
 const getPolicytypebyageUrl = "http://greenlinks1.dedicated.co.za:3002/api/getpolicytypebyage";
  */
 const apiUrl = "http://greenlinks1.dedicated.co.za:3000/api/Policytypes";
@@ -70,16 +71,18 @@ export class PolicytypeService {
       catchError(this.handleError<Policytype>('addPolicytype'))
     );
   }
+
+  
   
   updatePolicytype (id, policytype): Observable<any> {
-    
+
     const url = `${apiUrl}/${id}`;
     return this.http.patch(url, policytype, httpOptions).pipe(
-      tap(_ => console.log(`updated policytype`+policytype)),
+      tap(_ => console.log(`updated policy type`+ policytype)),
       catchError(this.handleError<any>('updatePolicytype'))
     );
   }
-
+  
 
   
   deletePolicytype (id): Observable<Policytype> {
