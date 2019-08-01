@@ -34,7 +34,7 @@ currentRole
  //user from edit page
 this.placeholder = JSON.parse(localStorage.getItem('selectedUser'));
 
-this._role.getRole(this.placeholder.idrole)
+this._role.getRole(this.placeholder.id)
             .subscribe(res => {
                 this.currentRole=res[0].name;
             }, err => {
@@ -55,7 +55,7 @@ this._role.getRole(this.placeholder.idrole)
 
   updateUser() {
 
-    this.user.iduser= this.placeholder.iduser
+    
     
 
     swal({
@@ -70,7 +70,7 @@ this._role.getRole(this.placeholder.idrole)
       buttonsStyling: false
     }).then((result) => {
       if (result.value) {
-        this._user.updateUser(this.user.iduser,this.user)
+        this._user.updateUser(this.user.id,this.user)
       .subscribe(res => {
          console.log(res)
 

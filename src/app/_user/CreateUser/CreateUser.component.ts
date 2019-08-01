@@ -53,7 +53,7 @@ user = new User;
 
     createUser(){
     
-       this.user.idrole=this.selectedrole.idrole;
+        
 
 
 
