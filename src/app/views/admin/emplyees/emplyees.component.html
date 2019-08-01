@@ -43,7 +43,6 @@
                                                   <th style="display:none;"></th>
                                                   <th>Name</th>
                                                   <th>Email</th>
-                                                  <th>Actions</th>
                                                  
                                               </tr>
                                           </thead>
@@ -55,8 +54,7 @@
                                                 <td>{{emp.fullnames}}</td>
                                                 <td>{{emp.email}}</td>
                                                   <td>
-                                                      <button class="btn btn-outline-info"
-                                                        type="submit">Edit Leaves</button>
+                                                   
 
                                                   </td>
                                                  
@@ -70,11 +68,10 @@
                                                         <th style="display:none;"></th>
                                                         <th>Name</th>
                                                         <th>Email</th>
-                                                        <th>Actions</th>
                                                         
                                                     </tr>
                                                     <tr>
-                                                      <td colspan="7">
+                                                      <!-- <td colspan="7">
                                                         <span id="paginator">
                                                           <button type="button" rel="tooltip" (click)="getFirstAlert();" id="first_page" title="First page" class="btn btn-primary btn-round btn-fab btn-fab-mini">
                                                             <i class="material-icons">first_page</i>
@@ -93,14 +90,8 @@
                                                             <button type="button" rel="tooltip" (click)="getLastAlert();" id="last_page" title="Last page" class="btn btn-primary btn-round btn-fab btn-fab-mini">
                                                               <i class="material-icons">last_page</i>
                                                             </button>
-                                                            <!-- <select name="rowsOnPageSet" id="rowsOnPageSet" class="dropdown-toggle btn btn-primary" (ngModelChange)="onChangePageFilter();" >
-                                                              <option *ngFor="let index of rowsPageArray" [value]="index">
-                                                                  {{index}}
-                                                              </option>
-                                                            </select> -->
                                                         </span>
-                                                        <!-- <mfBootstrapPaginator [rowsOnPageSet]="[10,25,50,100]"></mfBootstrapPaginator> -->
-                                                      </td>
+                                                      </td> -->
                                                     </tr>
                                                   </tfoot>
                                       </table>
@@ -120,7 +111,7 @@
                                                     <th>Days Taken</th>
                                                     <th>Status</th>
                                                     <th>Reason</th>
-                                                    <th>Document</th>
+                                                    <th>Actions</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
@@ -134,9 +125,13 @@
                                                     <td>{{leave.status}}</td>
                                                     <td>{{leave.reason}}</td>
 
-                                                    <button type="button"  (click)="download();" rel="tooltip" title="Download Document" class="btn btn-primary">
-                                                        <i class="material-icons">visibility</i>
+
+                                                    <a href="#/forms/editleavedetails">
+                                                      <button type="button" rel="tooltip" (click)="Onclick();" id="update"
+                                                        title="Update leave details" class="btn btn-warning">
+                                                        <i class="material-icons">update</i>
                                                       </button>
+                                                    </a>
                                                 </tr>
                                               
                                             </tbody>
@@ -151,7 +146,7 @@
                                                     <th>Days Taken</th>
                                                     <th>Status</th>
                                                     <th>Reason</th>
-                                                    <th>Document</th>
+                                                    <th>Actions</th>
                                                 </tr>
                                                 <tr>
                                                   <td colspan="7">
@@ -198,7 +193,7 @@
                                                     <th>Days Taken</th>
                                                     <th>Status</th>
                                                     <th>Reason</th>
-                                                    <th>Document</th>
+                                                    <th>Actions</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
@@ -212,9 +207,12 @@
                                                     <td>{{leave.status}}</td>
                                                     <td>{{leave.reason}}</td>
 
-                                                    <button type="button"  (click)="download();" rel="tooltip" title="Download Document" class="btn btn-primary">
-                                                        <i class="material-icons">visibility</i>
+                                                    <a href="#/forms/editleavedetails">
+                                                      <button type="button" rel="tooltip" (click)="Onclick();" id="update"
+                                                        title="Update leave details" class="btn btn-warning">
+                                                        <i class="material-icons">update</i>
                                                       </button>
+                                                    </a>
                                                 </tr>
                                               
                                             </tbody>
@@ -229,7 +227,7 @@
                                                     <th>Days Taken</th>
                                                     <th>Status</th>
                                                     <th>Reason</th>
-                                                    <th>Document</th>
+                                                    <th>Actions</th>
                                                 </tr>
                                                 <tr>
                                                   <td colspan="7">
@@ -276,7 +274,7 @@
                                                         <th>Days Taken</th>
                                                         <th>Status</th>
                                                         <th>Reason</th>
-                                                        <th>Document</th>
+                                                        <th>Actions</th>
                                                     </tr>
                                                 </thead>
                                                 <tbody>
@@ -290,9 +288,12 @@
                                                         <td>{{leave.status}}</td>
                                                         <td>{{leave.reason}}</td>
     
-                                                        <button type="button"  (click)="download();" rel="tooltip" title="Download Document" class="btn btn-primary">
-                                                            <i class="material-icons">visibility</i>
+                                                        <a href="#/forms/editleavedetails">
+                                                          <button type="button" rel="tooltip" (click)="Onclick();" id="update"
+                                                            title="Update leave details" class="btn btn-warning">
+                                                            <i class="material-icons">update</i>
                                                           </button>
+                                                        </a>
                                                     </tr>
                                                   
                                                 </tbody>
@@ -307,7 +308,7 @@
                                                         <th>Days Taken</th>
                                                         <th>Status</th>
                                                         <th>Reason</th>
-                                                        <th>Document</th>
+                                                        <th>Actions</th>
                                                     </tr>
                                                     <tr>
                                                       <td colspan="7">
@@ -343,8 +344,6 @@
                                     
                                   </div>
                               </div>
-
-
                               <div class="tab-pane" id="allLeave">
                                     <div class="row">
                                             <table class="table table-striped">
@@ -358,7 +357,7 @@
                                                             <th>Days Taken</th>
                                                             <th>Status</th>
                                                             <th>Reason</th>
-                                                            <th>Document</th>
+                                                            <th>Actions</th>
                                                         </tr>
                                                     </thead>
                                                     <tbody>
@@ -371,10 +370,13 @@
                                                             <td>{{leave.nodaystaken}}</td>
                                                             <td>{{leave.status}}</td>
                                                             <td>{{leave.reason}}</td>
-        
-                                                            <button type="button"  (click)="download();" rel="tooltip" title="Download Document" class="btn btn-primary">
-                                                                <i class="material-icons">visibility</i>
+
+                                                            <a href="#/forms/editleavedetails">
+                                                              <button type="button" rel="tooltip" (click)="Onclick();" id="update"
+                                                                title="Update leave details" class="btn btn-warning">
+                                                                <i class="material-icons">update</i>
                                                               </button>
+                                                            </a>
                                                         </tr>
                                                       
                                                     </tbody>
@@ -389,10 +391,10 @@
                                                             <th>Days Taken</th>
                                                             <th>Status</th>
                                                             <th>Reason</th>
-                                                            <th>Document</th>
+                                                            <th>Actions</th>
                                                         </tr>
                                                         <tr>
-                                                          <td colspan="7">
+                                                          <!-- <td colspan="7">
                                                             <span id="paginator">
                                                               <button type="button" rel="tooltip" (click)="getFirstAlert();" id="first_page" title="First page" class="btn btn-primary btn-round btn-fab btn-fab-mini">
                                                                 <i class="material-icons">first_page</i>
@@ -411,14 +413,14 @@
                                                                 <button type="button" rel="tooltip" (click)="getLastAlert();" id="last_page" title="Last page" class="btn btn-primary btn-round btn-fab btn-fab-mini">
                                                                   <i class="material-icons">last_page</i>
                                                                 </button>
-                                                                <!-- <select name="rowsOnPageSet" id="rowsOnPageSet" class="dropdown-toggle btn btn-primary" (ngModelChange)="onChangePageFilter();" >
+                                                                <select name="rowsOnPageSet" id="rowsOnPageSet" class="dropdown-toggle btn btn-primary" (ngModelChange)="onChangePageFilter();" >
                                                                   <option *ngFor="let index of rowsPageArray" [value]="index">
                                                                       {{index}}
                                                                   </option>
-                                                                </select> -->
+                                                                </select>
                                                             </span>
-                                                            <!-- <mfBootstrapPaginator [rowsOnPageSet]="[10,25,50,100]"></mfBootstrapPaginator> -->
-                                                          </td>
+                                                             <mfBootstrapPaginator [rowsOnPageSet]="[10,25,50,100]"></mfBootstrapPaginator>
+                                                          </td> -->
                                                         </tr>
                                                       </tfoot>
                                                 </table>
