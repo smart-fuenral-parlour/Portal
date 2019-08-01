@@ -133,7 +133,7 @@ export class LoginComponent implements OnInit, OnDestroy {
                 .subscribe(loginuser_res => {
 
                     this.loginuser = loginuser_res
-                    this.user = this.loginuser.response[0]
+                    
 
                     if (this.loginuser.status == 200) {
 

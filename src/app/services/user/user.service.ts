@@ -9,7 +9,11 @@ const httpOptions = {
 };
 
 
-/**
+/**  "email": "thabangM@gmail.com",
+  "name": "Thabang",
+  "password": "56545",
+  "role": "Admin",
+  "surname": "Mabambi"
  * 
 const apiUrl = "http://greenlinks1.dedicated.co.za:3002/api/user";
 const loginUrl = "http://greenlinks1.dedicated.co.za:3000/api/login"
