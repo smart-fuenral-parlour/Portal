@@ -6,11 +6,21 @@ import { ErrorStateMatcher } from '@angular/material/core';
 import { Router } from '@angular/router';
 
 import { RoleService } from '../../services/role/role.service';
-import { PolicytypeService } from '../../services/policytype/policytype.service';
 import swal from 'sweetalert2';
 import { AppComponent } from 'src/app/app.component'
-import { stringify } from 'querystring';
+
+///////////////////// SERVICE CALLS  ///////////////////////////////////////////
+import { MemberService } from 'src/app/services/member/member.service'
+import { PolicytypeService } from '../../services/policytype/policytype.service';
+
+//////////////////// MODEL/ CLASS CALLS ///////////////////////////////////////
+import { Member } from 'src/app/services/member/member'
 import { Policytype } from '../../services/policytype/policytype';
+import { User } from 'src/app/services/user/user'
+
+///////////////////////////////////////////////////////////////////////////////
+
+import { stringify } from 'querystring';
 
 declare const $: any;
 export class MyErrorStateMatcher implements ErrorStateMatcher {
@@ -27,12 +37,18 @@ export class MyErrorStateMatcher implements ErrorStateMatcher {
     styleUrls: ['./ViewPolicytype.component.css']
 })
 export class ViewPolicytypeComponent implements OnInit {
-    constructor(private formBuilder: FormBuilder, private _role: RoleService, private _policytype: PolicytypeService, private _router: Router, private app: AppComponent) { }
 
     //////Initialized variables  
 
     policytypes: Policytype[];
     noPolicytype = true
+
+
+    constructor(private formBuilder: FormBuilder,
+        private role: RoleService,
+        private policytypeService: PolicytypeService,
+        private router: Router,
+        private app: AppComponent) { }
 
 
 
@@ -55,7 +71,7 @@ export class ViewPolicytypeComponent implements OnInit {
             if (result.value) {
 
                 localStorage.setItem('editpolicytype', JSON.stringify(this.policytypes[index]));
-                this._router.navigate(['/policytype/editpolicytype'])
+                this.router.navigate(['/policytype/editpolicytype'])
 
             }
         })
@@ -66,7 +82,7 @@ export class ViewPolicytypeComponent implements OnInit {
     ngOnInit() {
 
         //get all policytypes
-        this._policytype.getPolicytypes()
+        this.policytypeService.getPolicytypes()
             .subscribe(policytypes_res => {
 
                 console.log(this.policytypes)

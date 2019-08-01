@@ -72,12 +72,15 @@ export class PolicytypeService {
   }
   
   updatePolicytype (id, policytype): Observable<any> {
+    
     const url = `${apiUrl}/${id}`;
-    return this.http.put(url, policytype, httpOptions).pipe(
+    return this.http.patch(url, policytype, httpOptions).pipe(
       tap(_ => console.log(`updated policytype`+policytype)),
       catchError(this.handleError<any>('updatePolicytype'))
     );
   }
+
+
   
   deletePolicytype (id): Observable<Policytype> {
     const url = `${apiUrl}/${id}`;
