@@ -1,6 +1,6 @@
 <div class="main-content">
     <div class="container-fluid">
-        <div class="row">
+        <div class="row" *ngIf="!noPolicytype">
             <div class="col-md-12">
                 <div class="card">
                   <div class="card-header card-header-primary card-header-icon">
@@ -21,6 +21,7 @@
                                       <th>Name</th>
                                       <th>Description</th>
                                       <th>Premium</th>
+                                      <th>Created by</th>
                                       <th class="disabled-sorting text-right">Action</th>
                                     </tr>
                                 </thead>
@@ -28,9 +29,10 @@
            
                                     <tr *ngFor="let policytype of policytypes; let i = index">
                                
-                                        <td>{{  policytype.name }}</td>
+                                        <td>{{  policytype.name | titlecase}}</td>
                                         <td>{{  policytype.description }}</td>
-                                        <td>{{  policytype.premium }}</td>
+                                        <td>{{  policytype.premium | currency:"ZAR":'symbol-narrow'}}</td> <!-- | currency:"ZAR":'symbol-narrow'  -->
+                                        <td>{{  policytype.createdby | titlecase }}</td>
                                         <td class="text-right">
                                           <a (click)="ViewPolicytype(i)" class="btn btn-link btn-info btn-just-icon edit"><i class="material-icons" >edit</i></a>
                                           
@@ -48,6 +50,17 @@
             <!-- end col-md-12 -->
         </div>
         <!-- end row -->
+
+        <div class="row" *ngIf="noPolicytype">
+            <div class="col-12 ml-auto mr-auto">
+              <div class="card" style="background-color: lightgray">
+                <div class="card-body text-center card-description">
+                  <h3><b>No Policy Type created yet</b></h3>
+                </div>
+              </div>
+            </div>
+          </div>
+
     </div>
   </div>
   
