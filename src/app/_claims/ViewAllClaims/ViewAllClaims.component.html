@@ -78,7 +78,7 @@
                   <tr *ngFor="let claim of claims; let i = index" ><!--   -->
                     <td>{{ claim.claimnumber }}</td>
                     <td>{{ claim.placeofdeath }}</td>
-                    <td>{{ claim.createddate   }}</td> <!-- | date: "dd MMMM, yyyy" -->
+                    <td>{{ claim.createddate | date: "dd MMMM, yyyy"  }}</td> <!--  -->
                     <td>{{ claim.informantname }}  {{ claim.informantsurname }}</td>
                     <td class="text-right">
                       <button (click)="claimInfo(i)"

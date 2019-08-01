@@ -18,9 +18,9 @@ const pendingclaimsUrl = "http://greenlinks1.dedicated.co.za:3002/api/pendingcla
  */
 
 const membercountUrl = "http://greenlinks1.dedicated.co.za:3000/api/Members/count";
-const declinedclaimsUrl = "http://greenlinks1.dedicated.co.za:3000/api/Claims/count?where=%7B%22id%22%3A%203%7D";
-const approvedclaimsUrl = "http://greenlinks1.dedicated.co.za:3000/api/Claims/count?where=%7B%22id%22%3A%202%7D";
-const pendingclaimsUrl = "http://greenlinks1.dedicated.co.za:3000/api/Claims/count?where=%7B%22id%22%3A%201%7D";
+const declinedclaimsUrl = "http://greenlinks1.dedicated.co.za:3000/api/Claims/count?where=%7B%22idclaimstatus%22%3A%203%7D";
+const approvedclaimsUrl = "http://greenlinks1.dedicated.co.za:3000/api/Claims/count?where=%7B%22idclaimstatus%22%3A%202%7D";
+const pendingclaimsUrl = "http://greenlinks1.dedicated.co.za:3000/api/Claims/count?where=%7B%22idclaimstatus%22%3A%201%7D";
 
 @Injectable({
   providedIn: 'root'
