@@ -15,7 +15,7 @@
                 <label class="col-sm-2 col-form-label">Policy name</label>
                 <div class="col-sm-4">
                   <mat-form-field class="example-full-width">
-                    <input matInput type="text" name = "policyname" [(ngModel)]="policy.name">
+                    <input matInput type="text" name = "policyname" [(ngModel)]="policytype.name">
                   </mat-form-field>
                 </div>
 
@@ -24,7 +24,7 @@
                 <label class="col-sm-2 col-form-label">Description</label>
                 <div class="col-sm-10">
                   <mat-form-field class="example-full-width">
-                    <input matInput type="text" name = "description" [(ngModel)]="policy.description">
+                    <input matInput type="text" name = "description" [(ngModel)]="policytype.description">
                   </mat-form-field>
                 </div>
               </div>
@@ -32,48 +32,59 @@
                 <label class="col-sm-2 col-form-label">Monthly Premium</label>
                 <div class="col-sm-2">
                   <mat-form-field class="example-full-width">
-                    <input matInput type="number" name = "premium" [(ngModel)]="policy.premium">
+                    <input matInput type="number" name = "premium" [(ngModel)]="policytype.premium">
                   </mat-form-field>
                 </div>
 
                 <label class="col-sm-2 col-form-label">Lapse Days</label>
                 <div class="col-sm-2">
                   <mat-form-field class="example-full-width">
-                    <input matInput type="number" name = "lapse" [(ngModel)]="policy.lapsedays">
+                    <input matInput type="number" name = "lapse" [(ngModel)]="policytype.lapsedays">
                   </mat-form-field>
                 </div>
                 <label class="col-sm-2 col-form-label">Trial Period in days</label>
                 <div class="col-sm-2">
                   <mat-form-field class="example-full-width">
-                    <input matInput type="number" name = "trial" [(ngModel)]="policy.trialperiod">
+                    <input matInput type="number" name = "trial" [(ngModel)]="policytype.trialperiod">
                   </mat-form-field>
                 </div>
 
               </div>
               <div class="row">
-                <label class="col-sm-2 col-form-label">Main Member Age limit</label>
+                <label class="col-sm-2 col-form-label">Main Member minimum Age limit: </label>
                 <div class="col-sm-2">
                   <mat-form-field class="example-full-width">
-                    <input matInput type="number" name = "mainagelimit" [(ngModel)]="policy.maximumage">
+                    <input matInput type="number" name = "mainagelimit" [(ngModel)]="policytype.minimumage">
                   </mat-form-field>
                 </div>
 
-                <label class="col-sm-2 col-form-label">Beneficiary Age limit</label>
+                <label class="col-sm-2 col-form-label">Main Member maximum Age limit: </label>
                 <div class="col-sm-2">
                   <mat-form-field class="example-full-width">
-                    <input matInput type="number" name = "beneficiaryagelimit" [(ngModel)]="policy.maximumbeneficiaryage">
+                    <input matInput type="number" name = "mainagelimit" [(ngModel)]="policytype.maximumage">
                   </mat-form-field>
                 </div>
-
-            
 
               </div>
               <div class="row">
+                  <label class="col-sm-2 col-form-label">Beneficiary min Age limit</label>
+                  <div class="col-sm-2">
+                    <mat-form-field class="example-full-width">
+                      <input matInput type="number" name = "beneficiaryagelimit" [(ngModel)]="policytype.minimumbeneficiaryage">
+                    </mat-form-field>
+                  </div>
+
+                  <label class="col-sm-2 col-form-label">Beneficiary max Age limit</label>
+                  <div class="col-sm-2">
+                    <mat-form-field class="example-full-width">
+                      <input matInput type="number" name = "beneficiaryagelimit" [(ngModel)]="policytype.maximumbeneficiaryage">
+                    </mat-form-field>
+                  </div>
                
                 <label class="col-sm-2 col-form-label">Maximum allowed Beneficiaries</label>
                 <div class="col-sm-2">
                   <mat-form-field class="example-full-width">
-                    <input matInput type="number" name = "maxbeneficiaries" [(ngModel)]="policy.maximumbeneficiaries">
+                    <input matInput type="number" name = "maxbeneficiaries" [(ngModel)]="policytype.maximumbeneficiaries">
                   </mat-form-field>
                 </div>
 
