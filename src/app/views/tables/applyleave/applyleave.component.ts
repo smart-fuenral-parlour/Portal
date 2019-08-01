@@ -27,6 +27,7 @@ export class ApplyleaveComponent implements OnInit {
     this.fullnames = this.adalSvc.userInfo.profile.name;
     this.email = this.adalSvc.userInfo.userName;
   }
+
   StartNintexflow() {
     const emails = this.email;
     const startdate = $('#startdate').val();
@@ -103,21 +104,32 @@ export class ApplyleaveComponent implements OnInit {
 
   }
 
+
+  getBusinessDatesCount(startDate: any, endDate: any) {
+    var count = 0;
+    var curDate = startDate;
+    while (curDate <= endDate) {
+      var dayOfWeek = curDate.getDay();
+
+      if (!((dayOfWeek == 6) || (dayOfWeek == 0)))
+        count++;
+      curDate.setDate(curDate.getDate() + 1);
+    }
+    return count;
+  }
+
   calcLeaveDays() {
 
     let d1 = $('#startdate').val();
     let d2 = $('#enddate').val();
 
 
-    var date1 = new Date(d1);
-    var date2 = new Date(d2);
+    let date1 = new Date(d1);
+    let date2 = new Date(d2);
 
-    var date1_ms = date1.getTime();
-    var date2_ms = date2.getTime();
 
-    var diff = date2_ms - date1_ms;
+    $('#calculated').val(this.getBusinessDatesCount(date1, date2));
 
-    $('#calculated').text(diff / (1000 * 60 * 60 * 24));
 
   }
 }
