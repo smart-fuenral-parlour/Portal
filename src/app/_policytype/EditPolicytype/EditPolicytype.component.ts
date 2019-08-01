@@ -5,8 +5,15 @@ import { Router } from '@angular/router';
 import swal from 'sweetalert2';
 import { AppComponent } from 'src/app/app.component';
 import { RoleService } from '../../services/role/role.service';
+
+///////////////////// SERVICE CALLS  ///////////////////////////////////////////
 import { PolicytypeService } from '../../services/policytype/policytype.service';
+
+//////////////////// MODEL/ CLASS CALLS ///////////////////////////////////////
 import { Policytype } from '../../services/policytype/policytype';
+import { User } from 'src/app/services/user/user'
+
+///////////////////////////////////////////////////////////////////////////////
 
 
 
@@ -20,35 +27,33 @@ declare const $: any;
 })
 export class EditPolicytypeComponent implements OnInit {
 
-  placeholder:Policytype;
-  policytype = new Policytype;
- 
+  policytype: Policytype;
+  setpolicytype = new Policytype;
 
 
-  constructor(private app: AppComponent, private _role: RoleService,private _policytype: PolicytypeService, private _router: Router) {}
-  
+
+  constructor(private app: AppComponent,
+    private role: RoleService,
+    private policytypeService: PolicytypeService,
+    private router: Router) { }
+
 
   ngOnInit() {
 
- //policytype from edit page
+    //policytype from edit page
 
-this.placeholder = JSON.parse(localStorage.getItem('selectedPolicyType'));
-
-    
-
-
-
+    this.policytype = JSON.parse(localStorage.getItem('editpolicytype'));
   }
 
   editPolicy() {
 
-   
-    
-console.log(this.policytype)
+
+
+    console.log(this.setpolicytype)
 
     swal({
-      title: "Update "+this.placeholder.name+"'s Details",
-      text: "Are you sure you want to update "+this.placeholder.name+"'s details?",
+      title: "Update " + this.policytype.name + "'s Details",
+      text: "Are you sure you want to update " + this.policytype.name + "'s details?",
       type: 'warning',
       showCancelButton: true,
       confirmButtonClass: 'btn btn-success',
@@ -58,28 +63,32 @@ console.log(this.policytype)
       buttonsStyling: false
     }).then((result) => {
       if (result.value) {
-        this._policytype.updatePolicytype(this.placeholder.id,this.policytype)
-      .subscribe(res => {
-         console.log(res)
-        }, (err) => {
-          console.log(err);
-         
-        });
+        
+        this.policytypeService.updatePolicytype(this.policytype.id, this.setpolicytype)
+          .subscribe(policytype_res => {
 
+            console.log(policytype_res)            
 
+            swal(
+              {
+                title: 'Policytype Updated',
+                type: 'success',
+                confirmButtonClass: "btn btn-success",
+                buttonsStyling: false
+    
+              }).then((result) => { 
+                this.router.navigate(['/policytype/viewpolicytype']) 
+              })
 
-        swal(
-          {
-            title: 'Policytype Updated',
-            type: 'success',
-            confirmButtonClass: "btn btn-success",
-            buttonsStyling: false
+          }, (err) => {
+            console.log(err);
 
-          }).then((result) => { this._router.navigate(['/policytype/viewpolicytype']) })
+          });
+
       }
     })
 
-   
+
   }
 
 }
