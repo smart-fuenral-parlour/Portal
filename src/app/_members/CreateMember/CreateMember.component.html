@@ -230,8 +230,8 @@
                             [ngClass]="displayFieldCss(type, 'selectedPolicyType')">
                             <mat-select placeholder="Select policy type" name="policytype"
                               formControlName="selectedPolicyType" [(ngModel)]="setmember.idpolicytype" required>
-                              <mat-option *ngFor="let policytype of policytypes; let idx = index" [value]="policytype.id"
-                                (click)="testMaximumBeneficiary(idx)">
+                              <mat-option *ngFor="let policytype of policytypes; let idx = index"
+                                [value]="policytype.id" (click)="testMaximumBeneficiary(idx)">
                                 {{ policytype.name }}
                               </mat-option>
                             </mat-select>
@@ -347,8 +347,9 @@
                             </span>
                           </div>
                           <mat-form-field class="example-full-width" [ngClass]="displayFieldCss(type, 'phone')">
-                            <input matInput type="number" placeholder="Phone No." name="contactnumber" matInput
-                              id="contactnumber" formControlName="phone" [(ngModel)]="setmember.contactnumber">
+                            <input matInput type="text" minlength="10" maxlength="10" numbersOnly
+                              placeholder="Phone No." name="contactnumber" matInput id="contactnumber"
+                              formControlName="phone" [(ngModel)]="setmember.contactnumber">
                           </mat-form-field>
                         </div>
                       </div>

@@ -25,10 +25,10 @@ declare const $: any;
 })
 export class DashBoardComponent implements OnInit {
 
-  membercount = 0
-  appovedclaims = 0
-  declinedclaims = 0
-  pendingclaims = 0
+  membercount
+  approvedclaims
+  declinedclaims
+  pendingclaims
   user: User
 
   constructor(private countService: CountService,
@@ -42,41 +42,51 @@ export class DashBoardComponent implements OnInit {
 
         if(!isNullOrUndefined(membercount_res)  || membercount_res.count > 0){
           this.membercount = membercount_res.count
+        } else {
+          this.membercount = 0
+        }
+        
+      }, err => {
+        console.log(err)
+      })
+
+      this.countService.getdeclinedclaimsCount()
+      .subscribe(declined_res => {
+
+        if(!isNullOrUndefined(declined_res)  || declined_res.count > 0){
+          this.declinedclaims = declined_res.count
+        } else {
+          this.declinedclaims = 0
         }
 
-        this.countService.getapprovedclaimsCount()
-          .subscribe(approved_res => {
+      }, err => {
+        console.log(err)
+      })
 
-            if(!isNullOrUndefined(approved_res)  || approved_res.count > 0){
-              this.appovedclaims = approved_res.count
-            }
+      
+      this.countService.getpendingclaimsCount()
+      .subscribe(pending_res => {
 
-            this.countService.getpendingclaimsCount()
-              .subscribe(pending_res => {
+        if(!isNullOrUndefined(pending_res)  || pending_res.count > 0){
+          this.pendingclaims = pending_res.count
+        } else {
+          this.pendingclaims = 0
+        }
 
-                if(!isNullOrUndefined(pending_res)  || pending_res.count > 0){
-                  this.pendingclaims = pending_res.count
-                }
+      }, err => {
+        console.log(err)
+      })
 
-                this.countService.getdeclinedclaimsCount()
-                  .subscribe(declined_res => {
+      
+      this.countService.getapprovedclaimsCount()
+      .subscribe(approved_res => {
 
-                    if(!isNullOrUndefined(declined_res)  || declined_res.count > 0){
-                      this.declinedclaims = declined_res.count
-                    }
+        if(!isNullOrUndefined(approved_res)  || approved_res.count > 0){
+          this.approvedclaims = approved_res.count
+        } else {
+          this.approvedclaims = 0
+        }
 
-                  }, err => {
-                    console.log(err)
-                  })
-
-              }, err => {
-                console.log(err)
-              })
-
-          }, err => {
-            console.log(err)
-          })
-        
       }, err => {
         console.log(err)
       })

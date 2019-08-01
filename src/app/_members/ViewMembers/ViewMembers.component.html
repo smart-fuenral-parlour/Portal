@@ -92,7 +92,7 @@
                     <td>{{ member.membershipnumber }}</td>
                     <td>{{ member.name }}</td>
                     <td>{{ member.surname }}</td>
-                    <td>{{ member.lastpaiddate  }}</td>  <!--  | date: "dd MMMM, yyyy" -->
+                    <td>{{ member.lastpaiddate | date: "dd MMMM, yyyy"  }}</td>  <!--  | date: "dd MMMM, yyyy"  -->
                     <td>{{ member.identitynumber }}</td>
                     <td class="text-right">
                       <a (click)="editMember(i)" class="btn btn-link btn-info btn-just-icon edit"><i
