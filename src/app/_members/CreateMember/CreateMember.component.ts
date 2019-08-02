@@ -52,7 +52,7 @@ export class MyErrorStateMatcher implements ErrorStateMatcher {
 })
 export class CreateMemberComponent implements OnInit {
 
-    beneficiaryNumber
+
 
     // MODEL CLASS INSTANCE
     member: Member
@@ -65,8 +65,10 @@ export class CreateMemberComponent implements OnInit {
     // creating new objects    
     setmember = new Member
     setbeneficiary = new Beneficiary
+    policytypeDetails = new Policytype
     beneficiaryCount = 0
     maxNumberAllowed = 0
+    beneficiaryDetails = 'No beneficiary added for member'
 
     // variables to show and hide 
     invalidID = false
@@ -124,6 +126,7 @@ export class CreateMemberComponent implements OnInit {
     ngOnInit() {
 
         this.user = JSON.parse(localStorage.getItem('user')) // getting user details
+        this.policytypeDetails.premium = '0' // prevents the currency pipe from breaking initialize premium
 
 
         this.policytypeService.getPolicytypes()
@@ -335,10 +338,13 @@ export class CreateMemberComponent implements OnInit {
 
                 const $wizard = navigation.closest('.card-wizard');
 
+
+
                 // If it's the last tab then hide the last button and show the finish instead
                 if ($current >= $total) {
                     $($wizard).find('.btn-next').hide();
                     $($wizard).find('.btn-finish').show();
+                     
                 } else {
                     $($wizard).find('.btn-next').show();
                     $($wizard).find('.btn-finish').hide();
@@ -431,12 +437,19 @@ export class CreateMemberComponent implements OnInit {
             $(this).find('[type="radio"]').attr('checked', 'true');
         });
 
-        $('[data-toggle="wizard-checkbox"]').click(function () {
+        $('[data-toggle="wizard-checkbox"]').click(function (navigation: any) {
+
+            const $wizard = navigation.closest('.card-wizard');
+
+            //navigation: any  form-check-input check-agree  $($wizard).find('.btn-finish').show();   
+
+
             if ($(this).hasClass('active')) {
                 $(this).removeClass('active');
                 $(this).find('[type="checkbox"]').removeAttr('checked');
             } else {
                 $(this).addClass('active');
+                console.log('checkbox click')
                 $(this).find('[type="checkbox"]').attr('checked', 'true');
             }
         });
@@ -470,11 +483,13 @@ export class CreateMemberComponent implements OnInit {
             ))
 
             this.beneficiaryCount = this.maxNumberAllowed - this.BeneficiaryForm.length
+            this.beneficiaryDetails = this.BeneficiaryForm.length == 1 ? ('Member has ' + this.BeneficiaryForm.length + ' beneficiary') : ('Member has ' + this.BeneficiaryForm.length + ' beneficiries')
 
         } else {
             this.limitReached = true
-
         }
+
+
 
 
     }
@@ -485,6 +500,8 @@ export class CreateMemberComponent implements OnInit {
         if (this.BeneficiaryForm.length >= 0) {
 
             this.beneficiaryCount = this.beneficiaryCount + 1
+            this.beneficiaryDetails = this.BeneficiaryForm.length == 1 ? ('Member has ' + this.BeneficiaryForm.length + ' beneficiary') : ('Member has ' + this.BeneficiaryForm.length + ' beneficiries')
+
         }
 
         this.limitReached = false
@@ -502,6 +519,7 @@ export class CreateMemberComponent implements OnInit {
 
             }
             console.log('unchecked')
+            this.beneficiaryDetails = 'No beneficiary added for member'
 
         } else {
             this.unhideBeneficiaryForm = true
@@ -521,11 +539,11 @@ export class CreateMemberComponent implements OnInit {
         // getting the selected poliy type
 
         this.maxNumberAllowed = parseInt(this.policytypes[index].maximumbeneficiaries)
-
+        this.policytypeDetails = this.policytypes[index]
         this.setmember.balance = this.policytypes[index].premium // parseFloat(this.memberPolicytype.premium)
 
-
         if (this.maxNumberAllowed == 0) {
+            this.beneficiaryDetails = 'Member not allowed to have beneficies, due to policy type'
             this.unhideCheckBox = false
             this.beneficiaryCount = 0
         } else {
@@ -540,92 +558,128 @@ export class CreateMemberComponent implements OnInit {
 
 
     }
+
+    tickToAgree() {
+
+        let finish = document.querySelector('.btn-finish')
+        let checkbox = document.querySelector('.check-agree')
+
+        console.log(finish)
+        console.log(checkbox)
+        
+    }
+
     finishCreate() {
 
-        let newDate = new Date
+        let newDate = new Date()
 
 
-        swal({
-            title: 'Finish Create',
-            text: "Save Member?",
-            type: 'warning',
-            showCancelButton: true,
-            confirmButtonClass: 'btn btn-success',
-            cancelButtonClass: 'btn btn-danger',
-            cancelButtonText: 'Cancel',
-            confirmButtonText: 'Yes, Save',
-            buttonsStyling: false
-        }).then((result) => {
-            if (result.value) {
-                this.app.loading = true
+        // checking if id number is unique
+        this.memberService.getMemberbyidentitynumber(this.setmember.identitynumber)
+            .subscribe(memberExist => {
 
-                // creating member
+                if (memberExist.length == 0) {
+                    console.log('idnumber not found')
 
-                this.setmember.id = 0
-                this.setmember.idpolicystatus = 1
-                this.setmember.idlifestatus = 1
-                this.setmember.membershipnumber = ('MN' + (newDate).getMilliseconds().toString().slice(0, 3) + (this.setmember.identitynumber).toString().slice(6, 9))
-                this.setmember.createdby = (this.user.name + " " + this.user.surname)
-                this.setmember.lastpaiddate = moment.parseZone(newDate).utc().format()
-
-                console.log('Post')
-                console.log(this.setmember)
-
-                this.memberService.createMember(this.setmember)
-                    .subscribe(member_res => {
-
-                        console.log('response')
-                        console.log(member_res)
-
-                        if (this.unhideBeneficiaryForm) {
+                    swal({
+                        title: 'Finish Create',
+                        text: "Save Member?",
+                        type: 'warning',
+                        showCancelButton: true,
+                        confirmButtonClass: 'btn btn-success',
+                        cancelButtonClass: 'btn btn-danger',
+                        cancelButtonText: 'Cancel',
+                        confirmButtonText: 'Yes, Save',
+                        buttonsStyling: false
+                    }).then((result) => {
+                        if (result.value) {
+                            this.app.loading = true
 
 
-                            // creating beneficiary
-                            for (let x = 0; x < this.BeneficiaryForm.length; x++) {
+                            // creating member
+                            this.setmember.id = 0
+                            this.setmember.idpolicystatus = 1
+                            this.setmember.idlifestatus = 1
+                            this.setmember.membershipnumber = ('MN' + (newDate).getMilliseconds().toString().slice(0, 3) + (this.setmember.identitynumber).toString().slice(6, 9))
+                            this.setmember.createdby = (this.user.name + " " + this.user.surname)
+                            this.setmember.lastpaiddate = moment.parseZone(newDate).utc().format()
 
-                                let BeneficiaryName
-                                let BeneficiarySurname
-                                let BeneficiaryIdNumber
+                            console.log(this.setmember)
 
-                                BeneficiaryName = document.querySelector('#beneficiaryName' + x)
-                                BeneficiarySurname = document.querySelector('#beneficiarySurname' + x)
-                                BeneficiaryIdNumber = document.querySelector('#beneficiaryID' + x)
+                            this.memberService.createMember(this.setmember)
+                                .subscribe(member_res => {
 
-                                this.setbeneficiary.name = BeneficiaryName.value
-                                this.setbeneficiary.surname = BeneficiarySurname.value
-                                this.setbeneficiary.identitynumber = BeneficiaryIdNumber.value
-                                this.setbeneficiary.idlifestatus = 1
-                                this.setbeneficiary.id = 0
-                                this.setbeneficiary.idmember = member_res.id
+                                    console.log(member_res)
 
-                                this.beneficiaryService.createBeneficiary(this.setbeneficiary)
-                                    .subscribe(beneficiary_res => {
+                                    if (this.unhideBeneficiaryForm) {
 
-                                        console.log(beneficiary_res)
-                                    }, err => {
-                                        console.log(err)
-                                    })
 
-                            }
+                                        // creating beneficiary
+                                        for (let x = 0; x < this.BeneficiaryForm.length; x++) {
+
+                                            let BeneficiaryName
+                                            let BeneficiarySurname
+                                            let BeneficiaryIdNumber
+
+                                            BeneficiaryName = document.querySelector('#beneficiaryName' + x)
+                                            BeneficiarySurname = document.querySelector('#beneficiarySurname' + x)
+                                            BeneficiaryIdNumber = document.querySelector('#beneficiaryID' + x)
+
+                                            this.setbeneficiary.name = BeneficiaryName.value
+                                            this.setbeneficiary.surname = BeneficiarySurname.value
+                                            this.setbeneficiary.identitynumber = BeneficiaryIdNumber.value
+                                            this.setbeneficiary.idlifestatus = 1
+                                            this.setbeneficiary.id = 0
+                                            this.setbeneficiary.idmember = member_res.id
+
+                                            this.beneficiaryService.createBeneficiary(this.setbeneficiary)
+                                                .subscribe(beneficiary_res => {
+
+                                                    console.log(beneficiary_res)
+                                                }, err => {
+                                                    console.log(err)
+                                                })
+
+                                        }
+
+                                    }
+
+                                    swal(
+                                        {
+                                            title: 'Member Created',
+                                            type: 'success',
+                                            confirmButtonClass: "btn btn-success",
+                                            buttonsStyling: false
+
+                                        }).then((result) => document.location.reload()) // console.log('done: ' + result.value))  document.location.reload()
+
+
+
+                                }, err => {
+                                    console.log(err)
+                                })
 
                         }
-
-
-                    }, err => {
-                        console.log(err)
                     })
 
 
-                swal(
-                    {
-                        title: 'Member Created',
-                        type: 'success',
-                        confirmButtonClass: "btn btn-success",
-                        buttonsStyling: false
+                } else {
+                    console.log('idnumber already exist')
 
-                    }).then((result) => document.location.reload() ) // console.log('done: ' + result.value))  document.location.reload()
-            }
-        })
+                    swal({
+                        title: "Member with Id number " + this.setmember.identitynumber + " already exist",
+                        text: "Please enter another Id number",
+                        type: 'error',
+                        timer: 5000,
+                        showConfirmButton: true
+                    }).catch(swal.noop)
+
+                }
+
+            }, err => {
+                console.log(err)
+            })
+
 
     }
 

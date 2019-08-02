@@ -25,10 +25,10 @@ declare const $: any;
 })
 export class DashBoardComponent implements OnInit {
 
-  membercount
-  approvedclaims
-  declinedclaims
-  pendingclaims
+  membercount = 0
+  approvedclaims = 0
+  declinedclaims = 0
+  pendingclaims = 0
   user: User
 
   constructor(private countService: CountService,
