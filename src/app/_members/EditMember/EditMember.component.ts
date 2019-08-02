@@ -69,6 +69,7 @@ export class EditMemberComponent implements OnInit {
 
 
     console.log(this.setmember)
+    
 
     swal({
       title: 'Update info of: ',

@@ -144,7 +144,7 @@ export class CreateClaimFormComponent implements OnInit {
 
   testit() {
 
-    let newDate = new Date
+    let newDate = new Date()
 
     this.setclaim.idclaimstatus = 1
     this.setclaim.id = 0
@@ -154,10 +154,6 @@ export class CreateClaimFormComponent implements OnInit {
     this.setclaim.deathcertificate = 'file.pdf'
     this.setclaim.deathofdeath = moment.parseZone(this.setclaim.deathofdeath).utc().format()
     this.setclaim.proposedburialdate = moment.parseZone(this.setclaim.proposedburialdate).utc().format()
-    this.setclaim.informantname = 'Tebogo'
-    this.setclaim.informantsurname = 'Mollo'
-    this.setclaim.informantidentitynumber = '1232132132156'
-    
 
 
     this.claimService.createClaim(this.setclaim)
