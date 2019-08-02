@@ -82,6 +82,7 @@ export class CreateClaimFormComponent implements OnInit {
           this.beneficiaries = beneficiaries_res
 
         }
+        this.app.loading = false
 
       }, err => {
         console.log(err)

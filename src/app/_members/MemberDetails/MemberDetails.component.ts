@@ -146,6 +146,7 @@ export class MemberDetailsComponent implements OnInit {
                   this.beneficiaries = beneficiary_res
 
                   this.noBeneficiary = false
+                  this.app.loading = false
 
                 } else {
                   this.noBeneficiary = true

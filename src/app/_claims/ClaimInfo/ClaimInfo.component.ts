@@ -63,8 +63,7 @@ export class ClaimInfoComponent implements OnInit {
 
         }).then((result) => {
 
-          if (result.value) {
-            this.app.loading = true
+          if (result.value) {            
 
             this.router.navigate(['/claims/viewallclaims'])
           }

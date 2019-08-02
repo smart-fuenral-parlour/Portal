@@ -103,14 +103,6 @@ export class ViewPolicytypeComponent implements OnInit {
         this.app.loading = false
 
 
-
-
-
-
-
-
-
-
     }
 
 }
