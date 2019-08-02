@@ -21,6 +21,8 @@ export class LeavedetailsComponent implements OnInit {
   public Pendingleaves: any = [];
   public LeaveDetails: any = [];
   public LeaveBalances: any = [];
+  public editLeaveDetails: any = [];
+
   constructor(private httpClient: HttpClient, private adalSvc: AdalService) {
     // Display
     this.getLeave();
@@ -92,5 +94,17 @@ export class LeavedetailsComponent implements OnInit {
       this.Pendingleaves = res;
     });
   }
+
+  onSelect(selectedItem: any) {
+
+    // Get Method for current user leave request details
+    // tslint:disable-next-line:max-line-length
+    this.httpClient.get('https://sktleaveapi.herokuapp.com/api/leaveRequesteds?filter={"where":{"id":"' + selectedItem.id + '"},"order":["startdate DESC"]}').subscribe((res: any[]) => {
+      // Asign Results to leavedetails variable
+      this.editLeaveDetails = res[0];
+      alert(JSON.stringify(this.editLeaveDetails));
+    });
+  }
+
 }
 
