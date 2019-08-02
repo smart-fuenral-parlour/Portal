@@ -52,8 +52,6 @@ export class CreateClaimFormComponent implements OnInit {
   constructor(private app: AppComponent,
     private memberService: MemberService,
     private router: Router,
-    private claimstatusService: ClaimstatusService,
-    private claimtypeService: ClaimtypeService,
     private payouttypeService: PayouttypeService,
     private beneficiaryService: BeneficiaryService,
     private claimService: ClaimService,
@@ -92,19 +90,8 @@ export class CreateClaimFormComponent implements OnInit {
   }
 
   createClaim() {
+
     let newDate = new Date
-
-    this.setclaim.idclaimstatus = 1
-    this.setclaim.id = 0
-    this.setclaim.claimnumber = ('CN' + (newDate).getMilliseconds().toString().slice(0, 3) + (this.setclaim.deceasedidnumber).toString().slice(6, 9))
-    this.setclaim.createddate = moment.parseZone(newDate).utc().format()
-    this.setclaim.createdby = (this.user.name + " " + this.user.surname)
-    this.setclaim.deathcertificate = 'file.pdf'
-
-    console.log(this.setclaim)
-
-
-
 
     swal({
       title: 'Submit Claim for ' + this.member.name,
@@ -118,6 +105,16 @@ export class CreateClaimFormComponent implements OnInit {
       buttonsStyling: false
     }).then((result) => {
       if (result.value) {
+
+        this.setclaim.idclaimstatus = 1
+        this.setclaim.id = 0
+        this.setclaim.claimnumber = ('CN' + (newDate).getMilliseconds().toString().slice(0, 3) + (this.setclaim.deceasedidnumber).toString().slice(6, 9))
+        this.setclaim.createddate = moment.parseZone(newDate).utc().format()
+        this.setclaim.createdby = (this.user.name + " " + this.user.surname)
+        this.setclaim.deathcertificate = 'file.pdf'
+        this.setclaim.deathofdeath = moment.parseZone(this.setclaim.deathofdeath).utc().format()
+        this.setclaim.proposedburialdate = moment.parseZone(this.setclaim.proposedburialdate).utc().format()
+
 
         this.claimService.createClaim(this.setclaim)
           .subscribe(claim_res => {
@@ -133,7 +130,9 @@ export class CreateClaimFormComponent implements OnInit {
             confirmButtonClass: "btn btn-success",
             buttonsStyling: false
 
-          }).then((result) => this.router.navigate(['/dashboard']))
+          }).then((result) => {
+            this.router.navigate(['/dashboard'])
+          })
 
       }
     })
@@ -143,27 +142,6 @@ export class CreateClaimFormComponent implements OnInit {
   }
 
   testit() {
-
-    let newDate = new Date()
-
-    this.setclaim.idclaimstatus = 1
-    this.setclaim.id = 0
-    this.setclaim.claimnumber = ('CN' + (newDate).getMilliseconds().toString().slice(0, 3) + (this.setclaim.deceasedidnumber).toString().slice(6, 9))
-    this.setclaim.createddate = moment.parseZone(newDate).utc().format()
-    this.setclaim.createdby = (this.user.name + " " + this.user.surname)
-    this.setclaim.deathcertificate = 'file.pdf'
-    this.setclaim.deathofdeath = moment.parseZone(this.setclaim.deathofdeath).utc().format()
-    this.setclaim.proposedburialdate = moment.parseZone(this.setclaim.proposedburialdate).utc().format()
-
-
-    this.claimService.createClaim(this.setclaim)
-      .subscribe(claim_res => {
-        console.log(claim_res)
-      }, err => {
-        console.log(err)
-      })
-
-    console.log(this.setclaim)
 
   }
 

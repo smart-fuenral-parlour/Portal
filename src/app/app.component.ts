@@ -11,6 +11,7 @@ import { LoginComponent } from './_userPage/login/login.component';
 export class AppComponent implements OnInit {
   private _router: Subscription;
   loading = false
+  loader = false
   loaderClass = 'load-wrapper' 
 
   constructor( private router: Router ) {
