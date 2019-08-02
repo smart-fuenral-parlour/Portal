@@ -127,14 +127,8 @@ export class ApplyleaveComponent implements OnInit {
     let date1 = new Date(d1);
     let date2 = new Date(d2);
 
-
     $('#calculated').val(this.getBusinessDatesCount(date1, date2));
 
-<<<<<<< HEAD
-=======
-    $('#calculated').text(diff / (1000 * 60 * 60 * 24));
-    console.log('date', $('#calculated').text(diff / (1000 * 60 * 60 * 24)));
->>>>>>> e60999475b0ba955cadd1b9446f7662d528c3ed4
 
   }
 }
