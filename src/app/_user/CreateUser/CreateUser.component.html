@@ -3,53 +3,74 @@
     <div class="row">
       <div class="col-md-9 mr-auto ml-auto">
         <!--      Wizard container        -->
-   
+
         <!-- wizard container -->
 
-        <div class="col-md-9">
-          <div class="card ">
-            <div class="card-header card-header-rose card-header-icon">
-              <div class="card-icon">
-                <i class="material-icons">person_outline</i>
+        <form>
+          <div class="col-md-9">
+            <div class="card ">
+              <div class="card-header card-header-rose card-header-icon">
+                <div class="card-icon">
+                  <i class="material-icons">person_outline</i>
+                </div>
+                <h4 class="card-title">Create User</h4>
               </div>
-              <h4 class="card-title">Create User</h4>
-            </div>
-            <div class="card-body ">
-              <form method="#" action="#">
-                  <div class="row justify-content-center">
-                      <mat-form-field class="col-md-6">
-                        <input matInput placeholder="Name" type="text" name="name" [(ngModel)]='user.name'>
-                      </mat-form-field>
-                      <mat-form-field class="col-md-6">
-                          <input matInput placeholder="Surname" type="text" name="surname" [(ngModel)]='user.surname'>
-                        </mat-form-field>
-                     
-                    </div>
+              <div class="card-body ">
+                <form method="#" action="#">
 
                   <div class="row justify-content-center">
-                <mat-form-field class="col-md-6">
-                  <input matInput placeholder="Email Address" type="email" name="email" [(ngModel)]='user.email' >
-                </mat-form-field>
-           
-                <mat-form-field  class="col-md-6">
-                  <mat-select  placeholder="Role" [ngModelOptions]="{standalone: true}" [(ngModel)]='selectedrole.idrole'>
-                    <mat-option *ngFor="let role of roles" [value]="role.idrole" >
-                      {{ role.name }}
-                    </mat-option>
-                  </mat-select>
-              </mat-form-field>
-              </div>
-       
-              </form>
-            </div>
+                    <mat-form-field class="col-md-6">
+                      <input matInput placeholder="Name" type="text" name="name" [(ngModel)]='user.name'>
+                    </mat-form-field>
+                    <mat-form-field class="col-md-6">
+                      <input matInput placeholder="Surname" type="text" name="surname" [(ngModel)]='user.surname'>
+                    </mat-form-field>
 
-            
-            <div class="card-footer ">
-              <button mat-raised-button type="submit" (click)="createUser()" class="btn btn-fill btn-rose">Submit</button>
+                  </div>
+
+                  <div class="row justify-content-center">
+                    <mat-form-field class="col-md-6">
+                      <input matInput placeholder="Email Address" type="email" name="email" [(ngModel)]='user.email'>
+                    </mat-form-field>
+
+                    <mat-form-field class="col-md-6">
+                      <mat-select placeholder="Role" [ngModelOptions]="{standalone: true}" [(ngModel)]='user.role'>
+                        <mat-option *ngFor="let role of roles" [value]="role.name">
+                          {{ role.name }}
+                        </mat-option>
+                      </mat-select>
+                    </mat-form-field>
+                  </div>
+
+                  <div class="row justify-content-center">
+                    <mat-form-field class="col-md-6">
+                      <input matInput placeholder="Password" (keyup)="confirmPassword(password)" (input)="errorPasswordDisable()" type="password" name="password" [(ngModel)]='user.password'
+                        required>
+                    </mat-form-field>
+                    <mat-form-field class="col-md-6">
+                      <input matInput placeholder="Confirm Password" type="password" name="confirm_password"
+                        [(ngModel)]='password' (keyup)="confirmPassword(password)"  (input)="errorPasswordDisable()" required>
+                    </mat-form-field>
+
+                  </div>
+                  <div class="text-center">
+                      <mat-error *ngIf='errorPassword'>
+                          <b>Error Passwords do not match</b>
+                        </mat-error>
+                  </div>
+
+                </form>
+              </div>
+
+
+              <div class="card-footer ">
+                <button mat-raised-button type="submit" (click)="createUser(password)"
+                  class="btn btn-fill btn-rose">Submit</button>
+              </div>
             </div>
           </div>
-        </div>
- <!-- wizard container -->
+        </form>
+        <!-- wizard container -->
 
       </div>
     </div>

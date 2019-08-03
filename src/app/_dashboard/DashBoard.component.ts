@@ -13,7 +13,6 @@ import { Count } from './../services/count/count';
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-import * as Chartist from 'chartist';
 import { isNullOrUndefined } from 'util';
 
 declare const $: any;

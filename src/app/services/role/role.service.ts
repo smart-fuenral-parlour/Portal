@@ -7,7 +7,7 @@ import { Injectable } from '@angular/core';
 const httpOptions = {
   headers: new HttpHeaders({'Content-Type': 'application/json'})
 };
-const apiUrl = "http://greenlinks1.dedicated.co.za:3002/api/role";
+const apiUrl = "http://greenlinks1.dedicated.co.za:3000/api/Roles";
 
 @Injectable({
   providedIn: 'root'
@@ -43,7 +43,7 @@ export class RoleService {
       catchError(this.handleError<Role>(`getRole id=${id}`))
     );
   }
-  
+
 
 
 

@@ -1,6 +1,6 @@
 
 import { Component, OnInit, OnChanges, AfterViewInit, SimpleChanges } from '@angular/core';
-import { FormControl, FormGroupDirective, NgForm, Validators, FormArray, FormGroup, FormBuilder,FormsModule } from '@angular/forms';
+import { FormControl, FormGroupDirective, NgForm, Validators, FormArray, FormGroup, FormBuilder, FormsModule } from '@angular/forms';
 import { ErrorStateMatcher } from '@angular/material/core';
 import { patchComponentDefWithScope } from '@angular/core/src/render3/jit/module';
 import { Router } from '@angular/router';
@@ -11,8 +11,8 @@ import { User } from '../../services/user/user';
 import swal from 'sweetalert2';
 import { Moment } from 'moment'
 import * as moment from 'moment';
-import { isNullOrUndefined } from 'util';
 import { AppComponent } from 'src/app/app.component';
+import { isNullOrUndefined } from 'util';
 
 declare const $: any;
 
@@ -40,81 +40,196 @@ export class MyErrorStateMatcher implements ErrorStateMatcher {
 })
 export class CreateUserComponent implements OnInit {
 
- 
-user = new User;
-  
-    roles:Role[];
-    selectedrole= new Role;
- 
-    constructor( private formBuilder: FormBuilder, private _role: RoleService,private _user: UserService, private _router: Router, private app: AppComponent) { }
+
+    user = new User;
+
+    roles: Role[];
+    errorPassword = false
 
 
-    ///////////////////////////////////////////////////////////////////////////////////////
+    constructor(private formBuilder: FormBuilder,
+        private roleService: RoleService,
+        private userService: UserService,
+        private router: Router,
+        private app: AppComponent) { }
 
-    createUser(){
-    
-        
-
-
-
-      swal({
-            title: 'Create '+this.user.name+' as a user ',
-            text: "Are you sure you want to create "+this.user.name+" as a user?",
-            type: 'warning',
-            showCancelButton: true,
-            confirmButtonClass: 'btn btn-success',
-            cancelButtonClass: 'btn btn-danger',
-            cancelButtonText: 'Cancel',
-            confirmButtonText: 'Yes, Save',
-            buttonsStyling: false
-        }).then((result) => {
-            if (result.value) {
-                this.app.loading = true
-                
-                this._user.createUser(      
-                    this.user)
-                .subscribe(res => {
-                   console.log(res)
-                  }, (err) => {
-                    console.log(err);
-                   
-                  });
-
-                swal(
-                    {
-                        title: 'User Created',
-                        //text: 'User Deleted',
-                        type: 'success',
-                        confirmButtonClass: "btn btn-success",
-                        buttonsStyling: false
-
-                    }).then((result) => { this._router.navigate(['/user/viewuser']) })
-            }
-        })
-
-
-
-    
-    
-    
-    }
-
- 
-
-    ///////////////////////////////////////////////////////////////////////////////////////
     ngOnInit() {
-        this.app.loading = false
-        
 
-        this._role.getRoles()
-        .subscribe(res => {
-            this.roles=res;
-        }, err => {
-          console.log(err);
-        });
+        this.app.loading = true
+
+        this.roleService.getRoles()
+            .subscribe(role_res => {
+
+                if (role_res.length > 0) {
+                    this.roles = role_res;
+                    this.app.loading = false
+                } else {
+                    this.roles[0].name = 'User'
+                    this.app.loading = false
+                }
+
+            }, err => {
+                console.log(err);
+                this.roles[0].name = 'User'
+                this.app.loading = false
+            });
 
     }
 
- 
+    ///////////////////////////////////////////////////////////////////////////////////////
+
+    errorPasswordDisable() {
+
+        if (this.errorPassword) {
+            this.errorPassword = false
+        }
+    }
+
+
+    confirmPassword(password: string) {
+
+
+        if (!isNullOrUndefined(this.user.password) && !isNullOrUndefined(password)) {
+
+            if (password.length == this.user.password.length) {
+
+                if (this.user.password == password) {
+                    this.errorPassword = false
+                } else {
+                    this.errorPassword = true
+                }
+            }
+
+
+        }
+
+
+    }
+
+
+    createUser(password: string) {
+
+
+        // checking for empty fields
+        if (isNullOrUndefined(this.user.email) || isNullOrUndefined(this.user.role) || isNullOrUndefined(this.user.password) || isNullOrUndefined(this.user.surname) || isNullOrUndefined(this.user.name) || isNullOrUndefined(password)) {
+
+            swal({
+                title: "Empty fields",
+                text: "Please complete form before submitting",
+                type: 'error',
+                timer: 5000,
+                showConfirmButton: true
+            }).catch(swal.noop)
+
+        } else
+            if (this.user.email == '' || this.user.role == '' || this.user.password == '' || this.user.surname == '' || this.user.name == '' || password == '') {
+
+                swal({
+                    title: "Empty fields",
+                    text: "Please complete form before submitting",
+                    type: 'error',
+                    timer: 5000,
+                    showConfirmButton: true
+                }).catch(swal.noop)
+
+            } else {
+
+                if (this.errorPassword || this.user.password.length != password.length) {
+
+                    swal({
+                        title: "Password fields do not match",
+                        text: "Please re-enter the same password to submit",
+                        type: 'error',
+                        timer: 5000,
+                        showConfirmButton: true
+                    }).catch(swal.noop)
+
+                } else {
+
+
+                    // validating duplicated email
+                    this.userService.checkUserEmail(this.user.email)
+                        .subscribe(count_res => {
+
+                            if (count_res.count == 0) {
+
+                                swal({
+                                    title: 'Create ' + this.user.name + ' ' + this.user.surname + ' as a user ',
+                                    text: "Are you sure you want to create " + this.user.name + ' ' + this.user.surname + " as a user?",
+                                    type: 'warning',
+                                    showCancelButton: true,
+                                    confirmButtonClass: 'btn btn-success',
+                                    cancelButtonClass: 'btn btn-danger',
+                                    cancelButtonText: 'Cancel',
+                                    confirmButtonText: 'Yes, Save',
+                                    buttonsStyling: false
+                                }).then((result) => {
+                                    if (result.value) {
+                                        this.app.loading = true
+                                        this.user.idsystemusers = 0;
+
+                                        this.userService.createUser(
+                                            this.user)
+                                            .subscribe(user_res => {
+                                                console.log(user_res)
+
+                                                if(user_res.idsystemusers > 0) {
+                                                    swal({
+                                                        title: 'User Created',
+                                                        type: 'success',
+                                                        confirmButtonClass: "btn btn-success",
+                                                        buttonsStyling: false
+    
+                                                    }).then((result) => {
+                                                        this.router.navigate(['/user/viewuser'])
+                                                    })
+                                                } else {
+
+                                                    swal({
+                                                        title: "Error submitting form",
+                                                        text: "we apologize for the error, please try again or contact your IT technician  ",
+                                                        type: 'error',
+                                                        timer: 5000,
+                                                        showConfirmButton: true
+                                                    }).catch(swal.noop).then((result) => {
+                                                       // this.router.navigate(['/user/viewuser'])
+                                                       document.location.reload();
+                                                    })
+
+                                                }
+
+                                            }, (err) => {
+                                                console.log(err);
+
+                                            });
+
+                                    }
+                                })
+
+                            } else {
+                                swal({
+                                    title: "Email already exist",
+                                    text: "Please enter another email for this user",
+                                    type: 'error',
+                                    timer: 5000,
+                                    showConfirmButton: true
+                                }).catch(swal.noop)
+                            }
+
+
+                        }, err => {
+                            console.log(err)
+                        })
+
+                }
+
+
+            }
+
+    }
+
+
+
+    ///////////////////////////////////////////////////////////////////////////////////////
 
 }
