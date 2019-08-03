@@ -48,11 +48,14 @@ export class MemberDetailsComponent implements OnInit {
   createddate
   balances
 
-  editTextBox = false;
 
   selectedClaim
   createdby
+
+  noClaims = false
   noBeneficiary = false
+  noPayment = false
+  editTextBox = false;
 
   Beneficiaryname;
   Beneficiarysurname;
@@ -63,7 +66,7 @@ export class MemberDetailsComponent implements OnInit {
   member: Member
   beneficiaries: Beneficiary[]
   setBeneficiary = new Beneficiary
-  claims
+  claims: Claim[]
   user: User
   lifestatus
   policystatus
@@ -151,6 +154,25 @@ export class MemberDetailsComponent implements OnInit {
                 } else {
                   this.noBeneficiary = true
                 }
+
+                /*
+                this.claimService.getClaimbyidmember(this.member.id)
+                .subscribe(claims_res => {
+
+                  if (claims_res.length > 0) {
+
+                    this.claims = claims_res
+                    this.noClaims = false
+
+                  } else {
+                    this.noClaims = true
+                  }
+                  this.app.loading = false
+
+                }, err => {
+                  console.log(err)
+                })
+                */
 
               }, err => {
                 console.log(err)
@@ -273,7 +295,7 @@ export class MemberDetailsComponent implements OnInit {
     }).then((result) => {
       if (result.value) {
         this.app.loading = true
-        
+
 
         this.setBeneficiary.idlifestatus = 1
         this.setBeneficiary.idmember = this.member.id
@@ -300,7 +322,7 @@ export class MemberDetailsComponent implements OnInit {
         }
 
 
-        this.beneficiaryService.updateBeneficiary(id,this.setBeneficiary)
+        this.beneficiaryService.updateBeneficiary(id, this.setBeneficiary)
           .subscribe(res => {
             this.app.loading = false
 
@@ -317,10 +339,10 @@ export class MemberDetailsComponent implements OnInit {
               }).then((result) => window.location.reload())
 
           }, err => {
+            this.app.loading = false
             console.log(err)
           })
 
-          this.app.loading = false
 
 
       }
@@ -381,7 +403,7 @@ export class MemberDetailsComponent implements OnInit {
         this.setBeneficiary.identitynumber = $('#IDNumber').val()
         this.setBeneficiary.idlifestatus = 1
         this.setBeneficiary.id = 0
-        this.setBeneficiary.idmember = this.member.id 
+        this.setBeneficiary.idmember = this.member.id
 
         this.beneficiaryService.createBeneficiary(this.setBeneficiary)
           .subscribe(beneficiary_res => {

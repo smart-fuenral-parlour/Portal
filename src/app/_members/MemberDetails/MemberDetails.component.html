@@ -211,7 +211,7 @@
         </div>
 
 
-        <div class="col-md-12" *ngIf="paymentTable">
+        <div class="col-md-12" *ngIf="!noPayment">
           <div class="card">
             <div class="card-header card-header-icon card-header-rose">
               <h4 class="card-title ">Payment Table</h4>
@@ -242,7 +242,7 @@
             </div>
           </div>
         </div>
-        <div class="row" *ngIf="Nopayment">
+        <div class="row" *ngIf="noPayment">
           <div class="col-12 ml-auto mr-auto">
             <div class="card" style="background-color: lightgray">
               <div class="card-body text-center card-description">
@@ -256,7 +256,7 @@
       <div class="tab-pane" id="myclaims">
 
 
-        <div class="row" *ngIf="notFound">
+        <div class="row" *ngIf="noClaims">
           <div class="col-12 ml-auto mr-auto">
             <div class="card">
               <div class="card-body text-center">
@@ -268,7 +268,7 @@
           </div>
         </div>
         <!--   *ngIf="claimTable"   -->
-        <div class="row" *ngIf="true">
+        <div class="row" *ngIf="!noClaims">
           <div class="col-md-12">
             <div class="card">
               <div class="card-header card-header-primary card-header-icon">
@@ -287,7 +287,7 @@
                     <thead>
                       <tr>
                         <th>Claim No.</th>
-                        <th>Name of deceased</th>
+                        <th>Name, Surname of deceased</th>
                         <th>Surname of deceased</th>
                         <th>Date</th>
                         <th>Claim Status</th>
@@ -297,7 +297,7 @@
                     <tbody>
                       <tr *ngFor="let claim of claims; let i = index">
                         <td>{{ claim.idclaim }}</td>
-                        <td>{{ claim.deceasedname }}</td>
+                        <td>{{ claim.deceasedname }}, {{ claim.deceasedsurname }}</td>
                         <td>{{ claim.deceasedsurname }}</td>
                         <td>{{ claim.createddate }}</td> <!--   | date: 'dd MMMM, yyyy'  -->
                         <td>{{ claim.idclaimstatus }}</td>

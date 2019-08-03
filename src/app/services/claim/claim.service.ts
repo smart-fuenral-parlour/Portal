@@ -66,11 +66,11 @@ export class ClaimService {
   }
   
   
-  getClaimbyidmember(id: number): Observable<Claim> {
+  getClaimbyidmember(id: number): Observable<Claim[]> {
     const url = `${getclaimbyidmemberUrl}/${id}`;
-    return this.http.get<Claim>(url).pipe(
+    return this.http.get<Claim[]>(url).pipe(
       tap(_ => console.log(`fetched claim id=${id}`)),
-      catchError(this.handleError<Claim>(`getClaimbyidmember id=${id}`))
+      catchError(this.handleError<Claim[]>(`getClaimbyidmember id=${id}`))
     );
   }
 
