@@ -43,7 +43,7 @@ export class ClaimInfoComponent implements OnInit {
   }
 
   approveClaim() {
-
+    this.app.loading = true
     this.setclaim.idclaimstatus = 2;
     this.setclaim.createdby = (this.user.name + " " + this.user.surname)
 
@@ -54,6 +54,7 @@ export class ClaimInfoComponent implements OnInit {
       .subscribe(approveclaim_res => {
 
         console.log(approveclaim_res)
+        this.app.loading = false
 
         swal({
           title: 'Claim Approved',
@@ -63,7 +64,7 @@ export class ClaimInfoComponent implements OnInit {
 
         }).then((result) => {
 
-          if (result.value) {            
+          if (result.value) {
 
             this.router.navigate(['/claims/viewallclaims'])
           }
@@ -97,6 +98,7 @@ export class ClaimInfoComponent implements OnInit {
     }).then((result) => {
       if (result.value) {
 
+        this.app.loading = true
         this.setclaim.idclaimstatus = 3
         this.setclaim.createdby = (this.user.name + " " + this.user.surname)
 
@@ -104,6 +106,7 @@ export class ClaimInfoComponent implements OnInit {
 
         this.claimService.updateClaim(this.getclaim.id, this.setclaim)
           .subscribe(update_res => {
+            this.app.loading = false
 
             console.log(update_res)
 
@@ -118,7 +121,7 @@ export class ClaimInfoComponent implements OnInit {
 
               this.router.navigate(['/claims/viewallclaims'])
               console.log('saved!')
-            
+
             }) // this.router.navigate(['/claims/viewallclaims']))
 
 

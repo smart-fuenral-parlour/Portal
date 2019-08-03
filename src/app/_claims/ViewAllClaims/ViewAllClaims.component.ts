@@ -82,12 +82,14 @@ export class ViewAllClaimsComponent implements OnInit {
       this.notFound = false
       this.table = false
       this.isEmpty = true
+      this.app.loading = false
 
     } else {
       console.log('not empty')
       this.notFound = false
       this.table = false
       this.isEmpty = false
+      this.app.loading = false
 
 
       if (this.selectedClaimType == -1) {
@@ -105,8 +107,10 @@ export class ViewAllClaimsComponent implements OnInit {
             if (this.claims.length > 0) {
               this.notFound = false
               this.table = true
+      this.app.loading = false
             } else {
               this.table = false
+              this.app.loading = false
               this.notFound = true
 
             }
@@ -129,11 +133,13 @@ export class ViewAllClaimsComponent implements OnInit {
 
               this.claims = claim_res              
 
+              this.app.loading = false
               this.notFound = false
               this.table = true
             } else {
 
               this.table = false
+              this.app.loading = false
               this.notFound = true
 
             }

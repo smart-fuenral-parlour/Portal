@@ -14,7 +14,7 @@
                     All
                   </mat-option>
                   <mat-option *ngFor="let claimstatus of claimstatuses" [value]="claimstatus.id">
-                    {{ claimstatus.name }}
+                    {{ claimstatus.name | titlecase}}
                   </mat-option>
                 </mat-select>
               </mat-form-field>
