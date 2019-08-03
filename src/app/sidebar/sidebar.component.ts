@@ -40,6 +40,7 @@ export const ROUTES: RouteInfo[] = [
             { path: 'viewuser', title: 'View User', ab: 'VU' }
         ]
     },
+    /*
     {
         path: '/notification',
         title: 'Notification',
@@ -50,9 +51,10 @@ export const ROUTES: RouteInfo[] = [
             { path: 'claimsinbox', title: 'Inbox', ab: 'I' }
         ]
     },
+    */
     {
         path: '/members',
-        title: 'Individual Member',
+        title: 'Members',
         type: 'sub',
         icontype: 'person',
         collapse: 'member',
@@ -83,7 +85,7 @@ export const ROUTES: RouteInfo[] = [
             { path: 'viewpolicytype', title: 'View Policy Type', ab: 'VPT' }
         ]
     },
-    
+     /*
     {
         path: '/payments',
         title: 'Payments',
@@ -94,7 +96,7 @@ export const ROUTES: RouteInfo[] = [
             { path: 'viewpayments', title: 'View All Payments', ab: 'VAP' }
         ]
     },
-    /*///////////////////////////////////////////////////////////////////////////////////////////////////
+   ///////////////////////////////////////////////////////////////////////////////////////////////////
   
     {
         path: '/payments',

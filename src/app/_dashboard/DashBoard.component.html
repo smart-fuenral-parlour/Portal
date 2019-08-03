@@ -1,10 +1,45 @@
 <div class="main-content">
   <div class="container-fluid">
     <div class="mr-auto ml-auto text-center text-primary">
-      <h2>Smart Funeral Parlour</h2>
+      <h2>Welcome to Smart Funeral Parlour</h2>
     </div>
 
 
+    <div class="row">
+      <div class="col-lg-3 col-md-6 col-sm-6">
+        <div class="card card-stats">
+          <div class="card-header card-header-info card-header-icon">
+            <div class="card-icon">
+              <i class="material-icons">recent_actors</i>
+            </div>
+            <p class="card-category">Members</p>
+            <h3 class="card-title text-info">{{ membercount }}</h3>
+          </div>
+          <div class="card-footer">
+            <div class="stats">
+              <i class="material-icons">info_outline</i>Total number of members
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-3 col-md-6 col-sm-6">
+        <div class="card card-stats">
+          <div class="card-header card-header-success card-header-icon">
+            <div class="card-icon">
+              <i class="material-icons">supervisor_account</i>
+            </div>
+            <p class="card-category">Total Claims</p>
+            <h3 class="card-title  text-info">{{approvedclaims}}</h3>
+          </div>
+          <div class="card-footer">
+            <div class="stats">
+              <i class="material-icons">info_outline</i>Total number of claims
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    
     <!--       MEMBERS LINKS            -->
     <div class="row">
 
@@ -46,24 +81,7 @@
 
       </div>
 
-      <div class="col-md-4 text-center">
-        <a href="/payments/viewpayments" data-toggle="tooltip" data-placement="down" title="view payments">
-          
-          <div class="card card-pricing card-raised">
-              <div class="card-body">
-  
-                <div class="card-icon icon-rose">
-                  <i class="material-icons">payment</i>
-                </div>
-                <h3 class="card-title">View Payments</h3>
-                <div class="card-footer">
-                </div>
-              </div>
-            </div>
 
-        </a>
-
-      </div>
 
     </div>
     <!--       CLAIMS LINKS            -->
@@ -112,96 +130,12 @@
 
       </div>
 
-      <div class="col-md-4 text-center" data-toggle="tooltip" data-placement="down" title="view report">
-        <a href="/dashboard">
 
-          <div class="card card-pricing card-raised">
-            <div class="card-body">
-
-              <div>
-                <div class="card-icon icon-rose">
-                  <i class="material-icons">description</i>
-                </div>
-                <h3 class="card-title">View Report</h3>
-              </div>
-            </div>
-          </div>
-
-        </a>
-
-      </div>
 
     </div>
     
     
 
-    <div class="row">
-      <div class="col-lg-3 col-md-6 col-sm-6">
-        <div class="card card-stats">
-          <div class="card-header card-header-info card-header-icon">
-            <div class="card-icon">
-              <i class="material-icons">recent_actors</i>
-            </div>
-            <p class="card-category">Total Members</p>
-            <h3 class="card-title text-info">{{ membercount }}</h3>
-          </div>
-          <div class="card-footer">
-            <div class="stats">
-              <i class="material-icons">info_outline</i>Total number of member registered the system
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="col-lg-3 col-md-6 col-sm-6">
-        <div class="card card-stats">
-          <div class="card-header card-header-success card-header-icon">
-            <div class="card-icon">
-              <i class="material-icons">supervisor_account</i>
-            </div>
-            <p class="card-category">Appoved Claims</p>
-            <h3 class="card-title  text-info">{{approvedclaims}}</h3>
-          </div>
-          <div class="card-footer">
-            <div class="stats">
-              <i class="material-icons">info_outline</i>All approved claims
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="col-lg-3 col-md-6 col-sm-6">
-        <div class="card card-stats">
-          <div class="card-header card-header-warning card-header-icon">
-            <div class="card-icon">
-              <i class="material-icons">payment</i>
-            </div>
-            <p class="card-category">Pending Claims</p>
-            <h3 class="card-title text-info">{{pendingclaims}}</h3>
-          </div>
-          <div class="card-footer">
-            <div class="stats">
-              <i class="material-icons">info_outline</i>All pending claims waiting to be approved
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="col-lg-3 col-md-6 col-sm-6">
-        <div class="card card-stats">
-          <div class="card-header card-header-danger card-header-icon">
-            <div class="card-icon">
-              <i class="fa fa-line-chart custom"></i>
-            </div>
-            <p class="card-category">Declined Claims</p>
-            <h3 class="card-title  text-info">{{declinedclaims}}</h3>
-          </div>
-          <div class="card-footer">
-            <div class="stats">
-              <i class="material-icons">info_outline</i>Declined claims
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-    
   </div>
 </div>
 

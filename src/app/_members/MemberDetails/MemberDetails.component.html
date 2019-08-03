@@ -24,11 +24,6 @@
       </a>
     </li>
     <li class="nav-item">
-      <a class="nav-link" data-toggle="tab" href="#mypayments" role="tablist">
-        Payments
-      </a>
-    </li>
-    <li class="nav-item">
       <a class="nav-link" data-toggle="tab" href="#myclaims" role="tablist">
         Claims
       </a>
@@ -145,114 +140,7 @@
         </div>
 
       </div>
-      <div class="tab-pane" id="mypayments">
 
-        <div class="row">
-          <div class="col-md-12 ml-auto mr-auto">
-            <div class="card">
-              <div class="card-body">
-                <div class="col-12">
-
-                  <!-- From Date -->
-                  <div class="col-6 input-group-prepend mr-auto">
-                    <span class="input-group-text">
-                      <i class="material-icons"></i>
-                    </span>
-                    <mat-form-field (click)="fromEnable()">
-                      <input matInput [matDatepicker]="picker3" placeholder="From" readonly id="PaymentfromDate"
-                        name="fromDate" (click)="picker3.open()" class="date">
-                      <mat-datepicker-toggle matSuffix [for]="picker3"></mat-datepicker-toggle>
-                      <mat-datepicker #picker3 startView="year"></mat-datepicker>
-                    </mat-form-field>
-                  </div>
-                  <div class="col-5" *ngIf='payment_fromNULL'>
-                    <mat-error>
-                      Please From Select Date
-                    </mat-error>
-                  </div>
-                </div>
-
-                <div class="col-12">
-
-
-
-                  <div class="col-6 input-group-prepend mr-auto">
-                    <span class="input-group-text">
-                      <i class="material-icons"></i>
-                    </span>
-                    <mat-form-field (click)="toEnable()">
-                      <input matInput [matDatepicker]="picker4" placeholder="To" readonly id="PaymenttoDate"
-                        name="toDate" (click)="picker4.open()" class="date">
-                      <mat-datepicker-toggle matSuffix [for]="picker4"></mat-datepicker-toggle>
-                      <mat-datepicker #picker4 startView="year"></mat-datepicker>
-                    </mat-form-field>
-                  </div>
-                  <div class="col-5" *ngIf='payment_toNULL'>
-                    <mat-error>
-                      Please To Select Date
-                    </mat-error>
-                  </div>
-                </div>
-
-                <div class="col-5" *ngIf='isEmpty'>
-                  <mat-error>
-                    Member's {{searchText}} is Required
-                  </mat-error>
-                </div>
-
-                <div class="col-2">
-                  <button mat-raised-button type="submit" class="btn btn-sm" id="searchButton" name="searchButton"
-                    (click)="searchPayments()"> <i class="material-icons">search</i> Search For Payments</button>
-
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-
-        <div class="col-md-12" *ngIf="!noPayment">
-          <div class="card">
-            <div class="card-header card-header-icon card-header-rose">
-              <h4 class="card-title ">Payment Table</h4>
-            </div>
-            <div class="card-body">
-              <div class="table-responsive">
-                <table class="table table-hover table-striped">
-                  <thead class="text-primary">
-                    <tr>
-                      <th>Payment ID</th>
-                      <th>Cashier Name</th>
-                      <th>Payment Date</th>
-                      <th>Total</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr> <!--  *ngFor="let balance of balances" -->
-                      <td class="text-info">{{balance.idpayment}}</td>
-                      <td>{{member.createdby}}</td>
-                      <td>{{ member.lastpaiddate | date }}</td>
-                      <td>{{ member.balance | currency:  'ZAR':"symbol-narrow" }}</td>
-
-                    </tr>
-                  </tbody>
-                </table>
-
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="row" *ngIf="noPayment">
-          <div class="col-12 ml-auto mr-auto">
-            <div class="card" style="background-color: lightgray">
-              <div class="card-body text-center card-description">
-                <h3><b>No Payments Made</b></h3>
-              </div>
-            </div>
-          </div>
-        </div>
-
-      </div>
       <div class="tab-pane" id="myclaims">
 
 

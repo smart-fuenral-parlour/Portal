@@ -172,7 +172,7 @@ export class CreateMemberComponent implements OnInit {
         // Code for the Validator  beneficiaryName
 
         const $validator = $('.card-wizard form').validate({
-            /*  rules: {
+             rules: {
                     firstname: {
                         required: true,
                         minlength: 2
@@ -240,7 +240,7 @@ export class CreateMemberComponent implements OnInit {
                         required: true,
                         minlength: 3,
                     }
-              },*/
+              },
 
             highlight: function (element) {
                 $(element).closest('.form-group').removeClass('has-success').addClass('has-danger');
@@ -344,7 +344,7 @@ export class CreateMemberComponent implements OnInit {
                 if ($current >= $total) {
                     $($wizard).find('.btn-next').hide();
                     $($wizard).find('.btn-finish').show();
-                     
+
                 } else {
                     $($wizard).find('.btn-next').show();
                     $($wizard).find('.btn-finish').hide();
@@ -566,7 +566,40 @@ export class CreateMemberComponent implements OnInit {
 
         console.log(finish)
         console.log(checkbox)
-        
+
+    }
+
+    idNumberCheck() {
+        console.log('button clicked')
+
+        if (this.setmember.identitynumber.length == 13) {
+
+            // checking if id number is unique
+            this.memberService.getMemberbyidentitynumber(this.setmember.identitynumber)
+                .subscribe(memberExist => {
+
+                    if (memberExist.length == 0) {
+                        console.log('idnumber not found')
+                    } else {
+                        console.log('idnumber already exist')
+
+                        swal({
+                            title: "Member with Id number " + this.setmember.identitynumber + " already exist",
+                            text: "Please enter another Id number",
+                            type: 'error',
+                            timer: 5000,
+                            showConfirmButton: true
+                        }).catch(swal.noop)
+
+                    }
+
+                }, err => {
+                    console.log(err)
+                })
+
+        }
+
+
     }
 
     finishCreate() {
@@ -600,9 +633,10 @@ export class CreateMemberComponent implements OnInit {
                             this.setmember.id = 0
                             this.setmember.idpolicystatus = 1
                             this.setmember.idlifestatus = 1
-                            this.setmember.membershipnumber = ('MN' + (newDate).getMilliseconds().toString().slice(0, 3) + (this.setmember.identitynumber).toString().slice(6, 9))
+                            this.setmember.membershipnumber = (this.setmember.surname.slice(0, 1).toUpperCase()+this.setmember.name.slice(0, 1).toUpperCase()+Math.floor(100000 + Math.random() * 900000)+(this.setmember.identitynumber).toString().slice(0, 2))
                             this.setmember.createdby = (this.user.name + " " + this.user.surname)
                             this.setmember.lastpaiddate = moment.parseZone(newDate).utc().format()
+                            this.setmember.createdby =  moment.parseZone(newDate).utc().format()
 
                             console.log(this.setmember)
 

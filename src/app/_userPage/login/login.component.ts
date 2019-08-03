@@ -1,7 +1,6 @@
 import { Component, OnInit, ElementRef, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
 
-import { ServiceService } from 'src/app/SERVICE/service.service'; // service link here
 import swal from 'sweetalert2';
 import { Moment } from 'moment'
 import * as moment from 'moment';
@@ -16,7 +15,7 @@ import { PasswordValidation } from './password-validator.component';
 import { UserService } from 'src/app/services/user/user.service'
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-import { User, LoginUser } from 'src/app/services/user/user'
+import { User } from 'src/app/services/user/user'
 
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -44,8 +43,8 @@ export class LoginComponent implements OnInit, OnDestroy {
 
     pattern = "https?://.+";
 
-    loginuser: LoginUser
-    user: User
+
+    userLogin = new User
     login: FormGroup;
     type: FormGroup;
     //////////////////////////////////////////////////////////////////////////////////////////////////
@@ -57,7 +56,6 @@ export class LoginComponent implements OnInit, OnDestroy {
 
     constructor(private app: AppComponent,
         private element: ElementRef,
-        private _service: ServiceService,
         private userService: UserService,
         private router: Router,
         private formBuilder: FormBuilder) {
@@ -128,14 +126,10 @@ export class LoginComponent implements OnInit, OnDestroy {
             this.isIncorrect = false
             this.app.loading = true
 
-            
-            this.userService.loginUser({ 'name': username, 'password': password })
-                .subscribe(loginuser_res => {
+            this.userService.loginUser(username,password)
+                .subscribe(login_res => {
 
-                    this.loginuser = loginuser_res
-                    
-
-                    if (this.loginuser.status == 200) {
+                    if(login_res.length == 1) {
 
                         this.isIncorrect = false
                         this.app.loading = false
@@ -145,24 +139,20 @@ export class LoginComponent implements OnInit, OnDestroy {
                         localStorage.clear()
                         sessionStorage.clear()
 
-                        localStorage.setItem('user', JSON.stringify(this.user));
+                        localStorage.setItem('user', JSON.stringify(login_res[0]));
                         this.router.navigate(['/dashboard']);
 
-                    } else
-                        if (this.loginuser.status == 500) {
-                            console.log('incorrect')
-                            this.isIncorrect = true
-                            this.isIncorrect = true
-                            this.app.loading = false
-                            this.app.loaderClass = 'load-wrapper'
-                        } else {
-                            
-                            console.log('% ERROR %')
-                            this.isIncorrect = true
-                            this.app.loading = false
-                            this.app.loaderClass = 'load-wrapper'
-                        }
+                    } else {
 
+                        console.log('incorrect')
+                        this.isIncorrect = true
+                        this.isIncorrect = true
+                        this.app.loading = false
+                        this.app.loaderClass = 'load-wrapper'
+
+                    }
+
+                 
                 }, err => {
                     console.log(err)
                 })

@@ -89,7 +89,7 @@ ngOnInit() {
         if (result.value) {
          
            
-            this._user.deleteUser(this.users[index].id)
+            this._user.deleteUser(this.users[index].idsystemusers)
             .subscribe(res => {
                 console.log(res)
                 

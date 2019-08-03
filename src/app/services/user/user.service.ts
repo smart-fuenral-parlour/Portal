@@ -1,7 +1,7 @@
 import { Observable, of, throwError } from 'rxjs';
 import { HttpClient, HttpHeaders, HttpErrorResponse } from '@angular/common/http';
 import { catchError, tap, map } from 'rxjs/operators';
-import { User, LoginUser } from './user';
+import { User } from './user';
 import { Injectable } from '@angular/core';
 
 const httpOptions = {
@@ -21,7 +21,7 @@ const loginUrl = "http://greenlinks1.dedicated.co.za:3000/api/login"
 
 
 const apiUrl = "http://greenlinks1.dedicated.co.za:3000/api/Users";
-const loginUrl = "http://greenlinks1.dedicated.co.za:3000/api/login"
+const loginUrl = "http://greenlinks1.dedicated.co.za:3000/api/Systemusers/findOne?filter=%7B%22where%22%3A%7B%22and%22%3A%5B%7B%22name%22%3A%20%22tebogo%22%7D%2C%7B%22password%22%3A%20%2211111%22%7D%5D%20%7D%20%7D"
 
 
 @Injectable({
@@ -43,10 +43,12 @@ export class UserService {
   }
 
 
-  loginUser (user): Observable<LoginUser> {
-    return this.http.post<LoginUser>(loginUrl, user, httpOptions).pipe(
-      tap((user: LoginUser) => console.log(`added user w/`+user)),
-      catchError(this.handleError<LoginUser>('addUser'))
+  loginUser (username,password): Observable<User[]> {
+                                  
+    return this.http.get<User[]>('http://greenlinks1.dedicated.co.za:3000/api/Systemusers?filter=%7B%22where%22%3A%7B%22and%22%3A%5B%7B%22name%22%3A%20%22'+username+'%22%7D%2C%7B%22password%22%3A%20%22'+password+'%22%7D%5D%20%7D%20%7D    ')
+    .pipe(
+      tap(_ => console.log('loginUser')),
+      catchError(this.handleError('loginUser'))
     );
   }
 

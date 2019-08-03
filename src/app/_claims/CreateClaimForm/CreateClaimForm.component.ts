@@ -107,7 +107,7 @@ export class CreateClaimFormComponent implements OnInit {
     }).then((result) => {
       if (result.value) {
 
-        this.setclaim.idclaimstatus = 1
+        this.setclaim.idclaimstatus = 2
         this.setclaim.id = 0
         this.setclaim.claimnumber = ('CN' + (newDate).getMilliseconds().toString().slice(0, 3) + (this.setclaim.deceasedidnumber).toString().slice(6, 9))
         this.setclaim.createddate = moment.parseZone(newDate).utc().format()

@@ -46,6 +46,7 @@ export class ClaimInfoComponent implements OnInit {
     this.app.loading = true
     this.setclaim.idclaimstatus = 2;
     this.setclaim.createdby = (this.user.name + " " + this.user.surname)
+    //this.setclaim.reason = ('Claim Approved')
 
 
     console.log(this.setclaim)
@@ -101,8 +102,9 @@ export class ClaimInfoComponent implements OnInit {
         this.app.loading = true
         this.setclaim.idclaimstatus = 3
         this.setclaim.createdby = (this.user.name + " " + this.user.surname)
+        //this.setclaim.reason = $('#reason').val()
 
-        //this.user.iduser  $('#reason').val()
+        //this.user.iduser = $('#reason').val()
 
         this.claimService.updateClaim(this.getclaim.id, this.setclaim)
           .subscribe(update_res => {

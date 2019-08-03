@@ -34,7 +34,7 @@ currentRole
  //user from edit page
 this.placeholder = JSON.parse(localStorage.getItem('selectedUser'));
 
-this._role.getRole(this.placeholder.id)
+this._role.getRole(this.placeholder.idsystemusers)
             .subscribe(res => {
                 this.currentRole=res[0].name;
             }, err => {
@@ -70,7 +70,7 @@ this._role.getRole(this.placeholder.id)
       buttonsStyling: false
     }).then((result) => {
       if (result.value) {
-        this._user.updateUser(this.user.id,this.user)
+        this._user.updateUser(this.user.idsystemusers,this.user)
       .subscribe(res => {
          console.log(res)
 
