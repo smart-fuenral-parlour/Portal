@@ -43,6 +43,8 @@ export class CreateClaimFormComponent implements OnInit {
   claimstatuses: Claimstatus[]
   claimtypes: Claimtype[]
   selectedDeceased
+
+  invalidIdnumber = false
   selected = false
 
   constructor(private app: AppComponent,
@@ -86,23 +88,24 @@ export class CreateClaimFormComponent implements OnInit {
   createClaim() {
 
     let newDate = new Date
+    this.invalidIdnumber = false
 
-    if (isNullOrUndefined(this.setclaim.informantidentitynumber)) {
+    if (isNullOrUndefined(this.setclaim.informantidentitynumber) || isNullOrUndefined(this.setclaim.informantname) || isNullOrUndefined(this.setclaim.informantsurname) || isNullOrUndefined(this.setclaim.placeofdeath) || isNullOrUndefined(this.setclaim.deathofdeath) || isNullOrUndefined(this.setclaim.proposedburialdate)) {
 
       swal({
-        title: "Error",
-        text: "Please select the deceased member to continue creating claim",
+        title: "Form Incomplete",
+        text: "Please complete form before submitting claim",
         type: 'error',
         timer: 5000,
         showConfirmButton: true
       }).catch(swal.noop)
 
     } else
-      if (this.setclaim.informantidentitynumber == '') {
+      if (this.setclaim.informantidentitynumber == '' || this.setclaim.informantname == '' || this.setclaim.informantsurname == '' || this.setclaim.placeofdeath == '') {
 
         swal({
-          title: "Error",
-          text: "Please select the deceased member to continue creating claim",
+          title: "Form Incomplete",
+          text: "Please complete form before submitting claim",
           type: 'error',
           timer: 5000,
           showConfirmButton: true
@@ -110,89 +113,95 @@ export class CreateClaimFormComponent implements OnInit {
 
       } else {
 
-        if (isNullOrUndefined(this.setclaim.informantidentitynumber) || isNullOrUndefined(this.setclaim.informantname) || isNullOrUndefined(this.setclaim.informantsurname) || isNullOrUndefined(this.setclaim.placeofdeath) || isNullOrUndefined(this.setclaim.deathofdeath) || isNullOrUndefined(this.setclaim.proposedburialdate)) {
+        if (this.setclaim.informantidentitynumber.length == 13) {
 
           swal({
-            title: "Empty fields",
-            text: "Please complete form before submitting claim",
-            type: 'error',
-            timer: 5000,
-            showConfirmButton: true
-          }).catch(swal.noop)
+            title: 'Submit Claim for ' + this.member.name,
+            //text: 'Please note that the claim will be in a pending state, up until the approver approves the claim',
+            text: 'Please note that the claim will be in a pending state, up until the approver approves the claim',
+            type: 'warning',
+            showCancelButton: true,
+            confirmButtonClass: 'btn btn-success',
+            cancelButtonClass: 'btn btn-danger',
+            cancelButtonText: 'Cancel',
+            confirmButtonText: 'Yes, Submit',
+            buttonsStyling: false
+          }).then((result) => {
+            if (result.value) {
+              this.app.loading = true
 
-        } else
-          if (this.setclaim.informantidentitynumber == '' || this.setclaim.informantname == '' || this.setclaim.informantsurname == '' || this.setclaim.placeofdeath == '' || this.setclaim.deathofdeath || this.setclaim.proposedburialdate == '') {
-
-            swal({
-              title: "Empty fields",
-              text: "Please complete form before submitting claim",
-              type: 'error',
-              timer: 5000,
-              showConfirmButton: true
-            }).catch(swal.noop)
-
-          } else {
-
-            swal({
-              title: 'Submit Claim for ' + this.member.name,
-              //text: 'Please note that the claim will be in a pending state, up until the approver approves the claim',
-              text: 'Please note that the claim will be in a pending state, up until the approver approves the claim',
-              type: 'warning',
-              showCancelButton: true,
-              confirmButtonClass: 'btn btn-success',
-              cancelButtonClass: 'btn btn-danger',
-              cancelButtonText: 'Cancel',
-              confirmButtonText: 'Yes, Submit',
-              buttonsStyling: false
-            }).then((result) => {
-              if (result.value) {
-                this.app.loading = true
-
-                this.setclaim.idclaimstatus = 2
-                this.setclaim.id = 0
-                // ('CN' + (newDate).getMilliseconds().toString().slice(0, 3) + (this.setclaim.deceasedidnumber).toString().slice(6, 9))
-                this.setclaim.claimnumber = ('CN' + Math.floor(1000 + Math.random() * 9000) + (this.setclaim.deceasedidnumber).toString().slice(6, 9) + (newDate).getSeconds().toString().slice(0, 1))
-                this.setclaim.createddate = moment.parseZone(newDate).utc().format()
-                this.setclaim.createdby = (this.user.name + " " + this.user.surname)
-                this.setclaim.deathcertificate = 'file.pdf'
-                this.setclaim.idmember = this.member.id
-                this.setclaim.deathofdeath = moment.parseZone(this.setclaim.deathofdeath).utc().format()
-                this.setclaim.proposedburialdate = moment.parseZone(this.setclaim.proposedburialdate).utc().format()
+              this.setclaim.idclaimstatus = 2
+              this.setclaim.id = 0
+              // ('CN' + (newDate).getMilliseconds().toString().slice(0, 3) + (this.setclaim.deceasedidnumber).toString().slice(6, 9))
+              this.setclaim.claimnumber = ('CN' + Math.floor(1000 + Math.random() * 9000) + (this.setclaim.deceasedidnumber).toString().slice(6, 9) + (newDate).getSeconds().toString().slice(0, 1))
+              this.setclaim.createddate = moment.parseZone(newDate).utc().format()
+              this.setclaim.createdby = (this.user.name + " " + this.user.surname)
+              this.setclaim.deathcertificate = 'file.pdf'
+              this.setclaim.idmember = this.member.id
+              this.setclaim.deathofdeath = moment.parseZone(this.setclaim.deathofdeath).utc().format()
+              this.setclaim.proposedburialdate = moment.parseZone(this.setclaim.proposedburialdate).utc().format()
 
 
-                this.claimService.createClaim(this.setclaim)
-                  .subscribe(claim_res => {
-                    console.log(claim_res)
-                    this.app.loading = false
+              this.claimService.createClaim(this.setclaim)
+                .subscribe(claim_res => {
+                  console.log(claim_res)
+                  this.app.loading = false
 
 
-                    swal(
-                      {
-                        title: 'Claim Submitted',
-                        type: 'success',
-                        confirmButtonClass: "btn btn-success",
-                        buttonsStyling: false
+                  swal(
+                    {
+                      title: 'Claim Submitted',
+                      type: 'success',
+                      confirmButtonClass: "btn btn-success",
+                      buttonsStyling: false
 
-                      }).then((result) => {
-                        this.router.navigate(['/dashboard'])
-                      })
-                  }, err => {
-                    console.log(err)
-                    this.app.loading = false
-                  })
+                    }).then((result) => {
+                      this.router.navigate(['/dashboard'])
+                    })
+                }, err => {
+                  console.log(err)
+                  this.app.loading = false
+                })
 
 
-              }
-            })
-          }
+            }
+          })
 
+        } else {
+          this.invalidIdnumber = true
+        }
       }
 
 
   }
 
   selectDeceased() {
-    this.selected = true
+
+    this.app.loading = true
+    this.claimService.checkDeceasedIdnumber(this.setclaim.deceasedidnumber)
+      .subscribe(claim_res => {
+        this.app.loading = false
+        console.log(claim_res)
+
+        if (claim_res.count == 0) {
+          this.selected = true
+        } else {
+
+          swal({
+            title: "Cannot Proceed",
+            text: "Unfortunately the selected member is already deceased, please select another one",
+            type: 'warning',
+            timer: 7500,
+            showConfirmButton: true
+          }).catch(swal.noop)
+
+        }
+
+      }, err => {
+        console.log(err)
+        this.app.loading = false
+      })
+
   }
 
 

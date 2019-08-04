@@ -120,6 +120,11 @@
 
                 </div>
 
+                <div class="row">
+                    <mat-error *ngIf='invalidIdnumber'>
+                        <b>Invalid ID number must have 13 digits</b>
+                      </mat-error>
+                </div>
               </div>
 
 
