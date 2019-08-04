@@ -1,14 +1,18 @@
-import { Role } from './../../services/role/role';
-
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import swal from 'sweetalert2';
 import { AppComponent } from 'src/app/app.component';
-import { RoleService } from '../../services/role/role.service';
+
+///////////////////// SERVICE CALLS  ///////////////////////////////////////////
 import { UserService } from '../../services/user/user.service';
-import { User } from '../../services/user/user';
+import { RoleService } from '../../services/role/role.service';
 
+//////////////////// MODEL/ CLASS CALLS ///////////////////////////////////////
+import { User } from './../../services/user/user';
+import { Role } from './../../services/role/role';
+import { isNullOrUndefined } from 'util';
 
+///////////////////////////////////////////////////////////////////////////////
 
 
 
@@ -20,80 +24,155 @@ declare const $: any;
 })
 export class EditUserComponent implements OnInit {
 
-  placeholder:User;
-  user = new User;
-currentRole
- roles:Role[]
- selectedrole = new Role
+  getuser: User;
+  setuser = new User;
+  roles: Role[]
 
-  constructor(private app: AppComponent, private _role: RoleService,private _user: UserService, private _router: Router) {}
-  
+  constructor(private app: AppComponent,
+    private roleService: RoleService,
+    private userService: UserService,
+    private router: Router) { }
+
 
   ngOnInit() {
+    this.app.loading = true
 
- //user from edit page
-this.placeholder = JSON.parse(localStorage.getItem('selectedUser'));
+    //get user data from view user page
+    this.getuser = JSON.parse(localStorage.getItem('edituser'));
 
-this._role.getRole(this.placeholder.idsystemusers)
-            .subscribe(res => {
-                this.currentRole=res[0].name;
-            }, err => {
-              console.log(err);
-            });         
+    this.roleService.getRoles()
+      .subscribe(roles_res => {
 
+        if (roles_res.length > 0) {
+          this.roles = roles_res
+          this.roles[0].name
+          this.app.loading = false
+        }
 
-            this._role.getRoles()
-            .subscribe(res => {
-                this.roles=res;
-            }, err => {
-              console.log(err);
-            });
-
-
+      }, err => {
+        console.log(err)
+        this.app.loading = false
+      })
 
   }
 
   updateUser() {
 
-    
-    
+console.log(this.setuser)
 
-    swal({
-      title: "Update "+this.placeholder.name+"'s Details",
-      text: "Are you sure you want to update "+this.placeholder.name+"'s details?",
-      type: 'warning',
-      showCancelButton: true,
-      confirmButtonClass: 'btn btn-success',
-      cancelButtonClass: 'btn btn-danger',
-      cancelButtonText: 'Cancel',
-      confirmButtonText: 'Yes, Save update',
-      buttonsStyling: false
-    }).then((result) => {
-      if (result.value) {
-        this._user.updateUser(this.user.idsystemusers,this.user)
-      .subscribe(res => {
-         console.log(res)
+    // email duplicate validation
+    if (!isNullOrUndefined(this.setuser.email) && this.setuser.email != '') {
 
-         this._router.navigate(['/user/viewuser'])
-        }, (err) => {
-          console.log(err);
-         
-        });
+      this.userService.checkUserEmail(this.setuser.email)
+        .subscribe(email_res => {
+          console.log(email_res)
+
+          if (email_res.count == 0) {
+            this.setuser.email = this.setuser.email == '' ? this.getuser.email : this.setuser.email
+            console.log(this.setuser)
+
+            swal({
+              title: "Update " + this.getuser.name + "'s Details",
+              text: "Are you sure you want to update " + this.getuser.name + "'s details?",
+              type: 'warning',
+              showCancelButton: true,
+              confirmButtonClass: 'btn btn-success',
+              cancelButtonClass: 'btn btn-danger',
+              cancelButtonText: 'Cancel',
+              confirmButtonText: 'Yes, Save update',
+              buttonsStyling: false
+            }).then((result) => {
+              if (result.value) {
+
+                this.userService.updateUser(this.getuser.idsystemusers, this.setuser)
+                  .subscribe(res => {
+
+                    console.log(res)
+                    this.app.loading = false
+
+                    swal(
+                      {
+                        title: 'User Updated',
+                        type: 'success',
+                        confirmButtonClass: "btn btn-success",
+                        buttonsStyling: false
+
+                      }).then((result) => {
+                        this.router.navigate(['/user/viewuser'])
+                      })
 
 
+                  }, (err) => {
+                    console.log(err);
 
-        swal(
-          {
-            title: 'User Updated',
-            type: 'success',
-            confirmButtonClass: "btn btn-success",
-            buttonsStyling: false
+                  });
 
-          }).then((result) => { this._router.navigate(['/user/viewuser']) })
-      }
-    })
 
-   
+              }
+            })
+
+
+          } else {
+
+            swal({
+              title: "Email already exist",
+              text: "Please enter a different email address",
+              type: 'error',
+              timer: 5000,
+              showConfirmButton: true
+            }).catch(swal.noop)
+
+          }
+
+        }, err => {
+          console.log(err)
+        })
+
+      this.app.loading = true
+
+    } else {
+      swal({
+        title: "Update " + this.getuser.name + "'s Details",
+        text: "Are you sure you want to update " + this.getuser.name + "'s details?",
+        type: 'warning',
+        showCancelButton: true,
+        confirmButtonClass: 'btn btn-success',
+        cancelButtonClass: 'btn btn-danger',
+        cancelButtonText: 'Cancel',
+        confirmButtonText: 'Yes, Save update',
+        buttonsStyling: false
+      }).then((result) => {
+        if (result.value) {
+
+          this.userService.updateUser(this.getuser.idsystemusers, this.setuser)
+            .subscribe(res => {
+
+              console.log(res)
+              this.app.loading = false
+
+              swal(
+                {
+                  title: 'User Updated',
+                  type: 'success',
+                  confirmButtonClass: "btn btn-success",
+                  buttonsStyling: false
+
+                }).then((result) => {
+                  this.router.navigate(['/user/viewuser'])
+                })
+
+
+            }, (err) => {
+              console.log(err);
+
+            });
+
+
+        }
+      })
+    }
+
+
   }
 
 }

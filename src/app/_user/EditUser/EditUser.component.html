@@ -23,23 +23,23 @@
 
 
                           
-                          <input matInput placeholder="{{placeholder.name}}" type="text" name="name" [(ngModel)]="user.name">
+                          <input matInput placeholder="{{getuser.name}}" type="text" name="name" [(ngModel)]="setuser.name">
                         </mat-form-field>
                         <mat-form-field class="col-md-6">
-                            <input matInput placeholder="{{placeholder.surname}}" type="text" name="surname" [(ngModel)]="user.surname">
+                            <input matInput placeholder="{{getuser.surname}}" type="text" name="surname" [(ngModel)]="setuser.surname">
                           </mat-form-field>
                        
                       </div>
   
                     <div class="row justify-content-center">
                   <mat-form-field class="col-md-6">
-                    <input matInput placeholder="{{placeholder.email}}" type="email" name="email" [(ngModel)]="user.email">
+                    <input matInput placeholder="{{getuser.email}}" type="email" name="email" [(ngModel)]="setuser.email">
                   </mat-form-field>
              
                   <mat-form-field  class="col-md-6">
-                    <mat-select placeholder="{{currentRole}}" name="role" [ngModelOptions]='{standalone: true}' [(ngModel)]='selectedrole.idrole'>
-                      <mat-option *ngFor="let role of roles" [value]="role.idrole">
-                        {{ role.name }}
+                    <mat-select placeholder="{{getuser.role}}" name="role" [ngModelOptions]='{standalone: true}' [(ngModel)]='setuser.role'>
+                      <mat-option *ngFor="let role of roles" [value]="role.name">
+                        {{ role.name | titlecase}}
                       </mat-option>
                     </mat-select>
                 </mat-form-field>
