@@ -2,6 +2,7 @@ import { Observable, of, throwError } from 'rxjs';
 import { HttpClient, HttpHeaders, HttpErrorResponse } from '@angular/common/http';
 import { catchError, tap, map } from 'rxjs/operators';
 import { Beneficiary } from './beneficiary';
+import { Count } from '../count/count'
 import { Injectable } from '@angular/core';
 
 const httpOptions = {
@@ -16,6 +17,7 @@ const beneficiarybyidmemberUrl = "http://greenlinks1.dedicated.co.za:3002/api/be
 
 const apiUrl = "http://greenlinks1.dedicated.co.za:3000/api/Beneficiaries";
 const beneficiarybyidmemberUrl = "http://greenlinks1.dedicated.co.za:3000/api/Beneficiaries?filter=%7B%22where%22%3A%20%7B%22idmember%22%3A%203%7D%20%7D";
+const checkIdnumberUrl = "http://greenlinks1.dedicated.co.za:3000/api/Beneficiaries/count?where=%7B%22identitynumber%22%3A%20%22string%22%7D";
 
 @Injectable({
   providedIn: 'root'
@@ -50,6 +52,16 @@ export class BeneficiaryService {
       tap(_ => console.log(`fetched Beneficiary id=${id}`)),
       catchError(this.handleError<Beneficiary>(`getBeneficiary id=${id}`))
     );
+  }
+
+  
+  // tebo2%40gmail.com
+  checkBeneficiaryIdnumber(idnumber: string): Observable<Count> {
+    return this.http.get<Count>('http://greenlinks1.dedicated.co.za:3000/api/Beneficiaries/count?where=%7B%22identitynumber%22%3A%20%22'+idnumber+'%22%7D')
+      .pipe(
+        tap(_ => console.log('fetched roles')),
+        catchError(this.handleError('getRoles'))
+      );
   }
   
 

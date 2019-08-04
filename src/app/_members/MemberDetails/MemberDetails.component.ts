@@ -322,27 +322,51 @@ export class MemberDetailsComponent implements OnInit {
         }
 
 
-        this.beneficiaryService.updateBeneficiary(id, this.setBeneficiary)
-          .subscribe(res => {
+        this.app.loading = true
+        this.beneficiaryService.checkBeneficiaryIdnumber(this.setBeneficiary.identitynumber)
+          .subscribe(count_res => {
+
             this.app.loading = false
+            console.log(count_res)
+            if (count_res.count == 0 || this.setBeneficiary.identitynumber == IDNUMBER) {
 
-            console.log(res)
+
+              this.beneficiaryService.updateBeneficiary(id, this.setBeneficiary)
+                .subscribe(res => {
+                  this.app.loading = false
+
+                  console.log(res)
 
 
-            swal(
-              {
-                title: 'Updates Succesfully Saved',
-                type: 'success',
-                confirmButtonClass: "btn btn-success",
-                buttonsStyling: false
+                  swal(
+                    {
+                      title: 'Updates Succesfully Saved',
+                      type: 'success',
+                      confirmButtonClass: "btn btn-success",
+                      buttonsStyling: false
 
-              }).then((result) => window.location.reload())
+                    }).then((result) => window.location.reload())
+
+                }, err => {
+                  this.app.loading = false
+                  console.log(err)
+                })
+
+            } else {
+              swal({
+                title: "id number already exist",
+                text: "Please try again",
+                type: 'error',
+                timer: 5000,
+                showConfirmButton: true
+              }).catch(swal.noop)
+            }
+
 
           }, err => {
-            this.app.loading = false
             console.log(err)
+            this.app.loading = false
           })
-
 
 
       }
@@ -398,32 +422,87 @@ export class MemberDetailsComponent implements OnInit {
       if (result.value) {
 
 
-        this.setBeneficiary.name = $('#Name').val()
-        this.setBeneficiary.surname = $('#Surname').val()
-        this.setBeneficiary.identitynumber = $('#IDNumber').val()
-        this.setBeneficiary.idlifestatus = 1
-        this.setBeneficiary.id = 0
-        this.setBeneficiary.idmember = this.member.id
+        // checking for empty fields
+        if (isNullOrUndefined($('#Name').val()) || isNullOrUndefined($('#Surname').val()) || isNullOrUndefined($('#IDNumber').val())) {
 
-        this.beneficiaryService.createBeneficiary(this.setBeneficiary)
-          .subscribe(beneficiary_res => {
+          swal({
+            title: "Unsuccesful",
+            text: "Please fill all fields before submitting",
+            type: 'error',
+            timer: 2000
+          }).catch(swal.noop)
 
-            console.log(beneficiary_res)
+        } else
+          if ($('#Name').val() == '' || $('#Surname').val() == '' || $('#IDNumber').val() == '') {
+
+            swal({
+              title: "Unsuccesful",
+              text: "Please fill all fields before submitting",
+              type: 'error',
+              timer: 2000
+            }).catch(swal.noop)
+
+          } else {
+
+            this.setBeneficiary.name = $('#Name').val()
+            this.setBeneficiary.surname = $('#Surname').val()
+            this.setBeneficiary.identitynumber = $('#IDNumber').val()
+            // validating duplicated email  {"identitynumber": "1865234703621"}
+            this.app.loading = true
+            this.beneficiaryService.checkBeneficiaryIdnumber(this.setBeneficiary.identitynumber)
+              .subscribe(count_res => {
+
+                this.app.loading = false
+                console.log(count_res)
+                if (count_res.count == 0) {
 
 
-            swal(
-              {
-                title: 'Updates Succesfully Saved',
-                type: 'success',
-                confirmButtonClass: "btn btn-success",
-                buttonsStyling: false
 
-              }).then((result) => window.location.reload())
+                  this.setBeneficiary.idlifestatus = 1
+                  this.setBeneficiary.id = 0
+                  this.setBeneficiary.idmember = this.member.id
 
-          }, err => {
-            console.log(err)
-          })
+                  this.app.loading = true
+                  this.beneficiaryService.createBeneficiary(this.setBeneficiary)
+                    .subscribe(beneficiary_res => {
 
+                      this.app.loading = false
+                      console.log(beneficiary_res)
+
+                      swal(
+                        {
+                          title: 'Updates Succesfully Saved',
+                          type: 'success',
+                          confirmButtonClass: "btn btn-success",
+                          buttonsStyling: false
+
+                        }).then((result) => {
+                          window.location.reload()
+                        })
+
+                    }, err => {
+                      console.log(err)
+                      this.app.loading = false
+                    })
+
+                } else {
+                  swal({
+                    title: "Beneficiary already exist",
+                    text: "Please try again",
+                    type: 'error',
+                    timer: 5000,
+                    showConfirmButton: true
+                  }).catch(swal.noop)
+                }
+
+
+              }, err => {
+                console.log(err)
+                this.app.loading = false
+              })
+
+
+          }
 
 
       }
