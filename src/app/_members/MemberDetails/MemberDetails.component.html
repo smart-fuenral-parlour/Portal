@@ -175,22 +175,20 @@
                     <thead>
                       <tr>
                         <th>Claim No.</th>
-                        <th>Name, Surname of deceased</th>
-                        <th>Surname of deceased</th>
-                        <th>Date</th>
-                        <th>Claim Status</th>
+                        <th>Id number of deceased</th>
+                        <th>Created Date</th>
+                        <th>Created by</th>
                         <th class="disabled-sorting text-right">Action</th>
                       </tr>
                     </thead>
                     <tbody>
                       <tr *ngFor="let claim of claims; let i = index">
-                        <td>{{ claim.idclaim }}</td>
-                        <td>{{ claim.deceasedname }}, {{ claim.deceasedsurname }}</td>
-                        <td>{{ claim.deceasedsurname }}</td>
-                        <td>{{ claim.createddate }}</td> <!--   | date: 'dd MMMM, yyyy'  -->
-                        <td>{{ claim.idclaimstatus }}</td>
+                        <td>{{ claim.claimnumber }}</td>
+                        <td>{{ claim.informantidentitynumber }}</td>
+                        <td>{{ claim.createddate | date: 'dd MMMM, yyyy'}}</td> <!--   | date: 'dd MMMM, yyyy'  -->
+                        <td>{{ claim.createdby }}</td>
                         <td class="text-right">
-                          <button (click)="claimInfo(i, claim.idclaim )" class="btn btn-link btn-info "><i
+                          <button (click)="claimInfo(i)" class="btn btn-link btn-info "><i
                               class="material-icons" [class.active]="i == selectedClaim" data-toggle="tooltip"
                               data-placement="down" title="view claim info">info</i> Claim Info</button>
                         </td>

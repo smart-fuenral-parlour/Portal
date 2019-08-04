@@ -12,6 +12,8 @@ export class Claim {
     informantsurname:string;
     placeofdeath:string;
     proposedburialdate:string;
+    reason:string;
+    idmember:number;
 }
 
 

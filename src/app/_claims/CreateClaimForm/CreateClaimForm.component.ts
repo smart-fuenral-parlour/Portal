@@ -113,6 +113,7 @@ export class CreateClaimFormComponent implements OnInit {
         this.setclaim.createddate = moment.parseZone(newDate).utc().format()
         this.setclaim.createdby = (this.user.name + " " + this.user.surname)
         this.setclaim.deathcertificate = 'file.pdf'
+        this.setclaim.idmember = this.member.id
         this.setclaim.deathofdeath = moment.parseZone(this.setclaim.deathofdeath).utc().format()
         this.setclaim.proposedburialdate = moment.parseZone(this.setclaim.proposedburialdate).utc().format()
 

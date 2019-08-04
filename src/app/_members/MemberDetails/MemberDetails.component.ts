@@ -52,8 +52,8 @@ export class MemberDetailsComponent implements OnInit {
   selectedClaim
   createdby
 
-  noClaims = false
-  noBeneficiary = false
+  noClaims = true
+  noBeneficiary = true
   noPayment = false
   editTextBox = false;
 
@@ -147,9 +147,27 @@ export class MemberDetailsComponent implements OnInit {
                 if (beneficiary_res.length > 0) {
 
                   this.beneficiaries = beneficiary_res
-
                   this.noBeneficiary = false
-                  this.app.loading = false
+                  
+                  this.claimService.getClaimbyidmember(this.member.id)
+                    .subscribe(claims_res => {
+
+                      this.app.loading = false
+                      if(claims_res.length > 0){
+
+                        this.claims = claims_res
+                        this.noClaims = false
+                        
+
+                      } else {
+                        this.noClaims = true
+                      }
+
+                    }, err => {
+                      this.app.loading = false
+                      console.log(err)
+
+                    })
 
                 } else {
                   this.noBeneficiary = true
@@ -186,7 +204,7 @@ export class MemberDetailsComponent implements OnInit {
         console.log(err)
       })
 
-
+      
     console.log(this.user)
     console.log(this.member)
 
@@ -511,12 +529,10 @@ export class MemberDetailsComponent implements OnInit {
 
 
   // View member details
-  claimInfo(index, idclaim) {
-
-    localStorage.setItem('idclaim', JSON.stringify(idclaim));
+  claimInfo(index) {
+    localStorage.setItem('claiminfo', JSON.stringify(this.claims[index]));
     this.router.navigate(['/claims/claiminfo']);
   }
-
 
 
   onAddRow() {
