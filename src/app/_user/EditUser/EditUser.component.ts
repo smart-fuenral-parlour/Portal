@@ -58,7 +58,7 @@ export class EditUserComponent implements OnInit {
 
   updateUser() {
 
-console.log(this.setuser)
+    console.log(this.setuser)
 
     // email duplicate validation
     if (!isNullOrUndefined(this.setuser.email) && this.setuser.email != '') {
@@ -68,9 +68,7 @@ console.log(this.setuser)
           console.log(email_res)
 
           if (email_res.count == 0) {
-            this.setuser.email = this.setuser.email == '' ? this.getuser.email : this.setuser.email
-            console.log(this.setuser)
-
+          
             swal({
               title: "Update " + this.getuser.name + "'s Details",
               text: "Are you sure you want to update " + this.getuser.name + "'s details?",
@@ -172,6 +170,15 @@ console.log(this.setuser)
       })
     }
 
+
+  }
+
+  //returns a value if the variable is an empty string
+  removeEmptyString(value) {
+
+    if (value == '') {
+     this.setuser.name = this.setuser.name == '' ? this.getuser.name : null
+    }
 
   }
 
