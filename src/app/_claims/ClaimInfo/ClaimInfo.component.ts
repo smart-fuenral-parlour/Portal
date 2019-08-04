@@ -13,6 +13,7 @@ import { UserService } from 'src/app/services/user/user.service'
 import { Claim } from 'src/app/services/claim/claim'
 import { Claimstatus } from 'src/app/services/claimstatus/claimstatus'
 import { User } from 'src/app/services/user/user'
+import { isNullOrUndefined } from 'util';
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -43,14 +44,13 @@ export class ClaimInfoComponent implements OnInit {
   }
 
   approveClaim() {
-    this.app.loading = true
+
     this.setclaim.idclaimstatus = 2;
     this.setclaim.createdby = (this.user.name + " " + this.user.surname)
-    //this.setclaim.reason = ('Claim Approved')
+    this.setclaim.reason = ('Claim Approved')
 
-
-    console.log(this.setclaim)
-
+    
+    this.app.loading = true
     this.claimService.updateClaim(this.getclaim.id, this.setclaim)
       .subscribe(approveclaim_res => {
 
@@ -74,7 +74,7 @@ export class ClaimInfoComponent implements OnInit {
 
 
       }, err => {
-
+        this.app.loading = false
         console.log(err)
 
       })
@@ -99,38 +99,52 @@ export class ClaimInfoComponent implements OnInit {
     }).then((result) => {
       if (result.value) {
 
-        this.app.loading = true
-        this.setclaim.idclaimstatus = 3
-        this.setclaim.createdby = (this.user.name + " " + this.user.surname)
-        //this.setclaim.reason = $('#reason').val()
+        if( $('#reason').val() == '' || isNullOrUndefined($('#reason').val())) {
 
-        //this.user.iduser = $('#reason').val()
+          swal({
+            title: "Unsuccesful",
+            text: "Please provide reason for declining the claim",
+            type: 'error',
+            timer: 5000,
+            showConfirmButton: true
+          }).catch(swal.noop)
 
-        this.claimService.updateClaim(this.getclaim.id, this.setclaim)
-          .subscribe(update_res => {
-            this.app.loading = false
-
-            console.log(update_res)
-
-            swal({
-
-              title: 'Claim declined and sent back',
-              type: 'success',
-              confirmButtonClass: "btn btn-success",
-              buttonsStyling: false
-
-            }).then((result) => {
-
-              this.router.navigate(['/claims/viewallclaims'])
-              console.log('saved!')
-
-            }) // this.router.navigate(['/claims/viewallclaims']))
-
-
-          }, err => {
-            console.log(err)
-          })
-
+        } else {
+          this.setclaim.idclaimstatus = 3
+          this.setclaim.createdby = (this.user.name + " " + this.user.surname)
+          this.setclaim.reason = $('#reason').val()
+  
+          //this.user.iduser = $('#reason').val()
+  
+          this.app.loading = true
+          this.claimService.updateClaim(this.getclaim.id, this.setclaim)
+            .subscribe(update_res => {
+              this.app.loading = false
+  
+              console.log(update_res)
+  
+              swal({
+  
+                title: 'Claim declined and sent back',
+                type: 'success',
+                confirmButtonClass: "btn btn-success",
+                buttonsStyling: false
+  
+              }).then((result) => {
+  
+                this.router.navigate(['/claims/viewallclaims'])
+                console.log('saved!')
+  
+              }) // this.router.navigate(['/claims/viewallclaims']))
+  
+  
+            }, err => {
+              console.log(err)
+              this.app.loading = false
+            })
+  
+        }
+        
       }
     })
 
