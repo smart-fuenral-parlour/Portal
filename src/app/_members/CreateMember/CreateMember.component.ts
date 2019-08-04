@@ -553,12 +553,7 @@ export class CreateMemberComponent implements OnInit {
 
 
     }
-
-    showit() {
-
-
-    }
-
+    
     tickToAgree() {
 
         let finish = document.querySelector('.btn-finish')

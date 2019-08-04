@@ -27,12 +27,12 @@
                         [(ngModel)]="setclaim.deceasedidnumber" data-toggle="tooltip" data-placement="down">
                         <mat-option [value]="member.identitynumber" (click)="selectDeceased()">
                           {{ member.name | titlecase }}, {{ member.surname | titlecase }},
-                          {{ member.identitynumber | titlecase }} <span class="pull-right text-sm">M</span>
+                          {{ member.identitynumber | titlecase }} <span class="pull-right text-sm">(main member)</span>
                         </mat-option>
                         <mat-option *ngFor="let beneficiary of beneficiaries, let i = index" (click)="selectDeceased()"
                           [value]="beneficiary.identitynumber">
                           {{ beneficiary.name | titlecase }}, {{ beneficiary.surname | titlecase }},
-                          {{ beneficiary.identitynumber | titlecase }} <span class="pull-right">B</span>
+                          {{ beneficiary.identitynumber | titlecase }} <span class="pull-right">(beneficiary)</span>
                         </mat-option>
                       </mat-select>
                     </mat-form-field>

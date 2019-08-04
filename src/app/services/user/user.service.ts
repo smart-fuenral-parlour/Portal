@@ -60,8 +60,8 @@ export class UserService {
   checkUserEmail(email: string): Observable<Count> {
     return this.http.get<Count>('http://greenlinks1.dedicated.co.za:3000/api/Systemusers/count?where=%7B%22email%22%3A%20%22'+email+'%22%7D')
       .pipe(
-        tap(_ => console.log('fetched roles')),
-        catchError(this.handleError('getRoles'))
+        tap(_ => console.log('check User Email')),
+        catchError(this.handleError('checkUserEmail'))
       );
   }
   

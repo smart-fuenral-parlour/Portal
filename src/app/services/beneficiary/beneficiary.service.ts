@@ -59,8 +59,8 @@ export class BeneficiaryService {
   checkBeneficiaryIdnumber(idnumber: string): Observable<Count> {
     return this.http.get<Count>('http://greenlinks1.dedicated.co.za:3000/api/Beneficiaries/count?where=%7B%22identitynumber%22%3A%20%22'+idnumber+'%22%7D')
       .pipe(
-        tap(_ => console.log('fetched roles')),
-        catchError(this.handleError('getRoles'))
+        tap(_ => console.log('check Beneficiary Idnumber')),
+        catchError(this.handleError('checkBeneficiaryIdnumber'))
       );
   }
   

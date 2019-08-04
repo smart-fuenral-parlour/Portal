@@ -34,7 +34,7 @@
                       <div class="form-group">
                         <label class="bmd-label-floating">Identity Number</label>
                         <input type="text" class="form-control"  inputmode="numeric" [ngModelOptions]="{standalone: true}" [(ngModel)]="setmember.identitynumber" 
-                          placeholder="{{ getmember.identitynumber }}"  minlength="13" maxlength="13" >
+                          placeholder="{{ getmember.identitynumber }}" (keyup)="idNumberCheck()"  minlength="13" maxlength="13" >
                       </div>
                     </div>
     

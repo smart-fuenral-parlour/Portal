@@ -2,6 +2,7 @@ import { Observable, of, throwError } from 'rxjs';
 import { HttpClient, HttpHeaders, HttpErrorResponse } from '@angular/common/http';
 import { catchError, tap, map } from 'rxjs/operators';
 import { Member } from './member';
+import { Count } from '../count/count'
 import { Injectable } from '@angular/core';
 
 
@@ -34,6 +35,7 @@ const apiUrl = "http://greenlinks1.dedicated.co.za:3000/api/Members";
 const getmemberbyidentitynumberUrl = "http://greenlinks1.dedicated.co.za:3002/api/getmemberbyidentitynumber";
 const getmemberbymembershipnumberUrl = "http://greenlinks1.dedicated.co.za:3002/api/getmemberbymembershipnumber";
 const getmemberbysurnameUrl = "http://greenlinks1.dedicated.co.za:3000/api/Members?filter=%7B%22where%22%3A%20%7B%22surname%22%3A%20%22joko%22%7D%20%7D";
+const checkEmailUrl = "http://greenlinks1.dedicated.co.za:3000/api/Members/count?where=%7B%22email%22%3A%20%22string%22%7D";
 
 
 @Injectable({
@@ -99,6 +101,14 @@ export class MemberService {
     );
   }
 
+    // tebo2%40gmail.com
+    checkMemberEmail(email: string): Observable<Count> {
+      return this.http.get<Count>('http://greenlinks1.dedicated.co.za:3000/api/Members/count?where=%7B%22email%22%3A%20%22'+email+'%22%7D')
+        .pipe(
+          tap(_ => console.log('check member email')),
+          catchError(this.handleError('checkMemberEmail'))
+        );
+    }
 
   createMember (member): Observable<Member> {
     return this.http.post<Member>(apiUrl, member, httpOptions).pipe(
