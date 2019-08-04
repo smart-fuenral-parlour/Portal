@@ -48,7 +48,7 @@ export class UserService {
 
   loginUser (username,password): Observable<User[]> {
                                   
-    return this.http.get<User[]>('http://greenlinks1.dedicated.co.za:3000/api/Systemusers?filter=%7B%22where%22%3A%7B%22and%22%3A%5B%7B%22name%22%3A%20%22'+username+'%22%7D%2C%7B%22password%22%3A%20%22'+password+'%22%7D%5D%20%7D%20%7D    ')
+    return this.http.get<User[]>('http://greenlinks1.dedicated.co.za:3000/api/Systemusers?filter=%7B%22where%22%3A%7B%22and%22%3A%5B%7B%22name%22%3A%20%22'+username+'%22%7D%2C%7B%22password%22%3A%20%22'+password+'%22%7D%5D%20%7D%20%7D')
     .pipe(
       tap(_ => console.log('loginUser')),
       catchError(this.handleError('loginUser'))

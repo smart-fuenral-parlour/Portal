@@ -64,8 +64,6 @@ export class ViewMembersComponent implements OnInit, AfterViewInit {
 
 
   ngOnInit() {
-
-    this.app.loading = false
     sessionStorage.clear()
   }
 
@@ -91,12 +89,12 @@ export class ViewMembersComponent implements OnInit, AfterViewInit {
    
             if (selectedSearchType == 'Membership Number') {
       
-              this.app.loading = true
-      
+              this.app.loading = true      
               this.memberService.getMemberbymembershipnumber(searchInput.trim())
                 .subscribe(members_res => { 
                   
                   console.log(members_res)
+                  this.app.loading = false
       
                   if (members_res.length > 0) { 
                     
@@ -104,13 +102,13 @@ export class ViewMembersComponent implements OnInit, AfterViewInit {
                     
                     this.members = members_res      
        
-                    this.app.loading = false
+                    
                     this.notFound = false
                     this.searchResult = true
       
                   } else {      
                     console.log('NO MEMBERS FOUND')
-                    this.app.loading = false
+                    
                     this.searchResult = false
                     this.notFound = true
       
@@ -118,16 +116,18 @@ export class ViewMembersComponent implements OnInit, AfterViewInit {
       
                 }, err => {
                   console.log(err)
+                  this.app.loading = false
                 })
             } else
               if (selectedSearchType == 'Surname') {
       
-                this.app.loading = true
-                
-                this.memberService.getMemberbysurname(searchInput.trim())
+                this.app.loading = true                
+                this.memberService.getMemberbysurname(searchInput)
                   .subscribe(members_res => {       
+            
                     
                     console.log(members_res)
+                    this.app.loading = false
                     
                     if ( members_res.length > 0 ) { 
 
@@ -135,44 +135,42 @@ export class ViewMembersComponent implements OnInit, AfterViewInit {
                       
                       this.members = members_res
       
-                      this.app.loading = false
+                      
                       this.notFound = false
                       this.searchResult = true
       
                     } else {
                       console.log('NO MEMBERS FOUND')
-                      this.app.loading = false
+                      
                       this.searchResult = false
                       this.notFound = true
                     }
       
                   }, err => {
                     console.log(err)
+                    this.app.loading = false
                   })
       
               } else
                 if (searchInput.length == 13) {
       
-                  this.app.loading = true      
-      
+                  this.app.loading = true     
                   this.memberService.getMemberbyidentitynumber(searchInput.trim())
                     .subscribe(members_res => {       
       
                       console.log(members_res)
+                      this.app.loading = false
       
                       if ( members_res.length > 0 ) {
 
                         console.log('Search members by Id number')
 
-                        this.members = members_res
-      
-                        this.app.loading = false
+                        this.members = members_res      
                         this.notFound = false
                         this.searchResult = true
       
                       } else {
                         console.log('NO MEMBERS FOUND')
-                        this.app.loading = false
                         this.searchResult = false
                         this.notFound = true
       
@@ -180,6 +178,7 @@ export class ViewMembersComponent implements OnInit, AfterViewInit {
       
                     }, err => {
                       console.log(err)
+                      this.app.loading = false
                     })
       
                 } else {

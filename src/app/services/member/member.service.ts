@@ -34,7 +34,8 @@ const getmemberbysurnameUrl = "http://greenlinks1.dedicated.co.za:3002/api/getme
 const apiUrl = "http://greenlinks1.dedicated.co.za:3000/api/Members";
 const getmemberbyidentitynumberUrl = "http://greenlinks1.dedicated.co.za:3002/api/getmemberbyidentitynumber";
 const getmemberbymembershipnumberUrl = "http://greenlinks1.dedicated.co.za:3002/api/getmemberbymembershipnumber";
-const getmemberbysurnameUrl = "http://greenlinks1.dedicated.co.za:3000/api/Members?filter=%7B%22where%22%3A%20%7B%22surname%22%3A%20%22joko%22%7D%20%7D";
+// wild card search
+const getmemberbysurnameUrl = "http://greenlinks1.dedicated.co.za:3000/api/Members?filter=%7B%22where%22%3A%7B%22surname%22%3A%7B%22like%22%3A%20%22%25ma%22%7D%7D%20%7D";
 const checkEmailUrl = "http://greenlinks1.dedicated.co.za:3000/api/Members/count?where=%7B%22email%22%3A%20%22string%22%7D";
 
 
@@ -84,11 +85,11 @@ export class MemberService {
       );
   }
 
-  getMemberbysurname (id: any): Observable<Member[]> {
-    return this.http.get<Member[]>("http://greenlinks1.dedicated.co.za:3000/api/Members?filter=%7B%22where%22%3A%20%7B%22surname%22%3A%20%22"+id+"%22%7D%20%7D")
+  getMemberbysurname (surname: string): Observable<Member[]> {
+    return this.http.get<Member[]>("http://greenlinks1.dedicated.co.za:3000/api/Members?filter=%7B%22where%22%3A%7B%22surname%22%3A%7B%22like%22%3A%20%22%25"+surname+"%25%22%7D%7D%20%7D")
       .pipe(
-        tap(_ => console.log(`fetched member id=${id}`)),
-        catchError(this.handleError(`getMemberbysurname id=${id}`))
+        tap(_ => console.log(`fetched member id=${surname}`)),
+        catchError(this.handleError(`getMemberbysurname id=${surname}`))
       );
   }
 
