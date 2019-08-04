@@ -27,7 +27,6 @@ export class ViewAllClaimsComponent implements OnInit {
 
   selectedClaim
   selectedClaimType
-  selectedClaimTypeText
 
   isEmpty = false
   invalidID = false
@@ -51,16 +50,25 @@ export class ViewAllClaimsComponent implements OnInit {
 
 
   ngOnInit() {
-    this.app.loading = false
 
-    this.claimstatusService.getClaimstatuses()
-      .subscribe(claimstatus_res => {
+    this.app.loading = true
+    this.claimService.getClaims()
+      .subscribe(claim_res => {
+        this.app.loading = false
 
-        if(claimstatus_res.length > 0) {
-          
-        this.claimstatuses = claimstatus_res
+        this.claims = claim_res
+        console.log(this.claims)
+        this.app.loading = false
+
+        if (this.claims.length > 0) {
+          this.notFound = false
+          this.table = true
+        } else {
+          this.table = false
+          this.notFound = true
 
         }
+
       }, err => {
         console.log(err)
       })
@@ -76,7 +84,7 @@ export class ViewAllClaimsComponent implements OnInit {
     this.table = false
     this.isEmpty = false
 
-    if ( isNullOrUndefined(this.selectedClaimType) || this.selectedClaimType == '') {
+    if (isNullOrUndefined(this.selectedClaimType) || this.selectedClaimType == '') {
       console.log('empty')
 
       this.notFound = false
@@ -107,7 +115,7 @@ export class ViewAllClaimsComponent implements OnInit {
             if (this.claims.length > 0) {
               this.notFound = false
               this.table = true
-      this.app.loading = false
+              this.app.loading = false
             } else {
               this.table = false
               this.app.loading = false
@@ -121,17 +129,17 @@ export class ViewAllClaimsComponent implements OnInit {
 
       } else {
 
-        console.log('get by status') 
+        console.log('get by status')
 
         // get claim by the claim status id
         this.claimService.getClaimbyclaimstatus(this.selectedClaimType)
           .subscribe(claim_res => {
 
-            
+
 
             if (claim_res.length > 0) {
 
-              this.claims = claim_res              
+              this.claims = claim_res
 
               this.app.loading = false
               this.notFound = false

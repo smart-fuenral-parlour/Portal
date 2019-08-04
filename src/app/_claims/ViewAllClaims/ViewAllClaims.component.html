@@ -1,7 +1,8 @@
 <div class="main-content">
   <div class="container-fluid">
-
-    <div class="row">
+<!--
+  
+    <div class="row" *ngIf="false">
       <div class="col-md-12 ml-auto mr-auto">
         <div class="card">
           <div class="card-body">
@@ -35,8 +36,9 @@
         </div>
       </div>
     </div>
+-->
 
-    <div class="row" *ngIf="notFound">
+    <div class="row" *ngIf="false">
       <div class="col-12 ml-auto mr-auto">
         <div class="card">
           <div class="card-body text-center">
@@ -48,7 +50,8 @@
       </div>
     </div>
 
-    <div class="row" *ngIf="table">
+    <!--*ngIf="table"-->
+    <div class="row" >
       <div class="col-md-12">
         <div class="card">
           <div class="card-header card-header-primary card-header-icon">
@@ -68,7 +71,7 @@
                 <thead>
                   <tr>
                     <th>Claim No.</th>
-                    <th>Place of death</th>
+                    <th>Created by</th>
                     <th>Created Date</th>
                     <th>Contact Person</th>
                     <th class="disabled-sorting text-right">Action</th>
@@ -77,7 +80,7 @@
                 <tbody>
                   <tr *ngFor="let claim of claims; let i = index" ><!--   -->
                     <td>{{ claim.claimnumber }}</td>
-                    <td>{{ claim.placeofdeath }}</td>
+                    <td>{{ claim.createdby }}</td>
                     <td>{{ claim.createddate | date: "dd MMMM, yyyy"  }}</td> <!--  -->
                     <td>{{ claim.informantname }}  {{ claim.informantsurname }}</td>
                     <td class="text-right">
