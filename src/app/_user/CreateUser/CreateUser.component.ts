@@ -60,12 +60,11 @@ export class CreateUserComponent implements OnInit {
         this.roleService.getRoles()
             .subscribe(role_res => {
 
+                this.app.loading = false
                 if (role_res.length > 0) {
                     this.roles = role_res;
-                    this.app.loading = false
                 } else {
                     this.roles[0].name = 'User'
-                    this.app.loading = false
                 }
 
             }, err => {
@@ -148,9 +147,11 @@ export class CreateUserComponent implements OnInit {
 
 
                     // validating duplicated email
+                    this.app.loading = true
                     this.userService.checkUserEmail(this.user.email)
                         .subscribe(count_res => {
 
+                            this.app.loading = false
                             if (count_res.count == 0) {
 
                                 swal({
@@ -165,21 +166,23 @@ export class CreateUserComponent implements OnInit {
                                     buttonsStyling: false
                                 }).then((result) => {
                                     if (result.value) {
-                                        this.app.loading = true
                                         this.user.idsystemusers = 0;
 
+                                        this.app.loading = true
                                         this.userService.createUser(
                                             this.user)
                                             .subscribe(user_res => {
-                                                console.log(user_res)
 
-                                                if(user_res.idsystemusers > 0) {
+                                                console.log(user_res)
+                                                this.app.loading = false
+
+                                                if (user_res.idsystemusers > 0) {
                                                     swal({
                                                         title: 'User Created',
                                                         type: 'success',
                                                         confirmButtonClass: "btn btn-success",
                                                         buttonsStyling: false
-    
+
                                                     }).then((result) => {
                                                         this.router.navigate(['/user/viewuser'])
                                                     })
@@ -192,14 +195,15 @@ export class CreateUserComponent implements OnInit {
                                                         timer: 5000,
                                                         showConfirmButton: true
                                                     }).catch(swal.noop).then((result) => {
-                                                       // this.router.navigate(['/user/viewuser'])
-                                                       document.location.reload();
+                                                        // this.router.navigate(['/user/viewuser'])
+                                                        document.location.reload();
                                                     })
 
                                                 }
 
                                             }, (err) => {
                                                 console.log(err);
+                                                this.app.loading = false
 
                                             });
 
@@ -219,6 +223,7 @@ export class CreateUserComponent implements OnInit {
 
                         }, err => {
                             console.log(err)
+                            this.app.loading = false
                         })
 
                 }

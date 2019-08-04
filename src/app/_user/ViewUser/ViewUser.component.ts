@@ -53,17 +53,17 @@ export class ViewUserComponent implements OnInit {
         this.userService.getUsers()
             .subscribe(user_res => {
 
+                this.app.loading = false
                 if (user_res.length > 0) {
                     this.users = user_res
                     this.noUser = false
-                    this.app.loading = false
                 } else {
                     this.noUser = true
-                    this.app.loading = false
                 }
 
             }, err => {
                 console.log(err);
+                this.app.loading = false
             });
 
     }
@@ -91,9 +91,12 @@ export class ViewUserComponent implements OnInit {
             if (result.value) {
 
 
+                this.app.loading = true
                 this.userService.deleteUser(this.users[index].idsystemusers)
                     .subscribe(res => {
+
                         console.log(res)
+                    this.app.loading = false
 
                         swal({
                             title: 'User Deleted',
@@ -108,6 +111,7 @@ export class ViewUserComponent implements OnInit {
 
                     }, err => {
                         console.log(err);
+                        this.app.loading = false
                     });
 
             }

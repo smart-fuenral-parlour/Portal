@@ -35,9 +35,10 @@ export class EditUserComponent implements OnInit {
 
 
   ngOnInit() {
-    this.app.loading = true
+
 
     //get user data from view user page
+    this.app.loading = true
     this.getuser = JSON.parse(localStorage.getItem('edituser'));
 
     this.roleService.getRoles()
@@ -63,12 +64,14 @@ export class EditUserComponent implements OnInit {
     // email duplicate validation
     if (!isNullOrUndefined(this.setuser.email) && this.setuser.email != '') {
 
+      this.app.loading = true
       this.userService.checkUserEmail(this.setuser.email)
         .subscribe(email_res => {
-          console.log(email_res)
-
-          if (email_res.count == 0) {
           
+          console.log(email_res)
+          this.app.loading = false
+          if (email_res.count == 0) {
+
             swal({
               title: "Update " + this.getuser.name + "'s Details",
               text: "Are you sure you want to update " + this.getuser.name + "'s details?",
@@ -82,11 +85,12 @@ export class EditUserComponent implements OnInit {
             }).then((result) => {
               if (result.value) {
 
+                this.app.loading = true
                 this.userService.updateUser(this.getuser.idsystemusers, this.setuser)
                   .subscribe(res => {
 
-                    console.log(res)
                     this.app.loading = false
+                    console.log(res)
 
                     swal(
                       {
@@ -102,7 +106,7 @@ export class EditUserComponent implements OnInit {
 
                   }, (err) => {
                     console.log(err);
-
+                    this.app.loading = false
                   });
 
 
@@ -111,7 +115,6 @@ export class EditUserComponent implements OnInit {
 
 
           } else {
-
             swal({
               title: "Email already exist",
               text: "Please enter a different email address",
@@ -125,9 +128,6 @@ export class EditUserComponent implements OnInit {
         }, err => {
           console.log(err)
         })
-
-      this.app.loading = true
-
     } else {
       swal({
         title: "Update " + this.getuser.name + "'s Details",
@@ -141,7 +141,8 @@ export class EditUserComponent implements OnInit {
         buttonsStyling: false
       }).then((result) => {
         if (result.value) {
-
+          
+          this.app.loading = true
           this.userService.updateUser(this.getuser.idsystemusers, this.setuser)
             .subscribe(res => {
 
@@ -162,6 +163,7 @@ export class EditUserComponent implements OnInit {
 
             }, (err) => {
               console.log(err);
+              this.app.loading = false
 
             });
 
@@ -177,7 +179,7 @@ export class EditUserComponent implements OnInit {
   removeEmptyString(value) {
 
     if (value == '') {
-     this.setuser.name = this.setuser.name == '' ? this.getuser.name : null
+      this.setuser.name = this.setuser.name == '' ? this.getuser.name : null
     }
 
   }
