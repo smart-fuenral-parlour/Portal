@@ -41,7 +41,7 @@ export class CreateClaimComponent implements OnInit {
   ];
 
   ngOnInit() {
-    this.app.loading = false
+    
   }
 
   //Search member

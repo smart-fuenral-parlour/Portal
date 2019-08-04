@@ -2,6 +2,7 @@ import { Observable, of, throwError } from 'rxjs';
 import { HttpClient, HttpHeaders, HttpErrorResponse } from '@angular/common/http';
 import { catchError, tap, map } from 'rxjs/operators';
 import { Claim } from './claim';
+import { Count } from '../count/count'
 import { Injectable } from '@angular/core';
 
 const httpOptions = {
@@ -17,6 +18,7 @@ const getclaimbyidmemberUrl = "http://greenlinks1.dedicated.co.za:3002/api/getcl
 const apiUrl = "http://greenlinks1.dedicated.co.za:3000/api/Claims";
 const getclaimbyclaimstatusUrl = "http://greenlinks1.dedicated.co.za:3000/api/Claims?filter=%7B%22where%22%3A%20%7B%22idclaimstatus%22%3A%203%7D%20%7D";
 const getclaimbyidmemberUrl = "http://greenlinks1.dedicated.co.za:3000/api/Claims?filter=%7B%22where%22%3A%20%7B%22idmember%22%3A%20666%7D%20%7D";
+const checkdeceasedmemberUrl = "http://greenlinks1.dedicated.co.za:3000/api/Claims/count?where=%7B%22deceasedidnumber%22%3A%20%22string%22%7D";
 
 @Injectable({
   providedIn: 'root'
@@ -73,9 +75,19 @@ export class ClaimService {
       tap(heroes => console.log('fetched claim by status')),
       catchError(this.handleError('getClaimbyclaimstatus', []))
     );
+  }
+
 
     
+  // check if id number to create claim already exist
+  checkDeceasedIdnumber(idnumber: string): Observable<Count> {
+    return this.http.get<Count>('http://greenlinks1.dedicated.co.za:3000/api/Claims/count?where=%7B%22deceasedidnumber%22%3A%20%22'+idnumber+'%22%7D')
+      .pipe(
+        tap(_ => console.log('check Idnumber of deceased')),
+        catchError(this.handleError('checkDeceasedIdnumber'))
+      );
   }
+  
 
 
   createClaim (claim): Observable<Claim> {

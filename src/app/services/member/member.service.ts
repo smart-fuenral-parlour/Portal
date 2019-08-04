@@ -24,7 +24,7 @@ const patchhttpOptions = {
 };
 
 /**
- * 
+ *
  * const apiUrl = "http://greenlinks1.dedicated.co.za:3002/api/member";
 const getmemberbyidentitynumberUrl = "http://greenlinks1.dedicated.co.za:3002/api/getmemberbyidentitynumber";
 const getmemberbymembershipnumberUrl = "http://greenlinks1.dedicated.co.za:3002/api/getmemberbymembershipnumber";
@@ -37,7 +37,7 @@ const getmemberbymembershipnumberUrl = "http://greenlinks1.dedicated.co.za:3002/
 // wild card search
 const getmemberbysurnameUrl = "http://greenlinks1.dedicated.co.za:3000/api/Members?filter=%7B%22where%22%3A%7B%22surname%22%3A%7B%22like%22%3A%20%22%25ma%22%7D%7D%20%7D";
 const checkEmailUrl = "http://greenlinks1.dedicated.co.za:3000/api/Members/count?where=%7B%22email%22%3A%20%22string%22%7D";
-
+const checkmembershipnumberUrl = "http://greenlinks1.dedicated.co.za:3000/api/Members/count?where=%7B%22membershipnumber%22%3A%20%22string%22%7D";
 
 @Injectable({
   providedIn: 'root'
@@ -77,11 +77,11 @@ export class MemberService {
   }
 
     
-  getMemberbymembershipnumber (id: any): Observable<Member[]> {
-    return this.http.get<Member[]>("http://greenlinks1.dedicated.co.za:3000/api/Members?filter=%7B%22where%22%3A%20%7B%22membershipnumber%22%3A%20%22"+id+"%22%7D%20%7D")
+  getMemberbymembershipnumber (membershipnumber: any): Observable<Member[]> {
+    return this.http.get<Member[]>("http://greenlinks1.dedicated.co.za:3000/api/Members?filter=%7B%22where%22%3A%7B%22membershipnumber%22%3A%7B%22like%22%3A%20%22%25"+membershipnumber+"%25%22%7D%7D%20%7D")
       .pipe(
-        tap(_ => console.log(`fetched member id=${id}`)),
-        catchError(this.handleError(`getMemberbymembershipnumber id=${id}`))
+        tap(_ => console.log(`fetched member id=${membershipnumber}`)),
+        catchError(this.handleError(`getMemberbymembershipnumber id=${membershipnumber}`))
       );
   }
 
@@ -102,7 +102,19 @@ export class MemberService {
     );
   }
 
-    // tebo2%40gmail.com
+
+
+    // check for existing Membership Number
+    checkMembershipNumber(membershipnumber: string): Observable<Count> {
+      return this.http.get<Count>('http://greenlinks1.dedicated.co.za:3000/api/Members/count?where=%7B%22membershipnumber%22%3A%20%22'+membershipnumber+'%22%7D')
+        .pipe(
+          tap(_ => console.log('check member membership number')),
+          catchError(this.handleError('checkMembershipNumber'))
+        );
+    }
+
+
+    // check for existing Member Email
     checkMemberEmail(email: string): Observable<Count> {
       return this.http.get<Count>('http://greenlinks1.dedicated.co.za:3000/api/Members/count?where=%7B%22email%22%3A%20%22'+email+'%22%7D')
         .pipe(
@@ -110,6 +122,7 @@ export class MemberService {
           catchError(this.handleError('checkMemberEmail'))
         );
     }
+
 
   createMember (member): Observable<Member> {
     return this.http.post<Member>(apiUrl, member, httpOptions).pipe(

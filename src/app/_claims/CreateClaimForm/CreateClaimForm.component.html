@@ -20,125 +20,107 @@
               <!--   Select deceased     -->
 
               <div class="col-10">
-                  <label class="bmd-label-floating">Select Deceased to continue creating claim</label>
-                  <div>
-                    <mat-form-field>
-                      <mat-select placeholder="Name, Surname, Identity number" [ngModelOptions]="{standalone: true}"
-                        [(ngModel)]="setclaim.deceasedidnumber" data-toggle="tooltip" data-placement="down">
-                        <mat-option [value]="member.identitynumber" (click)="selectDeceased()">
-                          {{ member.name | titlecase }}, {{ member.surname | titlecase }},
-                          {{ member.identitynumber | titlecase }} <span class="pull-right text-info">(main member)</span>
-                        </mat-option>
-                        <mat-option *ngFor="let beneficiary of beneficiaries, let i = index" (click)="selectDeceased()"
-                          [value]="beneficiary.identitynumber">
-                          {{ beneficiary.name | titlecase }}, {{ beneficiary.surname | titlecase }},
-                          {{ beneficiary.identitynumber | titlecase }} <span class="pull-right text-info">(beneficiary)</span>
-                        </mat-option>
-                      </mat-select>
-                    </mat-form-field>
-                  </div>
-                  <br />
+                <label class="bmd-label-floating">Select Deceased to continue creating claim</label>
+                <div>
+                  <mat-form-field>
+                    <mat-select placeholder="Name, Surname, Identity number" [ngModelOptions]="{standalone: true}"
+                      [(ngModel)]="setclaim.deceasedidnumber" data-toggle="tooltip" data-placement="down">
+                      <mat-option [value]="member.identitynumber" (click)="selectDeceased()">
+                        {{ member.name | titlecase }}, {{ member.surname | titlecase }},
+                        {{ member.identitynumber | titlecase }} <span class="pull-right text-info">(main member)</span>
+                      </mat-option>
+                      <mat-option *ngFor="let beneficiary of beneficiaries, let i = index" (click)="selectDeceased()"
+                        [value]="beneficiary.identitynumber">
+                        {{ beneficiary.name | titlecase }}, {{ beneficiary.surname | titlecase }},
+                        {{ beneficiary.identitynumber | titlecase }} <span
+                          class="pull-right text-info">(beneficiary)</span>
+                      </mat-option>
+                    </mat-select>
+                  </mat-form-field>
                 </div>
-
-                <div *ngIf="selected">
-                  <h6 class="bmd-label-floating pull-center"><b> Fill in to create
-                      claim </b></h6>
-                </div>
-
-                <div *ngIf="selected" class="col-12">
+                <br />
+              </div>
 
 
-                  <!--div class="row">
+              <div *ngIf="selected" class="col-12">
 
-
-                    <div class="col-md-6">
-
-                      <div>
-                        <mat-form-field>
-                          <mat-select placeholder="Select payout type" [ngModelOptions]="{standalone: true}"
-                            [(ngModel)]="setclaim.idpayouttype">
-                            <mat-option *ngFor="let payouttype of payouttypes" [value]="payouttype.idpayouttype">
-                              {{ payouttype.name | titlecase }}
-                            </mat-option>
-                          </mat-select>
-                        </mat-form-field>
-                      </div>
-                    </div >
-
-
-                  </div-->
-
-
-                  <h6 class="bmd-label-floating text-center">Funeral
-                    details</h6>
+                  <h5 class="bmd-label-floating text-center text-info"><b>Complete form to create claim</b></h5>
+                <br />
+                <h6 class="bmd-label-floating text-center">Funeral
+                  details</h6>
+                <div class="row">
 
                   <div class="col-md-12">
                     <label class="bmd-label-floating">Place of death</label>
                     <input type="text" class="form-control" [ngModelOptions]="{standalone: true}"
-                      [(ngModel)]="setclaim.placeofdeath" placeholder="name of place where the deceased passed on">
+                      [(ngModel)]="setclaim.placeofdeath" placeholder="name of place where the deceased passed on" required>
 
                   </div>
-                  <div class="row">
+                </div>
+                <br />
+                <div class="row">
 
-                    <div class="col-md-6 mr-auto">
-                      <mat-form-field>
-                        <input matInput [matDatepicker]="picker2" class="form-control"
-                          [ngModelOptions]="{standalone: true}" [(ngModel)]="setclaim.deathofdeath"
-                          placeholder="Select date of death" (click)="picker2.open()" readonly>
-                        <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
-                        <mat-datepicker #picker2></mat-datepicker>
-                      </mat-form-field>
-                    </div>
-
-                    <div class="col-md-6 mr-auto">
-                      <mat-form-field>
-                        <input matInput [matDatepicker]="picker"  class="form-control" placeholder="Select burial date"
-                          [ngModelOptions]="{standalone: true}" [(ngModel)]="setclaim.proposedburialdate"
-                          (click)="picker.open()" readonly>
-                        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-                        <mat-datepicker #picker></mat-datepicker>
-                      </mat-form-field>
-                    </div>
-
-
+                  <div class="col-md-6 mr-auto">
+                    <mat-form-field>
+                      <input matInput [matDatepicker]="picker2" class="form-control"
+                        [ngModelOptions]="{standalone: true}" [(ngModel)]="setclaim.deathofdeath"
+                        placeholder="Select date of death" (click)="picker2.open()" readonly>
+                      <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+                      <mat-datepicker #picker2></mat-datepicker>
+                    </mat-form-field>
                   </div>
-                     <hr>
-                  <h6 class="bmd-label-floating text-center">Informant details( person to contact during the funeral )</h6>
-  
 
-                    <div class="row">
-  
-                      <div class="col-md-6 mr-auto">
-                          <label class="bmd-label-floating">Name</label>
-                          <input type="text" class="form-control" [ngModelOptions]="{standalone: true}"
-                            [(ngModel)]="setclaim.informantname" placeholder="Informant firstname">
-                      </div>
-  
-                      <div class="col-md-6 mr-auto">
-                          <label class="bmd-label-floating">Surname</label>
-                          <input type="text" class="form-control" [ngModelOptions]="{standalone: true}"
-                            [(ngModel)]="setclaim.informantsurname" placeholder="Informant Lastname">
-                      </div>  
-  
-                    </div>
-<br/>
-                    <div class="row">
-  
-                        <div class="col-md-6 mr-auto">
-                            <label class="bmd-label-floating">Identity number:</label>
-                            <input type="text" minlength="13" maxlength="13" class="form-control" [ngModelOptions]="{standalone: true}"
-                              [(ngModel)]="setclaim.informantidentitynumber" placeholder="Informant Identity number">
-                        </div>
-    
-                        <!--div class="col-md-6 mr-auto">
+                  <div class="col-md-6 mr-auto">
+                    <mat-form-field>
+                      <input matInput [matDatepicker]="picker" class="form-control" placeholder="Select burial date"
+                        [ngModelOptions]="{standalone: true}" [(ngModel)]="setclaim.proposedburialdate"
+                        (click)="picker.open()" readonly>
+                      <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                      <mat-datepicker #picker></mat-datepicker>
+                    </mat-form-field>
+                  </div>
+
+
+                </div>
+                <hr>
+                <h6 class="bmd-label-floating text-center">Informant details( person to contact during the funeral )
+                </h6>
+
+
+                <div class="row">
+
+                  <div class="col-md-6 mr-auto">
+                    <label class="bmd-label-floating">Name</label>
+                    <input type="text" class="form-control" [ngModelOptions]="{standalone: true}"
+                      [(ngModel)]="setclaim.informantname" placeholder="Informant firstname">
+                  </div>
+
+                  <div class="col-md-6 mr-auto">
+                    <label class="bmd-label-floating">Surname</label>
+                    <input type="text" class="form-control" [ngModelOptions]="{standalone: true}"
+                      [(ngModel)]="setclaim.informantsurname" placeholder="Informant Lastname">
+                  </div>
+
+                </div>
+                <br />
+                <div class="row">
+
+                  <div class="col-md-6 mr-auto">
+                    <label class="bmd-label-floating">Identity number:</label>
+                    <input type="text" minlength="13" maxlength="13" class="form-control"
+                      [ngModelOptions]="{standalone: true}" [(ngModel)]="setclaim.informantidentitynumber"
+                      placeholder="Informant Identity number">
+                  </div>
+
+                  <!--div class="col-md-6 mr-auto">
                             <label class="bmd-label-floating">Surname</label>
                             <input type="text" class="form-control" [ngModelOptions]="{standalone: true}"
                               [(ngModel)]="setclaim.placeofdeath" placeholder="name of place where the deceased passed on">
-                        </div-->  
-    
-                      </div>
+                        </div-->
 
                 </div>
+
+              </div>
 
 
               <br />

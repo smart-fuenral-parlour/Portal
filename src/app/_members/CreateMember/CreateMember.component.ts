@@ -23,6 +23,7 @@ import { Directive, ElementRef, HostListener, Input } from '@angular/core';
 
 import * as moment from 'moment';
 import { AppComponent } from 'src/app/app.component'
+import { isNullOrUndefined } from 'util';
 
 
 
@@ -124,19 +125,21 @@ export class CreateMemberComponent implements OnInit {
 
 
     ngOnInit() {
-
+        this.app.loading = true
         this.user = JSON.parse(localStorage.getItem('user')) // getting user details
         this.policytypeDetails.premium = '0' // prevents the currency pipe from breaking initialize premium
 
 
         this.policytypeService.getPolicytypes()
             .subscribe(policytype_res => {
+
+                this.app.loading = false
                 this.policytypes = policytype_res
             }, err => {
                 console.log(err)
+                this.app.loading = false
             })
 
-        this.app.loading = false
 
 
         this.type = this.formBuilder.group({
@@ -172,75 +175,75 @@ export class CreateMemberComponent implements OnInit {
         // Code for the Validator  beneficiaryName
 
         const $validator = $('.card-wizard form').validate({
-             rules: {
-                    firstname: {
-                        required: true,
-                        minlength: 2
-                    },
-                    beneficiaryName: {
-                        required: true,
-                        minlength: 2
-                    },
-                    beneficiarySurname: {
-                        required: true,
-                        minlength: 2
-                    },
-                    beneficiaryID: {
-                        required: true,
-                        minlength: 13,
-                        maxlength: 13
-                    },
-                   gender: {
-                        required: true,
-                        minlength: 2
-                    },
-                    selectedProvince: {
-                        required: true,
-                        minlength: 2
-                    },
-                    selectedPolicyType: {
-                        required: true,
-                        minlength: 2
-                    },
-                    province: {
-                        required: true,
-                        minlength: 2
-                    },
-                    date: {
-                        date: true,
-                        minlength: 1
-                    },
-                    idnumber: {
-                        required: true,
-                        minlength: 13,
-                        invalidID: true
-                    },
-                    streetname: {
-                        required: true,
-                        minlength: 2
-                    },
-                    suburb: {
-                        required: true,
-                        minlength: 2
-                    },
-                    housenumber: {
-                        required: true,
-                        minlength: 1
-                    },
-                    phone: {
-                        required: true,
-                        minlength: 10,
-                        maxlength: 10
-                    },
-                    lastname: {
-                        required: true,
-                        minlength: 3
-                    },
-                    email: {
-                        required: true,
-                        minlength: 3,
-                    }
-              },
+            rules: {
+                firstname: {
+                    required: true,
+                    minlength: 2
+                },
+                beneficiaryName: {
+                    required: true,
+                    minlength: 2
+                },
+                beneficiarySurname: {
+                    required: true,
+                    minlength: 2
+                },
+                beneficiaryID: {
+                    required: true,
+                    minlength: 13,
+                    maxlength: 13
+                },
+                gender: {
+                    required: true,
+                    minlength: 2
+                },
+                selectedProvince: {
+                    required: true,
+                    minlength: 2
+                },
+                selectedPolicyType: {
+                    required: true,
+                    minlength: 2
+                },
+                province: {
+                    required: true,
+                    minlength: 2
+                },
+                date: {
+                    date: true,
+                    minlength: 1
+                },
+                idnumber: {
+                    required: true,
+                    minlength: 13,
+                    invalidID: true
+                },
+                streetname: {
+                    required: true,
+                    minlength: 2
+                },
+                suburb: {
+                    required: true,
+                    minlength: 2
+                },
+                housenumber: {
+                    required: true,
+                    minlength: 1
+                },
+                phone: {
+                    required: true,
+                    minlength: 10,
+                    maxlength: 10
+                },
+                lastname: {
+                    required: true,
+                    minlength: 3
+                },
+                email: {
+                    required: true,
+                    minlength: 3,
+                }
+            },
 
             highlight: function (element) {
                 $(element).closest('.form-group').removeClass('has-success').addClass('has-danger');
@@ -553,7 +556,7 @@ export class CreateMemberComponent implements OnInit {
 
 
     }
-    
+
     tickToAgree() {
 
         let finish = document.querySelector('.btn-finish')
@@ -565,33 +568,33 @@ export class CreateMemberComponent implements OnInit {
     }
 
     idNumberCheck() {
-        console.log('button clicked')
+        console.log('check idnumber')
 
-        if (this.setmember.identitynumber.length == 13) {
+        if (!isNullOrUndefined(this.setmember.identitynumber)) {
+            if (this.setmember.identitynumber.length == 13) {
 
-            // checking if id number is unique
-            this.memberService.getMemberbyidentitynumber(this.setmember.identitynumber)
-                .subscribe(memberExist => {
+                // checking if id number is unique
+                this.memberService.getMemberbyidentitynumber(this.setmember.identitynumber)
+                    .subscribe(memberExist => {
 
-                    if (memberExist.length == 0) {
-                        console.log('idnumber not found')
-                    } else {
-                        console.log('idnumber already exist')
+                        if (memberExist.length > 0) {
 
-                        swal({
-                            title: "Member with Id number " + this.setmember.identitynumber + " already exist",
-                            text: "Please enter another Id number",
-                            type: 'error',
-                            timer: 5000,
-                            showConfirmButton: true
-                        }).catch(swal.noop)
+                            console.log('idnumber already exist')
+                            swal({
+                                title: "Member with Id number " + this.setmember.identitynumber + " already exist",
+                                text: "Please enter another Id number",
+                                type: 'error',
+                                timer: 5000,
+                                showConfirmButton: true
+                            }).catch(swal.noop)
 
-                    }
+                        }
 
-                }, err => {
-                    console.log(err)
-                })
+                    }, err => {
+                        console.log(err)
+                    })
 
+            }
         }
 
 
@@ -601,11 +604,12 @@ export class CreateMemberComponent implements OnInit {
 
         let newDate = new Date()
 
-
+        this.app.loading = true
         // checking if id number is unique
         this.memberService.getMemberbyidentitynumber(this.setmember.identitynumber)
             .subscribe(memberExist => {
 
+                this.app.loading = false
                 if (memberExist.length == 0) {
                     console.log('idnumber not found')
 
@@ -621,17 +625,17 @@ export class CreateMemberComponent implements OnInit {
                         buttonsStyling: false
                     }).then((result) => {
                         if (result.value) {
+
+
                             this.app.loading = true
-
-
                             // creating member
                             this.setmember.id = 0
                             this.setmember.idpolicystatus = 1
                             this.setmember.idlifestatus = 1
-                            this.setmember.membershipnumber = (this.setmember.surname.slice(0, 1).toUpperCase()+this.setmember.name.slice(0, 1).toUpperCase()+Math.floor(100000 + Math.random() * 900000)+(this.setmember.identitynumber).toString().slice(0, 2))
+                            this.setmember.membershipnumber = (this.setmember.surname.slice(0, 1).toUpperCase() + this.setmember.name.slice(0, 1).toUpperCase() + Math.floor(100000 + Math.random() * 900000) + (this.setmember.identitynumber).toString().slice(7, 9))
                             this.setmember.createdby = (this.user.name + " " + this.user.surname)
                             this.setmember.lastpaiddate = moment.parseZone(newDate).utc().format()
-                            this.setmember.createdby =  moment.parseZone(newDate).utc().format()
+                            this.setmember.createdby = moment.parseZone(newDate).utc().format()
 
                             console.log(this.setmember)
 
@@ -641,7 +645,6 @@ export class CreateMemberComponent implements OnInit {
                                     console.log(member_res)
 
                                     if (this.unhideBeneficiaryForm) {
-
 
                                         // creating beneficiary
                                         for (let x = 0; x < this.BeneficiaryForm.length; x++) {
@@ -672,6 +675,7 @@ export class CreateMemberComponent implements OnInit {
                                         }
 
                                     }
+                                    this.app.loading = false
 
                                     swal(
                                         {
@@ -686,6 +690,7 @@ export class CreateMemberComponent implements OnInit {
 
                                 }, err => {
                                     console.log(err)
+                                    this.app.loading = false
                                 })
 
                         }
@@ -707,6 +712,7 @@ export class CreateMemberComponent implements OnInit {
 
             }, err => {
                 console.log(err)
+                this.app.loading = false
             })
 
 
