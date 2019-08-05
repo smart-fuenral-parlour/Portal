@@ -1,6 +1,10 @@
 <div class="main-content">
   <div class="container-fluid">
-
+      <style>
+          .my-pagination /deep/ .ngx-pagination .current {
+            background: purple;
+          }
+        </style>
     <div class="row">
       <div class="col-md-8 ml-auto mr-auto">
         <div class="card">
@@ -82,7 +86,7 @@
               <table id="datatables" class="table table-striped table-no-bordered table-hover" cellspacing="0"
                 width="100%" style="width:100%">
                 <thead>
-                    <pagination-controls (pageChange)="p = $event"></pagination-controls>
+                    
                   <tr>
                     <th>Membership No.</th>
                     <th>Name</th>
@@ -112,7 +116,12 @@
                     </td>
                   </tr>
                 </tbody>
+                
               </table>
+              <div class="pull-center">
+                  <pagination-controls class="my-pagination" (pageChange)="p = $event"></pagination-controls>
+              </div>
+             
             </div>
           </div>
           <!-- end content-->

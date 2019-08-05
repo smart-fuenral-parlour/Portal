@@ -12,7 +12,6 @@ import { User } from 'src/app/services/user/user'
 import swal from 'sweetalert2';
 import { isNullOrUndefined } from 'util';
 import { AppComponent } from 'src/app/app.component'
-import { MatPaginator } from '@angular/material'
 
 declare var $: any;
 
@@ -31,7 +30,6 @@ declare interface DataTable {
 })
 export class ViewMembersComponent implements OnInit, AfterViewInit {
 
-  @ViewChild(MatPaginator) paginator: MatPaginator
 
   public dataTable: DataTable;
   members: Member[]

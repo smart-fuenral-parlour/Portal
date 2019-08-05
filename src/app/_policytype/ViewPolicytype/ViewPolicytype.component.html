@@ -27,7 +27,7 @@
                                 </thead>
                                 <tbody>
            
-                                    <tr *ngFor="let policytype of policytypes; let i = index">
+                                    <tr *ngFor="let policytype of policytypes | paginate: { itemsPerPage: 5, currentPage: p }; let i = index">
                                
                                         <td>{{  policytype.name | titlecase}}</td>
                                         <td>{{  policytype.description }}</td>
@@ -35,12 +35,13 @@
                                         <td>{{  policytype.createdby | titlecase }}</td>
                                         <td class="text-right">
                                           <a (click)="ViewPolicytype(i)" class="btn btn-link btn-info btn-just-icon edit"><i class="material-icons" >edit</i></a>
-                                          
-                                         
                                         </td>
                                     </tr>
                                 </tbody>
                             </table>
+                            <div class="pull-center">
+                                <pagination-controls class="my-pagination" (pageChange)="p = $event"></pagination-controls>
+                            </div>
                         </div>
                     </div>
                     <!-- end content-->
