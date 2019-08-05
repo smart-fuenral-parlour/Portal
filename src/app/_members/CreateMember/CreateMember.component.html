@@ -96,8 +96,9 @@
                           <mat-form-field class="example-full-width has-label"
                             [ngClass]="displayFieldCss(type, 'idnumber')">
                             <input type="text" name="identitynumber" matInput [(ngModel)]="setmember.identitynumber"
-                              inputmode="numeric" (keyup)="idNumberCheck()" placeholder="ID Number" formControlName="idnumber" minlength="13"
-                              maxlength="13" numbersOnly>
+                              inputmode="numeric" (keyup)="idNumberCheck()" placeholder="ID Number"
+                              formControlName="idnumber" minlength="13" maxlength="13"
+                              onkeypress="return event.charCode >= 48 && event.charCode <= 57">
                           </mat-form-field>
 
                         </div>
@@ -148,7 +149,7 @@
                   <div class="tab-pane" id="addressTab">
                     <div class="row justify-content-center">
                       <div class="col-sm-12">
-                        <h5 class="info-text"> ADDRESS  </h5>
+                        <h5 class="info-text"> ADDRESS </h5>
                       </div>
                       <div class="col-sm-12">
                         <h5 class="info-text"> </h5>
@@ -298,7 +299,8 @@
                                   </span>
                                   <mat-form-field class="example-full-width has-label">
                                     <input type="text" id="{{'beneficiaryID'+i}}" name="{{'beneficiaryID'+i}}" matInput
-                                      placeholder="ID Number" class="form-control" maxlength="13" minlength="13">
+                                      placeholder="ID Number" class="form-control" maxlength="13" minlength="13"
+                                      onkeypress="return event.charCode >= 48 && event.charCode <= 57">
                                   </mat-form-field>
                                 </div>
 
@@ -349,7 +351,8 @@
                           <mat-form-field class="example-full-width" [ngClass]="displayFieldCss(type, 'phone')">
                             <input matInput type="text" minlength="10" maxlength="10" numbersOnly
                               placeholder="Phone No." name="contactnumber" matInput id="contactnumber"
-                              formControlName="phone" [(ngModel)]="setmember.contactnumber">
+                              formControlName="phone" [(ngModel)]="setmember.contactnumber"
+                              onkeypress="return event.charCode >= 48 && event.charCode <= 57">
                           </mat-form-field>
                         </div>
                       </div>
@@ -384,32 +387,39 @@
                           <div class="card text-center" style="background-color: whitesmoke">
                             <div class="card-body">
                               <div id="typography">
-                                  <div>
-                                    <p class="card-description ">
+                                <div>
+                                  <p class="card-description ">
 
-                                      <b class="text-info pull-center">Member Info</b><br />                                      
-                                      Firstname: <b>{{ setmember.name | titlecase}} </b>                Lastname: <b>{{ setmember.surname | titlecase}}</b> <br />
-                                      Identity number: <b>{{ setmember.identitynumber }}</b> Gender: <b>{{ setmember.gender | titlecase}}</b> <br />
-                                      
-                                      <br />
+                                    <b class="text-info pull-center">Member Info</b><br />
+                                    Firstname: <b>{{ setmember.name | titlecase}} </b> Lastname:
+                                    <b>{{ setmember.surname | titlecase}}</b> <br />
+                                    Identity number: <b>{{ setmember.identitynumber }}</b> Gender:
+                                    <b>{{ setmember.gender | titlecase}}</b> <br />
 
-                                      <b class="text-info pull-center">Contact Info</b><br />                                      
-                                      E-mail: <b>{{ setmember.email }} </b>          Contact number: <b>{{ setmember.contactnumber }}</b>
-                                      <br />
+                                    <br />
 
-                                      <b class="text-info pull-center">Address</b><br />                                      
-                                      <b>{{ setmember.housenumber }} , {{ setmember.streetname}} , {{ setmember.suburb }} , {{ setmember.province }} </b><br />
-                                      <br />
+                                    <b class="text-info pull-center">Contact Info</b><br />
+                                    E-mail: <b>{{ setmember.email }} </b> Contact number:
+                                    <b>{{ setmember.contactnumber }}</b>
+                                    <br />
 
-                                      <b class="text-info pull-center">Policy Contract Info</b><br />                                      
-                                      <b>{{ policytypeDetails.name}},  {{ policytypeDetails.description }}</b> <br />
-                                      Trail period: <b>{{ policytypeDetails.trialperiod }}</b>  Lapses in: <b>{{ policytypeDetails.lapsedays }} days</b> Premium: <b class="text-primary">{{ policytypeDetails.premium  | currency:"ZAR":'symbol-narrow'}}</b><br /> <!--  -->
-                                      <b class="pull-center">{{ beneficiaryDetails }}</b>
-                                      <br />
+                                    <b class="text-info pull-center">Address</b><br />
+                                    <b>{{ setmember.housenumber }} , {{ setmember.streetname}} , {{ setmember.suburb }}
+                                      , {{ setmember.province }} </b><br />
+                                    <br />
 
-                                      
-                                    </p>
-                                    <!--
+                                    <b class="text-info pull-center">Policy Contract Info</b><br />
+                                    <b>{{ policytypeDetails.name}}, {{ policytypeDetails.description }}</b> <br />
+                                    Trail period: <b>{{ policytypeDetails.trialperiod }}</b> Lapses in:
+                                    <b>{{ policytypeDetails.lapsedays }} days</b> Premium: <b
+                                      class="text-primary">{{ policytypeDetails.premium  | currency:"ZAR":'symbol-narrow'}}</b><br />
+                                    <!--  -->
+                                    <b class="pull-center">{{ beneficiaryDetails }}</b>
+                                    <br />
+
+
+                                  </p>
+                                  <!--
                                     <p class="card-description">
                                                                     <b>Member Details</b>
                                       Firstname: {{ setmember.name }}           Lastname: {{ setmember.surname }}<br />
@@ -429,7 +439,7 @@
 
                                     </p>
                                   -->
-                                  </div>
+                                </div>
                               </div>
                             </div>
                           </div>
@@ -437,8 +447,8 @@
                         <div class="col-sm-12 col-sm-offset-1 checkbox-radios">
                           <div class="form-check">
                             <label class="form-check-label">
-                              <input class="form-check-input check-agree" type="checkbox" name="checkTerms" id="checkTerms" value=""
-                                (click)="tickToAgree()" > I
+                              <input class="form-check-input check-agree" type="checkbox" name="checkTerms"
+                                id="checkTerms" value="" (click)="tickToAgree()"> I
                               agree to the Terms of Service
                               <span class="form-check-sign">
                                 <span class="check"></span>

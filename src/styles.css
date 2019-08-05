@@ -28,3 +28,7 @@
      justify-content: center;
      align-items: center;
    }
+
+   .my-pagination /deep/ .ngx-pagination .current {
+    background: purple;
+  }

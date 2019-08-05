@@ -16,77 +16,84 @@
                 <div class="col-md-6">
                   <div class="form-group">
                     <label class="bmd-label-floating">Created by</label>
-                    <input type="text" readonly class="form-control text-center" placeholder="{{getclaim.createdby}}"> <!--  {{ user.name |  titlecase }}   {{ user.surname |  titlecase }}   -->
+                    <input type="text" readonly class="form-control text-center" placeholder="{{getclaim.createdby}}">
+                    <!--  {{ user.name |  titlecase }}   {{ user.surname |  titlecase }}   -->
                   </div>
                 </div>
 
                 <div class="col-md-6">
                   <div class="form-group">
                     <label class="bmd-label-floating">Created date</label>
-                    <input type="text" readonly class="form-control text-center" placeholder=" {{ getclaim.createddate |  date: 'dd MMMM, yyyy  HH:MM a' }}">
+                    <input type="text" readonly class="form-control text-center"
+                      placeholder=" {{ getclaim.createddate |  date: 'dd MMMM, yyyy  HH:MM a' }}">
                   </div>
                 </div>
               </div>
 
 
               <div class="row">
-                  <div class="col-md-6">
-                    <div class="form-group">
-                      <label class="bmd-label-floating">Date of death</label>
-                      <input type="text" readonly class="form-control text-center" placeholder=" {{ getclaim.deathofdeath | date: 'dd MMMM, yyyy  HH:MM a' }}">
-                    </div>
-                  </div>
-  
-                  <div class="col-md-6">
-                    <div class="form-group">
-                      <label class="bmd-label-floating">Burial date</label>
-                      <input type="text" readonly class="form-control text-center" placeholder=" {{ getclaim.proposedburialdate | date: 'dd MMMM, yyyy  HH:MM a' }}"  >
-                    </div>
-                  </div>
-                </div
-                >
-                <br/>
-              
-              <div class="row">
-                  <div class="col-md-6">
-                    <div class="form-group">
-                      <label class="bmd-label-floating">Place of death</label>
-                      <input type="text" readonly class="form-control text-center" placeholder="{{ getclaim.placeofdeath  | titlecase}}">
-                    </div>
-                  </div>
-  
-                  <div class="col-md-6">
-                    <div class="form-group">
-                      <label class="bmd-label-floating">Uploaded Document</label>
-                      <input type="text" disabled class="form-control" placeholder="{{getclaim.deathcertificate}}">
-                    </div>
+                <div class="col-md-6">
+                  <div class="form-group">
+                    <label class="bmd-label-floating">Date of death</label>
+                    <input type="text" readonly class="form-control text-center"
+                      placeholder=" {{ getclaim.deathofdeath | date: 'dd MMMM, yyyy  HH:MM a' }}">
                   </div>
                 </div>
-                <br/>
-                
-                <h5 class="text-center">Informat/Contact Person info</h5>                
-              
-              <div class="row">
-                  <div class="col-md-6">
-                    <div class="form-group">
-                      <label class="bmd-label-floating">Name & Surname</label>
-                      <input type="text" readonly class="form-control text-center" placeholder="{{ getclaim.informantname  | titlecase}}  {{ getclaim.informantsurname  | titlecase}}">
-                    </div>
-                  </div>
-  
-                  <div class="col-md-6">
-                    <div class="form-group">
-                      <label class="bmd-label-floating">Identity Number</label>
-                      <input type="text" readonly class="form-control text-center" placeholder="{{getclaim.informantidentitynumber}}">
-                    </div>
-                  </div>
-                </div>
-                
 
-              <button class="btn btn-danger btn-sm pull-right" (click)="declineClaim()" data-toggle="tooltip" data-placement="down"
-                title="Decline claim">Decline Claim</button>
-                <button class="btn btn-success btn-sm pull-right" title="Approve claim" data-toggle="tooltip" data-placement="down"
-                  (click)="approveClaim()">Approve Claim</button>
+                <div class="col-md-6">
+                  <div class="form-group">
+                    <label class="bmd-label-floating">Burial date</label>
+                    <input type="text" readonly class="form-control text-center"
+                      placeholder=" {{ getclaim.proposedburialdate | date: 'dd MMMM, yyyy  HH:MM a' }}">
+                  </div>
+                </div>
+              </div>
+              <br />
+
+              <div class="row">
+                <div class="col-md-6">
+                  <div class="form-group">
+                    <label class="bmd-label-floating">Place of death</label>
+                    <input type="text" readonly class="form-control text-center"
+                      placeholder="{{ getclaim.placeofdeath  | titlecase}}">
+                  </div>
+                </div>
+
+                <div class="col-md-6">
+                  <div class="form-group">
+                    <label class="bmd-label-floating">Uploaded Document</label>
+                    <input type="text" disabled class="form-control" placeholder="{{getclaim.deathcertificate}}">
+                  </div>
+                </div>
+              </div>
+              <br />
+
+              <h5 class="text-center">Informat/Contact Person info</h5>
+
+              <div class="row">
+                <div class="col-md-6">
+                  <div class="form-group">
+                    <label class="bmd-label-floating">Name & Surname</label>
+                    <input type="text" readonly class="form-control text-center"
+                      placeholder="{{ getclaim.informantname  | titlecase}}  {{ getclaim.informantsurname  | titlecase}}">
+                  </div>
+                </div>
+
+                <div class="col-md-6">
+                  <div class="form-group">
+                    <label class="bmd-label-floating">Identity Number</label>
+                    <input type="text" readonly class="form-control text-center"
+                      placeholder="{{getclaim.informantidentitynumber}}"
+                      onkeypress="return event.charCode >= 48 && event.charCode <= 57">
+                  </div>
+                </div>
+              </div>
+
+
+              <button class="btn btn-danger btn-sm pull-right" (click)="declineClaim()" data-toggle="tooltip"
+                data-placement="down" title="Decline claim">Decline Claim</button>
+              <button class="btn btn-success btn-sm pull-right" title="Approve claim" data-toggle="tooltip"
+                data-placement="down" (click)="approveClaim()">Approve Claim</button>
 
               <div class="clearfix"></div>
             </form>

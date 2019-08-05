@@ -148,33 +148,33 @@ export class MemberDetailsComponent implements OnInit {
 
                   this.beneficiaries = beneficiary_res
                   this.noBeneficiary = false
- 
+
 
                 } else {
                   this.noBeneficiary = true
                 }
 
-                                 
+
                 this.claimService.getClaimbyidmember(this.member.id)
-                .subscribe(claims_res => {
+                  .subscribe(claims_res => {
 
-                  this.app.loading = false
-                  if(claims_res.length > 0){
+                    this.app.loading = false
+                    if (claims_res.length > 0) {
 
-                    this.claims = claims_res
-                    this.noClaims = false
-                    
+                      this.claims = claims_res
+                      this.noClaims = false
 
-                  } else {
-                    this.noClaims = true
-                  }
 
-                }, err => {
-                  this.app.loading = false
-                  console.log(err)
+                    } else {
+                      this.noClaims = true
+                    }
 
-                })
-              
+                  }, err => {
+                    this.app.loading = false
+                    console.log(err)
+
+                  })
+
 
               }, err => {
                 console.log(err)
@@ -191,7 +191,7 @@ export class MemberDetailsComponent implements OnInit {
         this.app.loading = false
       })
 
-      
+
     console.log(this.user)
     console.log(this.member)
 
@@ -286,7 +286,7 @@ export class MemberDetailsComponent implements OnInit {
         '<div class="row">' +
         ' <label class=" col-4 col-form-label">ID number: </label>' +
         '<div class="col-8">' +
-        '<input matInput type="text" name="idnumber" minlength="13"  maxlength="13" minLength id="IDNumber" placeholder="' + IDNUMBER + '" class="form-control" />' +
+        '<input matInput type="text" onkeypress="return event.charCode >= 48 && event.charCode <= 57" name="idnumber" minlength="13"  maxlength="13" minLength id="IDNumber" placeholder="' + IDNUMBER + '" class="form-control" />' +
         '</div>' +
         '</div>' +
 
@@ -412,7 +412,7 @@ export class MemberDetailsComponent implements OnInit {
         '<div class="row">' +
         ' <label class=" col-4 col-form-label">ID number: </label>' +
         '<div class="col-8">' +
-        '<input matInput type="text" minlength="13"  maxlength="13" name="idnumber" id="IDNumber" class="form-control" />' +
+        '<input matInput type="text" minlength="13"  maxlength="13" name="idnumber" id="IDNumber" onkeypress="return event.charCode >= 48 && event.charCode <= 57" class="form-control" />' +
         '</div>' +
         '</div>' +
 

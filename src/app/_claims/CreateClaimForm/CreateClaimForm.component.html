@@ -44,7 +44,7 @@
 
               <div *ngIf="selected" class="col-12">
 
-                  <h5 class="bmd-label-floating text-center text-info"><b>Complete form to create claim</b></h5>
+                <h5 class="bmd-label-floating text-center text-info"><b>Complete form to create claim</b></h5>
                 <br />
                 <h6 class="bmd-label-floating text-center">Funeral
                   details</h6>
@@ -53,7 +53,8 @@
                   <div class="col-md-12">
                     <label class="bmd-label-floating">Place of death</label>
                     <input type="text" class="form-control" [ngModelOptions]="{standalone: true}"
-                      [(ngModel)]="setclaim.placeofdeath" placeholder="name of place where the deceased passed on" required>
+                      [(ngModel)]="setclaim.placeofdeath" placeholder="name of place where the deceased passed on"
+                      required>
 
                   </div>
                 </div>
@@ -109,7 +110,8 @@
                     <label class="bmd-label-floating">Identity number:</label>
                     <input type="text" minlength="13" maxlength="13" class="form-control"
                       [ngModelOptions]="{standalone: true}" [(ngModel)]="setclaim.informantidentitynumber"
-                      placeholder="Informant Identity number">
+                      placeholder="Informant Identity number"
+                      onkeypress="return event.charCode >= 48 && event.charCode <= 57">
                   </div>
 
                   <!--div class="col-md-6 mr-auto">
@@ -121,9 +123,9 @@
                 </div>
 
                 <div class="row">
-                    <mat-error *ngIf='invalidIdnumber'>
-                        <b>Invalid ID number must have 13 digits</b>
-                      </mat-error>
+                  <mat-error *ngIf='invalidIdnumber'>
+                    <b>Invalid ID number must have 13 digits</b>
+                  </mat-error>
                 </div>
               </div>
 
