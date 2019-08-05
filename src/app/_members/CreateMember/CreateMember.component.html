@@ -202,8 +202,8 @@
                           <span class="input-group-text">
                             <i class="material-icons">home</i>
                           </span>
-                          <mat-form-field [ngClass]="displayFieldCss(type, 'province')">
-                            <mat-select placeholder="Select Province" matInput name="province"
+                          <mat-form-field [ngClass]="displayFieldCss(type, 'selectedProvince')">
+                            <mat-select placeholder="Select Province" matInput name="selectedProvince"
                               formControlName="selectedProvince" [(ngModel)]="setmember.province">
                               <mat-option *ngFor="let province of provinces" [value]=" province.value ">
                                 {{ province.value }}
@@ -229,7 +229,7 @@
 
                           <mat-form-field class="example-full-width has-label"
                             [ngClass]="displayFieldCss(type, 'selectedPolicyType')">
-                            <mat-select placeholder="Select policy type" name="policytype"
+                            <mat-select placeholder="Select policy type" name="selectedPolicyType"
                               formControlName="selectedPolicyType" [(ngModel)]="setmember.idpolicytype" required>
                               <mat-option *ngFor="let policytype of policytypes; let idx = index"
                                 [value]="policytype.id" (click)="testMaximumBeneficiary(idx)">

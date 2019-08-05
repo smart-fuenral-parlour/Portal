@@ -7,9 +7,18 @@
         <div class="card ">
           <div class="card-body">
             <form>
-              <div class="col-12">
-                <div class="form-group text-center">
-                  <h5 class="card-title text-center">Claim No: <b class="text-primary">{{getclaim.claimnumber}}</b></h5>
+              <div class="row col-12">
+                <!--div class="form-group text-center">
+                  <h5 class="card-title text-center">Claim No: <b
+                      class="text-primary">{{getclaim.claimnumber}}</b><span>Claim Status: <span
+                        class="text-{{claimstatus_color}}">{{ claimstatus }}</span></span></h5>
+                </div-->   
+                             <div >
+                    <p class="card-title">Claim No: <b class="text-primary">{{getclaim.claimnumber}}</b>
+                    </p>
+                  </div>
+                <div class="text-center">
+                    Claim Status:<span class="{{claimstatus_color}}">{{ claimstatus }}</span>
                 </div>
               </div>
               <div class="row">
@@ -59,6 +68,15 @@
                   </div>
                 </div>
 
+                <!--
+                                  <div class="col-md-6">
+                  <div class="form-group">
+                    <label class="bmd-label-floating">Uploaded Document</label>
+                    <input type="text" disabled class="form-control" placeholder="{{getclaim.deathcertificate}}">
+                  </div>
+                </div>
+                -->
+
                 <div class="col-md-6">
                   <div class="form-group">
                     <label class="bmd-label-floating">Uploaded Document</label>
@@ -105,135 +123,3 @@
 
   </div>
 </div>
-
-
-<!--
-      <div class="row">
-          <div class="col-md-12">
-              <div class="card" *ngIf="!noClaims">
-                <div class="card-header card-header-icon card-header-rose">
-                  <div class="card-icon">
-                    <i class="material-icons">assignment</i>
-                  </div>
-                  <h4 class="card-title ">Claim Infomation</h4>
-                </div>
-                  <div class="card-body">
-                      <div class="table-responsive">
-                        <table class="table">
-                                <thead class="text-primary">
-                                    <tr>
-                                      <th>Claim No.</th>
-                                      <th>Amount</th>
-                                      <th>Name Surname</th>
-                                      <th>Date</th>
-                                      <th>Member Type</th>
-                                    </tr>
-                                </thead>
-                              <tbody>
-                                  <tr>
-                                      <td>{{ idclaim }}</td>
-                                      <td>R0.00</td>
-                                      <td>{{ name}} {{ surname }} </td>
-                                      <td>{{ date }}</td>
-                                      <td>{{ type }}</td>
-                                  </tr>
-                              </tbody>
-                        </table>
-
-                      </div>
-                  </div>
-              </div>
-              
-              <div class="row" *ngIf="noClaims">
-                  <div class="col-12 ml-auto mr-auto">
-                    <div class="card" style="background-color: lightgray">
-                      <div class="card-body text-center card-description">
-                        <h3><b>No Claim made yet</b></h3>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              <div class="row pull-right" hidden>
-
-                  <button mat-raised-button class="btn btn-sm btn-success">Approve claim</button>
-                  <button mat-raised-button class="btn btn-sm btn-danger">Decline claim</button>
-                  
-              </div>
-
-          </div>
-      </div>
-              <div class="col-md-12">
-                  <div class="card card-plain">
-                    <div class="card-header card-header-icon card-header-rose">
-                      <div class="card-icon">
-                        <i class="material-icons">assignment</i>
-                      </div>
-                      <h4 class="card-title mt-0"> Table on Plain Background</h4>
-                      <p class="card-category"> Here is a subtitle for this table</p>
-                    </div>
-                      <div class="card-body">
-                        <div class="table-responsive">
-                          <table class="table table-hover">
-                              <thead>
-                                  <tr>
-                                    <th *ngFor="let cell of tableData2.headerRow">{{ cell }}</th>
-                                  </tr>
-                              </thead>
-                            <tbody>
-                                    <tr *ngFor="let row of tableData2.dataRows">
-                                        <td *ngFor="let cell of row">{{cell}}</td>
-                                    </tr>
-                            </tbody>
-                          </table>
-                        </div>
-
-
-                      </div>
-                  </div>
-              </div>
-              <div class="col-md-12">
-                  <div class="card">
-                    <div class="card-header card-header-icon card-header-rose">
-                      <div class="card-icon">
-                        <i class="material-icons">assignment</i>
-                      </div>
-                      <h4 class="card-title "> Regular Table with Colors</h4>
-                    </div>
-                      <div class="card-body table-full-width">
-                          <div class="table-responsive">
-                              <table class="table table-hover">
-                                  <thead>
-                                      <tr>
-                                        <th *ngFor="let cell of tableData3.headerRow">{{ cell }}</th>
-                                      </tr>
-                                  </thead>
-                                  <tbody>
-                                        <tr class="table-success">
-                                            <td *ngFor="let cell of tableData3.dataRows[0]">{{cell}}</td>
-                                        </tr>
-                                        <tr>
-                                            <td *ngFor="let cell of tableData3.dataRows[1]">{{cell}}</td>
-                                        </tr>
-                                        <tr class="table-info">
-                                            <td *ngFor="let cell of tableData3.dataRows[2]">{{cell}}</td>
-                                        </tr>
-                                        <tr>
-                                            <td *ngFor="let cell of tableData3.dataRows[3]">{{cell}}</td>
-                                        </tr>
-                                        <tr class="table-danger">
-                                            <td *ngFor="let cell of tableData3.dataRows[4]">{{cell}}</td>
-                                        </tr>
-                                        <tr>
-                                            <td *ngFor="let cell of tableData3.dataRows[5]">{{cell}}</td>
-                                        </tr>
-                                        <tr class="table-warning">
-                                            <td *ngFor="let cell of tableData3.dataRows[6]">{{cell}}</td>
-                                        </tr>
-                                  </tbody>
-                              </table>
-                          </div>
-
-                      </div>
-                  </div>
-              </div>
-            -->

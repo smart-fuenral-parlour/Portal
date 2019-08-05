@@ -8,6 +8,7 @@ declare var $: any;
 import { MemberService } from 'src/app/services/member/member.service'
 import { ClaimService } from 'src/app/services/claim/claim.service'
 import { UserService } from 'src/app/services/user/user.service'
+import { ClaimstatusService } from 'src/app/services/claimstatus/claimstatus.service'
 
 /////////////////////////////////////////  SERVICE CALLS   ///////////////////////////////////////////////////////////////////
 import { Claim } from 'src/app/services/claim/claim'
@@ -26,7 +27,8 @@ import { isNullOrUndefined } from 'util';
 export class ClaimInfoComponent implements OnInit {
 
   getclaim: Claim
-
+  claimstatus 
+  claimstatus_color
   user: User
 
   setclaim = new Claim
@@ -34,13 +36,47 @@ export class ClaimInfoComponent implements OnInit {
 
   constructor(private app: AppComponent,
     private claimService: ClaimService,
+    private claimstatusService: ClaimstatusService,
     private router: Router
   ) { }
 
   ngOnInit() {
+    this.app.loading = true
     this.getclaim = JSON.parse(localStorage.getItem('claiminfo'));
     this.user = JSON.parse(localStorage.getItem('user'));
     console.log(this.getclaim)
+
+    this.app.loading = true
+    this.claimstatusService.getClaimstatus(this.getclaim.idclaimstatus)
+      .subscribe(claimstatus_res => {
+
+        if( !isNullOrUndefined(claimstatus_res) ) {
+          this.claimstatus = claimstatus_res.name
+        } else {
+          this.claimstatus = 'pending'
+        }
+        this.app.loading = false
+      }, err => {
+        console.log(err)
+        this.app.loading = false
+      })
+
+      
+    
+    if ( !isNullOrUndefined(this.getclaim.idclaimstatus) || this.getclaim.idclaimstatus > 0) {
+
+      if (this.getclaim.idclaimstatus == 2) {
+        this.claimstatus_color = 'text-success'
+      } else
+        if (this.getclaim.idclaimstatus == 3) {
+          this.claimstatus_color = 'text-danger'
+
+        } else {
+          this.claimstatus_color = 'text-warning'
+
+        }
+    }
+
   }
 
   approveClaim() {

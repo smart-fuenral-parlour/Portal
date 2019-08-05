@@ -154,16 +154,11 @@ export class CreateMemberComponent implements OnInit {
                     })
                 ])
             }),
-
-
-
             firstName: [null, Validators.required],
             identityNumber: [null, Validators.required],
             selectedPolicyType: [null, Validators.requiredTrue],// drop down list minlength="13" maxlength="13"
-            createddate: [null, Validators.required],
             gender: [null, Validators.required], // drop down list
             selectedProvince: [null, Validators.required], // drop down list
-            province: [null, Validators.required], // drop down list
             society: [null, Validators.required], // drop down list
             lastName: [null, Validators.required],
             housenumber: [null, Validators.required],
@@ -205,14 +200,6 @@ export class CreateMemberComponent implements OnInit {
                 selectedPolicyType: {
                     required: true,
                     minlength: 2
-                },
-                province: {
-                    required: true,
-                    minlength: 2
-                },
-                date: {
-                    date: true,
-                    minlength: 1
                 },
                 identityNumber: {
                     required: true,
@@ -621,7 +608,7 @@ export class CreateMemberComponent implements OnInit {
                             this.setmember.membershipnumber = (this.setmember.surname.slice(0, 1).toUpperCase() + this.setmember.name.slice(0, 1).toUpperCase() + Math.floor(100000 + Math.random() * 900000) + (this.setmember.identitynumber).toString().slice(7, 9))
                             this.setmember.createdby = (this.user.name + " " + this.user.surname)
                             this.setmember.lastpaiddate = moment.parseZone(newDate).utc().format()
-                            this.setmember.createdby = moment.parseZone(newDate).utc().format()
+                            this.setmember.createddate = moment.parseZone(newDate).utc().format()
 
                             console.log(this.setmember)
 
