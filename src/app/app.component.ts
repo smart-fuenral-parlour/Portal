@@ -10,11 +10,12 @@ import { LoginComponent } from './_userPage/login/login.component';
 
 export class AppComponent implements OnInit {
   private _router: Subscription;
-  loading = false
+  loading 
   
   loaderClass = 'load-wrapper' 
 
   constructor( private router: Router ) {
+    this.loading = false
   }
 
     ngOnInit() {

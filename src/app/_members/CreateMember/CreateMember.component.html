@@ -120,7 +120,7 @@
                           <mat-form-field class="example-full-width has-label"
                             [ngClass]="displayFieldCss(type, 'gender')">
                             <mat-select placeholder="Select Gender" name="gender"  formControlName="gender"
-                              [(ngModel)]="setmember.gender" required>
+                              [(ngModel)]="setmember.gender" required > <!-- id="select" class="required"  -->
                               <mat-option *ngFor="let Gender of Genders" [value]="Gender.value ">
                                 {{ Gender.value }}
                               </mat-option>
