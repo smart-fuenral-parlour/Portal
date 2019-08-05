@@ -54,7 +54,7 @@
                     <h5 class="info-text"> Let's start with the basic information (with validation)</h5>
                     <div class="row justify-content-center">
 
-                      <!-- name -->
+                      <!-- name  -->
                       <div class="col-sm-6">
                         <div class="input-group form-control-lg">
                           <div class="input-group-prepend">
@@ -63,7 +63,7 @@
                             </span>
                             <mat-form-field class="example-full-width has-label"
                               [ngClass]="displayFieldCss(type, 'firstName')">
-                              <input type="text" name="name" [(ngModel)]="setmember.name" matInput
+                              <input type="text" name="firstName" [(ngModel)]="setmember.name" matInput
                                 placeholder="First Name" formControlName="firstName">
                             </mat-form-field>
                           </div>
@@ -79,7 +79,7 @@
                             </span>
                             <mat-form-field class="example-full-width has-label"
                               [ngClass]="displayFieldCss(type, 'lastName')">
-                              <input type="text" name="surname" [(ngModel)]="setmember.surname" matInput
+                              <input type="text" name="lastName" [(ngModel)]="setmember.surname" matInput
                                 placeholder="last Name" formControlName="lastName">
                             </mat-form-field>
                           </div>
@@ -94,15 +94,15 @@
                             <i class="material-icons">perm_identity</i>
                           </span>
                           <mat-form-field class="example-full-width has-label"
-                            [ngClass]="displayFieldCss(type, 'idnumber')">
-                            <input type="text" name="identitynumber" matInput [(ngModel)]="setmember.identitynumber"
-                              inputmode="numeric" (keyup)="idNumberCheck()" placeholder="ID Number"
-                              formControlName="idnumber" minlength="13" maxlength="13"
+                            [ngClass]="displayFieldCss(type, 'identityNumber')">
+                            <input type="text" name="identityNumber" matInput [(ngModel)]="setmember.identitynumber"
+                              (blur)="idNumberCheck(setmember.identitynumber)" (focus)="idNumberValidationDisable()"  placeholder="ID Number" formControlName="identityNumber"
+                              minlength="13" maxlength="13"
                               onkeypress="return event.charCode >= 48 && event.charCode <= 57">
                           </mat-form-field>
 
                         </div>
-                        <div class="col-12" *ngIf="invalidID">
+                        <div class=" row col-12" *ngIf="invalidID">
                           <mat-error>
                             ID number must have 13 digits
                           </mat-error>
@@ -119,7 +119,7 @@
                           </span>
                           <mat-form-field class="example-full-width has-label"
                             [ngClass]="displayFieldCss(type, 'gender')">
-                            <mat-select placeholder="Select Gender" id="gender" name="gender" formControlName="gender"
+                            <mat-select placeholder="Select Gender" name="gender"  formControlName="gender"
                               [(ngModel)]="setmember.gender" required>
                               <mat-option *ngFor="let Gender of Genders" [value]="Gender.value ">
                                 {{ Gender.value }}

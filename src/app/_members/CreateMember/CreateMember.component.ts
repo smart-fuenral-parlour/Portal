@@ -158,8 +158,8 @@ export class CreateMemberComponent implements OnInit {
 
 
             firstName: [null, Validators.required],
-            idnumber: [null, Validators.required],
-            selectedPolicyType: [null, Validators.requiredTrue],// drop down list
+            identityNumber: [null, Validators.required],
+            selectedPolicyType: [null, Validators.requiredTrue],// drop down list minlength="13" maxlength="13"
             createddate: [null, Validators.required],
             gender: [null, Validators.required], // drop down list
             selectedProvince: [null, Validators.required], // drop down list
@@ -176,7 +176,7 @@ export class CreateMemberComponent implements OnInit {
 
         const $validator = $('.card-wizard form').validate({
             rules: {
-                firstname: {
+                firstName: {
                     required: true,
                     minlength: 2
                 },
@@ -195,7 +195,8 @@ export class CreateMemberComponent implements OnInit {
                 },
                 gender: {
                     required: true,
-                    minlength: 2
+                    minlength: 2,
+                    checked: true
                 },
                 selectedProvince: {
                     required: true,
@@ -213,10 +214,9 @@ export class CreateMemberComponent implements OnInit {
                     date: true,
                     minlength: 1
                 },
-                idnumber: {
+                identityNumber: {
                     required: true,
-                    minlength: 13,
-                    invalidID: true
+                    minlength: 13
                 },
                 streetname: {
                     required: true,
@@ -235,7 +235,7 @@ export class CreateMemberComponent implements OnInit {
                     minlength: 10,
                     maxlength: 10
                 },
-                lastname: {
+                lastName: {
                     required: true,
                     minlength: 3
                 },
@@ -567,37 +567,23 @@ export class CreateMemberComponent implements OnInit {
 
     }
 
-    idNumberCheck() {
+    idNumberCheck(idnumber: string) {
         console.log('check idnumber')
 
-        if (!isNullOrUndefined(this.setmember.identitynumber)) {
-            if (this.setmember.identitynumber.length == 13) {
+        if ( !isNullOrUndefined(idnumber)) {
+            if (idnumber.length < 13 && idnumber.length > 0) {
 
-                // checking if id number is unique
-                this.memberService.getMemberbyidentitynumber(this.setmember.identitynumber)
-                    .subscribe(memberExist => {
-
-                        if (memberExist.length > 0) {
-
-                            console.log('idnumber already exist')
-                            swal({
-                                title: "Member with Id number " + this.setmember.identitynumber + " already exist",
-                                text: "Please enter another Id number",
-                                type: 'error',
-                                timer: 5000,
-                                showConfirmButton: true
-                            }).catch(swal.noop)
-
-                        }
-
-                    }, err => {
-                        console.log(err)
-                    })
-
+                this.invalidID = true
+            } else {
+                this.invalidID = false
             }
         }
 
 
+    }
+
+    idNumberValidationDisable() {
+        this.invalidID = false
     }
 
     finishCreate() {
