@@ -41,7 +41,7 @@ export class ViewPolicytypeComponent implements OnInit {
     //////Initialized variables  
 
     policytypes: Policytype[];
-    noPolicytype = true
+    noPolicytype = false
 
 
     constructor(private formBuilder: FormBuilder,
