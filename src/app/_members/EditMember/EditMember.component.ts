@@ -87,7 +87,6 @@ export class EditMemberComponent implements OnInit {
               if (result.value) {
                 this.app.loading = true
 
-                this.app.loading = true
                 //this.getmember.id, this.members[index]
                 this.memberService.updateMember(this.getmember.id, this.setmember)
                   .subscribe(member_res => {
@@ -157,6 +156,7 @@ export class EditMemberComponent implements OnInit {
             .subscribe(member_res => {
 
               console.log(member_res)
+              this.app.loading = false
 
               swal(
                 {
@@ -178,6 +178,7 @@ export class EditMemberComponent implements OnInit {
 
             }, err => {
               console.log(err)
+              this.app.loading = false
             })
 
         }

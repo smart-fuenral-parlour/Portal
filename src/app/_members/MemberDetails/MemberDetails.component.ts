@@ -173,35 +173,21 @@ export class MemberDetailsComponent implements OnInit {
                   this.noBeneficiary = true
                 }
 
-                /*
-                this.claimService.getClaimbyidmember(this.member.id)
-                .subscribe(claims_res => {
-
-                  if (claims_res.length > 0) {
-
-                    this.claims = claims_res
-                    this.noClaims = false
-
-                  } else {
-                    this.noClaims = true
-                  }
-                  this.app.loading = false
-
-                }, err => {
-                  console.log(err)
-                })
-                */
+              
 
               }, err => {
                 console.log(err)
+                this.app.loading = false
               })
 
           }, err => {
             console.log(err)
+            this.app.loading = false
           })
 
       }, err => {
         console.log(err)
+        this.app.loading = false
       })
 
       
@@ -209,8 +195,6 @@ export class MemberDetailsComponent implements OnInit {
     console.log(this.member)
 
     ///  
-
-
 
   }
 
@@ -340,7 +324,6 @@ export class MemberDetailsComponent implements OnInit {
         }
 
 
-        this.app.loading = true
         this.beneficiaryService.checkBeneficiaryIdnumber(this.setBeneficiary.identitynumber)
           .subscribe(count_res => {
 
@@ -349,6 +332,7 @@ export class MemberDetailsComponent implements OnInit {
             if (count_res.count == 0 || this.setBeneficiary.identitynumber == IDNUMBER) {
 
 
+              this.app.loading = true
               this.beneficiaryService.updateBeneficiary(id, this.setBeneficiary)
                 .subscribe(res => {
                   this.app.loading = false

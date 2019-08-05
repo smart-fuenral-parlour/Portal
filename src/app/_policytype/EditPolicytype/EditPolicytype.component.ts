@@ -63,11 +63,13 @@ export class EditPolicytypeComponent implements OnInit {
     }).then((result) => {
       if (result.value) {
 
-        console.log(this.policytype.id)
+        
+        this.app.loading = true
         this.policytypeService.updatePolicytype(this.policytype.id, this.setpolicytype)
           .subscribe(policytype_res => {
 
-            console.log(policytype_res)           
+            console.log(policytype_res)   
+            this.app.loading = false        
 
             swal({
                 title: 'Policytype Updated',
@@ -81,6 +83,7 @@ export class EditPolicytypeComponent implements OnInit {
 
           }, (err) => {
             console.log(err);
+            this.app.loading = false
 
           });
 

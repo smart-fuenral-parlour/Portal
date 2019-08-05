@@ -183,7 +183,6 @@ export class ViewMembersComponent implements OnInit, AfterViewInit {
       
                 } else {
                   this.invalidID = true;
-                  this.app.loading = false
                 } 
 
     }
@@ -243,7 +242,9 @@ export class ViewMembersComponent implements OnInit, AfterViewInit {
             confirmButtonClass: "btn btn-success",
             buttonsStyling: false
 
-          }).then((result) => window.location.reload())
+          }).then((result) => {
+            window.location.reload()
+          })
       }
     })
   }

@@ -82,6 +82,7 @@ export class ViewPolicytypeComponent implements OnInit {
     ngOnInit() {
 
         //get all policytypes
+          this.app.loading = true
         this.policytypeService.getPolicytypes()
             .subscribe(policytypes_res => {
 
@@ -95,12 +96,13 @@ export class ViewPolicytypeComponent implements OnInit {
                 } else {
                     this.noPolicytype = true
                 }
+                this.app.loading = false
 
             }, err => {
                 console.log(err);
+                this.app.loading = false
             });
 
-        this.app.loading = false
 
 
     }

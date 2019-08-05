@@ -43,11 +43,11 @@ export class EditUserComponent implements OnInit {
 
     this.roleService.getRoles()
       .subscribe(roles_res => {
+        this.app.loading = false
 
         if (roles_res.length > 0) {
           this.roles = roles_res
-          this.roles[0].name
-          this.app.loading = false
+          
         }
 
       }, err => {
@@ -127,6 +127,7 @@ export class EditUserComponent implements OnInit {
 
         }, err => {
           console.log(err)
+          this.app.loading = false
         })
     } else {
       swal({
