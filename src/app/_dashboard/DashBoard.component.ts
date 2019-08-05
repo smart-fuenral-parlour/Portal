@@ -31,56 +31,33 @@ export class DashBoardComponent implements OnInit {
   user: User
 
   constructor(private countService: CountService,
+    private app: AppComponent,
     private userService: UserService
   ) { }
 
   ngOnInit() {
 
+    this.app.loading = true
     this.countService.getmemberCount()
       .subscribe(membercount_res => {
 
-        if(!isNullOrUndefined(membercount_res)  || membercount_res.count > 0){
+        if (!isNullOrUndefined(membercount_res) || membercount_res.count > 0) {
           this.membercount = membercount_res.count
         } else {
           this.membercount = 0
         }
-        
-      }, err => {
-        console.log(err)
-      })
-
-      this.countService.getdeclinedclaimsCount()
-      .subscribe(declined_res => {
-
-        if(!isNullOrUndefined(declined_res)  || declined_res.count > 0){
-          this.declinedclaims = declined_res.count
-        } else {
-          this.declinedclaims = 0
-        }
+        this.app.loading = false
 
       }, err => {
         console.log(err)
+        this.app.loading = false
       })
 
-      
-      this.countService.getpendingclaimsCount()
-      .subscribe(pending_res => {
 
-        if(!isNullOrUndefined(pending_res)  || pending_res.count > 0){
-          this.pendingclaims = pending_res.count
-        } else {
-          this.pendingclaims = 0
-        }
-
-      }, err => {
-        console.log(err)
-      })
-
-      
-      this.countService.getapprovedclaimsCount()
+    this.countService.getapprovedclaimsCount()
       .subscribe(approved_res => {
 
-        if(!isNullOrUndefined(approved_res)  || approved_res.count > 0){
+        if (!isNullOrUndefined(approved_res) || approved_res.count > 0) {
           this.approvedclaims = approved_res.count
         } else {
           this.approvedclaims = 0
@@ -88,6 +65,7 @@ export class DashBoardComponent implements OnInit {
 
       }, err => {
         console.log(err)
+        this.app.loading = false
       })
 
   }
