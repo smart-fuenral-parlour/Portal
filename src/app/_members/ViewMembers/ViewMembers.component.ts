@@ -1,4 +1,4 @@
-import { Component, OnInit, AfterViewInit } from '@angular/core';
+import { Component, OnInit, AfterViewInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 
 ///////////////////// SERVICE CALLS  ///////////////////////////////////////////
@@ -12,6 +12,7 @@ import { User } from 'src/app/services/user/user'
 import swal from 'sweetalert2';
 import { isNullOrUndefined } from 'util';
 import { AppComponent } from 'src/app/app.component'
+import { MatPaginator } from '@angular/material'
 
 declare var $: any;
 
@@ -30,9 +31,9 @@ declare interface DataTable {
 })
 export class ViewMembersComponent implements OnInit, AfterViewInit {
 
+  @ViewChild(MatPaginator) paginator: MatPaginator
 
   public dataTable: DataTable;
-  
   members: Member[]
 
   user: User
@@ -135,7 +136,7 @@ export class ViewMembersComponent implements OnInit, AfterViewInit {
                       console.log('Search members By Surname')
                       
                       this.members = members_res
-      
+                      
                       
                       this.notFound = false
                       this.searchResult = true
@@ -166,7 +167,8 @@ export class ViewMembersComponent implements OnInit, AfterViewInit {
 
                         console.log('Search members by Id number')
 
-                        this.members = members_res      
+                        this.members = members_res   
+
                         this.notFound = false
                         this.searchResult = true
       
@@ -273,4 +275,8 @@ export class ViewMembersComponent implements OnInit, AfterViewInit {
 
 }
 
-
+/**
+ *         this.dataTable = {
+ * 
+         };
+ */
