@@ -145,15 +145,13 @@
 
 
         <div class="row" *ngIf="noClaims">
-          <div class="col-12 ml-auto mr-auto">
-            <div class="card">
-              <div class="card-body text-center">
-                <h5><b>Member(s) Not Found.</b> <span class="text-info">
-                    <h6>Try searching by using a different category</h6>
-                  </span></h5>
+            <div class="col-12 ml-auto mr-auto">
+                <div class="card" style="background-color: lightgray">
+                  <div class="card-body text-center card-description">
+                    <h3><b>No claims created for this member</b></h3>
+                  </div>
+                </div>
               </div>
-            </div>
-          </div>
         </div>
         <!--   *ngIf="claimTable"   -->
         <div class="row" *ngIf="!noClaims">

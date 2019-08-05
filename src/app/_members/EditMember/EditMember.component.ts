@@ -12,8 +12,8 @@ import { Member } from 'src/app/services/member/member'
 import swal from 'sweetalert2';
 import { AppComponent } from 'src/app/app.component';
 import { JsonPipe } from '@angular/common';
-import { isNullOrUndefined } from 'util';
-import { count } from 'rxjs/operators';
+import { isNullOrUndefined, isUndefined } from 'util';
+import { count, isEmpty } from 'rxjs/operators';
 
 declare const $: any;
 @Component({
@@ -59,8 +59,9 @@ export class EditMemberComponent implements OnInit {
   updateMember() {
 
 
-    console.log(this.setmember)
+    this.setmember.id = this.getmember.id
 
+    console.log(this.setmember)
     if (!isNullOrUndefined(this.setmember.email) && this.setmember.email != '') {
 
       // validating duplicated email
@@ -158,23 +159,41 @@ export class EditMemberComponent implements OnInit {
               console.log(member_res)
               this.app.loading = false
 
-              swal(
-                {
-                  title: 'Member Updated',
-                  type: 'success',
-                  confirmButtonClass: "btn btn-success",
-                  buttonsStyling: false
+              if (isNullOrUndefined(member_res)) {
 
-                }).then((result) => {
+                swal(
+                  {
+                    title: 'Unsuccesful',
+                    text: "failed to update member please try again",
+                    type: 'error',
+                    confirmButtonClass: "btn btn-success",
+                    buttonsStyling: false
 
-                  if (sessionStorage.getItem('fromMemberDetails') == 'true') {
-                    //  this.member = JSON.parse(localStorage.getItem('viewdetails'))
-                    localStorage.setItem('viewdetails', JSON.stringify(member_res));
-                    this.router.navigate(['/members/viewmemberdetails'])
-                  } else {
-                    this.router.navigate(['/members/searchmember'])
-                  }
-                })
+                  }).then((result) => {
+
+                    document.location.reload()
+                  })
+              } else {
+
+                swal(
+                  {
+                    title: 'Member Updated',
+                    type: 'success',
+                    confirmButtonClass: "btn btn-success",
+                    buttonsStyling: false
+
+                  }).then((result) => {
+
+                    if (sessionStorage.getItem('fromMemberDetails') == 'true') {
+                      //  this.member = JSON.parse(localStorage.getItem('viewdetails'))
+                      localStorage.setItem('viewdetails', JSON.stringify(member_res));
+                      this.router.navigate(['/members/viewmemberdetails'])
+                    } else {
+                      this.router.navigate(['/members/searchmember'])
+                    }
+                  })
+              }
+
 
             }, err => {
               console.log(err)
@@ -185,8 +204,6 @@ export class EditMemberComponent implements OnInit {
       })
 
     }
-
-
 
   }
 

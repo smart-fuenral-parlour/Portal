@@ -12,6 +12,7 @@ import { PolicytypeService } from '../../services/policytype/policytype.service'
 //////////////////// MODEL/ CLASS CALLS ///////////////////////////////////////
 import { Policytype } from '../../services/policytype/policytype';
 import { User } from 'src/app/services/user/user'
+import { isNullOrUndefined } from 'util';
 
 ///////////////////////////////////////////////////////////////////////////////
 
@@ -71,7 +72,24 @@ export class EditPolicytypeComponent implements OnInit {
             console.log(policytype_res)   
             this.app.loading = false        
 
-            swal({
+            
+            if (isNullOrUndefined(policytype_res)) {
+
+              swal(
+                {
+                  title: 'Unsuccesful',
+                  text: "failed to update policy type please try again",
+                  type: 'error',
+                  confirmButtonClass: "btn btn-success",
+                  buttonsStyling: false
+
+                }).then((result) => {
+
+                  document.location.reload()
+                })
+            } else {
+       
+              swal({
                 title: 'Policytype Updated',
                 type: 'success',
                 confirmButtonClass: "btn btn-success",
@@ -80,6 +98,8 @@ export class EditPolicytypeComponent implements OnInit {
               }).then((result) => { 
                 this.router.navigate(['/policytype/viewpolicytype']) 
               })
+            }
+
 
           }, (err) => {
             console.log(err);

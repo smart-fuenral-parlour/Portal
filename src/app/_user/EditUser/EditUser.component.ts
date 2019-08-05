@@ -91,17 +91,33 @@ export class EditUserComponent implements OnInit {
 
                     this.app.loading = false
                     console.log(res)
+                    if (isNullOrUndefined(res)) {
 
-                    swal(
-                      {
-                        title: 'User Updated',
-                        type: 'success',
-                        confirmButtonClass: "btn btn-success",
-                        buttonsStyling: false
-
-                      }).then((result) => {
-                        this.router.navigate(['/user/viewuser'])
-                      })
+                      swal(
+                        {
+                          title: 'Unsuccesful',
+                          text: "failed to update user please try again",
+                          type: 'error',
+                          confirmButtonClass: "btn btn-success",
+                          buttonsStyling: false
+      
+                        }).then((result) => {
+      
+                          document.location.reload()
+                        })
+                    } else {
+               
+                      swal(
+                        {
+                          title: 'User Updated',
+                          type: 'success',
+                          confirmButtonClass: "btn btn-success",
+                          buttonsStyling: false
+  
+                        }).then((result) => {
+                          this.router.navigate(['/user/viewuser'])
+                        })
+                    }
 
 
                   }, (err) => {
@@ -150,16 +166,35 @@ export class EditUserComponent implements OnInit {
               console.log(res)
               this.app.loading = false
 
-              swal(
-                {
-                  title: 'User Updated',
-                  type: 'success',
-                  confirmButtonClass: "btn btn-success",
-                  buttonsStyling: false
+              if (isNullOrUndefined(res)) {
 
-                }).then((result) => {
-                  this.router.navigate(['/user/viewuser'])
-                })
+                swal(
+                  {
+                    title: 'Unsuccesful',
+                    text: "failed to update user please try again",
+                    type: 'error',
+                    confirmButtonClass: "btn btn-success",
+                    buttonsStyling: false
+
+                  }).then((result) => {
+
+                    document.location.reload()
+                  })
+              } else {
+         
+ 
+                swal(
+                  {
+                    title: 'User Updated',
+                    type: 'success',
+                    confirmButtonClass: "btn btn-success",
+                    buttonsStyling: false
+  
+                  }).then((result) => {
+                    this.router.navigate(['/user/viewuser'])
+                  })
+              }
+
 
 
             }, (err) => {

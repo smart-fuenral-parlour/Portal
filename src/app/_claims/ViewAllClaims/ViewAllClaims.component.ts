@@ -71,6 +71,7 @@ export class ViewAllClaimsComponent implements OnInit {
 
       }, err => {
         console.log(err)
+        this.app.loading = false
       })
 
 

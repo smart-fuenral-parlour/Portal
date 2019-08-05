@@ -18,6 +18,7 @@ const pendingclaimsUrl = "http://greenlinks1.dedicated.co.za:3002/api/pendingcla
  */
 
 const membercountUrl = "http://greenlinks1.dedicated.co.za:3000/api/Members/count";
+const claimscountUrl = "http://greenlinks1.dedicated.co.za:3000/api/Claims/count";
 const declinedclaimsUrl = "http://greenlinks1.dedicated.co.za:3000/api/Claims/count?where=%7B%22idclaimstatus%22%3A%203%7D";
 const approvedclaimsUrl = "http://greenlinks1.dedicated.co.za:3000/api/Claims/count?where=%7B%22idclaimstatus%22%3A%202%7D";
 const pendingclaimsUrl = "http://greenlinks1.dedicated.co.za:3000/api/Claims/count?where=%7B%22idclaimstatus%22%3A%201%7D";
@@ -50,7 +51,13 @@ export class CountService {
     );
   }
 
-
+  getclaimsCount(): Observable<Count> {
+    const url = `${claimscountUrl}`;
+    return this.http.get<Count>(url).pipe(
+      tap(_ => console.log(`fetched count id=`)),
+      catchError(this.handleError<Count>(`getclaimsCount id=`))
+    );
+  }
   
   getpendingclaimsCount(): Observable<Count> {
     const url = `${pendingclaimsUrl}`;

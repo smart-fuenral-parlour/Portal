@@ -148,31 +148,32 @@ export class MemberDetailsComponent implements OnInit {
 
                   this.beneficiaries = beneficiary_res
                   this.noBeneficiary = false
-                  
-                  this.claimService.getClaimbyidmember(this.member.id)
-                    .subscribe(claims_res => {
-
-                      this.app.loading = false
-                      if(claims_res.length > 0){
-
-                        this.claims = claims_res
-                        this.noClaims = false
-                        
-
-                      } else {
-                        this.noClaims = true
-                      }
-
-                    }, err => {
-                      this.app.loading = false
-                      console.log(err)
-
-                    })
+ 
 
                 } else {
                   this.noBeneficiary = true
                 }
 
+                                 
+                this.claimService.getClaimbyidmember(this.member.id)
+                .subscribe(claims_res => {
+
+                  this.app.loading = false
+                  if(claims_res.length > 0){
+
+                    this.claims = claims_res
+                    this.noClaims = false
+                    
+
+                  } else {
+                    this.noClaims = true
+                  }
+
+                }, err => {
+                  this.app.loading = false
+                  console.log(err)
+
+                })
               
 
               }, err => {
@@ -490,7 +491,7 @@ export class MemberDetailsComponent implements OnInit {
                 } else {
                   swal({
                     title: "Beneficiary already exist",
-                    text: "Please try again",
+                    text: "Please enter a new one",
                     type: 'error',
                     timer: 5000,
                     showConfirmButton: true

@@ -28,6 +28,7 @@ export class DashBoardComponent implements OnInit {
   approvedclaims = 0
   declinedclaims = 0
   pendingclaims = 0
+  claimscount = 0
   user: User
 
   constructor(private countService: CountService,
@@ -43,9 +44,8 @@ export class DashBoardComponent implements OnInit {
 
         if (!isNullOrUndefined(membercount_res) || membercount_res.count > 0) {
           this.membercount = membercount_res.count
-        } else {
-          this.membercount = 0
         }
+
         this.app.loading = false
 
       }, err => {
@@ -53,14 +53,11 @@ export class DashBoardComponent implements OnInit {
         this.app.loading = false
       })
 
+    this.countService.getclaimsCount()
+      .subscribe(claimsCount_res => {
 
-    this.countService.getapprovedclaimsCount()
-      .subscribe(approved_res => {
-
-        if (!isNullOrUndefined(approved_res) || approved_res.count > 0) {
-          this.approvedclaims = approved_res.count
-        } else {
-          this.approvedclaims = 0
+        if (!isNullOrUndefined(claimsCount_res) || claimsCount_res.count > 0) {
+          this.claimscount = claimsCount_res.count
         }
 
       }, err => {

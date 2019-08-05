@@ -274,7 +274,6 @@ export class SidebarComponent implements OnInit {
     }
 
     nextPage() {
-        this.app.loading = true
     }
 
 }

@@ -64,6 +64,7 @@ export class ViewMembersComponent implements OnInit, AfterViewInit {
 
 
   ngOnInit() {
+    
     sessionStorage.clear()
   }
 

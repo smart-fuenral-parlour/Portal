@@ -67,10 +67,12 @@ export class CreateClaimComponent implements OnInit {
 
       if (this.selectedSearchType == 'Surname') {
 
+        this.app.loading = true
         this.memberService.getMemberbysurname(searchInput)
           .subscribe(member_res => {
 
 
+            this.app.loading = false
             if (member_res.length > 0) { 
 
               this.members = member_res            
@@ -88,14 +90,17 @@ export class CreateClaimComponent implements OnInit {
             }
           }, err => {
             console.log(err)
+            this.app.loading = false
           })
 
       } else
         if (searchInput.length == 13) {
+          this.app.loading = true
           this.memberService.getMemberbyidentitynumber(searchInput)
             .subscribe(members_res => {
               
 
+              this.app.loading = false
               if (members_res.length > 0) { //  if (this.members.length > 0)
                 
                 this.members = members_res
@@ -114,6 +119,7 @@ export class CreateClaimComponent implements OnInit {
 
             }, err => {
               console.log(err)
+              this.app.loading = false
             })
 
         } else {
