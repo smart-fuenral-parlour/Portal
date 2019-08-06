@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnChanges } from '@angular/core';
 import { TableData } from 'src/app/md/md-table/md-table.component';
 import { LegendItem, ChartType } from 'src/app/md/md-chart/md-chart.component';
 import { AppComponent } from 'src/app/app.component'
@@ -22,7 +22,7 @@ declare const $: any;
   templateUrl: './DashBoard.component.html',
   styleUrls: ['./DashBoard.component.css']
 })
-export class DashBoardComponent implements OnInit {
+export class DashBoardComponent implements OnInit, OnChanges{
 
   membercount = 0
   approvedclaims = 0
@@ -35,6 +35,13 @@ export class DashBoardComponent implements OnInit {
     private app: AppComponent,
     private userService: UserService
   ) { }
+
+  ngOnChanges(): void {
+    //Called before any other lifecycle hook. Use it to inject dependencies, but avoid any serious work here.
+    //Add '${implements OnChanges}' to the class.
+    
+    this.app.loading = false
+  }
 
   ngOnInit() {
 
@@ -67,7 +74,7 @@ export class DashBoardComponent implements OnInit {
 
   }
 
-
+  
 
 }
 

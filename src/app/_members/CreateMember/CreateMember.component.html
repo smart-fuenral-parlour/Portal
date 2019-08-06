@@ -80,7 +80,7 @@
                             <mat-form-field class="example-full-width has-label"
                               [ngClass]="displayFieldCss(type, 'lastName')">
                               <input type="text" name="lastName" [(ngModel)]="setmember.surname" matInput
-                                placeholder="last Name" formControlName="lastName" >
+                                placeholder="last Name" formControlName="lastName">
                             </mat-form-field>
                           </div>
                         </div>
@@ -96,8 +96,8 @@
                           <mat-form-field class="example-full-width has-label"
                             [ngClass]="displayFieldCss(type, 'identityNumber')">
                             <input type="text" name="identityNumber" matInput [(ngModel)]="setmember.identitynumber"
-                              (blur)="idNumberCheck(setmember.identitynumber)" (focus)="idNumberValidationDisable()"  placeholder="ID Number" formControlName="identityNumber"
-                              minlength="13" maxlength="13"
+                              (blur)="idNumberCheck(setmember.identitynumber)" (focus)="idNumberValidationDisable()"
+                              placeholder="ID Number" formControlName="identityNumber" minlength="13" maxlength="13"
                               onkeypress="return event.charCode >= 48 && event.charCode <= 57">
                           </mat-form-field>
 
@@ -119,8 +119,9 @@
                           </span>
                           <mat-form-field class="example-full-width has-label"
                             [ngClass]="displayFieldCss(type, 'gender')">
-                            <mat-select placeholder="Select Gender" name="gender"  formControlName="gender"
-                              [(ngModel)]="setmember.gender" required > <!-- id="select" class="required"  -->
+                            <mat-select placeholder="Select Gender" name="gender" formControlName="gender"
+                              [(ngModel)]="setmember.gender" required>
+                              <!-- id="select" class="required"  -->
                               <mat-option *ngFor="let Gender of Genders" [value]="Gender.value ">
                                 {{ Gender.value }}
                               </mat-option>
@@ -350,8 +351,8 @@
                           </div>
                           <mat-form-field class="example-full-width" [ngClass]="displayFieldCss(type, 'phone')">
                             <input matInput type="text" minlength="10" maxlength="10" numbersOnly
-                              placeholder="Phone No." name="phone" matInput id="contactnumber"
-                              formControlName="phone" [(ngModel)]="setmember.contactnumber"
+                              placeholder="Phone No." name="phone" matInput id="contactnumber" formControlName="phone"
+                              [(ngModel)]="setmember.contactnumber"
                               onkeypress="return event.charCode >= 48 && event.charCode <= 57">
                           </mat-form-field>
                         </div>
@@ -447,8 +448,9 @@
                         <div class="col-sm-12 col-sm-offset-1 checkbox-radios">
                           <div class="form-check">
                             <label class="form-check-label">
-                              <input class="form-check-input" type="checkbox" name="checkTerms"
-                                id="checkTerms" value="" onclick="{ if(finish.disabled) {finish.disabled = false} else {finish.disabled = true} }"  (click)="tickToAgree()"> I
+                              <input class="form-check-input" type="checkbox" name="checkTerms" id="checkTerms" value=""
+                                onclick="{ if(finish.disabled) {finish.disabled = false} else {finish.disabled = true} }">
+                              I
                               agree to the Terms of Service
                               <span class="form-check-sign">
                                 <span class="check"></span>
@@ -472,9 +474,9 @@
                     value="Previous">
                 </div>
                 <div class="ml-auto">
-                  <input type="button" class="btn btn-next btn-fill btn-info btn-wd"  name="next" value="Next">
-                  <input type="button" class="btn btn-finish btn-fill btn-success btn-wd"  disabled id="finish" name="finish"
-                    (click)="finishCreate()" value="Finish" style="display: none;">
+                  <input type="button" class="btn btn-next btn-fill btn-info btn-wd" name="next" value="Next">
+                  <input type="button" class="btn btn-finish btn-fill btn-success btn-wd" disabled id="finish"
+                    name="finish" (click)="finishCreate()" value="Finish" style="display: none;">
                 </div>
                 <div class="clearfix"></div>
               </div>

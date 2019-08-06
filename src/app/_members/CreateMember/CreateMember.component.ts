@@ -76,7 +76,11 @@ export class CreateMemberComponent implements OnInit {
     unhideCheckBox = false
     unhideBeneficiaryForm = false
     limitReached = false
-    agree = true
+
+    // validate null or empty drop down values
+    nullPolicytype = false
+    nullGender = false
+    nullProvince = false
 
     constructor(private formBuilder: FormBuilder,
         private memberService: MemberService,
@@ -545,14 +549,29 @@ export class CreateMemberComponent implements OnInit {
 
     }
 
-    tickToAgree() {
+    checkDropdownOnNext() {
 
-        if (this.agree) {
-            this.agree = false
+        if( isNullOrUndefined(this.setmember.gender) ){
+            this.nullGender = true
+      
+            if( isNullOrUndefined(this.setmember.gender) ){
+                this.nullProvince = true
+          
+                if( isNullOrUndefined(this.setmember.gender) ){
+                    this.nullPolicytype = true              
+        
+                } else {
+                    this.nullPolicytype = false
+                }
+    
+            } else {
+                this.nullProvince = false
+            }
+
         } else {
-            this.agree = true
-
+            this.nullGender = false
         }
+
     }
 
     idNumberCheck(idnumber: string) {
