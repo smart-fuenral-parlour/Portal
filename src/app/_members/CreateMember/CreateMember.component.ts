@@ -76,6 +76,7 @@ export class CreateMemberComponent implements OnInit {
     unhideCheckBox = false
     unhideBeneficiaryForm = false
     limitReached = false
+    agree = true
 
     constructor(private formBuilder: FormBuilder,
         private memberService: MemberService,
@@ -170,7 +171,7 @@ export class CreateMemberComponent implements OnInit {
         // Code for the Validator  beneficiaryName
 
         const $validator = $('.card-wizard form').validate({
-            rules: {
+          /*  rules: {
                 firstName: {
                     required: true,
                     minlength: 2
@@ -231,7 +232,7 @@ export class CreateMemberComponent implements OnInit {
                     minlength: 3,
                 }
             },
-
+*/
             highlight: function (element) {
                 $(element).closest('.form-group').removeClass('has-success').addClass('has-danger');
             },
@@ -546,18 +547,18 @@ export class CreateMemberComponent implements OnInit {
 
     tickToAgree() {
 
-        let finish = document.querySelector('.btn-finish')
-        let checkbox = document.querySelector('.check-agree')
+        if (this.agree) {
+            this.agree = false
+        } else {
+            this.agree = true
 
-        console.log(finish)
-        console.log(checkbox)
-
+        }
     }
 
     idNumberCheck(idnumber: string) {
         console.log('check idnumber')
 
-        if ( !isNullOrUndefined(idnumber)) {
+        if (!isNullOrUndefined(idnumber)) {
             if (idnumber.length < 13 && idnumber.length > 0) {
 
                 this.invalidID = true
