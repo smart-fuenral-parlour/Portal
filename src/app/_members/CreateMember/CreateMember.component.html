@@ -96,8 +96,9 @@
                           <mat-form-field class="example-full-width has-label"
                             [ngClass]="displayFieldCss(type, 'identityNumber')">
                             <input type="text" name="identityNumber" matInput [(ngModel)]="setmember.identitynumber"
-                              (blur)="idNumberCheck(setmember.identitynumber)" (focus)="idNumberValidationDisable()"
-                              placeholder="ID Number" formControlName="identityNumber" minlength="13" maxlength="13"
+                              formControlName="identityNumber" minlength="13" maxlength="13"
+                              (blur)="idNumberCheckLength(setmember.identitynumber)" (keyup)="idNumberCheckDuplicate()"
+                              (focus)="idNumberValidationDisable()" placeholder="ID Number"
                               onkeypress="return event.charCode >= 48 && event.charCode <= 57">
                           </mat-form-field>
 
@@ -226,7 +227,7 @@
 
                       <div class=" row col-12">
 
-                        <div class="col-8">
+                        <div class="col-8 ">
 
                           <mat-form-field class="example-full-width has-label"
                             [ngClass]="displayFieldCss(type, 'selectedPolicyType')">
@@ -267,14 +268,15 @@
 
                       <div class="row" style="margin-top: 0%" *ngIf="unhideBeneficiaryForm">
 
-                        <div class="col-md-12">
+                        <div>
                           <div formGroupName="BeneficiaryGroup" class="card" id="cardit">
                             <div formArrayName="beneficiaryArray" class="card-body text-center" style="padding: 0%">
 
                               <div class="input-group form-control-lg"
                                 *ngFor="let beneficiary of BeneficiaryForm; let i = index">
 
-                                <div class="col-4 input-group-prepend">
+
+                                <div class="col-3 input-group-prepend">
                                   <span class="input-group-text">
                                     <i class="material-icons">face</i>
                                   </span>
@@ -294,7 +296,7 @@
                                   </mat-form-field>
                                 </div>
 
-                                <div class="col-5 input-group-prepend">
+                                <div class="col-4 input-group-prepend">
                                   <span class="input-group-text">
                                     <i class="material-icons">perm_identity</i>
                                   </span>
@@ -382,6 +384,10 @@
                         <h5 class="info-text"> CONTRACT INFO </h5>
                       </div>
 
+                      <div class="row stats ">
+                        <i class="material-icons text-info">info_outline</i>please make sure the information below is
+                        correct before finishing
+                      </div>
                       <div class="row ">
 
                         <div class="col-md-12">

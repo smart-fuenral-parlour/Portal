@@ -130,7 +130,7 @@ export class CreateMemberComponent implements OnInit {
 
 
     ngOnInit() {
-        this.app.loading = true
+        // this.app.loading = true
         this.user = JSON.parse(localStorage.getItem('user')) // getting user details
         this.policytypeDetails.premium = '0' // prevents the currency pipe from breaking initialize premium
 
@@ -174,8 +174,9 @@ export class CreateMemberComponent implements OnInit {
         });
         // Code for the Validator  beneficiaryName
 
+
         const $validator = $('.card-wizard form').validate({
-          /*  rules: {
+            rules: {
                 firstName: {
                     required: true,
                     minlength: 2
@@ -236,7 +237,7 @@ export class CreateMemberComponent implements OnInit {
                     minlength: 3,
                 }
             },
-*/
+
             highlight: function (element) {
                 $(element).closest('.form-group').removeClass('has-success').addClass('has-danger');
             },
@@ -462,9 +463,12 @@ export class CreateMemberComponent implements OnInit {
 
     addBeneficiary() {
 
-        console.log(this.maxNumberAllowed)
-
+        console.log(this.beneficiaryCount)
+        /**
+         * this.beneficiaryCount < this.maxNumberAllowed &&
+         */
         if (this.beneficiaryCount <= this.maxNumberAllowed && this.beneficiaryCount > 0) {
+            console.log('1')
 
             this.limitReached = false
 
@@ -480,9 +484,26 @@ export class CreateMemberComponent implements OnInit {
             this.beneficiaryCount = this.maxNumberAllowed - this.BeneficiaryForm.length
             this.beneficiaryDetails = this.BeneficiaryForm.length == 1 ? ('Member has ' + this.BeneficiaryForm.length + ' beneficiary') : ('Member has ' + this.BeneficiaryForm.length + ' beneficiries')
 
-        } else {
-            this.limitReached = true
-        }
+        } else
+            if (this.BeneficiaryForm.length == 0 || this.BeneficiaryForm.length == 1) {
+                this.limitReached = false
+                console.log('2')
+
+                this.BeneficiaryForm.push(this.formBuilder.control(
+                    this.formBuilder.group({
+                        beneficiaryName: [null, Validators.required],
+                        beneficiarySurname: [null, Validators.required],
+                        beneficiaryID: [null, Validators.required],
+                    })
+
+                ))
+
+                this.beneficiaryCount = this.maxNumberAllowed - this.BeneficiaryForm.length
+                this.beneficiaryDetails = ('Member has ' + this.BeneficiaryForm.length + ' beneficiary')
+
+            } else {
+                this.limitReached = true
+            }
 
 
 
@@ -492,12 +513,15 @@ export class CreateMemberComponent implements OnInit {
     removeBeneficiary(index): void {
         (((this.type.get('BeneficiaryGroup') as FormGroup).get('beneficiaryArray')) as FormArray).removeAt(index)
 
-        if (this.BeneficiaryForm.length >= 0) {
+        if (this.BeneficiaryForm.length > 0) {
 
             this.beneficiaryCount = this.beneficiaryCount + 1
             this.beneficiaryDetails = this.BeneficiaryForm.length == 1 ? ('Member has ' + this.BeneficiaryForm.length + ' beneficiary') : ('Member has ' + this.BeneficiaryForm.length + ' beneficiries')
 
-        }
+        } else
+            if (this.BeneficiaryForm.length == 0) {
+                this.beneficiaryCount = this.maxNumberAllowed
+            }
 
         this.limitReached = false
     }
@@ -551,19 +575,19 @@ export class CreateMemberComponent implements OnInit {
 
     checkDropdownOnNext() {
 
-        if( isNullOrUndefined(this.setmember.gender) ){
+        if (isNullOrUndefined(this.setmember.gender)) {
             this.nullGender = true
-      
-            if( isNullOrUndefined(this.setmember.gender) ){
+
+            if (isNullOrUndefined(this.setmember.gender)) {
                 this.nullProvince = true
-          
-                if( isNullOrUndefined(this.setmember.gender) ){
-                    this.nullPolicytype = true              
-        
+
+                if (isNullOrUndefined(this.setmember.gender)) {
+                    this.nullPolicytype = true
+
                 } else {
                     this.nullPolicytype = false
                 }
-    
+
             } else {
                 this.nullProvince = false
             }
@@ -574,7 +598,41 @@ export class CreateMemberComponent implements OnInit {
 
     }
 
-    idNumberCheck(idnumber: string) {
+
+    idNumberCheckDuplicate() {
+        console.log('button clicked')
+
+        if (!isNullOrUndefined(this.setmember.identitynumber)) {
+            if (this.setmember.identitynumber.length == 13) {
+
+                // checking if id number is unique
+                this.memberService.getMemberbyidentitynumber(this.setmember.identitynumber)
+                    .subscribe(idnumber_res => {
+
+                        if (idnumber_res.length > 0) {
+                            console.log('idnumber already exist')
+
+                            swal({
+                                title: "Member with Id number " + this.setmember.identitynumber + " already exist",
+                                text: "Please enter another Id number",
+                                type: 'error',
+                                timer: 5000,
+                                showConfirmButton: true
+                            }).catch(swal.noop)
+                        }
+
+                    }, err => {
+                        console.log(err)
+                    })
+
+            }
+        }
+
+
+    }
+
+
+    idNumberCheckLength(idnumber: string) {
         console.log('check idnumber')
 
         if (!isNullOrUndefined(idnumber)) {
@@ -591,6 +649,37 @@ export class CreateMemberComponent implements OnInit {
 
     idNumberValidationDisable() {
         this.invalidID = false
+    }
+
+    checkDuplicateBeneficiary(idnumber) {
+
+        console.log(name)
+        if (!isNullOrUndefined(idnumber)) {
+
+            if (idnumber.value.length == 13) {
+
+
+                this.beneficiaryService.checkBeneficiaryIdnumber(idnumber)
+                    .subscribe(count_res => {
+
+                        console.log(count_res)
+                        if (count_res.count > 0) {
+                            swal({
+                                title: "Beneficiary already exist",
+                                text: "Please enter a new one",
+                                type: 'error',
+                                timer: 5000,
+                                showConfirmButton: true
+                            }).catch(swal.noop)
+                        }
+
+                    }, err => {
+                        console.log(err)
+                    })
+
+            }
+        }
+
     }
 
     finishCreate() {
