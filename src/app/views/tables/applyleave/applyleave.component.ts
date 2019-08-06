@@ -104,7 +104,7 @@ export class ApplyleaveComponent implements OnInit {
 
   }
 
-
+  //Business day count for number of business days between two days
   getBusinessDatesCount(startDate: any, endDate: any) {
     var count = 0;
     var curDate = startDate;
@@ -119,16 +119,11 @@ export class ApplyleaveComponent implements OnInit {
   }
 
   calcLeaveDays() {
-
-    let d1 = $('#startdate').val();
-    let d2 = $('#enddate').val();
-
-
-    let date1 = new Date(d1);
-    let date2 = new Date(d2);
-
-    $('#calculated').val(this.getBusinessDatesCount(date1, date2));
-
-
+    //get startdate
+    let startDate = new Date($('#startdate').val());
+    //get enddate
+    let endDate = new Date($('#enddate').val());
+    //function calculate and allocate business days between the two dates
+    $('#calculated').val(this.getBusinessDatesCount(startDate, endDate));
   }
 }

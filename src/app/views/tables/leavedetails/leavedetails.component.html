@@ -141,7 +141,7 @@
                                                    
                                                     
                                                         <button type="button" rel="tooltip" data-toggle="modal" data-target="#exampleModal" id="update"
-                                                          title="Update leave details" class="btn btn-warning">
+                                                          title="Update leave details" class="btn btn-warning" (click)="onSelect(leave);">
                                                           <i class="material-icons">update</i>
                                                         </button>
                                                     
@@ -222,7 +222,7 @@
 
                                       
                                                         <button type="button" rel="tooltip" data-toggle="modal" data-target="#exampleModal" id="update"
-                                                          title="Update leave details" class="btn btn-warning">
+                                                          title="Update leave details" class="btn btn-warning" (click)="onSelect(leave);">
                                                           <i class="material-icons">update</i>
                                                         </button>
                                                   
@@ -444,7 +444,7 @@
             <div class="form-group row"> <label for="startdate" class="col-sm-3 form-control-label  text-dark">Start Date :
                 </label>
                 <div class="col-sm-6"> <input type="date" id="startdate" class="form-control  text-dark"
-                        (change)="calcLeaveDays()" value="{{leave.startdate}}">
+                        (change)="calcLeaveDays()">
                 </div>
             </div>
             <div class="form-group row"> <label for="enddate" class="col-sm-3 form-control-label  text-dark">End Date :
@@ -465,7 +465,7 @@
                     Leave :
                 </label>
     
-                <div class="col-sm-6"> <textarea id="reason" class="form-control" placeholder="" rows="6" >{{editLeaveDetails.reason}}</textarea>
+                <div class="col-sm-6"> <textarea id="reason" class="form-control" placeholder="" rows="6"  >{{editLeaveDetails.reason}}</textarea>
                 </div>
             </div>
             <div class="form-group row"> <label for="leaveDay" class="col-sm-2 form-control-label  text-dark">
