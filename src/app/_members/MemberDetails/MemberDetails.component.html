@@ -15,8 +15,9 @@
 
 
 
+  <span>Date Joined: {{ member.createddate }} </span>
+  <br />  
   <span>Created By: {{ member.createdby | titlecase}} </span>
-  <br />
   <ul class="nav nav-pills nav-pills-primary nav-pills-icons " role="tablist">
     <li class="nav-item">
       <a class="nav-link active" data-toggle="tab" href="#details" role="tablist">
@@ -130,7 +131,7 @@
         </div>
 
         <div>
-          <button mat-raised-button type="button" (click)="createBeneficiary()" mat-raised-button
+          <button mat-raised-button *ngIf="allowBeneficiary" type="button" (click)="createBeneficiary()" mat-raised-button
             class="btn btn-primary btn-sm pull-right" id="add" name="add"><i class="material-icons"
               [class.active]="i == selectedClaim">add</i>Add
             Benefetiary</button>
