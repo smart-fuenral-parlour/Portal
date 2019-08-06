@@ -125,13 +125,10 @@
                                                     <td>{{leave.status}}</td>
                                                     <td>{{leave.reason}}</td>
 
-
-                                                    <a href="#/forms/editleavedetails">
-                                                      <button type="button" rel="tooltip" (click)="Onclick();" id="update"
-                                                        title="Update leave details" class="btn btn-warning">
+                                                      <button type="button" rel="tooltip"  id="update"
+                                                        title="Update leave details" class="btn btn-warning"  data-toggle="modal" data-target="#exampleModal" (click)="onSelect(leave);">
                                                         <i class="material-icons">update</i>
                                                       </button>
-                                                    </a>
                                                 </tr>
                                               
                                             </tbody>
@@ -207,12 +204,11 @@
                                                     <td>{{leave.status}}</td>
                                                     <td>{{leave.reason}}</td>
 
-                                                    <a href="#/forms/editleavedetails">
-                                                      <button type="button" rel="tooltip" (click)="Onclick();" id="update"
-                                                        title="Update leave details" class="btn btn-warning">
+                                                      <button type="button" rel="tooltip"  data-toggle="modal" data-target="#exampleModal" id="update"
+                                                        title="Update leave details" class="btn btn-warning" (click)="onSelect(leave);">
                                                         <i class="material-icons">update</i>
                                                       </button>
-                                                    </a>
+                                            
                                                 </tr>
                                               
                                             </tbody>
@@ -288,12 +284,14 @@
                                                         <td>{{leave.status}}</td>
                                                         <td>{{leave.reason}}</td>
     
-                                                        <a href="#/forms/editleavedetails">
-                                                          <button type="button" rel="tooltip" (click)="Onclick();" id="update"
-                                                            title="Update leave details" class="btn btn-warning">
+                                                      
+                                                        
+                                                          <button type="button" rel="tooltip"  data-toggle="modal" data-target="#exampleModal" id="update"
+                                                            title="Update leave details" class="btn btn-warning" (click)="onSelect(leave);">
                                                             <i class="material-icons">update</i>
                                                           </button>
-                                                        </a>
+                                                       
+                                                          
                                                     </tr>
                                                   
                                                 </tbody>
@@ -371,12 +369,12 @@
                                                             <td>{{leave.status}}</td>
                                                             <td>{{leave.reason}}</td>
 
-                                                            <a href="#/forms/editleavedetails">
-                                                              <button type="button" rel="tooltip" (click)="Onclick();" id="update"
-                                                                title="Update leave details" class="btn btn-warning">
+                                                       
+                                                              <button type="button" rel="tooltip"  id="update"
+                                                                title="Update leave details" class="btn btn-warning"  data-toggle="modal" data-target="#exampleModal" (click)="onSelect(leave);">
                                                                 <i class="material-icons">update</i>
                                                               </button>
-                                                            </a>
+                                                         
                                                         </tr>
                                                       
                                                     </tbody>
@@ -441,4 +439,85 @@
 
 
 </div>
+<!-- Modal -->
+<div class="modal" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">EDIT LEAVE</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body" >
+          <div class="image-container fluid text-dark"
+          style="background-image: url('assets/img/books-connection.jpg');background-color: transparent;">
+        <form class="text-dark ml-2">
+          <div class="form-group row">
+          
+              <label for="leaveType" class="col-sm-3 form-control-label  text-dark">Leave Type :
+              </label>
+              <div class="col-sm-6">
+                  <!-- Subject -->
+                  <select id="leavetype" class="form-control  text-dark">
+                      <option value="annual">Choose option</option>
+                      <option value="annual" selected>Annual Leave</option>
+                      <option value="medical">Medical Leave</option>
+                      <option value="family">Family Responsibility Leave</option>
+                      <option value="maternity">Maternity Leave</option>
+                      <option value="study">Study Leave</option>
+                      <option value="other">Other</option>
+                  </select></div>
+          </div>
+          <div class="form-group row"> <label for="startdate" class="col-sm-3 form-control-label  text-dark">Start Date :
+              </label>
+              <div class="col-sm-6"> <input type="date" id="startdate" class="form-control  text-dark"
+                      (change)="calcLeaveDays()">
+              </div>
+          </div>
+          <div class="form-group row"> <label for="enddate" class="col-sm-3 form-control-label  text-dark">End Date :
+              </label>
+  
+              <div class="col-sm-6"> <input type="date" id="enddate" class="form-control  text-dark"
+                      (change)="calcLeaveDays()">
+              </div>
+          </div>
+          <div class="form-group row"> <label for="leaveDay" class="col-sm-3 form-control-label  text-dark">Leave Days
+                  Taken :
+              </label>
+  
+              <div class="col-sm-6"> <input type="text" id="calculated" class="form-control  text-danger" readonly="">
+              </div>
+          </div>
+          <div class="form-group row"> <label for="reason" class="col-sm-3 form-control-label  text-dark">Reason For
+                  Leave :
+              </label>
+  
+              <div class="col-sm-6"> <textarea id="reason" class="form-control" placeholder="" rows="6"  >{{editLeaveDetails.reason}}</textarea>
+              </div>
+          </div>
+          <div class="form-group row"> <label for="leaveDay" class="col-sm-2 form-control-label  text-dark">
+              </label>
+  
+              <div class="col-sm-3"> <button class="btn btn-outline-info btn-rounded" (click)="StartNintexflow();"
+                      type="submit">Send</button>
+              </div>
+              <div class="col-sm-3"> <button class="btn btn-outline-danger btn-rounded" (click)="clearFormData();"
+                      type="submit">clear</button>
+              </div>
+          </div>
+      </form>
+      </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary">Save changes</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+
   
