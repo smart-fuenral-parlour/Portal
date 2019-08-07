@@ -34,7 +34,7 @@ const getmemberbysurnameUrl = "http://greenlinks1.dedicated.co.za:3002/api/getme
 const apiUrl = "http://greenlinks1.dedicated.co.za:3000/api/Members";
 const getmemberbyidentitynumberUrl = "http://greenlinks1.dedicated.co.za:3002/api/getmemberbyidentitynumber";
 const getmemberbymembershipnumberUrl = "http://greenlinks1.dedicated.co.za:3002/api/getmemberbymembershipnumber";
-// wild card search
+// wild card search  http://greenlinks1.dedicated.co.za:3000/api/Members/count?where=%7B%22membershipnumber%22%3A%20%22string%22%7D
 const getmemberbysurnameUrl = "http://greenlinks1.dedicated.co.za:3000/api/Members?filter=%7B%22where%22%3A%7B%22surname%22%3A%7B%22like%22%3A%20%22%25ma%22%7D%7D%20%7D";
 const checkEmailUrl = "http://greenlinks1.dedicated.co.za:3000/api/Members/count?where=%7B%22email%22%3A%20%22string%22%7D";
 const checkmembershipnumberUrl = "http://greenlinks1.dedicated.co.za:3000/api/Members/count?where=%7B%22membershipnumber%22%3A%20%22string%22%7D";

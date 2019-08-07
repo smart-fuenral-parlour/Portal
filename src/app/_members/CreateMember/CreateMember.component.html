@@ -100,6 +100,9 @@
                               (blur)="idNumberCheckLength(setmember.identitynumber)" (keyup)="idNumberCheckDuplicate()"
                               (focus)="idNumberValidationDisable()" placeholder="ID Number"
                               onkeypress="return event.charCode >= 48 && event.charCode <= 57">
+                              <mat-error *ngIf="IdnumberFormControl.hasError('minlength') && !IdnumberFormControl.hasError('required')">
+                                Please enter a valid email address
+                              </mat-error>
                           </mat-form-field>
 
                         </div>
@@ -351,11 +354,14 @@
                               <i class="material-icons">phone</i>
                             </span>
                           </div>
-                          <mat-form-field class="example-full-width" [ngClass]="displayFieldCss(type, 'phone')">
+                          <mat-form-field class="example-full-width" [ngClass]="{'has-success':validTextType===true}" [ngClass]="displayFieldCss(type, 'phone')">
                             <input matInput type="text" minlength="10" maxlength="10" numbersOnly
                               placeholder="Phone No." name="phone" matInput id="contactnumber" formControlName="phone"
-                              [(ngModel)]="setmember.contactnumber"
+                              [(ngModel)]="setmember.contactnumber" 
                               onkeypress="return event.charCode >= 48 && event.charCode <= 57">
+                              <mat-error *ngIf="emailFormControl.hasError('required')">
+                                Phone is <strong>required</strong>
+                              </mat-error>
                           </mat-form-field>
                         </div>
                       </div>
@@ -367,12 +373,20 @@
                               <i class="material-icons">email</i>
                             </span>
                           </div>
-                          <mat-form-field class="example-full-width">
+                          <mat-form-field class="example-full-width" [ngClass]="{'has-success':validEmailType===true}">
                             <input matInput placeholder="Email (required)" [formControl]="emailFormControl" type="email"
-                              id="email" name="email" [(ngModel)]="setmember.email">
+                              id="email" name="email"  [(ngModel)]="setmember.email">
+                              <mat-error *ngIf="emailFormControl.hasError('email') && !emailFormControl.hasError('required')">
+                                Please enter a valid email address
+                              </mat-error>
+                              <mat-error *ngIf="emailFormControl.hasError('required')">
+                                Email is <strong>required</strong>
+                              </mat-error>
                           </mat-form-field>
+
                         </div>
                       </div>
+
                     </div>
                   </div>
 
