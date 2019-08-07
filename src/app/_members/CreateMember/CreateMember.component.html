@@ -16,29 +16,29 @@
               <div class="wizard-navigation">
                 <div class="wizard-navigation">
                   <ul class="nav nav-pills">
-                    <li class="nav-item">
+                    <li class="nav-item" (click)="checkDropdownOnNext()">
                       <!--personalInfo active-->
                       <a class="nav-link active" href="#personalInfoTab" data-toggle="tab" role="tab">
                         Info
                       </a>
                     </li>
-                    <li class="nav-item">
+                    <li class="nav-item" (click)="checkDropdownOnNext()">
                       <a class="nav-link" href="#addressTab" data-toggle="tab" role="tab">
                         Address
                       </a>
                     </li>
-                    <li class="nav-item">
+                    <li class="nav-item" (click)="checkDropdownOnNext()">
                       <a class="nav-link" href="#policyTab" data-toggle="tab" role="tab">
                         Policy
                         <!-- Beneficiaries  #additionalInfo policyTab -->
                       </a>
                     </li>
-                    <li class="nav-item">
+                    <li class="nav-item" (click)="checkDropdownOnNext()">
                       <a class="nav-link " href="#contactsTab" data-toggle="tab" role="tab">
                         Contacts
                       </a>
                     </li>
-                    <li class="nav-item">
+                    <li class="nav-item" (click)="checkDropdownOnNext()">
                       <a class="nav-link " href="#contractInfoTab" data-toggle="tab" role="tab">
                         Confirmation
                       </a>
@@ -51,7 +51,7 @@
 
                   <!-- PERSONAL INFORMATION -->
                   <div class="tab-pane active" id="personalInfoTab">
-                    <h5 class="info-text"> Let's start with the basic information (with validation)</h5>
+                    <h5 class="info-text">Complete all fields before submitting form</h5>
                     <div class="row justify-content-center">
 
                       <!-- name  -->
@@ -284,7 +284,7 @@
                                     <i class="material-icons">face</i>
                                   </span>
                                   <mat-form-field class="example-full-width has-label">
-                                    <input type="text" name="{{'beneficiaryName'+i}}" matInput
+                                    <input type="text" name="{{'beneficiaryName'+i}}" matInput value=""
                                       id="{{'beneficiaryName'+i}}" placeholder="Name" class="form-control">
                                   </mat-form-field>
                                 </div>
@@ -494,7 +494,7 @@
                     value="Previous">
                 </div>
                 <div class="ml-auto">
-                  <input type="button" class="btn btn-next btn-fill btn-info btn-wd" name="next" value="Next">
+                  <input type="button" class="btn btn-next btn-fill btn-info btn-wd" (click)="checkDropdownOnNext()" name="next" value="Next">
                   <input type="button" class="btn btn-finish btn-fill btn-success btn-wd" disabled id="finish"
                     name="finish" (click)="finishCreate()" value="Finish" style="display: none;">
                 </div>
