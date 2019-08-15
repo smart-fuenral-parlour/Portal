@@ -27,6 +27,7 @@ export class LeavedetailsComponent implements OnInit {
   public editLeaveDetails: any = [];
   public startDate: any;
   public endDate: any;
+  public getLeaveSkipForward: any = 0;
   startdate: string;
   enddate: string;
 
@@ -52,9 +53,10 @@ export class LeavedetailsComponent implements OnInit {
   getLeave() {
     // Get current  user email
     const emails = this.adalSvc.userInfo.userName;
+
     // Get Method for current user leave request details
     // tslint:disable-next-line:max-line-length
-    this.httpClient.get('https://sktleaveapi.herokuapp.com/api/leaveRequesteds?filter={"where":{"email":"' + emails + '"},"order":["startdate DESC"]}').subscribe((res: any[]) => {
+    this.httpClient.get('https://sktleaveapi.herokuapp.com/api/leaveRequesteds?filter[where][email]=' + emails + '&filter[limit]=2&filter[skip]=' + this.getLeaveSkipForward + '&filter[order]=startdate%20DESC').subscribe((res: any[]) => {
       // Asign Results to leavedetails variable
       this.LeaveDetails = res;
 
@@ -158,6 +160,36 @@ export class LeavedetailsComponent implements OnInit {
     //function calculate and allocate business days between the two dates
     $('#calculated').val(this.getBusinessDatesCount(new Date(this.startDate), new Date(this.endDate)));
 
+
+  }
+  getNextAlert() {
+    //skip count for query
+    this.getLeaveSkipForward += 2;
+    const emails = this.adalSvc.userInfo.userName;
+    // Get Method for current user leave request details
+    // tslint:disable-next-line:max-line-length
+    this.httpClient.get('https://sktleaveapi.herokuapp.com/api/leaveRequesteds?filter[where][email]=' + emails + '&filter[limit]=2&filter[skip]=' + this.getLeaveSkipForward + '&filter[order]=startdate%20DESC').subscribe((res: any[]) => {
+      // Asign Results to leavedetails variable
+      this.LeaveDetails = res;
+
+    });
+
+  }
+
+  getPrevousAlert() {
+    //skip count for query
+    this.getLeaveSkipForward -= 2;
+    if (this.getLeaveSkipForward < 0) {
+      this.getLeaveSkipForward = 0
+    }
+    const emails = this.adalSvc.userInfo.userName;
+    // Get Method for current user leave request details
+    // tslint:disable-next-line:max-line-length
+    this.httpClient.get('https://sktleaveapi.herokuapp.com/api/leaveRequesteds?filter[where][email]=' + emails + '&filter[limit]=2&filter[skip]=' + this.getLeaveSkipForward + '&filter[order]=startdate%20DESC').subscribe((res: any[]) => {
+      // Asign Results to leavedetails variable
+      this.LeaveDetails = res;
+
+    });
 
   }
 }
