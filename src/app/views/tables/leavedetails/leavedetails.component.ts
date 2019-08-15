@@ -30,6 +30,7 @@ export class LeavedetailsComponent implements OnInit {
   public getLeaveSkipForward: any = 0;
   startdate: string;
   enddate: string;
+  nextButtonDisable = ''
 
   constructor(private httpClient: HttpClient, private adalSvc: AdalService) {
     // Display
@@ -170,7 +171,13 @@ export class LeavedetailsComponent implements OnInit {
     // tslint:disable-next-line:max-line-length
     this.httpClient.get('https://sktleaveapi.herokuapp.com/api/leaveRequesteds?filter[where][email]=' + emails + '&filter[limit]=2&filter[skip]=' + this.getLeaveSkipForward + '&filter[order]=startdate%20DESC').subscribe((res: any[]) => {
       // Asign Results to leavedetails variable
-      this.LeaveDetails = res;
+      if(res.length > 0){
+        this.LeaveDetails = res;
+        this.nextButtonDisable = 'disabled'
+      } else {
+        this.nextButtonDisable = 'disabled'
+      }
+      
 
     });
 
