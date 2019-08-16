@@ -32,6 +32,7 @@ export class LeavedetailsComponent implements OnInit {
   enddate: string;
   buttonDisable: any
   pageNo = 1
+  ApprovedpageNo = 1
   limitFilter = 2
   // total count of leaves
   totalPageNo: any
@@ -266,6 +267,8 @@ export class LeavedetailsComponent implements OnInit {
 
   }
   getNextAlert() {
+
+
     //skip count for query
     this.getLeaveSkipForward += 2;
     const emails = this.adalSvc.userInfo.userName;
