@@ -32,6 +32,7 @@ export class LeavedetailsComponent implements OnInit {
   enddate: string;
   buttonDisable: any
   pageNo = 1
+  limitFilter = 2
   // total count of leaves
   totalPageNo: any
   totalLeaveApproved: any
@@ -61,24 +62,38 @@ export class LeavedetailsComponent implements OnInit {
 
       if (res.count > 0) {
         // enables next and prev buttons 
-        this.totalPageNo = (res.count / 2).toFixed(0);
-        this.buttonDisable = document.querySelector('#fast_forward')
-        this.buttonDisable.disabled = false
-        this.buttonDisable = document.querySelector('#fast_rewind')
-        this.buttonDisable.disabled = false
+        this.totalPageNo = (res.count / this.limitFilter).toFixed(0);
+
+        if (this.totalPageNo == '1') {
+          this.buttonDisable = document.querySelector('#fast_forward')
+          this.buttonDisable.disabled = true
+          this.buttonDisable = document.querySelector('#fast_rewind')
+          this.buttonDisable.disabled = true
+          this.buttonDisable = document.querySelector('#first_page')
+          this.buttonDisable.disabled = true
+          this.buttonDisable = document.querySelector('#last_page')
+          this.buttonDisable.disabled = true
+        }
+
 
       } else {
 
         // disable next and prev buttons if number of leaves are 0
-        this.totalPageNo = 1;
+        this.totalLeaveApproved = 1;
         this.buttonDisable = document.querySelector('#fast_forward')
         this.buttonDisable.disabled = true
         this.buttonDisable = document.querySelector('#fast_rewind')
+        this.buttonDisable.disabled = true
+        this.buttonDisable = document.querySelector('#first_page')
+        this.buttonDisable.disabled = true
+        this.buttonDisable = document.querySelector('#last_page')
         this.buttonDisable.disabled = true
 
       }
 
     });
+
+
 
     //getting total number of pages of approved leave
     this.httpClient.get('https://sktleaveapi.herokuapp.com/api/leaveRequesteds/count?where=%7B%22and%22%3A%5B%7B%22email%22%3A%20%22' + this.email + '%22%7D%2C%7B%22status%22%3A%20%22Approved%22%7D%5D%20%7D').subscribe((res: any) => {
@@ -86,15 +101,19 @@ export class LeavedetailsComponent implements OnInit {
 
       if (res.count > 0) {
         // enables next and prev buttons if there are apporved leaves 
-        this.totalLeaveApproved = (res.count / 2).toFixed(0);
-        this.buttonDisable = document.querySelector('#approved_fast_forward')
-        this.buttonDisable.disabled = false
-        this.buttonDisable = document.querySelector('#approved_fast_rewind')
-        this.buttonDisable.disabled = false
-        this.buttonDisable = document.querySelector('#approved_fast_forward')
-        this.buttonDisable.disabled = false
-        this.buttonDisable = document.querySelector('#approved_fast_rewind')
-        this.buttonDisable.disabled = false
+        this.totalLeaveApproved = (res.count / this.limitFilter).toFixed(0);
+
+        if (this.totalPageNo == '1') {
+          this.buttonDisable = document.querySelector('#approved_fast_forward')
+          this.buttonDisable.disabled = true
+          this.buttonDisable = document.querySelector('#approved_fast_rewind')
+          this.buttonDisable.disabled = true
+          this.buttonDisable = document.querySelector('#approved_first_page')
+          this.buttonDisable.disabled = true
+          this.buttonDisable = document.querySelector('#approved_last_page')
+          this.buttonDisable.disabled = true
+        }
+
 
       } else {
 
@@ -122,13 +141,13 @@ export class LeavedetailsComponent implements OnInit {
      * 
      * total leave approved
      * https://sktleaveapi.herokuapp.com/api/leaveRequesteds/count?where=%7B%22and%22%3A%5B%7B%22email%22%3A%20%22tmollootimile%40skhomotech.co.za%22%7D%2C%7B%22status%22%3A%20%22Rejected%22%7D%5D%20%7D
-     * 
-     * 
-     *  total leave Pending
+     *  
+     * total leave Pending
      * https://sktleaveapi.herokuapp.com/api/leaveRequesteds/count?where=%7B%22and%22%3A%5B%7B%22email%22%3A%20%22tmollootimile%40skhomotech.co.za%22%7D%2C%7B%22status%22%3A%20%22Pending%22%7D%5D%20%7D
      * 
      */
   }
+
   // Get current  users leave request details
   getLeave() {
     // Get current  user email
@@ -142,6 +161,8 @@ export class LeavedetailsComponent implements OnInit {
 
     });
   }
+
+
   // Get current  user Leave Types Balance
   getUserBalance() {
     // Get current  user email
@@ -291,6 +312,27 @@ export class LeavedetailsComponent implements OnInit {
 
     });
 
+  }
+
+  getFirstAlert() {
+    //skip count for query
+    this.getLeaveSkipForward = 0;
+
+
+    const emails = this.adalSvc.userInfo.userName;
+    // Get Method for current user leave request details
+    // tslint:disable-next-line:max-line-length
+    this.httpClient.get('https://sktleaveapi.herokuapp.com/api/leaveRequesteds?filter[where][email]=' + emails + '&filter[limit]=2&filter[skip]=' + this.getLeaveSkipForward + '&filter[order]=startdate%20DESC').subscribe((res: any[]) => {
+      // Asign Results to leavedetails variable
+      this.LeaveDetails = res;  
+
+      this.pageNo = 1
+
+    });
+  }
+
+  getLastAlert() {
+    console.log('goto last page')
   }
 
 
