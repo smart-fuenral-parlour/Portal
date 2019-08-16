@@ -36,10 +36,10 @@ export class LeavedetailsComponent implements OnInit {
   limitFilter = 10
 
   // total number of pages on leaves
-  totalPageNo: number
-  ApprovedTotalPageNo: number
-  RejectedTotalPageNo: number
-  PendingTotalPageNo: number
+  totalPageNo = 1
+  ApprovedTotalPageNo = 1
+  RejectedTotalPageNo = 1
+  PendingTotalPageNo = 1
 
   buttonActiveClass = ''
   activeTab = 0
@@ -258,17 +258,17 @@ export class LeavedetailsComponent implements OnInit {
      * 
      * total leave approved
      * https://sktleaveapi.herokuapp.com/api/leaveRequesteds/count?where=%7B%22and%22%3A%5B%7B%22email%22%3A%20%22tmollootimile%40skhomotech.co.za%22%7D%2C%7B%22status%22%3A%20%22Approved%22%7D%5D%20%7D
-         this.httpClient.get('https://sktleaveapi.herokuapp.com/api/leaveRequesteds?filter[where][email]=' + emails + '&filter[limit]=2&filter[where][status]=Approved&filter[skip]=' + this.getLeaveSkipForward + '&filter[order]=startdate%20DESC').subscribe((res: any[]) => {
+         this.httpClient.get('https://sktleaveapi.herokuapp.com/api/leaveRequesteds?filter[where][email]=' + emails + '&filter[limit]=' + this.limitFilter + '&filter[where][status]=Approved&filter[skip]=' + this.getLeaveSkipForward + '&filter[order]=startdate%20DESC').subscribe((res: any[]) => {
      * 
      * 
      * total leave Rejected
      * https://sktleaveapi.herokuapp.com/api/leaveRequesteds/count?where=%7B%22and%22%3A%5B%7B%22email%22%3A%20%22tmollootimile%40skhomotech.co.za%22%7D%2C%7B%22status%22%3A%20%22Rejected%22%7D%5D%20%7D
-        this.httpClient.get('https://sktleaveapi.herokuapp.com/api/leaveRequesteds?filter[where][email]=' + emails + '&filter[limit]=2&filter[where][status]=Rejected&filter[skip]=' + this.getLeaveSkipForward + '&filter[order]=startdate%20DESC').subscribe((res: any[]) => {
+        this.httpClient.get('https://sktleaveapi.herokuapp.com/api/leaveRequesteds?filter[where][email]=' + emails + '&filter[limit]=' + this.limitFilter + '&filter[where][status]=Rejected&filter[skip]=' + this.getLeaveSkipForward + '&filter[order]=startdate%20DESC').subscribe((res: any[]) => {
      * 
      *  
      * total leave Pending
      * https://sktleaveapi.herokuapp.com/api/leaveRequesteds/count?where=%7B%22and%22%3A%5B%7B%22email%22%3A%20%22tmollootimile%40skhomotech.co.za%22%7D%2C%7B%22status%22%3A%20%22Pending%22%7D%5D%20%7D
-        this.httpClient.get('https://sktleaveapi.herokuapp.com/api/leaveRequesteds?filter[where][email]=' + emails + '&filter[limit]=2&filter[where][status]=Pending&filter[skip]=' + this.getLeaveSkipForward + '&filter[order]=startdate%20DESC').subscribe((res: any[]) => {
+        this.httpClient.get('https://sktleaveapi.herokuapp.com/api/leaveRequesteds?filter[where][email]=' + emails + '&filter[limit]=' + this.limitFilter + '&filter[where][status]=Pending&filter[skip]=' + this.getLeaveSkipForward + '&filter[order]=startdate%20DESC').subscribe((res: any[]) => {
      * 
      * 
      */
@@ -306,7 +306,7 @@ export class LeavedetailsComponent implements OnInit {
     const emails = this.adalSvc.userInfo.userName;
     // Get Method for All Approved Leave
     // tslint:disable-next-line:max-line-length
-    this.httpClient.get('https://sktleaveapi.herokuapp.com/api/leaveRequesteds?filter={"where":{"email":"' + emails + '","status":"Approved"}}').subscribe((res: any[]) => {
+    this.httpClient.get('https://sktleaveapi.herokuapp.com/api/leaveRequesteds?filter[where][email]=' + emails + '&filter[limit]=' + this.limitFilter + '&filter[where][status]=Approved&filter[skip]=' + this.getLeaveSkipForward + '&filter[order]=startdate%20DESC').subscribe((res: any[]) => {
       // Asign Results to approvedleave variable
       this.approvedleave = res;
 
@@ -318,7 +318,7 @@ export class LeavedetailsComponent implements OnInit {
     const emails = this.adalSvc.userInfo.userName;
     // Get Method for All Rejected Leave
     // tslint:disable-next-line:max-line-length
-    this.httpClient.get('https://sktleaveapi.herokuapp.com/api/leaveRequesteds?filter={"where":{"email":"' + emails + '","status":"Rejected"}}').subscribe((res: any[]) => {
+    this.httpClient.get('https://sktleaveapi.herokuapp.com/api/leaveRequesteds?filter[where][email]=' + emails + '&filter[limit]=' + this.limitFilter + '&filter[where][status]=Rejected&filter[skip]=' + this.getLeaveSkipForward + '&filter[order]=startdate%20DESC').subscribe((res: any[]) => {
       // Asign Results to rejectedleave variable
       this.rejectedleave = res;
     });
@@ -331,7 +331,7 @@ export class LeavedetailsComponent implements OnInit {
     const emails = this.adalSvc.userInfo.userName;
     // Get Method for All Pending Leave
     // tslint:disable-next-line:max-line-length
-    this.httpClient.get('https://sktleaveapi.herokuapp.com/api/leaveRequesteds?filter[where][email]=' + emails + '&filter[limit]=2&filter[where][status]=Pending&filter[skip]=' + this.getLeaveSkipForward + '&filter[order]=startdate%20DESC').subscribe((res: any[]) => {
+    this.httpClient.get('https://sktleaveapi.herokuapp.com/api/leaveRequesteds?filter[where][email]=' + emails + '&filter[limit]=' + this.limitFilter + '&filter[where][status]=Pending&filter[skip]=' + this.getLeaveSkipForward + '&filter[order]=startdate%20DESC').subscribe((res: any[]) => {
       // Asign Results to approvedleave variable
       this.Pendingleaves = res;
 
@@ -528,6 +528,7 @@ export class LeavedetailsComponent implements OnInit {
     this.getLeaveSkipForward = 0
     console.log(this.pageNo)
 
+    /*
     if (tab == 2) {
       this.httpClient.get('https://sktleaveapi.herokuapp.com/api/leaveRequesteds?filter[where][email]=' + this.email + '&filter[limit]=2&filter[where][status]=Pending&filter[skip]=0&filter[order]=startdate%20DESC').subscribe((res: any[]) => {
         // Asign Results to approvedleave variable
@@ -545,6 +546,7 @@ export class LeavedetailsComponent implements OnInit {
       });
 
     }
+    */
     console.log(tab)
   }
 
