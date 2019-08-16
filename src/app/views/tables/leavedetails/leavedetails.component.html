@@ -182,7 +182,7 @@
                             </button>
 
                             <span>
-                              {{ApprovedpageNo}} of {{totalLeaveApproved}}
+                              {{ApprovedpageNo}} of {{ApprovedTotalPageNo}}
                             </span>
 
                             <button type="button" rel="tooltip" (click)="getNextAlert();" id="approved_fast_forward"
@@ -257,24 +257,24 @@
                       <tr>
                         <td colspan="7">
                           <span id="paginator">
-                            <button type="button" rel="tooltip" (click)="getFirstAlert();" id="first_page"
+                            <button type="button" rel="tooltip" (click)="getFirstAlert();" id="pending_first_page"
                               title="First page" class="btn btn-primary btn-round btn-fab btn-fab-mini">
                               <i class="material-icons">first_page</i>
                             </button>
-                            <button type="button" rel="tooltip" (click)="getPrevousAlert();" id="fast_rewind"
+                            <button type="button" rel="tooltip" (click)="getPrevousAlert();" id="pending_fast_rewind"
                               title="Previous page" class="btn btn-primary btn-round btn-fab btn-fab-mini">
                               <i class="material-icons">keyboard_arrow_left</i>
                             </button>
 
                             <span>
-                              {{pageNo}} of {{totalPageNo}}
+                              {{pageNo}} of {{PendingTotalPageNo}}
                             </span>
 
-                            <button type="button" rel="tooltip" (click)="getNextAlert();" id="fast_forward"
+                            <button type="button" rel="tooltip" (click)="getNextAlert();" id="pending_fast_forward"
                               title="Next page" class="btn btn-primary btn-round btn-fab btn-fab-mini">
                               <i class="material-icons">keyboard_arrow_right</i>
                             </button>
-                            <button type="button" rel="tooltip" (click)="getLastAlert();" id="last_page"
+                            <button type="button" rel="tooltip" (click)="getLastAlert();" id="pending_last_page"
                               title="Last page" class="btn btn-primary btn-round btn-fab btn-fab-mini">
                               <i class="material-icons">last_page</i>
                             </button>

@@ -33,12 +33,13 @@ export class LeavedetailsComponent implements OnInit {
   buttonDisable: any
   pageNo = 1
   ApprovedpageNo = 1
-  limitFilter = 2
-  // total count of leaves
-  totalPageNo: any
-  totalLeaveApproved: any
-  totalLeaveRejected: any
-  totalLeavePending: any
+  limitFilter = 10
+
+  // total number of pages on leaves
+  totalPageNo: number
+  ApprovedTotalPageNo: number
+  RejectedTotalPageNo: number
+  PendingTotalPageNo: number
 
   buttonActiveClass = ''
   activeTab = 0
@@ -58,16 +59,23 @@ export class LeavedetailsComponent implements OnInit {
     this.fullnames = this.adalSvc.userInfo.profile.name;
     this.email = this.adalSvc.userInfo.userName;
 
-
+    
     //getting total number of pages of all leave requests
     this.httpClient.get('https://sktleaveapi.herokuapp.com/api/leaveRequesteds/count?where=%7B%22email%22%3A%20%22' + this.email + '%22%7D').subscribe((res: any) => {
 
 
-      if (res.count > 0) {
-        // enables next and prev buttons 
-        this.totalPageNo = (res.count / this.limitFilter).toFixed(0);
+      if (res.count > 0) {        
 
-        if (this.totalPageNo == '1') {
+        if(res.count % this.limitFilter > 0 && res.count % this.limitFilter < 5){
+          this.totalPageNo = parseInt(((res.count / this.limitFilter)+1).toFixed(0));
+        } else {
+          this.totalPageNo = parseInt((res.count / this.limitFilter).toFixed(0)) ;
+        }
+          
+        if (this.totalPageNo<= 1) {          
+
+          // disables next and prev buttons if total number of page is 1
+          this.totalPageNo = 1
           this.buttonDisable = document.querySelector('#fast_forward')
           this.buttonDisable.disabled = true
           this.buttonDisable = document.querySelector('#fast_rewind')
@@ -76,13 +84,14 @@ export class LeavedetailsComponent implements OnInit {
           this.buttonDisable.disabled = true
           this.buttonDisable = document.querySelector('#last_page')
           this.buttonDisable.disabled = true
+
         }
 
 
       } else {
 
         // disable next and prev buttons if number of leaves are 0
-        this.totalLeaveApproved = 1;
+        this.totalPageNo = 1;
         this.buttonDisable = document.querySelector('#fast_forward')
         this.buttonDisable.disabled = true
         this.buttonDisable = document.querySelector('#fast_rewind')
@@ -103,10 +112,19 @@ export class LeavedetailsComponent implements OnInit {
 
 
       if (res.count > 0) {
-        // enables next and prev buttons if there are apporved leaves 
-        this.totalLeaveApproved = (res.count / this.limitFilter).toFixed(0);
+        
+        if(res.count % this.limitFilter > 0 && res.count % this.limitFilter < 5){
 
-        if (this.totalPageNo == '1') {
+          this.ApprovedTotalPageNo = parseInt(((res.count / this.limitFilter)+1).toFixed(0));
+        } else {
+
+          this.ApprovedTotalPageNo = parseInt((res.count / this.limitFilter).toFixed(0)) ;
+        }
+          
+        if (this.ApprovedTotalPageNo<= 1) {          
+
+        // disables next and prev buttons if total number of page is 1
+          this.ApprovedTotalPageNo = 1
           this.buttonDisable = document.querySelector('#approved_fast_forward')
           this.buttonDisable.disabled = true
           this.buttonDisable = document.querySelector('#approved_fast_rewind')
@@ -115,13 +133,14 @@ export class LeavedetailsComponent implements OnInit {
           this.buttonDisable.disabled = true
           this.buttonDisable = document.querySelector('#approved_last_page')
           this.buttonDisable.disabled = true
+
         }
 
 
       } else {
 
         // disable next and prev buttons if number of approved leaves are 0
-        this.totalLeaveApproved = 1;
+        this.ApprovedTotalPageNo = 1;
         this.buttonDisable = document.querySelector('#approved_fast_forward')
         this.buttonDisable.disabled = true
         this.buttonDisable = document.querySelector('#approved_fast_rewind')
@@ -129,6 +148,54 @@ export class LeavedetailsComponent implements OnInit {
         this.buttonDisable = document.querySelector('#approved_first_page')
         this.buttonDisable.disabled = true
         this.buttonDisable = document.querySelector('#approved_last_page')
+        this.buttonDisable.disabled = true
+      }
+
+    });
+
+
+    //getting total number of pages for pending leaves
+    this.httpClient.get('https://sktleaveapi.herokuapp.com/api/leaveRequesteds/count?where=%7B%22and%22%3A%5B%7B%22email%22%3A%20%22' + this.email + '%22%7D%2C%7B%22status%22%3A%20%22Pending%22%7D%5D%20%7D').subscribe((res: any) => {
+
+
+      if (res.count > 0) {
+
+
+        if(res.count % this.limitFilter > 0 && res.count % this.limitFilter < 5){
+
+          this.PendingTotalPageNo = parseInt(((res.count / this.limitFilter)+1).toFixed(0));
+        } else {
+          
+          this.PendingTotalPageNo = parseInt((res.count / this.limitFilter).toFixed(0)) ;
+        }
+          
+        if (this.PendingTotalPageNo<= 1) {          
+
+        // disables next and prev buttons if total number of page is 1
+          this.PendingTotalPageNo = 1
+          this.buttonDisable = document.querySelector('#pending_first_page')
+          this.buttonDisable.disabled = true
+          this.buttonDisable = document.querySelector('#pending_fast_rewind')
+          this.buttonDisable.disabled = true
+          this.buttonDisable = document.querySelector('#pending_fast_forward')
+          this.buttonDisable.disabled = true
+          this.buttonDisable = document.querySelector('#pending_last_page')
+          this.buttonDisable.disabled = true
+
+        }
+
+
+      } else {
+
+        // disable next and prev buttons if number of approved leaves are 0
+        this.PendingTotalPageNo = 1;
+        this.buttonDisable = document.querySelector('#pending_first_page')
+        this.buttonDisable.disabled = true
+        this.buttonDisable = document.querySelector('#pending_fast_rewind')
+        this.buttonDisable.disabled = true
+        this.buttonDisable = document.querySelector('#pending_fast_forward')
+        this.buttonDisable.disabled = true
+        this.buttonDisable = document.querySelector('#pending_last_page')
         this.buttonDisable.disabled = true
       }
 
@@ -164,7 +231,7 @@ export class LeavedetailsComponent implements OnInit {
 
     // Get Method for current user leave request details
     // tslint:disable-next-line:max-line-length
-    this.httpClient.get('https://sktleaveapi.herokuapp.com/api/leaveRequesteds?filter[where][email]=' + emails + '&filter[limit]=2&filter[skip]=' + this.getLeaveSkipForward + '&filter[order]=startdate%20DESC').subscribe((res: any[]) => {
+    this.httpClient.get('https://sktleaveapi.herokuapp.com/api/leaveRequesteds?filter[where][email]=' + emails + '&filter[limit]=' + this.limitFilter + '&filter[skip]=' + this.getLeaveSkipForward + '&filter[order]=startdate%20DESC').subscribe((res: any[]) => {
       // Asign Results to leavedetails variable
       this.LeaveDetails = res;
 
@@ -214,10 +281,10 @@ export class LeavedetailsComponent implements OnInit {
     const emails = this.adalSvc.userInfo.userName;
     // Get Method for All Pending Leave
     // tslint:disable-next-line:max-line-length
-    this.httpClient.get('https://sktleaveapi.herokuapp.com/api/leaveRequesteds?filter={"where":{"email":"' + emails + '","status":"Pending"}}').subscribe((res: any[]) => {
+    this.httpClient.get('https://sktleaveapi.herokuapp.com/api/leaveRequesteds?filter[where][email]=' + emails + '&filter[limit]=2&filter[where][status]=Pending&filter[skip]=' + this.getLeaveSkipForward + '&filter[order]=startdate%20DESC').subscribe((res: any[]) => {
       // Asign Results to approvedleave variable
       this.Pendingleaves = res;
-      console.log(res.length)
+
     });
   }
 
@@ -282,26 +349,29 @@ export class LeavedetailsComponent implements OnInit {
 
   getNextAlert() {
 
-    this.buttonActiveClass = 'btn btn-light'
+
     //skip count for query
     this.getLeaveSkipForward += 2;
     const emails = this.adalSvc.userInfo.userName;
     // Get Method for current user leave request details
     // tslint:disable-next-line:max-line-length
 
-    console.log('Active Tab Index:'+ this.activeTab)
+    this.buttonDisable = document.querySelector('#fast_forward')
+    this.buttonDisable.disabled = true
+
+    console.log('Active Tab Index:' + this.activeTab)
     if (this.activeTab == 2) {
       // changed to pending tab
       this.httpClient.get('https://sktleaveapi.herokuapp.com/api/leaveRequesteds?filter[where][email]=' + emails + '&filter[limit]=2&filter[where][status]=Pending&filter[skip]=' + this.getLeaveSkipForward + '&filter[order]=startdate%20DESC').subscribe((res: any[]) => {
         // Asign Results to leavedetails variable
-        this.buttonActiveClass = ''
-        console.log('Pending')
+        this.buttonDisable.disabled = false
+
 
         if (res.length > 0) {
           this.pageNo++
           this.Pendingleaves = res;
         } else {
-          
+
           this.getLeaveSkipForward -= 2;
         }
 
@@ -310,20 +380,20 @@ export class LeavedetailsComponent implements OnInit {
 
     } else {
 
-      console.log('Leave details')
+
       this.httpClient.get('https://sktleaveapi.herokuapp.com/api/leaveRequesteds?filter[where][email]=' + emails + '&filter[limit]=2&filter[skip]=' + this.getLeaveSkipForward + '&filter[order]=startdate%20DESC').subscribe((res: any[]) => {
         // Asign Results to leavedetails variable
-        this.buttonActiveClass = ''
+        this.buttonDisable.disabled = false
 
         if (res.length > 0) {
-          
+
           this.pageNo++
           this.LeaveDetails = res;
-          
+
         } else {
-          
+
           this.getLeaveSkipForward -= 2;
-          
+
         }
 
 
@@ -334,13 +404,15 @@ export class LeavedetailsComponent implements OnInit {
   }
 
   getPrevousAlert() {
+    //this.buttonActiveClass = 'btn btn-light'
     //skip count for query
     this.getLeaveSkipForward -= 2;
     if (this.getLeaveSkipForward < 0) {
       this.getLeaveSkipForward = 0
     }
+    this.buttonDisable = document.querySelector('#fast_rewind')
+    this.buttonDisable.disabled = true
 
-    
     const emails = this.adalSvc.userInfo.userName;
     // Get Method for current user leave request details
     // tslint:disable-next-line:max-line-length
@@ -351,11 +423,12 @@ export class LeavedetailsComponent implements OnInit {
       this.httpClient.get('https://sktleaveapi.herokuapp.com/api/leaveRequesteds?filter[where][email]=' + emails + '&filter[limit]=2&filter[where][status]=Pending&filter[skip]=' + this.getLeaveSkipForward + '&filter[order]=startdate%20DESC').subscribe((res: any[]) => {
         // Asign Results to leavedetails variable
         this.Pendingleaves = res;
-  
+        this.buttonDisable.disabled = false
+
         if (this.pageNo > 1) {
           this.pageNo--
         }
-  
+
       });
 
     } else {
@@ -365,11 +438,12 @@ export class LeavedetailsComponent implements OnInit {
       this.httpClient.get('https://sktleaveapi.herokuapp.com/api/leaveRequesteds?filter[where][email]=' + emails + '&filter[limit]=2&filter[skip]=' + this.getLeaveSkipForward + '&filter[order]=startdate%20DESC').subscribe((res: any[]) => {
         // Asign Results to leavedetails variable
         this.LeaveDetails = res;
-  
+        this.buttonDisable.disabled = false
+
         if (this.pageNo > 1) {
           this.pageNo--
         }
-  
+
       });
 
     }
@@ -400,29 +474,25 @@ export class LeavedetailsComponent implements OnInit {
 
   changeTab(tab: any) {
 
-    this.activeTab = tab    
+    this.activeTab = tab
     this.getLeaveSkipForward = 0
     console.log(this.pageNo)
 
-    if(tab == 2){
-      if(this.pageNo > 1) {
-        this.pageNo == 1
-        this.httpClient.get('https://sktleaveapi.herokuapp.com/api/leaveRequesteds?filter[where][email]=' + this.email + '&filter[limit]=2&filter[where][status]=Pending&filter[skip]=' + this.getLeaveSkipForward + '&filter[order]=startdate%20DESC').subscribe((res: any[]) => {
-          // Asign Results to leavedetails variable
-          this.Pendingleaves = res;
+    if (tab == 2) {
+      this.httpClient.get('https://sktleaveapi.herokuapp.com/api/leaveRequesteds?filter[where][email]=' + this.email + '&filter[limit]=2&filter[where][status]=Pending&filter[skip]=0&filter[order]=startdate%20DESC').subscribe((res: any[]) => {
+        // Asign Results to approvedleave variable
+        this.Pendingleaves = res;
 
-        });
-      }
+        this.pageNo = 1
+      });
     } else {
 
-      if(this.pageNo > 1) {
-        this.pageNo == 1
-        this.httpClient.get('https://sktleaveapi.herokuapp.com/api/leaveRequesteds?filter[where][email]=' + this.email + '&filter[limit]=2&filter[skip]=' + this.getLeaveSkipForward + '&filter[order]=startdate%20DESC').subscribe((res: any[]) => {
-          // Asign Results to leavedetails variable
-          this.LeaveDetails = res;
-          
-        });
-      }
+      this.httpClient.get('https://sktleaveapi.herokuapp.com/api/leaveRequesteds?filter[where][email]=' + this.email + '&filter[limit]=2&filter[skip]=0&filter[order]=startdate%20DESC').subscribe((res: any[]) => {
+        // Asign Results to leavedetails variable
+        this.LeaveDetails = res;
+        this.pageNo = 1
+
+      });
 
     }
     console.log(tab)
