@@ -22,7 +22,7 @@
               <div class="wizard-navigation">
                 <ul>
                   <!-- <li><a href="#applyleave" data-toggle="tab">Apply Leave</a></li> -->
-                  <li><a href="#leaveDetails"  (focus)="changeTab(0)" data-toggle="tab">Leaves Details</a></li>
+                  <li><a href="#leaveDetails" (focus)="changeTab(0)" data-toggle="tab">Leaves Details</a></li>
                   <li><a href="#approvedLeave" (focus)="changeTab(1)" data-toggle="tab">Approved Leaves</a></li>
                   <li><a href="#pendingLeave" (focus)="changeTab(2)" data-toggle="tab">Pending Leaves</a></li>
                   <li><a href="#rejectedLeave" (focus)="changeTab(3)" data-toggle="tab">Rejected Leaves</a></li>
@@ -96,15 +96,15 @@
                               <!-- Page: {{pageNo}}  -->
                               {{pageNo}} of {{totalPageNo}}
                             </span>
-                            <button type="button" aria-disabled="true" rel="tooltip" (click)="getNextAlert();" name="fast_forward"
-                                id="fast_forward" title="Next page"
-                                class="btn {{buttonActiveClass}} btn-primary btn-round btn-fab btn-fab-mini">
-                                <i class="material-icons">keyboard_arrow_right</i>
-                              </button>
-                            <button type="button" aria-disabled="true" rel="tooltip" (click)="getLastAlert();" id="last_page"
-                            title="Last page" class="btn btn-primary btn-round btn-fab btn-fab-mini">
-                            <i class="material-icons">last_page</i>
-                          </button>
+                            <button type="button" aria-disabled="true" rel="tooltip" (click)="getNextAlert();"
+                              name="fast_forward" id="fast_forward" title="Next page"
+                              class="btn {{buttonActiveClass}} btn-primary btn-round btn-fab btn-fab-mini">
+                              <i class="material-icons">keyboard_arrow_right</i>
+                            </button>
+                            <button type="button" aria-disabled="true" rel="tooltip" (click)="getLastAlert();"
+                              id="last_page" title="Last page" class="btn btn-primary btn-round btn-fab btn-fab-mini">
+                              <i class="material-icons">last_page</i>
+                            </button>
 
 
                             <!-- <select name="rowsOnPageSet" id="rowsOnPageSet" class="dropdown-toggle btn btn-primary" (ngModelChange)="onChangePageFilter();" >
@@ -340,24 +340,24 @@
                         <tr>
                           <td colspan="7">
                             <span id="paginator">
-                              <button type="button" rel="tooltip" (click)="getFirstAlert();" id="first_page"
+                              <button type="button" rel="tooltip" (click)="getFirstAlert();" id="rejected_first_page"
                                 title="First page" class="btn btn-primary btn-round btn-fab btn-fab-mini">
                                 <i class="material-icons">first_page</i>
                               </button>
-                              <button type="button" rel="tooltip" (click)="getPrevousAlert();" id="fast_rewind"
+                              <button type="button" rel="tooltip" (click)="getPrevousAlert();" id="rejected_fast_rewind"
                                 title="Previous page" class="btn btn-primary btn-round btn-fab btn-fab-mini">
                                 <i class="material-icons">keyboard_arrow_left</i>
                               </button>
 
                               <span>
-                                {{pageNo}} of {{totalPageNo}}
+                                {{pageNo}} of {{RejectedTotalPageNo}}
                               </span>
 
-                              <button type="button" rel="tooltip" (click)="getNextAlert();" id="fast_forward"
+                              <button type="button" rel="tooltip" (click)="getNextAlert();" id="rejected_fast_forward"
                                 title="Next page" class="btn btn-primary btn-round btn-fab btn-fab-mini">
                                 <i class="material-icons">keyboard_arrow_right</i>
                               </button>
-                              <button type="button" rel="tooltip" (click)="getLastAlert();" id="last_page"
+                              <button type="button" rel="tooltip" (click)="getLastAlert();" id="rejected_last_page"
                                 title="Last page" class="btn btn-primary btn-round btn-fab btn-fab-mini">
                                 <i class="material-icons">last_page</i>
                               </button>

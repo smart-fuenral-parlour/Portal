@@ -59,20 +59,20 @@ export class LeavedetailsComponent implements OnInit {
     this.fullnames = this.adalSvc.userInfo.profile.name;
     this.email = this.adalSvc.userInfo.userName;
 
-    
+
     //getting total number of pages of all leave requests
     this.httpClient.get('https://sktleaveapi.herokuapp.com/api/leaveRequesteds/count?where=%7B%22email%22%3A%20%22' + this.email + '%22%7D').subscribe((res: any) => {
 
 
-      if (res.count > 0) {        
+      if (res.count > 0) {
 
-        if(res.count % this.limitFilter > 0 && res.count % this.limitFilter < 5){
-          this.totalPageNo = parseInt(((res.count / this.limitFilter)+1).toFixed(0));
+        if (res.count % this.limitFilter > 0 && res.count % this.limitFilter < 5) {
+          this.totalPageNo = parseInt(((res.count / this.limitFilter) + 1).toFixed(0));
         } else {
-          this.totalPageNo = parseInt((res.count / this.limitFilter).toFixed(0)) ;
+          this.totalPageNo = parseInt((res.count / this.limitFilter).toFixed(0));
         }
-          
-        if (this.totalPageNo<= 1) {          
+
+        if (this.totalPageNo <= 1) {
 
           // disables next and prev buttons if total number of page is 1
           this.totalPageNo = 1
@@ -112,18 +112,18 @@ export class LeavedetailsComponent implements OnInit {
 
 
       if (res.count > 0) {
-        
-        if(res.count % this.limitFilter > 0 && res.count % this.limitFilter < 5){
 
-          this.ApprovedTotalPageNo = parseInt(((res.count / this.limitFilter)+1).toFixed(0));
+        if (res.count % this.limitFilter > 0 && res.count % this.limitFilter < 5) {
+
+          this.ApprovedTotalPageNo = parseInt(((res.count / this.limitFilter) + 1).toFixed(0));
         } else {
 
-          this.ApprovedTotalPageNo = parseInt((res.count / this.limitFilter).toFixed(0)) ;
+          this.ApprovedTotalPageNo = parseInt((res.count / this.limitFilter).toFixed(0));
         }
-          
-        if (this.ApprovedTotalPageNo<= 1) {          
 
-        // disables next and prev buttons if total number of page is 1
+        if (this.ApprovedTotalPageNo <= 1) {
+
+          // disables next and prev buttons if total number of page is 1
           this.ApprovedTotalPageNo = 1
           this.buttonDisable = document.querySelector('#approved_fast_forward')
           this.buttonDisable.disabled = true
@@ -154,6 +154,7 @@ export class LeavedetailsComponent implements OnInit {
     });
 
 
+
     //getting total number of pages for pending leaves
     this.httpClient.get('https://sktleaveapi.herokuapp.com/api/leaveRequesteds/count?where=%7B%22and%22%3A%5B%7B%22email%22%3A%20%22' + this.email + '%22%7D%2C%7B%22status%22%3A%20%22Pending%22%7D%5D%20%7D').subscribe((res: any) => {
 
@@ -161,17 +162,17 @@ export class LeavedetailsComponent implements OnInit {
       if (res.count > 0) {
 
 
-        if(res.count % this.limitFilter > 0 && res.count % this.limitFilter < 5){
+        if (res.count % this.limitFilter > 0 && res.count % this.limitFilter < 5) {
 
-          this.PendingTotalPageNo = parseInt(((res.count / this.limitFilter)+1).toFixed(0));
+          this.PendingTotalPageNo = parseInt(((res.count / this.limitFilter) + 1).toFixed(0));
         } else {
-          
-          this.PendingTotalPageNo = parseInt((res.count / this.limitFilter).toFixed(0)) ;
-        }
-          
-        if (this.PendingTotalPageNo<= 1) {          
 
-        // disables next and prev buttons if total number of page is 1
+          this.PendingTotalPageNo = parseInt((res.count / this.limitFilter).toFixed(0));
+        }
+
+        if (this.PendingTotalPageNo <= 1) {
+
+          // disables next and prev buttons if total number of page is 1
           this.PendingTotalPageNo = 1
           this.buttonDisable = document.querySelector('#pending_first_page')
           this.buttonDisable.disabled = true
@@ -200,6 +201,55 @@ export class LeavedetailsComponent implements OnInit {
       }
 
     });
+
+
+    //getting total number of pages for rejected leaves
+    this.httpClient.get('https://sktleaveapi.herokuapp.com/api/leaveRequesteds/count?where=%7B%22and%22%3A%5B%7B%22email%22%3A%20%22' + this.email + '%22%7D%2C%7B%22status%22%3A%20%22Rejected%22%7D%5D%20%7D').subscribe((res: any) => {
+
+
+      if (res.count > 0) {
+
+
+        if (res.count % this.limitFilter > 0 && res.count % this.limitFilter < 5) {
+
+          this.RejectedTotalPageNo = parseInt(((res.count / this.limitFilter) + 1).toFixed(0));
+        } else {
+
+          this.RejectedTotalPageNo = parseInt((res.count / this.limitFilter).toFixed(0));
+        }
+
+        if (this.RejectedTotalPageNo <= 1) {
+
+          // disables next and prev buttons if total number of page is 1
+          this.RejectedTotalPageNo = 1
+          this.buttonDisable = document.querySelector('#rejected_first_page')
+          this.buttonDisable.disabled = true
+          this.buttonDisable = document.querySelector('#rejected_fast_rewind')
+          this.buttonDisable.disabled = true
+          this.buttonDisable = document.querySelector('#rejected_fast_forward')
+          this.buttonDisable.disabled = true
+          this.buttonDisable = document.querySelector('#rejected_last_page')
+          this.buttonDisable.disabled = true
+
+        }
+
+
+      } else {
+
+        // disable next and prev buttons if number of approved leaves are 0
+        this.RejectedTotalPageNo = 1;
+        this.buttonDisable = document.querySelector('#rejected_first_page')
+        this.buttonDisable.disabled = true
+        this.buttonDisable = document.querySelector('#rejected_fast_rewind')
+        this.buttonDisable.disabled = true
+        this.buttonDisable = document.querySelector('#rejected_fast_forward')
+        this.buttonDisable.disabled = true
+        this.buttonDisable = document.querySelector('#rejected_last_page')
+        this.buttonDisable.disabled = true
+      }
+
+    });
+
 
 
     /**
