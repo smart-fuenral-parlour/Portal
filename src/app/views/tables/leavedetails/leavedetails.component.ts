@@ -30,7 +30,14 @@ export class LeavedetailsComponent implements OnInit {
   public getLeaveSkipForward: any = 0;
   startdate: string;
   enddate: string;
-  nextButtonDisable = ''
+  buttonDisable: any
+  pageNo = 1
+  // total count of leaves
+  totalPageNo: any
+  totalLeaveApproved: any
+  totalLeaveRejected: any
+  totalLeavePending: any
+
 
   constructor(private httpClient: HttpClient, private adalSvc: AdalService) {
     // Display
@@ -40,8 +47,6 @@ export class LeavedetailsComponent implements OnInit {
     this.getAllRejectedLeave();
     this.getAllPendingLeave();
 
-
-
   }
 
   ngOnInit() {
@@ -49,6 +54,80 @@ export class LeavedetailsComponent implements OnInit {
     this.fullnames = this.adalSvc.userInfo.profile.name;
     this.email = this.adalSvc.userInfo.userName;
 
+
+    //getting total number of pages of all leave requests
+    this.httpClient.get('https://sktleaveapi.herokuapp.com/api/leaveRequesteds/count?where=%7B%22email%22%3A%20%22' + this.email + '%22%7D').subscribe((res: any) => {
+
+
+      if (res.count > 0) {
+        // enables next and prev buttons 
+        this.totalPageNo = (res.count / 2).toFixed(0);
+        this.buttonDisable = document.querySelector('#fast_forward')
+        this.buttonDisable.disabled = false
+        this.buttonDisable = document.querySelector('#fast_rewind')
+        this.buttonDisable.disabled = false
+
+      } else {
+
+        // disable next and prev buttons if number of leaves are 0
+        this.totalPageNo = 1;
+        this.buttonDisable = document.querySelector('#fast_forward')
+        this.buttonDisable.disabled = true
+        this.buttonDisable = document.querySelector('#fast_rewind')
+        this.buttonDisable.disabled = true
+
+      }
+
+    });
+
+    //getting total number of pages of approved leave
+    this.httpClient.get('https://sktleaveapi.herokuapp.com/api/leaveRequesteds/count?where=%7B%22and%22%3A%5B%7B%22email%22%3A%20%22' + this.email + '%22%7D%2C%7B%22status%22%3A%20%22Approved%22%7D%5D%20%7D').subscribe((res: any) => {
+
+
+      if (res.count > 0) {
+        // enables next and prev buttons if there are apporved leaves 
+        this.totalLeaveApproved = (res.count / 2).toFixed(0);
+        this.buttonDisable = document.querySelector('#approved_fast_forward')
+        this.buttonDisable.disabled = false
+        this.buttonDisable = document.querySelector('#approved_fast_rewind')
+        this.buttonDisable.disabled = false
+        this.buttonDisable = document.querySelector('#approved_fast_forward')
+        this.buttonDisable.disabled = false
+        this.buttonDisable = document.querySelector('#approved_fast_rewind')
+        this.buttonDisable.disabled = false
+
+      } else {
+
+        // disable next and prev buttons if number of approved leaves are 0
+        this.totalLeaveApproved = 1;
+        this.buttonDisable = document.querySelector('#approved_fast_forward')
+        this.buttonDisable.disabled = true
+        this.buttonDisable = document.querySelector('#approved_fast_rewind')
+        this.buttonDisable.disabled = true
+        this.buttonDisable = document.querySelector('#approved_first_page')
+        this.buttonDisable.disabled = true
+        this.buttonDisable = document.querySelector('#approved_last_page')
+        this.buttonDisable.disabled = true
+      }
+
+    });
+
+
+    /**
+     * total leave request 
+     * https://sktleaveapi.herokuapp.com/api/leaveRequesteds/count?where=%7B%22email%22%3A%20%22tmollootimile%40skhomotech.co.za%22%7D
+     * 
+     * total leave approved
+     * https://sktleaveapi.herokuapp.com/api/leaveRequesteds/count?where=%7B%22and%22%3A%5B%7B%22email%22%3A%20%22tmollootimile%40skhomotech.co.za%22%7D%2C%7B%22status%22%3A%20%22Approved%22%7D%5D%20%7D
+     * 
+     * total leave approved
+     * https://sktleaveapi.herokuapp.com/api/leaveRequesteds/count?where=%7B%22and%22%3A%5B%7B%22email%22%3A%20%22tmollootimile%40skhomotech.co.za%22%7D%2C%7B%22status%22%3A%20%22Rejected%22%7D%5D%20%7D
+     * 
+     * 
+     *  total leave Pending
+     * https://sktleaveapi.herokuapp.com/api/leaveRequesteds/count?where=%7B%22and%22%3A%5B%7B%22email%22%3A%20%22tmollootimile%40skhomotech.co.za%22%7D%2C%7B%22status%22%3A%20%22Pending%22%7D%5D%20%7D
+     * 
+     */
   }
   // Get current  users leave request details
   getLeave() {
@@ -83,6 +162,7 @@ export class LeavedetailsComponent implements OnInit {
     this.httpClient.get('https://sktleaveapi.herokuapp.com/api/leaveRequesteds?filter={"where":{"email":"' + emails + '","status":"Approved"}}').subscribe((res: any[]) => {
       // Asign Results to approvedleave variable
       this.approvedleave = res;
+
     });
   }
   // Get All Rejected leave
@@ -105,6 +185,7 @@ export class LeavedetailsComponent implements OnInit {
     this.httpClient.get('https://sktleaveapi.herokuapp.com/api/leaveRequesteds?filter={"where":{"email":"' + emails + '","status":"Pending"}}').subscribe((res: any[]) => {
       // Asign Results to approvedleave variable
       this.Pendingleaves = res;
+      console.log(res.length)
     });
   }
 
@@ -171,13 +252,18 @@ export class LeavedetailsComponent implements OnInit {
     // tslint:disable-next-line:max-line-length
     this.httpClient.get('https://sktleaveapi.herokuapp.com/api/leaveRequesteds?filter[where][email]=' + emails + '&filter[limit]=2&filter[skip]=' + this.getLeaveSkipForward + '&filter[order]=startdate%20DESC').subscribe((res: any[]) => {
       // Asign Results to leavedetails variable
-      if(res.length > 0){
+
+      if (res.length > 0) {
+        // this.buttonDisable = ''
+        this.pageNo++
         this.LeaveDetails = res;
-        this.nextButtonDisable = 'disabled'
+        console.log('add: ' + this.getLeaveSkipForward)
       } else {
-        this.nextButtonDisable = 'disabled'
+        // this.buttonDisable = 'btn-outline-light'
+        this.getLeaveSkipForward -= 2;
+        console.log('minus: ' + this.getLeaveSkipForward)
       }
-      
+
 
     });
 
@@ -189,6 +275,9 @@ export class LeavedetailsComponent implements OnInit {
     if (this.getLeaveSkipForward < 0) {
       this.getLeaveSkipForward = 0
     }
+
+
+
     const emails = this.adalSvc.userInfo.userName;
     // Get Method for current user leave request details
     // tslint:disable-next-line:max-line-length
@@ -196,8 +285,14 @@ export class LeavedetailsComponent implements OnInit {
       // Asign Results to leavedetails variable
       this.LeaveDetails = res;
 
+      if (this.pageNo > 1) {
+        this.pageNo--
+      }
+
     });
 
   }
+
+
 }
 

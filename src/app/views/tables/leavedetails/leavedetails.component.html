@@ -90,10 +90,11 @@
                                                           </button>
                               
                                                         <span>
-                                                         {{pageNo}} of {{totalPageNo}}
+                                                        <!-- Page: {{pageNo}}  -->
+                                                        {{pageNo}} of {{totalPageNo}} 
                                                         </span>
                               
-                                                          <button type="button" rel="tooltip"  (click)="getNextAlert();" name="fast_forward" id="fast_forward" title="Next page"  class="btn btn-primary btn-round btn-fab btn-fab-mini ">
+                                                          <button type="button" rel="tooltip"  (click)="getNextAlert();" name="fast_forward" id="fast_forward" title="Next page"  class="btn btn-primary btn-round btn-fab btn-fab-mini">
                                                             <i class="material-icons">keyboard_arrow_right</i>
                                                           </button>
                                                           <button type="button" rel="tooltip" (click)="getLastAlert();" id="last_page" title="Last page" class="btn btn-primary btn-round btn-fab btn-fab-mini">
@@ -164,21 +165,21 @@
                                                 <tr>
                                                   <td colspan="7">
                                                     <span id="paginator">
-                                                      <button type="button" rel="tooltip" (click)="getFirstAlert();" id="first_page" title="First page" class="btn btn-primary btn-round btn-fab btn-fab-mini">
+                                                      <button type="button" rel="tooltip" (click)="getFirstAlert();" id="approved_first_page" title="First page" class="btn btn-primary btn-round btn-fab btn-fab-mini">
                                                         <i class="material-icons">first_page</i>
                                                       </button>
-                                                        <button type="button" rel="tooltip" (click)="getPrevousAlert();" id="fast_rewind" title="Previous page" class="btn btn-primary btn-round btn-fab btn-fab-mini">
+                                                        <button type="button" rel="tooltip" (click)="getPrevousAlert();" id="approved_fast_rewind" title="Previous page" class="btn btn-primary btn-round btn-fab btn-fab-mini">
                                                           <i class="material-icons">keyboard_arrow_left</i>
                                                         </button>
                             
                                                       <span>
-                                                       {{pageNo}} of {{totalPageNo}}
+                                                       {{pageNo}} of {{totalLeaveApproved}}
                                                       </span>
                             
-                                                        <button type="button" rel="tooltip" (click)="getNextAlert();" id="fast_forward" title="Next page" class="btn btn-primary btn-round btn-fab btn-fab-mini">
+                                                        <button type="button" rel="tooltip" (click)="getNextAlert();" id="approved_fast_forward" title="Next page" class="btn btn-primary btn-round btn-fab btn-fab-mini">
                                                           <i class="material-icons">keyboard_arrow_right</i>
                                                         </button>
-                                                        <button type="button" rel="tooltip" (click)="getLastAlert();" id="last_page" title="Last page" class="btn btn-primary btn-round btn-fab btn-fab-mini">
+                                                        <button type="button" rel="tooltip" (click)="getLastAlert();" id="approved_last_page" title="Last page" class="btn btn-primary btn-round btn-fab btn-fab-mini">
                                                           <i class="material-icons">last_page</i>
                                                         </button>
                                                         <!-- <select name="rowsOnPageSet" id="rowsOnPageSet" class="dropdown-toggle btn btn-primary" (ngModelChange)="onChangePageFilter();" >
