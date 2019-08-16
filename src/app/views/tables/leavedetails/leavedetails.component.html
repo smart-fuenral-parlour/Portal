@@ -1,419 +1,441 @@
 <div class="image-container set-full-height" style="background-image: url('assets/img/download.png')">
   <!--  Made With Material Kit  -->
   <a href="" class="made-with-mk">
-      <div class="brand">LM</div>
-      <div class="made-with"><strong>Leave Management</strong></div>
+    <div class="brand">LM</div>
+    <div class="made-with"><strong>Leave Management</strong></div>
   </a>
   <!--   Big container   -->
   <div class="container">
-      <div class="row">
-          <div class="col-sm-12 ">
-              <!--      Wizard container        -->
-              <div class="wizard-container">
-                  <div class="card wizard-card" data-color="red" id="wizard">
-                      <form action="" method="">
-                          <!--        You can switch " data-color="blue" "  with one of the next bright colors: "green", "orange", "red", "purple"-->
-                          <div class="wizard-header">
-                              <h3 class="wizard-title">
-                                  Leave Management
-                              </h3>
-                              <!-- <h5>This information will let us know more about you.</h5> -->
-                          </div>
-                          <div class="wizard-navigation">
-                              <ul>
-                                  <!-- <li><a href="#applyleave" data-toggle="tab">Apply Leave</a></li> -->
-                                  <li><a href="#leaveDetails" data-toggle="tab">Leaves Details</a></li>
-                                  <li><a href="#approvedLeave" data-toggle="tab">Approved Leaves</a></li>
-                                  <li><a href="#pendingLeave" data-toggle="tab">Pending Leaves</a></li>
-                                  <li><a href="#rejectedLeave" data-toggle="tab">Rejected Leaves</a></li>
-                                  <li><a href="#leaveBalances" data-toggle="tab">Leave Balance</a></li>
-                              </ul>
-                          </div>
-                          <div class="tab-content">
-                            <div class="tab-pane" id="leaveDetails">
-                          
-                                      <table class="table table-striped" id="LeaveDetails">
-                                              <thead>
-                                                  <tr>
-                                                      <th></th>
-                                                      <th style="display:none;"></th>
-                                                      <th>Leave Type</th>
-                                                      <th>Start Date</th>
-                                                      <th>End Date</th>
-                                                      <th>Days Taken</th>
-                                                      <th>Status</th>
-                                                      <th>Reason</th>
-                                                      <th>Actions</th>
-                                                  </tr>
-                                              </thead>
-                                              <tbody>
-                                                  <tr *ngFor="let leave of LeaveDetails; let i = index;" id="{{i+1}}">
-                                                      {{i+1}}
-                                                      <td style="display:none;" id="{{i+1}}">{{leave.id}}</td>
-                                                      <td>{{leave.leaveType}}</td>
-                                                      <td>{{leave.startdate}}</td>
-                                                      <td>{{leave.enddate}}</td>
-                                                      <td>{{leave.nodaystaken}}</td>
-                                                      <td>{{leave.status}}</td>
-                                                      <td>{{leave.reason}}</td>
+    <div class="row">
+      <div class="col-sm-12 ">
+        <!--      Wizard container        -->
+        <div class="wizard-container">
+          <div class="card wizard-card" data-color="red" id="wizard">
+            <form action="" method="">
+              <!--        You can switch " data-color="blue" "  with one of the next bright colors: "green", "orange", "red", "purple"-->
+              <div class="wizard-header">
+                <h3 class="wizard-title">
+                  Leave Management
+                </h3>
+                <!-- <h5>This information will let us know more about you.</h5> -->
+              </div>
+              <div class="wizard-navigation">
+                <ul>
+                  <!-- <li><a href="#applyleave" data-toggle="tab">Apply Leave</a></li> -->
+                  <li><a href="#leaveDetails"  (focus)="changeTab(0)" data-toggle="tab">Leaves Details</a></li>
+                  <li><a href="#approvedLeave" (focus)="changeTab(1)" data-toggle="tab">Approved Leaves</a></li>
+                  <li><a href="#pendingLeave" (focus)="changeTab(2)" data-toggle="tab">Pending Leaves</a></li>
+                  <li><a href="#rejectedLeave" (focus)="changeTab(3)" data-toggle="tab">Rejected Leaves</a></li>
+                  <li><a href="#leaveBalances" (focus)="changeTab(4)" data-toggle="tab">Leave Balance</a></li>
+                </ul>
+              </div>
 
-                                                       
-                                                          <button type="button" rel="tooltip" data-toggle="modal" data-target="#exampleModal" id="update"
-                                                            title="Update leave details" class="btn btn-warning" (click)="onSelect(leave);">
-                                                            <i class="material-icons">update</i>
-                                                          </button>
-                                                        
-                                                  </tr>
-                                                
-                                              </tbody>
-                                              <tfoot>
-                                                  <!-- <label id="results">No Alerts Data at the moment</label> -->
-                                                  <tr>
-                                                      <th></th>
-                                                      <th style="display:none;"></th>
-                                                      <th>Leave Type</th>
-                                                      <th>Start Date</th>
-                                                      <th>End Date</th>
-                                                      <th>Days Taken</th>
-                                                      <th>Status</th>
-                                                      <th>Reason</th>
-                                                      <th>Actions</th>
-                                                  </tr>
-                                                  <tr>
-                                                    <td colspan="7">
-                                                      <span id="paginator">
-                                                        <button type="button" rel="tooltip" (click)="getFirstAlert();" id="first_page" title="First page" class="btn btn-primary btn-round btn-fab btn-fab-mini">
-                                                          <i class="material-icons">first_page</i>
-                                                        </button>
-                                                          <button type="button" rel="tooltip" (click)="getPrevousAlert();" id="fast_rewind" title="Previous page" class="btn btn-primary btn-round btn-fab btn-fab-mini">
-                                                            <i class="material-icons">keyboard_arrow_left</i>
-                                                          </button>
-                              
-                                                        <span>
-                                                        <!-- Page: {{pageNo}}  -->
-                                                        {{pageNo}} of {{totalPageNo}} 
-                                                        </span>
-                              
-                                                          <button type="button" rel="tooltip"  (click)="getNextAlert();" name="fast_forward" id="fast_forward" title="Next page"  class="btn btn-primary btn-round btn-fab btn-fab-mini">
-                                                            <i class="material-icons">keyboard_arrow_right</i>
-                                                          </button>
-                                                          <button type="button" rel="tooltip" (click)="getLastAlert();" id="last_page" title="Last page" class="btn btn-primary btn-round btn-fab btn-fab-mini">
-                                                            <i class="material-icons">last_page</i>
-                                                          </button>
-                                                          <!-- <select name="rowsOnPageSet" id="rowsOnPageSet" class="dropdown-toggle btn btn-primary" (ngModelChange)="onChangePageFilter();" >
+              <div class="tab-content">
+                <div class="tab-pane" id="leaveDetails">
+
+                  <table class="table table-striped" id="LeaveDetails">
+                    <thead>
+                      <tr>
+                        <th></th>
+                        <th style="display:none;"></th>
+                        <th>Leave Type</th>
+                        <th>Start Date</th>
+                        <th>End Date</th>
+                        <th>Days Taken</th>
+                        <th>Status</th>
+                        <th>Reason</th>
+                        <th>Actions</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr *ngFor="let leave of LeaveDetails; let i = index;" id="{{i+1}}">
+                        {{i+1}}
+                        <td style="display:none;" id="{{i+1}}">{{leave.id}}</td>
+                        <td>{{leave.leaveType}}</td>
+                        <td>{{leave.startdate}}</td>
+                        <td>{{leave.enddate}}</td>
+                        <td>{{leave.nodaystaken}}</td>
+                        <td>{{leave.status}}</td>
+                        <td>{{leave.reason}}</td>
+
+
+                        <button type="button" rel="tooltip" data-toggle="modal" data-target="#exampleModal" id="update"
+                          title="Update leave details" class="btn btn-warning" (click)="onSelect(leave);">
+                          <i class="material-icons">update</i>
+                        </button>
+
+                      </tr>
+
+                    </tbody>
+                    <tfoot>
+                      <!-- <label id="results">No Alerts Data at the moment</label> -->
+                      <tr>
+                        <th></th>
+                        <th style="display:none;"></th>
+                        <th>Leave Type</th>
+                        <th>Start Date</th>
+                        <th>End Date</th>
+                        <th>Days Taken</th>
+                        <th>Status</th>
+                        <th>Reason</th>
+                        <th>Actions</th>
+                      </tr>
+                      <tr>
+                        <td colspan="7">
+                          <span id="paginator">
+                            <button type="button" rel="tooltip" (click)="getFirstAlert();" id="first_page"
+                              title="First page" class="btn btn-primary btn-round btn-fab btn-fab-mini">
+                              <i class="material-icons">first_page</i>
+                            </button>
+                            <button type="button" rel="tooltip" (click)="getPrevousAlert();" id="fast_rewind"
+                              title="Previous page" class="btn btn-primary btn-round btn-fab btn-fab-mini">
+                              <i class="material-icons">keyboard_arrow_left</i>
+                            </button>
+
+                            <span>
+                              <!-- Page: {{pageNo}}  -->
+                              {{pageNo}} of {{totalPageNo}}
+                            </span>
+                            <button type="button" aria-disabled="true" rel="tooltip" (click)="getNextAlert();" name="fast_forward"
+                                id="fast_forward" title="Next page"
+                                class="btn {{buttonActiveClass}} btn-primary btn-round btn-fab btn-fab-mini">
+                                <i class="material-icons">keyboard_arrow_right</i>
+                              </button>
+                            <button type="button" aria-disabled="true" rel="tooltip" (click)="getLastAlert();" id="last_page"
+                            title="Last page" class="btn btn-primary btn-round btn-fab btn-fab-mini">
+                            <i class="material-icons">last_page</i>
+                          </button>
+
+
+                            <!-- <select name="rowsOnPageSet" id="rowsOnPageSet" class="dropdown-toggle btn btn-primary" (ngModelChange)="onChangePageFilter();" >
                                                             <option *ngFor="let index of rowsPageArray" [value]="index">
                                                                 {{index}}
                                                             </option>
                                                           </select> -->
-                                                      </span>
-                                                      <!-- <mfBootstrapPaginator [rowsOnPageSet]="[10,25,50,100]"></mfBootstrapPaginator> -->
-                                                    </td>
-                                                  </tr>
-                                                </tfoot>
-                                          </table>
-                            </div>
-                            <div class="tab-pane" id="approvedLeave">
-                          
-                                    <table class="table table-striped">
-                                            <thead>
-                                                <tr>
-                                                    <th></th>
-                                                    <th style="display:none;"></th>
-                                                    <th>Leave Type</th>
-                                                    <th>Start Date</th>
-                                                    <th>End Date</th>
-                                                    <th>Days Taken</th>
-                                                    <th>Status</th>
-                                                    <th>Reason</th>
-                                                    <th>Actions</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                <tr *ngFor="let leave of approvedleave; let i = index;">
-                                                    {{i+1}}
-                                                    <td style="display:none;">{{leave.id}}</td>
-                                                    <td>{{leave.leaveType}}</td>
-                                                    <td>{{leave.startdate}}</td>
-                                                    <td>{{leave.enddate}}</td>
-                                                    <td>{{leave.nodaystaken}}</td>
-                                                    <td>{{leave.status}}</td>
-                                                    <td>{{leave.reason}}</td>
+                          </span>
+                          <!-- <mfBootstrapPaginator [rowsOnPageSet]="[10,25,50,100]"></mfBootstrapPaginator> -->
+                        </td>
+                      </tr>
+                    </tfoot>
+                  </table>
+                </div>
+                <div class="tab-pane" id="approvedLeave">
 
-                                                   
-                                                    
-                                                        <button type="button" rel="tooltip" data-toggle="modal" data-target="#exampleModal" id="update"
-                                                          title="Update leave details" class="btn btn-warning" (click)="onSelect(leave);">
-                                                          <i class="material-icons">update</i>
-                                                        </button>
-                                                    
-                                                </tr>
-                                              
-                                            </tbody>
-                                            <tfoot>
-                                                <!-- <label id="results">No Alerts Data at the moment</label> -->
-                                                <tr>
-                                                    <th></th>
-                                                    <th style="display:none;"></th>
-                                                    <th>Leave Type</th>
-                                                    <th>Start Date</th>
-                                                    <th>End Date</th>
-                                                    <th>Days Taken</th>
-                                                    <th>Status</th>
-                                                    <th>Reason</th>
-                                                    <th>Actions</th>
-                                                </tr>
-                                                <tr>
-                                                  <td colspan="7">
-                                                    <span id="paginator">
-                                                      <button type="button" rel="tooltip" (click)="getFirstAlert();" id="approved_first_page" title="First page" class="btn btn-primary btn-round btn-fab btn-fab-mini">
-                                                        <i class="material-icons">first_page</i>
-                                                      </button>
-                                                        <button type="button" rel="tooltip" (click)="getPrevousAlert();" id="approved_fast_rewind" title="Previous page" class="btn btn-primary btn-round btn-fab btn-fab-mini">
-                                                          <i class="material-icons">keyboard_arrow_left</i>
-                                                        </button>
-                            
-                                                      <span>
-                                                       {{ApprovedpageNo}} of {{totalLeaveApproved}}
-                                                      </span>
-                            
-                                                        <button type="button" rel="tooltip" (click)="getNextAlert();" id="approved_fast_forward" title="Next page" class="btn btn-primary btn-round btn-fab btn-fab-mini">
-                                                          <i class="material-icons">keyboard_arrow_right</i>
-                                                        </button>
-                                                        <button type="button" rel="tooltip" (click)="getLastAlert();" id="approved_last_page" title="Last page" class="btn btn-primary btn-round btn-fab btn-fab-mini">
-                                                          <i class="material-icons">last_page</i>
-                                                        </button>
-                                                        <!-- <select name="rowsOnPageSet" id="rowsOnPageSet" class="dropdown-toggle btn btn-primary" (ngModelChange)="onChangePageFilter();" >
+                  <table class="table table-striped">
+                    <thead>
+                      <tr>
+                        <th></th>
+                        <th style="display:none;"></th>
+                        <th>Leave Type</th>
+                        <th>Start Date</th>
+                        <th>End Date</th>
+                        <th>Days Taken</th>
+                        <th>Status</th>
+                        <th>Reason</th>
+                        <th>Actions</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr *ngFor="let leave of approvedleave; let i = index;">
+                        {{i+1}}
+                        <td style="display:none;">{{leave.id}}</td>
+                        <td>{{leave.leaveType}}</td>
+                        <td>{{leave.startdate}}</td>
+                        <td>{{leave.enddate}}</td>
+                        <td>{{leave.nodaystaken}}</td>
+                        <td>{{leave.status}}</td>
+                        <td>{{leave.reason}}</td>
+
+
+
+                        <button type="button" rel="tooltip" data-toggle="modal" data-target="#exampleModal" id="update"
+                          title="Update leave details" class="btn btn-warning" (click)="onSelect(leave);">
+                          <i class="material-icons">update</i>
+                        </button>
+
+                      </tr>
+
+                    </tbody>
+                    <tfoot>
+                      <!-- <label id="results">No Alerts Data at the moment</label> -->
+                      <tr>
+                        <th></th>
+                        <th style="display:none;"></th>
+                        <th>Leave Type</th>
+                        <th>Start Date</th>
+                        <th>End Date</th>
+                        <th>Days Taken</th>
+                        <th>Status</th>
+                        <th>Reason</th>
+                        <th>Actions</th>
+                      </tr>
+                      <tr>
+                        <td colspan="7">
+                          <span id="paginator">
+                            <button type="button" rel="tooltip" (click)="getFirstAlert();" id="approved_first_page"
+                              title="First page" class="btn btn-primary btn-round btn-fab btn-fab-mini">
+                              <i class="material-icons">first_page</i>
+                            </button>
+                            <button type="button" rel="tooltip" (click)="getPrevousAlert();" id="approved_fast_rewind"
+                              title="Previous page" class="btn btn-primary btn-round btn-fab btn-fab-mini">
+                              <i class="material-icons">keyboard_arrow_left</i>
+                            </button>
+
+                            <span>
+                              {{ApprovedpageNo}} of {{totalLeaveApproved}}
+                            </span>
+
+                            <button type="button" rel="tooltip" (click)="getNextAlert();" id="approved_fast_forward"
+                              title="Next page" class="btn btn-primary btn-round btn-fab btn-fab-mini">
+                              <i class="material-icons">keyboard_arrow_right</i>
+                            </button>
+                            <button type="button" rel="tooltip" (click)="getLastAlert();" id="approved_last_page"
+                              title="Last page" class="btn btn-primary btn-round btn-fab btn-fab-mini">
+                              <i class="material-icons">last_page</i>
+                            </button>
+                            <!-- <select name="rowsOnPageSet" id="rowsOnPageSet" class="dropdown-toggle btn btn-primary" (ngModelChange)="onChangePageFilter();" >
                                                           <option *ngFor="let index of rowsPageArray" [value]="index">
                                                               {{index}}
                                                           </option>
                                                         </select> -->
-                                                    </span>
-                                                    <!-- <mfBootstrapPaginator [rowsOnPageSet]="[10,25,50,100]"></mfBootstrapPaginator> -->
-                                                  </td>
-                                                </tr>
-                                              </tfoot>
-                                        </table>
-                            </div>
-                            <div class="tab-pane" id="pendingLeave">
-                          
-                                    <table class="table table-striped">
-                                            <thead>
-                                                <tr>
-                                                    <th></th>
-                                                    <th style="display:none;"></th>
-                                                    <th>Leave Type</th>
-                                                    <th>Start Date</th>
-                                                    <th>End Date</th>
-                                                    <th>Days Taken</th>
-                                                    <th>Status</th>
-                                                    <th>Reason</th>
-                                                    <th>Actions</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                <tr *ngFor="let leave of Pendingleaves; let i = index;">
-                                                    {{i+1}}
-                                                    <td style="display:none;">{{leave.id}}</td>
-                                                    <td>{{leave.leaveType}}</td>
-                                                    <td>{{leave.startdate}}</td>
-                                                    <td>{{leave.enddate}}</td>
-                                                    <td>{{leave.nodaystaken}}</td>
-                                                    <td>{{leave.status}}</td>
-                                                    <td>{{leave.reason}}</td>
+                          </span>
+                          <!-- <mfBootstrapPaginator [rowsOnPageSet]="[10,25,50,100]"></mfBootstrapPaginator> -->
+                        </td>
+                      </tr>
+                    </tfoot>
+                  </table>
+                </div>
+                <div class="tab-pane" id="pendingLeave">
 
-                                      
-                                                        <button type="button" rel="tooltip" data-toggle="modal" data-target="#exampleModal" id="update"
-                                                          title="Update leave details" class="btn btn-warning" (click)="onSelect(leave);">
-                                                          <i class="material-icons">update</i>
-                                                        </button>
-                                                  
-                                                </tr>
-                                              
-                                            </tbody>
-                                            <tfoot>
-                                                <!-- <label id="results">No Alerts Data at the moment</label> -->
-                                                <tr>
-                                                    <th></th>
-                                                    <th style="display:none;"></th>
-                                                    <th>Leave Type</th>
-                                                    <th>Start Date</th>
-                                                    <th>End Date</th>
-                                                    <th>Days Taken</th>
-                                                    <th>Status</th>
-                                                    <th>Reason</th>
-                                                    <th>Actions</th>
-                                                </tr>
-                                                <tr>
-                                                  <td colspan="7">
-                                                    <span id="paginator">
-                                                      <button type="button" rel="tooltip" (click)="getFirstAlert();" id="first_page" title="First page" class="btn btn-primary btn-round btn-fab btn-fab-mini">
-                                                        <i class="material-icons">first_page</i>
-                                                      </button>
-                                                        <button type="button" rel="tooltip" (click)="getPrevousAlert();" id="fast_rewind" title="Previous page" class="btn btn-primary btn-round btn-fab btn-fab-mini">
-                                                          <i class="material-icons">keyboard_arrow_left</i>
-                                                        </button>
-                            
-                                                      <span>
-                                                       {{pageNo}} of {{totalPageNo}}
-                                                      </span>
-                            
-                                                        <button type="button" rel="tooltip" (click)="getNextAlert();" id="fast_forward" title="Next page" class="btn btn-primary btn-round btn-fab btn-fab-mini">
-                                                          <i class="material-icons">keyboard_arrow_right</i>
-                                                        </button>
-                                                        <button type="button" rel="tooltip" (click)="getLastAlert();" id="last_page" title="Last page" class="btn btn-primary btn-round btn-fab btn-fab-mini">
-                                                          <i class="material-icons">last_page</i>
-                                                        </button>
-                                                        <!-- <select name="rowsOnPageSet" id="rowsOnPageSet" class="dropdown-toggle btn btn-primary" (ngModelChange)="onChangePageFilter();" >
+                  <table class="table table-striped">
+                    <thead>
+                      <tr>
+                        <th></th>
+                        <th style="display:none;"></th>
+                        <th>Leave Type</th>
+                        <th>Start Date</th>
+                        <th>End Date</th>
+                        <th>Days Taken</th>
+                        <th>Status</th>
+                        <th>Reason</th>
+                        <th>Actions</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr *ngFor="let leave of Pendingleaves; let i = index;">
+                        {{i+1}}
+                        <td style="display:none;">{{leave.id}}</td>
+                        <td>{{leave.leaveType}}</td>
+                        <td>{{leave.startdate}}</td>
+                        <td>{{leave.enddate}}</td>
+                        <td>{{leave.nodaystaken}}</td>
+                        <td>{{leave.status}}</td>
+                        <td>{{leave.reason}}</td>
+
+
+                        <button type="button" rel="tooltip" data-toggle="modal" data-target="#exampleModal" id="update"
+                          title="Update leave details" class="btn btn-warning" (click)="onSelect(leave);">
+                          <i class="material-icons">update</i>
+                        </button>
+
+                      </tr>
+
+                    </tbody>
+                    <tfoot>
+                      <!-- <label id="results">No Alerts Data at the moment</label> -->
+                      <tr>
+                        <th></th>
+                        <th style="display:none;"></th>
+                        <th>Leave Type</th>
+                        <th>Start Date</th>
+                        <th>End Date</th>
+                        <th>Days Taken</th>
+                        <th>Status</th>
+                        <th>Reason</th>
+                        <th>Actions</th>
+                      </tr>
+                      <tr>
+                        <td colspan="7">
+                          <span id="paginator">
+                            <button type="button" rel="tooltip" (click)="getFirstAlert();" id="first_page"
+                              title="First page" class="btn btn-primary btn-round btn-fab btn-fab-mini">
+                              <i class="material-icons">first_page</i>
+                            </button>
+                            <button type="button" rel="tooltip" (click)="getPrevousAlert();" id="fast_rewind"
+                              title="Previous page" class="btn btn-primary btn-round btn-fab btn-fab-mini">
+                              <i class="material-icons">keyboard_arrow_left</i>
+                            </button>
+
+                            <span>
+                              {{pageNo}} of {{totalPageNo}}
+                            </span>
+
+                            <button type="button" rel="tooltip" (click)="getNextAlert();" id="fast_forward"
+                              title="Next page" class="btn btn-primary btn-round btn-fab btn-fab-mini">
+                              <i class="material-icons">keyboard_arrow_right</i>
+                            </button>
+                            <button type="button" rel="tooltip" (click)="getLastAlert();" id="last_page"
+                              title="Last page" class="btn btn-primary btn-round btn-fab btn-fab-mini">
+                              <i class="material-icons">last_page</i>
+                            </button>
+                            <!-- <select name="rowsOnPageSet" id="rowsOnPageSet" class="dropdown-toggle btn btn-primary" (ngModelChange)="onChangePageFilter();" >
                                                           <option *ngFor="let index of rowsPageArray" [value]="index">
                                                               {{index}}
                                                           </option>
                                                         </select> -->
-                                                    </span>
-                                                    <!-- <mfBootstrapPaginator [rowsOnPageSet]="[10,25,50,100]"></mfBootstrapPaginator> -->
-                                                  </td>
-                                                </tr>
-                                              </tfoot>
-                                        </table>
-                            </div>
-                            <div class="tab-pane" id="rejectedLeave">
-                                  <div class="row">
-                                        <table class="table table-striped">
-                                                <thead>
-                                                    <tr>
-                                                        <th></th>
-                                                        <th style="display:none;"></th>
-                                                        <th>Leave Type</th>
-                                                        <th>Start Date</th>
-                                                        <th>End Date</th>
-                                                        <th>Days Taken</th>
-                                                        <th>Status</th>
-                                                        <th>Reason</th>
-                                                        <th>Document</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-                                                    <tr *ngFor="let leave of rejectedleave; let i = index;">
-                                                        {{i+1}}
-                                                        <td style="display:none;">{{leave.id}}</td>
-                                                        <td>{{leave.leaveType}}</td>
-                                                        <td>{{leave.startdate}}</td>
-                                                        <td>{{leave.enddate}}</td>
-                                                        <td>{{leave.nodaystaken}}</td>
-                                                        <td>{{leave.status}}</td>
-                                                        <td>{{leave.reason}}</td>
-    
-                                                        <button type="button"  (click)="download();" rel="tooltip" title="Download Document" class="btn btn-primary">
-                                                            <i class="material-icons">visibility</i>
-                                                          </button>
-                                                    </tr>
-                                                  
-                                                </tbody>
-                                                <tfoot>
-                                                    <!-- <label id="results">No Alerts Data at the moment</label> -->
-                                                    <tr>
-                                                        <th></th>
-                                                        <th style="display:none;"></th>
-                                                        <th>Leave Type</th>
-                                                        <th>Start Date</th>
-                                                        <th>End Date</th>
-                                                        <th>Days Taken</th>
-                                                        <th>Status</th>
-                                                        <th>Reason</th>
-                                                        <th>Document</th>
-                                                    </tr>
-                                                    <tr>
-                                                      <td colspan="7">
-                                                        <span id="paginator">
-                                                          <button type="button" rel="tooltip" (click)="getFirstAlert();" id="first_page" title="First page" class="btn btn-primary btn-round btn-fab btn-fab-mini">
-                                                            <i class="material-icons">first_page</i>
-                                                          </button>
-                                                            <button type="button" rel="tooltip" (click)="getPrevousAlert();" id="fast_rewind" title="Previous page" class="btn btn-primary btn-round btn-fab btn-fab-mini">
-                                                              <i class="material-icons">keyboard_arrow_left</i>
-                                                            </button>
-                                
-                                                          <span>
-                                                           {{pageNo}} of {{totalPageNo}}
-                                                          </span>
-                                
-                                                            <button type="button" rel="tooltip" (click)="getNextAlert();" id="fast_forward" title="Next page" class="btn btn-primary btn-round btn-fab btn-fab-mini">
-                                                              <i class="material-icons">keyboard_arrow_right</i>
-                                                            </button>
-                                                            <button type="button" rel="tooltip" (click)="getLastAlert();" id="last_page" title="Last page" class="btn btn-primary btn-round btn-fab btn-fab-mini">
-                                                              <i class="material-icons">last_page</i>
-                                                            </button>
-                                                            <!-- <select name="rowsOnPageSet" id="rowsOnPageSet" class="dropdown-toggle btn btn-primary" (ngModelChange)="onChangePageFilter();" >
+                          </span>
+                          <!-- <mfBootstrapPaginator [rowsOnPageSet]="[10,25,50,100]"></mfBootstrapPaginator> -->
+                        </td>
+                      </tr>
+                    </tfoot>
+                  </table>
+                </div>
+                <div class="tab-pane" id="rejectedLeave">
+                  <div class="row">
+                    <table class="table table-striped">
+                      <thead>
+                        <tr>
+                          <th></th>
+                          <th style="display:none;"></th>
+                          <th>Leave Type</th>
+                          <th>Start Date</th>
+                          <th>End Date</th>
+                          <th>Days Taken</th>
+                          <th>Status</th>
+                          <th>Reason</th>
+                          <th>Document</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr *ngFor="let leave of rejectedleave; let i = index;">
+                          {{i+1}}
+                          <td style="display:none;">{{leave.id}}</td>
+                          <td>{{leave.leaveType}}</td>
+                          <td>{{leave.startdate}}</td>
+                          <td>{{leave.enddate}}</td>
+                          <td>{{leave.nodaystaken}}</td>
+                          <td>{{leave.status}}</td>
+                          <td>{{leave.reason}}</td>
+
+                          <button type="button" (click)="download();" rel="tooltip" title="Download Document"
+                            class="btn btn-primary">
+                            <i class="material-icons">visibility</i>
+                          </button>
+                        </tr>
+
+                      </tbody>
+                      <tfoot>
+                        <!-- <label id="results">No Alerts Data at the moment</label> -->
+                        <tr>
+                          <th></th>
+                          <th style="display:none;"></th>
+                          <th>Leave Type</th>
+                          <th>Start Date</th>
+                          <th>End Date</th>
+                          <th>Days Taken</th>
+                          <th>Status</th>
+                          <th>Reason</th>
+                          <th>Document</th>
+                        </tr>
+                        <tr>
+                          <td colspan="7">
+                            <span id="paginator">
+                              <button type="button" rel="tooltip" (click)="getFirstAlert();" id="first_page"
+                                title="First page" class="btn btn-primary btn-round btn-fab btn-fab-mini">
+                                <i class="material-icons">first_page</i>
+                              </button>
+                              <button type="button" rel="tooltip" (click)="getPrevousAlert();" id="fast_rewind"
+                                title="Previous page" class="btn btn-primary btn-round btn-fab btn-fab-mini">
+                                <i class="material-icons">keyboard_arrow_left</i>
+                              </button>
+
+                              <span>
+                                {{pageNo}} of {{totalPageNo}}
+                              </span>
+
+                              <button type="button" rel="tooltip" (click)="getNextAlert();" id="fast_forward"
+                                title="Next page" class="btn btn-primary btn-round btn-fab btn-fab-mini">
+                                <i class="material-icons">keyboard_arrow_right</i>
+                              </button>
+                              <button type="button" rel="tooltip" (click)="getLastAlert();" id="last_page"
+                                title="Last page" class="btn btn-primary btn-round btn-fab btn-fab-mini">
+                                <i class="material-icons">last_page</i>
+                              </button>
+                              <!-- <select name="rowsOnPageSet" id="rowsOnPageSet" class="dropdown-toggle btn btn-primary" (ngModelChange)="onChangePageFilter();" >
                                                               <option *ngFor="let index of rowsPageArray" [value]="index">
                                                                   {{index}}
                                                               </option>
                                                             </select> -->
-                                                        </span>
-                                                        <!-- <mfBootstrapPaginator [rowsOnPageSet]="[10,25,50,100]"></mfBootstrapPaginator> -->
-                                                      </td>
-                                                    </tr>
-                                                  </tfoot>
-                                            </table>
-                                    
-                                  </div>
-                              </div>
-                               <div class="tab-pane" id="leaveBalances">
-                                  <div class="row">
-                                          <table class="table table-striped">
-                                                  <thead>
-                                                      <tr>
-                                                          <th></th> 
-                                                          <th style="display:none;"></th>
-                                                          <th>Annual Leave</th>
-                                                          <th>Medical Leave</th>
-                                                          <th>Maternity Leave</th>
-                                                          <th>Study Leave</th>
-                                                          <th>Other</th>
-                                                          <th>Family Responsibility Leave</th>
-                                                         
-                                                      </tr>
-                                                  </thead>
-                                                  <tbody>
-                                                      <tr *ngFor="let balance of LeaveBalances; let i = index;" >
-                                                          {{i+1}}
-                                                          <td style="display:none;">{{balance.id}}</td>
-                                                          <td>{{balance.annual}}</td>
-                                                          <td>{{balance.medical}}</td>
-                                                          <td>{{balance.maternity}}</td>
-                                                          <td>{{balance.study}}</td>
-                                                          <td>{{balance.other}}</td>
-                                                          <td>{{balance.family}}</td>
-                                                          
-                                                      </tr>
-                                                     
-                                                   
-                                                  </tbody>
-                                                  <tfoot>
-                                                      <!-- <label id="results">No Alerts Data at the moment</label> -->
-                                                      <tr>
-                                                          <th></th> 
-                                                          <th style="display:none;"></th>
-                                                          <th>Annual Leave</th>
-                                                          <th>Medical Leave</th>
-                                                          <th>Maternity Leave</th>
-                                                          <th>Study Leave</th>
-                                                          <th>Other</th>
-                                                          <th>Family Responsibility Leave</th>
-                                                         
-                                                      </tr>
-                                                    
-                                                    </tfoot>
-                                              </table>
-                                    
-                                  </div>
-                              </div>
-                          </div>
-                      </form>
+                            </span>
+                            <!-- <mfBootstrapPaginator [rowsOnPageSet]="[10,25,50,100]"></mfBootstrapPaginator> -->
+                          </td>
+                        </tr>
+                      </tfoot>
+                    </table>
+
                   </div>
-              </div> <!-- wizard container -->
+                </div>
+                <div class="tab-pane" id="leaveBalances">
+                  <div class="row">
+                    <table class="table table-striped">
+                      <thead>
+                        <tr>
+                          <th></th>
+                          <th style="display:none;"></th>
+                          <th>Annual Leave</th>
+                          <th>Medical Leave</th>
+                          <th>Maternity Leave</th>
+                          <th>Study Leave</th>
+                          <th>Other</th>
+                          <th>Family Responsibility Leave</th>
+
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr *ngFor="let balance of LeaveBalances; let i = index;">
+                          {{i+1}}
+                          <td style="display:none;">{{balance.id}}</td>
+                          <td>{{balance.annual}}</td>
+                          <td>{{balance.medical}}</td>
+                          <td>{{balance.maternity}}</td>
+                          <td>{{balance.study}}</td>
+                          <td>{{balance.other}}</td>
+                          <td>{{balance.family}}</td>
+
+                        </tr>
+
+
+                      </tbody>
+                      <tfoot>
+                        <!-- <label id="results">No Alerts Data at the moment</label> -->
+                        <tr>
+                          <th></th>
+                          <th style="display:none;"></th>
+                          <th>Annual Leave</th>
+                          <th>Medical Leave</th>
+                          <th>Maternity Leave</th>
+                          <th>Study Leave</th>
+                          <th>Other</th>
+                          <th>Family Responsibility Leave</th>
+
+                        </tr>
+
+                      </tfoot>
+                    </table>
+
+                  </div>
+                </div>
+              </div>
+
+            </form>
           </div>
-      </div> <!-- row -->
+        </div> <!-- wizard container -->
+      </div>
+    </div> <!-- row -->
   </div> <!--  big container -->
-<!-- Modal -->
-<div class="modal" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <!-- Modal -->
+  <div class="modal" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
     <div class="modal-dialog" role="document">
       <div class="modal-content">
         <div class="modal-header">
@@ -422,74 +444,78 @@
             <span aria-hidden="true">&times;</span>
           </button>
         </div>
-        <div class="modal-body" >
-            <div class="image-container fluid text-dark" style="background-image: url('assets/img/books-connection.jpg');background-color: transparent;">
-          <form class="text-dark ml-2">
-            <div class="form-group row">
-            
+        <div class="modal-body">
+          <div class="image-container fluid text-dark"
+            style="background-image: url('assets/img/books-connection.jpg');background-color: transparent;">
+            <form class="text-dark ml-2">
+              <div class="form-group row">
+
                 <label for="leaveType" class="col-sm-3 form-control-label  text-dark">Leave Type :
                 </label>
                 <div class="col-sm-6">
-                    <!-- Subject -->
-                    <select id="leavetype" class="form-control  text-dark">
-                        <option value="annual">Choose option</option>
-                        <option value="annual" selected>Annual Leave</option>
-                        <option value="medical">Medical Leave</option>
-                        <option value="family">Family Responsibility Leave</option>
-                        <option value="maternity">Maternity Leave</option>
-                        <option value="study">Study Leave</option>
-                        <option value="other">Other</option>
-                    </select></div>
-            </div>
-            <div class="form-group row"> <label for="startdate" class="col-sm-3 form-control-label  text-dark">Start Date :
+                  <!-- Subject -->
+                  <select id="leavetype" class="form-control  text-dark">
+                    <option value="annual">Choose option</option>
+                    <option value="annual" selected>Annual Leave</option>
+                    <option value="medical">Medical Leave</option>
+                    <option value="family">Family Responsibility Leave</option>
+                    <option value="maternity">Maternity Leave</option>
+                    <option value="study">Study Leave</option>
+                    <option value="other">Other</option>
+                  </select></div>
+              </div>
+              <div class="form-group row"> <label for="startdate" class="col-sm-3 form-control-label  text-dark">Start
+                  Date :
                 </label>
                 <div class="col-sm-6"> <input type="date" id="startdate" class="form-control  text-dark"
-                        (change)="calcLeaveDays()">
+                    (change)="calcLeaveDays()">
                 </div>
-            </div>
-            <div class="form-group row"> <label for="enddate" class="col-sm-3 form-control-label  text-dark">End Date :
+              </div>
+              <div class="form-group row"> <label for="enddate" class="col-sm-3 form-control-label  text-dark">End Date
+                  :
                 </label>
-    
+
                 <div class="col-sm-6"> <input type="date" id="enddate" class="form-control  text-dark"
-                        (change)="calcLeaveDays()">
+                    (change)="calcLeaveDays()">
                 </div>
-            </div>
-            <div class="form-group row"> <label for="leaveDay" class="col-sm-3 form-control-label  text-dark">Leave Days
-                    Taken :
+              </div>
+              <div class="form-group row"> <label for="leaveDay" class="col-sm-3 form-control-label  text-dark">Leave
+                  Days
+                  Taken :
                 </label>
-    
+
                 <div class="col-sm-6"> <input type="text" id="calculated" class="form-control  text-danger" readonly="">
                 </div>
-            </div>
-            <div class="form-group row"> <label for="reason" class="col-sm-3 form-control-label  text-dark">Reason For
-                    Leave :
+              </div>
+              <div class="form-group row"> <label for="reason" class="col-sm-3 form-control-label  text-dark">Reason For
+                  Leave :
                 </label>
-    
-                <div class="col-sm-6"> <textarea id="reason" class="form-control" placeholder="" rows="6"  ></textarea>
+
+                <div class="col-sm-6"> <textarea id="reason" class="form-control" placeholder="" rows="6"></textarea>
                 </div>
-            </div>
-            <div class="form-group row"> <label for="enddate" class="col-sm-3 form-control-label  text-dark">Upload File:
-            </label>
-            <label for="file"> Choose File</label>
-            <input type="file" id="file" (change)="handleFileInput($event.target.files)">
-           
-           </div>
-            <div class="form-group row"> <label for="leaveDay" class="col-sm-2 form-control-label  text-dark">
+              </div>
+              <div class="form-group row"> <label for="enddate" class="col-sm-3 form-control-label  text-dark">Upload
+                  File:
                 </label>
-    
+                <label for="file"> Choose File</label>
+                <input type="file" id="file" (change)="handleFileInput($event.target.files)">
+
+              </div>
+              <div class="form-group row"> <label for="leaveDay" class="col-sm-2 form-control-label  text-dark">
+                </label>
+
                 <div class="col-sm-3"> <button class="btn btn-outline-info btn-rounded" (click)="StartNintexflow();"
-                        type="submit">Send</button>
+                    type="submit">Send</button>
                 </div>
                 <div class="col-sm-3"> <button class="btn btn-outline-danger btn-rounded" (click)="clearFormData();"
-                        type="submit">clear</button>
+                    type="submit">clear</button>
                 </div>
-            </div>
-        </form>
-        </div>
+              </div>
+            </form>
+          </div>
         </div>
       </div>
     </div>
   </div>
 
 </div>
-
