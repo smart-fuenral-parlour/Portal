@@ -97,6 +97,8 @@ export class ClaimInfoComponent implements OnInit {
         console.log(approveclaim_res)
         this.app.loading = false
 
+
+        
         swal({
           title: 'Claim Approved',
           type: 'success',

@@ -105,7 +105,7 @@ export class CreateClaimFormComponent implements OnInit {
 
         swal({
           title: "Form Incomplete",
-          text: "Please complete form before submitting claim",
+          text: "Please complete form before capturing claim",
           type: 'error',
           timer: 5000,
           showConfirmButton: true
@@ -118,7 +118,6 @@ export class CreateClaimFormComponent implements OnInit {
           swal({
             title: 'Submit Claim for ' + this.member.name,
             //text: 'Please note that the claim will be in a pending state, up until the approver approves the claim',
-            text: 'Please note that the claim will be in a pending state, up until the approver approves the claim',
             type: 'warning',
             showCancelButton: true,
             confirmButtonClass: 'btn btn-success',
@@ -150,7 +149,8 @@ export class CreateClaimFormComponent implements OnInit {
 
                   swal(
                     {
-                      title: 'Claim Submitted',
+                      title: 'Successfully created',
+                      text: 'Claim captured by '+claim_res.createdby,
                       type: 'success',
                       confirmButtonClass: "btn btn-success",
                       buttonsStyling: false
@@ -189,7 +189,8 @@ export class CreateClaimFormComponent implements OnInit {
 
           swal({
             title: "Cannot Proceed",
-            text: "Unfortunately the selected member is already deceased, please select another one",
+            //text: "Unfortunately the selected member is already deceased, please select another one",
+            text: "Unfortunately the selected member already has a claim created",
             type: 'warning',
             timer: 7500,
             showConfirmButton: true
