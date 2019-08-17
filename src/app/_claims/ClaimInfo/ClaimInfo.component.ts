@@ -27,7 +27,7 @@ import { isNullOrUndefined } from 'util';
 export class ClaimInfoComponent implements OnInit {
 
   getclaim: Claim
-  claimstatus 
+  claimstatus
   claimstatus_color
   user: User
 
@@ -50,7 +50,7 @@ export class ClaimInfoComponent implements OnInit {
     this.claimstatusService.getClaimstatus(this.getclaim.idclaimstatus)
       .subscribe(claimstatus_res => {
 
-        if( !isNullOrUndefined(claimstatus_res) ) {
+        if (!isNullOrUndefined(claimstatus_res)) {
           this.claimstatus = claimstatus_res.name
         } else {
           this.claimstatus = 'pending'
@@ -61,9 +61,9 @@ export class ClaimInfoComponent implements OnInit {
         this.app.loading = false
       })
 
-      
-    
-    if ( !isNullOrUndefined(this.getclaim.idclaimstatus) || this.getclaim.idclaimstatus > 0) {
+
+
+    if (!isNullOrUndefined(this.getclaim.idclaimstatus) || this.getclaim.idclaimstatus > 0) {
 
       if (this.getclaim.idclaimstatus == 2) {
         this.claimstatus_color = 'text-success'
@@ -85,7 +85,7 @@ export class ClaimInfoComponent implements OnInit {
     this.setclaim.createdby = (this.user.name + " " + this.user.surname)
     this.setclaim.reason = ('Claim Approved')
 
-    
+
     this.app.loading = true
     this.claimService.updateClaim(this.getclaim.id, this.setclaim)
       .subscribe(approveclaim_res => {
@@ -103,7 +103,9 @@ export class ClaimInfoComponent implements OnInit {
 
           if (result.value) {
 
-            this.router.navigate(['/claims/viewallclaims'])
+            // this.router.navigate(['/claims/viewallclaims'])
+            this.router.navigate(['/dashboard'])
+
           }
         }) // console.log('done: ' + result.value))  document.location.reload()
 
@@ -135,11 +137,11 @@ export class ClaimInfoComponent implements OnInit {
     }).then((result) => {
       if (result.value) {
 
-        if( $('#reason').val() == '' || isNullOrUndefined($('#reason').val())) {
+        if ($('#reason').val() == '' || isNullOrUndefined($('#reason').val())) {
 
           swal({
             title: "Unsuccesful",
-            text: "Please provide reason for declining the claim",
+            text: "Please provide reason for declining the claim before sending it back",
             type: 'error',
             timer: 5000,
             showConfirmButton: true
@@ -149,38 +151,40 @@ export class ClaimInfoComponent implements OnInit {
           this.setclaim.idclaimstatus = 3
           this.setclaim.createdby = (this.user.name + " " + this.user.surname)
           this.setclaim.reason = $('#reason').val()
-  
+
           //this.user.iduser = $('#reason').val()
-  
+
           this.app.loading = true
           this.claimService.updateClaim(this.getclaim.id, this.setclaim)
             .subscribe(update_res => {
               this.app.loading = false
-  
+
               console.log(update_res)
-  
+
               swal({
-  
+
                 title: 'Claim declined and sent back',
                 type: 'success',
                 confirmButtonClass: "btn btn-success",
                 buttonsStyling: false
-  
+
               }).then((result) => {
-  
-                this.router.navigate(['/claims/viewallclaims'])
+
+                // this.router.navigate(['/claims/viewallclaims'])
+                this.router.navigate(['/dashboard'])
+
                 console.log('saved!')
-  
+
               }) // this.router.navigate(['/claims/viewallclaims']))
-  
-  
+
+
             }, err => {
               console.log(err)
               this.app.loading = false
             })
-  
+
         }
-        
+
       }
     })
 
