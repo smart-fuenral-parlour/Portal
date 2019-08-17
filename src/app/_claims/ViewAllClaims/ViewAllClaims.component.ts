@@ -57,6 +57,7 @@ export class ViewAllClaimsComponent implements OnInit {
         this.app.loading = false
 
         this.claims = claim_res
+        
         console.log(this.claims)
         this.app.loading = false
 

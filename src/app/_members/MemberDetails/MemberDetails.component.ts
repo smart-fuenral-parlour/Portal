@@ -105,7 +105,6 @@ export class MemberDetailsComponent implements OnInit {
     this.member = JSON.parse(localStorage.getItem('viewdetails'))
     this.user = JSON.parse(localStorage.getItem('user'))
 
-    
 
     if (!isNullOrUndefined(this.member.idpolicystatus) || this.member.idpolicystatus > 0) {
 

@@ -74,6 +74,7 @@
                     <th>Created by</th>
                     <th>Created Date</th>
                     <th>Contact Person</th>
+                    <th>Claim Status</th>
                     <th class="disabled-sorting text-right">Action</th>
                   </tr>
                 </thead>
@@ -83,6 +84,11 @@
                     <td>{{ claim.createdby }}</td>
                     <td>{{ claim.createddate | date: "dd MMMM, yyyy"  }}</td> <!--  -->
                     <td>{{ claim.informantname }}  {{ claim.informantsurname }}</td>
+                    <td>
+                      <span *ngIf="claim.idclaimstatus == 1" class="btn btn-warning btn-round btn-sm disabled">Pending</span>
+                      <span *ngIf="claim.idclaimstatus == 2" class="btn btn-success btn-round btn-sm disabled">Approved</span>
+                      <span *ngIf="claim.idclaimstatus == 3" class="btn btn-danger btn-round btn-sm disabled">Declined</span>
+                    </td>
                     <td class="text-right">
                       <button (click)="claimInfo(i)"
                         class="btn btn-link btn-info "><i class="material-icons"
