@@ -399,9 +399,8 @@ export class LeavedetailsComponent implements OnInit {
 
   getNextAlert() {
 
-
     //skip count for query
-    this.getLeaveSkipForward += 2;
+    this.getLeaveSkipForward += this.limitFilter;
     const emails = this.adalSvc.userInfo.userName;
     // Get Method for current user leave request details
     // tslint:disable-next-line:max-line-length
@@ -410,53 +409,87 @@ export class LeavedetailsComponent implements OnInit {
     this.buttonDisable.disabled = true
 
     console.log('Active Tab Index:' + this.activeTab)
-    if (this.activeTab == 2) {
+    if (this.activeTab == 1) {
       // changed to pending tab
-      this.httpClient.get('https://sktleaveapi.herokuapp.com/api/leaveRequesteds?filter[where][email]=' + emails + '&filter[limit]=2&filter[where][status]=Pending&filter[skip]=' + this.getLeaveSkipForward + '&filter[order]=startdate%20DESC').subscribe((res: any[]) => {
+      this.httpClient.get('https://sktleaveapi.herokuapp.com/api/leaveRequesteds?filter[where][email]=' + emails + '&filter[limit]=' + this.limitFilter + '&filter[where][status]=Approved&filter[skip]=' + this.getLeaveSkipForward + '&filter[order]=startdate%20DESC').subscribe((res: any[]) => {
         // Asign Results to leavedetails variable
         this.buttonDisable.disabled = false
 
-
         if (res.length > 0) {
           this.pageNo++
-          this.Pendingleaves = res;
+          this.approvedleave = res;
         } else {
 
-          this.getLeaveSkipForward -= 2;
+          this.getLeaveSkipForward -= this.limitFilter;
         }
 
 
       });
 
-    } else {
+    } else
+      if (this.activeTab == 2) {
+        // changed to pending tab
+        this.httpClient.get('https://sktleaveapi.herokuapp.com/api/leaveRequesteds?filter[where][email]=' + emails + '&filter[limit]=' + this.limitFilter + '&filter[where][status]=Pending&filter[skip]=' + this.getLeaveSkipForward + '&filter[order]=startdate%20DESC').subscribe((res: any[]) => {
+          // Asign Results to leavedetails variable
+          this.buttonDisable.disabled = false
+
+          if (res.length > 0) {
+            this.pageNo++
+            this.Pendingleaves = res;
+          } else {
+
+            this.getLeaveSkipForward -= this.limitFilter;
+          }
 
 
-      this.httpClient.get('https://sktleaveapi.herokuapp.com/api/leaveRequesteds?filter[where][email]=' + emails + '&filter[limit]=2&filter[skip]=' + this.getLeaveSkipForward + '&filter[order]=startdate%20DESC').subscribe((res: any[]) => {
-        // Asign Results to leavedetails variable
-        this.buttonDisable.disabled = false
+        });
 
-        if (res.length > 0) {
+      } else
+        if (this.activeTab == 3) {
+          // changed to pending tab
+          this.httpClient.get('https://sktleaveapi.herokuapp.com/api/leaveRequesteds?filter[where][email]=' + emails + '&filter[limit]=' + this.limitFilter + '&filter[where][status]=Rejected&filter[skip]=' + this.getLeaveSkipForward + '&filter[order]=startdate%20DESC').subscribe((res: any[]) => {
+            // Asign Results to leavedetails variable
+            this.buttonDisable.disabled = false
 
-          this.pageNo++
-          this.LeaveDetails = res;
+            if (res.length > 0) {
+              this.pageNo++
+              this.rejectedleave = res;
+            } else {
+
+              this.getLeaveSkipForward -= this.limitFilter;
+            }
+
+
+          });
 
         } else {
 
-          this.getLeaveSkipForward -= 2;
+          this.httpClient.get('https://sktleaveapi.herokuapp.com/api/leaveRequesteds?filter[where][email]=' + emails + '&filter[limit]=' + this.limitFilter + '&filter[skip]=' + this.getLeaveSkipForward + '&filter[order]=startdate%20DESC').subscribe((res: any[]) => {
+            // Asign Results to leavedetails variable
+            this.buttonDisable.disabled = false
+
+            if (res.length > 0) {
+
+              this.pageNo++
+              this.LeaveDetails = res;
+
+            } else {
+
+              this.getLeaveSkipForward -= 2;
+
+            }
+
+
+          });
 
         }
-
-
-      });
-
-    }
 
   }
 
   getPrevousAlert() {
     //this.buttonActiveClass = 'btn btn-light'
     //skip count for query
-    this.getLeaveSkipForward -= 2;
+    this.getLeaveSkipForward -= this.limitFilter;
     if (this.getLeaveSkipForward < 0) {
       this.getLeaveSkipForward = 0
     }
@@ -467,10 +500,10 @@ export class LeavedetailsComponent implements OnInit {
     // Get Method for current user leave request details
     // tslint:disable-next-line:max-line-length
 
-    if (this.activeTab == 2) {
+    if (this.activeTab == 1) {
       // changed to pending tab
 
-      this.httpClient.get('https://sktleaveapi.herokuapp.com/api/leaveRequesteds?filter[where][email]=' + emails + '&filter[limit]=2&filter[where][status]=Pending&filter[skip]=' + this.getLeaveSkipForward + '&filter[order]=startdate%20DESC').subscribe((res: any[]) => {
+      this.httpClient.get('https://sktleaveapi.herokuapp.com/api/leaveRequesteds?filter[where][email]=' + emails + '&filter[limit]=' + this.limitFilter + '&filter[where][status]=Approved&filter[skip]=' + this.getLeaveSkipForward + '&filter[order]=startdate%20DESC').subscribe((res: any[]) => {
         // Asign Results to leavedetails variable
         this.Pendingleaves = res;
         this.buttonDisable.disabled = false
@@ -483,9 +516,8 @@ export class LeavedetailsComponent implements OnInit {
 
     } else {
 
-      console.log('Leave details')
 
-      this.httpClient.get('https://sktleaveapi.herokuapp.com/api/leaveRequesteds?filter[where][email]=' + emails + '&filter[limit]=2&filter[skip]=' + this.getLeaveSkipForward + '&filter[order]=startdate%20DESC').subscribe((res: any[]) => {
+      this.httpClient.get('https://sktleaveapi.herokuapp.com/api/leaveRequesteds?filter[where][email]=' + emails + '&filter[limit]=' + this.limitFilter + '&filter[skip]=' + this.getLeaveSkipForward + '&filter[order]=startdate%20DESC').subscribe((res: any[]) => {
         // Asign Results to leavedetails variable
         this.LeaveDetails = res;
         this.buttonDisable.disabled = false
