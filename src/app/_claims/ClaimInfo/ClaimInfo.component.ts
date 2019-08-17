@@ -34,6 +34,8 @@ export class ClaimInfoComponent implements OnInit {
   setclaim = new Claim
   noClaims = false
 
+  buttonDisable = true;
+
   constructor(private app: AppComponent,
     private claimService: ClaimService,
     private claimstatusService: ClaimstatusService,
@@ -67,9 +69,11 @@ export class ClaimInfoComponent implements OnInit {
 
       if (this.getclaim.idclaimstatus == 2) {
         this.claimstatus_color = 'text-success'
+        this.buttonDisable = true
       } else
         if (this.getclaim.idclaimstatus == 3) {
           this.claimstatus_color = 'text-danger'
+          this.buttonDisable = false
 
         } else {
           this.claimstatus_color = 'text-warning'
