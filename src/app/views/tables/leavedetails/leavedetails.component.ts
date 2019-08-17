@@ -505,7 +505,7 @@ export class LeavedetailsComponent implements OnInit {
 
       this.httpClient.get('https://sktleaveapi.herokuapp.com/api/leaveRequesteds?filter[where][email]=' + emails + '&filter[limit]=' + this.limitFilter + '&filter[where][status]=Approved&filter[skip]=' + this.getLeaveSkipForward + '&filter[order]=startdate%20DESC').subscribe((res: any[]) => {
         // Asign Results to leavedetails variable
-        this.Pendingleaves = res;
+        this.approvedleave = res;
         this.buttonDisable.disabled = false
 
         if (this.pageNo > 1) {
@@ -514,21 +514,51 @@ export class LeavedetailsComponent implements OnInit {
 
       });
 
-    } else {
+    } else
+      if (this.activeTab == 2) {
+        // changed to pending tab
+
+        this.httpClient.get('https://sktleaveapi.herokuapp.com/api/leaveRequesteds?filter[where][email]=' + emails + '&filter[limit]=' + this.limitFilter + '&filter[where][status]=Pending&filter[skip]=' + this.getLeaveSkipForward + '&filter[order]=startdate%20DESC').subscribe((res: any[]) => {
+          // Asign Results to leavedetails variable
+          this.Pendingleaves = res;
+          this.buttonDisable.disabled = false
+
+          if (this.pageNo > 1) {
+            this.pageNo--
+          }
+
+        });
+
+      } else
+        if (this.activeTab == 3) {
+          // changed to pending tab
+
+          this.httpClient.get('https://sktleaveapi.herokuapp.com/api/leaveRequesteds?filter[where][email]=' + emails + '&filter[limit]=' + this.limitFilter + '&filter[where][status]=Rejected&filter[skip]=' + this.getLeaveSkipForward + '&filter[order]=startdate%20DESC').subscribe((res: any[]) => {
+            // Asign Results to leavedetails variable
+            this.rejectedleave = res;
+            this.buttonDisable.disabled = false
+
+            if (this.pageNo > 1) {
+              this.pageNo--
+            }
+
+          });
+
+        } else {
 
 
-      this.httpClient.get('https://sktleaveapi.herokuapp.com/api/leaveRequesteds?filter[where][email]=' + emails + '&filter[limit]=' + this.limitFilter + '&filter[skip]=' + this.getLeaveSkipForward + '&filter[order]=startdate%20DESC').subscribe((res: any[]) => {
-        // Asign Results to leavedetails variable
-        this.LeaveDetails = res;
-        this.buttonDisable.disabled = false
+          this.httpClient.get('https://sktleaveapi.herokuapp.com/api/leaveRequesteds?filter[where][email]=' + emails + '&filter[limit]=' + this.limitFilter + '&filter[skip]=' + this.getLeaveSkipForward + '&filter[order]=startdate%20DESC').subscribe((res: any[]) => {
+            // Asign Results to leavedetails variable
+            this.LeaveDetails = res;
+            this.buttonDisable.disabled = false
 
-        if (this.pageNo > 1) {
-          this.pageNo--
+            if (this.pageNo > 1) {
+              this.pageNo--
+            }
+
+          });
+
         }
-
-      });
-
-    }
 
 
   }
@@ -541,13 +571,66 @@ export class LeavedetailsComponent implements OnInit {
     const emails = this.adalSvc.userInfo.userName;
     // Get Method for current user leave request details
     // tslint:disable-next-line:max-line-length
-    this.httpClient.get('https://sktleaveapi.herokuapp.com/api/leaveRequesteds?filter[where][email]=' + emails + '&filter[limit]=2&filter[skip]=' + this.getLeaveSkipForward + '&filter[order]=startdate%20DESC').subscribe((res: any[]) => {
-      // Asign Results to leavedetails variable
-      this.LeaveDetails = res;
 
-      this.pageNo = 1
+    
+    if (this.activeTab == 1) {
+      // changed to pending tab
 
-    });
+      this.httpClient.get('https://sktleaveapi.herokuapp.com/api/leaveRequesteds?filter[where][email]=' + emails + '&filter[limit]=' + this.limitFilter + '&filter[where][status]=Approved&filter[skip]=0&filter[order]=startdate%20DESC').subscribe((res: any[]) => {
+        // Asign Results to leavedetails variable
+        this.approvedleave = res;
+        this.buttonDisable.disabled = false
+
+        this.pageNo = 1
+
+
+      });
+
+    } else
+      if (this.activeTab == 2) {
+        // changed to pending tab
+
+        this.httpClient.get('https://sktleaveapi.herokuapp.com/api/leaveRequesteds?filter[where][email]=' + emails + '&filter[limit]=' + this.limitFilter + '&filter[where][status]=Pending&filter[skip]=0&filter[order]=startdate%20DESC').subscribe((res: any[]) => {
+          // Asign Results to leavedetails variable
+          this.Pendingleaves = res;
+          this.buttonDisable.disabled = false
+
+          this.pageNo = 1
+
+
+        });
+
+      } else
+        if (this.activeTab == 3) {
+          // changed to pending tab
+
+          this.httpClient.get('https://sktleaveapi.herokuapp.com/api/leaveRequesteds?filter[where][email]=' + emails + '&filter[limit]=' + this.limitFilter + '&filter[where][status]=Rejected&filter[skip]=0&filter[order]=startdate%20DESC').subscribe((res: any[]) => {
+            // Asign Results to leavedetails variable
+            this.rejectedleave = res;
+            this.buttonDisable.disabled = false
+
+
+            this.pageNo = 1
+
+
+          });
+
+        } else {
+
+
+          this.httpClient.get('https://sktleaveapi.herokuapp.com/api/leaveRequesteds?filter[where][email]=' + emails + '&filter[limit]=' + this.limitFilter + '&filter[skip]=' + this.getLeaveSkipForward + '&filter[order]=startdate%20DESC').subscribe((res: any[]) => {
+            // Asign Results to leavedetails variable
+            this.LeaveDetails = res;
+            this.buttonDisable.disabled = false
+
+
+            this.pageNo = 1
+
+          });
+
+        }
+
+
   }
 
   getLastAlert() {
