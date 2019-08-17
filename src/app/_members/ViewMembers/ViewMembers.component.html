@@ -93,6 +93,7 @@
                     <th>Surname</th>
                     <th>Date Joined</th> <!-- Date Joined -->
                     <th>ID Number</th>
+                   <!-- <th>Policy Status</th>   -->
                     <th class="disabled-sorting text-right">Action</th>
                   </tr>
                 </thead>
@@ -103,6 +104,11 @@
                     <td>{{ member.surname }}</td>
                     <td>{{ member.createddate }}</td> <!--  | date: "dd MMMM, yyyy"  -->
                     <td>{{ member.identitynumber }}</td>
+                 <!--   <td >
+                      <span *ngIf="member.idpolicystatus == 1" class="btn btn-warning btn-round btn-sm disabled">Trail</span>
+                      <span *ngIf="member.idpolicystatus == 2" class="btn btn-success btn-round btn-sm disabled">Active</span>
+                      <span *ngIf="member.idpolicystatus == 3" class="btn btn-danger btn-round btn-sm disabled">Deactivated</span>
+                    </td>   -->
                     <td class="text-right">
                       <a (click)="editMember(i)" class="btn btn-link btn-info btn-just-icon edit"><i
                           class="material-icons" [class.active]="i == selectedrow" data-toggle="tooltip"
