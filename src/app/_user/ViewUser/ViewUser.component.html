@@ -30,8 +30,12 @@
                                
                                         <td>{{  user.name | titlecase}} {{  user.surname | titlecase }}</td>
                                         <td>{{  user.email }}</td>
-                                        <td>{{  user.role | titlecase}}</td>
-                                    
+                                        <td>{{  user.role | titlecase }}  <span *ngIf="user.email == currentUser.email" class="badge badge-success">Active</span></td>
+                                    <!--
+                                                        <li class="page-item"><a mat-button class="page-link">Active</a> </li>
+
+                                                        <span *ngIf="user.email == currentUser.email" class="btn btn-success btn-round btn-sm disabled">Active</span>
+                                    -->
                                         <td  *ngIf="currentUser.role != 'clerk'" class="text-right">
                                           <a (click)="EditUser(i)" class="btn btn-link btn-info btn-just-icon edit"><i class="material-icons" [class.active]="i == row">edit</i></a>
                                          

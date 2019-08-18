@@ -130,7 +130,7 @@
                         <ul class="nav">
                             <li routerLinkActive="active" *ngFor="let childitem of menuitem.children" class="nav-item" aria-haspopup="true" aria-expanded="false">
                                 <a [routerLink]="[menuitem.path, childitem.path]" *ngIf="clerkNotAllowed(childitem.title)" class="nav-link" (click)="nextPage()" >
-                                    <span class="sidebar-mini">{{childitem.ab}}</span>
+                                    <span class="sidebar-mini">{{childitem.ab}}</span>  <!--  <span class="badge badge-warning pull-right">9</span> -->
                                     <span class="sidebar-normal">{{childitem.title}} </span>
                                     
                                 </a>

@@ -90,8 +90,8 @@
                       <td>{{ member.surname }}</td>
                       <td>{{ member.identitynumber }}</td>
                       <td >
-                        <span *ngIf="member.idlifestatus == 1" class="btn btn-success btn-round btn-sm disabled">Alive</span>
-                        <span *ngIf="member.idlifestatus == 2" class="btn btn-danger btn-round btn-sm disabled">Deceased</span>
+                        <span *ngIf="member.idlifestatus == 1" class="badge badge-success">Alive</span>
+                        <span *ngIf="member.idlifestatus == 2" class="badge badge-danger">Deceased</span>
                       </td>
                       <td class="text-right">
                         <button (click)="createClaim(i)" class="btn btn-link btn-info "><i

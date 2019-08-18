@@ -99,8 +99,8 @@
                         <td>{{ beneficiary.surname }}</td>
                         <td>{{ beneficiary.identitynumber }}</td>
                         <td >
-                          <span *ngIf="beneficiary.idlifestatus == 1" class="btn btn-success btn-round btn-sm disabled">Alive</span>
-                          <span *ngIf="beneficiary.idlifestatus == 2" class="btn btn-danger btn-round btn-sm disabled">Deceased</span>
+                          <span *ngIf="beneficiary.idlifestatus == 1" class="badge badge-success">Alive</span>
+                          <span *ngIf="beneficiary.idlifestatus == 2" class="badge badge-danger">Deceased</span>
                         </td>
                         <td class="text-right">
                           <a (click)="editbeneficiary(i, beneficiary.id, beneficiary.name, beneficiary.surname, beneficiary.identitynumber)"
