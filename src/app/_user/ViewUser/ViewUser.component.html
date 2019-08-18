@@ -22,7 +22,7 @@
                                       <th>Email</th>
                                       <th>Role</th>
                                    
-                                      <th class="disabled-sorting text-right">Action</th>
+                                      <th *ngIf="currentUser.role != 'clerk'" class="disabled-sorting text-right">Action</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -32,7 +32,7 @@
                                         <td>{{  user.email }}</td>
                                         <td>{{  user.role | titlecase}}</td>
                                     
-                                        <td class="text-right">
+                                        <td  *ngIf="currentUser.role != 'clerk'" class="text-right">
                                           <a (click)="EditUser(i)" class="btn btn-link btn-info btn-just-icon edit"><i class="material-icons" [class.active]="i == row">edit</i></a>
                                          
                                           <a (click)="DeleteUser(i)" class="btn btn-link btn-danger btn-just-icon remove"><i class="material-icons" [class.active]="i == row">delete</i></a>
