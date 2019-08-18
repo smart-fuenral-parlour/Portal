@@ -30,7 +30,7 @@
                                
                                         <td>{{  user.name | titlecase}} {{  user.surname | titlecase }}</td>
                                         <td>{{  user.email }}</td>
-                                        <td>{{  user.role | titlecase }}  <span *ngIf="user.email == currentUser.email" class="badge badge-success">Active</span></td>
+                                        <td>{{  user.role | titlecase }}  <span *ngIf="user.email == currentUser.email" class="badge badge-success pull-right">Logged In</span></td>
                                     <!--
                                                         <li class="page-item"><a mat-button class="page-link">Active</a> </li>
 

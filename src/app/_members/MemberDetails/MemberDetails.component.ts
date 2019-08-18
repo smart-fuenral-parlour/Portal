@@ -3,20 +3,16 @@ import { FormGroup, FormBuilder, Validators, FormControl, FormArray, NgForm } fr
 
 ////////////////// SERVICE CALLS /////////////////////////////////////
 import { MemberService } from 'src/app/services/member/member.service'
-import { PolicystatusService } from 'src/app/services/policystatus/policystatus.service'
 import { PolicytypeService } from 'src/app/services/policytype/policytype.service'
 import { ClaimService } from 'src/app/services/claim/claim.service'
 import { BeneficiaryService } from 'src/app/services/beneficiary/beneficiary.service'
-import { LifestatusService } from 'src/app/services/lifestatus/lifestatus.service'
 import { UserService } from 'src/app/services/user/user.service'
 
 ////////////////// MODEL CLASS CALLS /////////////////////////////////////
 import { Member } from 'src/app/services/member/member'
-import { Policystatus } from 'src/app/services/policystatus/policystatus'
 import { Policytype } from 'src/app/services/policytype/policytype'
 import { Claim } from 'src/app/services/claim/claim'
 import { Beneficiary } from 'src/app/services/beneficiary/beneficiary'
-import { Lifestatus } from 'src/app/services/lifestatus/lifestatus'
 import { User } from 'src/app/services/user/user'
 
 ///////////////////////////////////////////////////////////////////////
@@ -81,8 +77,6 @@ export class MemberDetailsComponent implements OnInit {
   constructor(private fb: FormBuilder,
     private memberService: MemberService,
     private policytypeService: PolicytypeService,
-    private policystatusService: PolicystatusService,
-    private lifestatusService: LifestatusService,
     private claimService: ClaimService,
     private beneficiaryService: BeneficiaryService,
     private router: Router,
@@ -104,83 +98,8 @@ export class MemberDetailsComponent implements OnInit {
 
     this.member = JSON.parse(localStorage.getItem('viewdetails'))
     this.user = JSON.parse(localStorage.getItem('user'))
+    console.log(this.member)
 
-
-    if (!isNullOrUndefined(this.member.idpolicystatus) || this.member.idpolicystatus > 0) {
-
-      if (this.member.idpolicystatus == 2) {
-        this.policystatus_color = 'text-success'
-      } else
-        if (this.member.idpolicystatus == 3) {
-          this.policystatus_color = 'text-danger'
-
-        } else {
-          this.policystatus_color = 'text-warning'
-
-        }
-    }
-
-    if (!isNullOrUndefined(this.member.idlifestatus || this.member.idlifestatus > 0)) {
-
-      if (this.member.idlifestatus == 1) {
-        this.lifestatus_color = 'text-success'
-      } else
-        if (this.member.idlifestatus == 2) {
-          this.lifestatus_color = 'text-danger'
-
-        } else {
-          this.lifestatus_color = 'text-warning'
-
-        }
-
-    }
-
-
-
-
-    // checkinglife status
-    if( !isNullOrUndefined(this.member.idlifestatus) ){
-      this.lifestatusService.getLifestatus(this.member.idlifestatus)
-      .subscribe(lifestatus_res => {
-
-
-        if( !isNullOrUndefined(lifestatus_res) ){
-          this.lifestatus = lifestatus_res.name
-        } else {        
-          this.lifestatus = 'Alive'  
-        }
-
-      }, err => {
-        console.log(err)
-        this.app.loading = false
-      })
-
-    } else {      
-      this.lifestatus = 'Alive'
-    }
-
-     // checking  policy status
-    if( !isNullOrUndefined(this.member.idpolicystatus) ){
-
-
-      this.policystatusService.getPolicystatus(this.member.idpolicystatus)
-      .subscribe(policystatus_res => {
-
-
-        if( !isNullOrUndefined(policystatus_res) ){
-          this.policystatus = policystatus_res.name
-        } else {          
-          this.policystatus = 'Active'
-        }
-
-      }, err => {
-        console.log(err)
-        this.app.loading = false
-      })
-
-    } else {      
-      this.policystatus = 'Active'
-    }
 
 
     // checking policy type
@@ -252,159 +171,6 @@ export class MemberDetailsComponent implements OnInit {
     })
 
 
-
-/**
- * 
-    if( isNullOrUndefined(this.member.idpolicystatus))
-
-    this.lifestatusService.getLifestatus(this.member.idlifestatus)
-      .subscribe(lifestatus_res => {
-
-
-        if( !isNullOrUndefined(lifestatus_res) ){
-          this.lifestatus = lifestatus_res.name
-        } else {          
-          this.lifestatus = 'Alive'
-        }
-
-        this.policystatusService.getPolicystatus(this.member.idpolicystatus)
-          .subscribe(policystatus_res => {
-
-
-            if( !isNullOrUndefined(policystatus_res) ){
-              this.policystatus = policystatus_res.name
-            } else {          
-              this.policystatus = 'Active'
-            }
-
-            this.beneficiaryService.getBeneficiarybyidmember(this.member.id)
-              .subscribe(beneficiary_res => {
-
-                console.log(beneficiary_res)
-
-                if (beneficiary_res.length > 0) {
-
-                  this.beneficiaries = beneficiary_res
-                  this.noBeneficiary = false
-
-
-                } else {
-                  this.noBeneficiary = true
-                }
-
-
-                this.claimService.getClaimbyidmember(this.member.id)
-                  .subscribe(claims_res => {
-
-                    this.app.loading = false
-                    if (claims_res.length > 0) {
-
-                      this.claims = claims_res
-                      this.noClaims = false
-
-
-                    } else {
-                      this.noClaims = true
-                    }
-
-                  }, err => {
-                    this.app.loading = false
-                    console.log(err)
-
-                  })
-
-
-              }, err => {
-                console.log(err)
-                this.app.loading = false
-              })
-
-          }, err => {
-            console.log(err)
-            this.app.loading = false
-          })
-
-      }, err => {
-        console.log(err)
-        this.app.loading = false
-      })
-
-      
-    if( isNullOrUndefined(this.member.idpolicystatus))
-
-    this.lifestatusService.getLifestatus(this.member.idlifestatus)
-      .subscribe(lifestatus_res => {
-
-
-        if( !isNullOrUndefined(lifestatus_res) ){
-          this.lifestatus = lifestatus_res.name
-        } else {          
-          this.lifestatus = 'Alive'
-        }
-
-        this.policystatusService.getPolicystatus(this.member.idpolicystatus)
-          .subscribe(policystatus_res => {
-
-
-            if( !isNullOrUndefined(policystatus_res) ){
-              this.policystatus = policystatus_res.name
-            } else {          
-              this.policystatus = 'Active'
-            }
-
-            this.beneficiaryService.getBeneficiarybyidmember(this.member.id)
-              .subscribe(beneficiary_res => {
-
-                console.log(beneficiary_res)
-
-                if (beneficiary_res.length > 0) {
-
-                  this.beneficiaries = beneficiary_res
-                  this.noBeneficiary = false
-
-
-                } else {
-                  this.noBeneficiary = true
-                }
-
-
-                this.claimService.getClaimbyidmember(this.member.id)
-                  .subscribe(claims_res => {
-
-                    this.app.loading = false
-                    if (claims_res.length > 0) {
-
-                      this.claims = claims_res
-                      this.noClaims = false
-
-
-                    } else {
-                      this.noClaims = true
-                    }
-
-                  }, err => {
-                    this.app.loading = false
-                    console.log(err)
-
-                  })
-
-
-              }, err => {
-                console.log(err)
-                this.app.loading = false
-              })
-
-          }, err => {
-            console.log(err)
-            this.app.loading = false
-          })
-
-      }, err => {
-        console.log(err)
-        this.app.loading = false
-      })
- */
-
     console.log(this.user)
     console.log(this.member)
 
@@ -468,7 +234,7 @@ export class MemberDetailsComponent implements OnInit {
   }
 
 
-  editbeneficiary(index, id, NAME, SURNAME, IDNUMBER) {
+  editbeneficiary(id, NAME, SURNAME, IDNUMBER) {
 
 
 

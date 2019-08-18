@@ -6,9 +6,12 @@
         <span style="size: 15%">Membership Number: {{member.membershipnumber}}</span>
       </div>
       <div class="col-5" style="text-align: right;">
-        Policy Status: <span class="{{policystatus_color}}">{{ policystatus }}</span>
+        Policy Status: <span *ngIf="member.idpolicystatus == 1" class="text-warning">Trail</span>
+                      <span *ngIf="member.idpolicystatus == 2 || member.idpolicystatus == null" class="text-success">Active</span>
+                      <span *ngIf="member.idpolicystatus == 3" class="text-danger">Deactivated</span>
         <div></div>
-        Life Status: <span class="{{lifestatus_color}}">{{ lifestatus }}</span>
+        Life Status: <span *ngIf="member.idlifestatus == 1 || member.idpolicystatus == null" class="text-success">Alive</span>
+                     <span *ngIf="member.idlifestatus == 2" class="text-danger">Deceased</span>
       </div>
     </div>
   </h3>
@@ -103,7 +106,7 @@
                           <span *ngIf="beneficiary.idlifestatus == 2" class="badge badge-danger">Deceased</span>
                         </td>
                         <td class="text-right">
-                          <a (click)="editbeneficiary(i, beneficiary.id, beneficiary.name, beneficiary.surname, beneficiary.identitynumber)"
+                          <a (click)="editbeneficiary(beneficiary.id, beneficiary.name, beneficiary.surname, beneficiary.identitynumber)"
                             class="btn btn-link btn-info btn-just-icon edit"><i class="material-icons"
                               [class.active]="i == selectedrow" data-toggle="tooltip" data-placement="down"
                               title="edit beneficiary details">edit</i></a>
