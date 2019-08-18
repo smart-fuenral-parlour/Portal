@@ -28,7 +28,7 @@
                                 <tbody>
                                     <tr *ngFor="let user of users | paginate: { itemsPerPage: 5, currentPage: p }; let i = index">
                                
-                                        <td>{{  user.name | titlecase}} {{  user.surname | titlecase }}</td>
+                                        <td><b>{{1+i}}.</b> {{  user.name | titlecase}} {{  user.surname | titlecase }}</td>
                                         <td>{{  user.email }}</td>
                                         <td>{{  user.role | titlecase }}  <span *ngIf="user.email == currentUser.email" class="badge badge-success pull-right">Logged In</span></td>
                                     <!--

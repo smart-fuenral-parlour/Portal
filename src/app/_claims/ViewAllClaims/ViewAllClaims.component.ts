@@ -37,7 +37,7 @@ export class ViewAllClaimsComponent implements OnInit {
   claimstatuses: Claimstatus[]
 
   pageNo = 1;
-  claimsPerPage = 10
+  claimsPerPage = 5
 
   constructor(private app: AppComponent,
     private router: Router,

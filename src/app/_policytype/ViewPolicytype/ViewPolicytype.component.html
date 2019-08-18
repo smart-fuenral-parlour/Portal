@@ -29,7 +29,7 @@
            
                                     <tr *ngFor="let policytype of policytypes | paginate: { itemsPerPage: 5, currentPage: p }; let i = index">
                                
-                                        <td>{{  policytype.name | titlecase}}</td>
+                                        <td><b>{{1+i}}.</b> {{  policytype.name | titlecase}}</td>
                                         <td>{{  policytype.description }}</td>
                                         <td>{{  policytype.premium | currency:"ZAR":'symbol-narrow'}}</td> <!-- | currency:"ZAR":'symbol-narrow'  -->
                                         <td>{{  policytype.createdby | titlecase }}</td>

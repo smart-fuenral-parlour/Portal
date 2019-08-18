@@ -80,7 +80,7 @@
                 </thead>
                 <tbody>
                   <tr *ngFor="let claim of claims | paginate: { itemsPerPage: claimsPerPage, currentPage: pageNo }; let i = index" ><!--   -->
-                    <td>{{ claim.claimnumber }}</td>
+                    <td><b>{{1+i}}.</b> {{ claim.claimnumber }}</td>
                     <td>{{ claim.createdby }}</td>
                     <td>{{ claim.createddate | date: "dd MMMM, yyyy"  }}</td> <!--  -->
                     <td>{{ claim.informantname }}  {{ claim.informantsurname }}</td>
