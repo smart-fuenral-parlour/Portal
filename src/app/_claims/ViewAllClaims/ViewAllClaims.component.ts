@@ -36,6 +36,8 @@ export class ViewAllClaimsComponent implements OnInit {
   claims: Claim[]
   claimstatuses: Claimstatus[]
 
+  p = 1;
+
   constructor(private app: AppComponent,
     private router: Router,
     private claimService: ClaimService,
@@ -170,8 +172,12 @@ export class ViewAllClaimsComponent implements OnInit {
 
   // View claims info
   claimInfo(index) {
+    index = index + ((this.p-1)*10)
     localStorage.setItem('claiminfo', JSON.stringify(this.claims[index]));
-    this.router.navigate(['/claims/claiminfo']);
+    console.log('page: '+this.p)
+    console.log('current item: '+index)
+    console.log(this.claims[index])
+   this.router.navigate(['/claims/claiminfo']);
   }
 
 

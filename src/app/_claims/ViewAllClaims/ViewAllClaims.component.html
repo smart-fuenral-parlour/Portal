@@ -90,7 +90,7 @@
                       <span *ngIf="claim.idclaimstatus == 3" class="btn btn-danger btn-round btn-sm disabled">Declined</span>
                     </td>
                     <td class="text-right">
-                      <button (click)="claimInfo(claim.id)"
+                      <button (click)="claimInfo(i)"
                         class="btn btn-link btn-info "><i class="material-icons"
                           [class.active]="i == selectedClaim"  data-toggle="tooltip" data-placement="down" title="view claim information">info</i>Claim Info</button>
                     </td>

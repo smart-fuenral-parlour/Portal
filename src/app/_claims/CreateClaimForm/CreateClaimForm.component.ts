@@ -186,11 +186,12 @@ export class CreateClaimFormComponent implements OnInit {
         if (claim_res.count == 0) {
           this.selected = true
         } else {
+          this.selected = false
 
           swal({
             title: "Cannot Proceed",
             //text: "Unfortunately the selected member is already deceased, please select another one",
-            text: "Unfortunately the selected member already has a claim created",
+            text: "Unfortunately the selected member already has a claim created, please select another member to proceed",
             type: 'warning',
             timer: 7500,
             showConfirmButton: true
