@@ -42,6 +42,7 @@ export class ViewPolicytypeComponent implements OnInit {
 
     policytypes: Policytype[];
     noPolicytype = false
+    user: User
 
 
     constructor(private formBuilder: FormBuilder,
@@ -83,6 +84,10 @@ export class ViewPolicytypeComponent implements OnInit {
 
         //get all policytypes
           this.app.loading = true
+          this.user = JSON.parse(localStorage.getItem('user'))
+
+        this
+
         this.policytypeService.getPolicytypes()
             .subscribe(policytypes_res => {
 

@@ -22,7 +22,7 @@
                                       <th>Description</th>
                                       <th>Premium</th>
                                       <th>Created by</th>
-                                      <th class="disabled-sorting text-right">Action</th>
+                                      <th *ngIf="user.role != 'clerk'" class="disabled-sorting text-right">Action</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -33,7 +33,7 @@
                                         <td>{{  policytype.description }}</td>
                                         <td>{{  policytype.premium | currency:"ZAR":'symbol-narrow'}}</td> <!-- | currency:"ZAR":'symbol-narrow'  -->
                                         <td>{{  policytype.createdby | titlecase }}</td>
-                                        <td class="text-right">
+                                        <td *ngIf="user.role != 'clerk'" class="text-right">
                                           <a (click)="ViewPolicytype(i)" class="btn btn-link btn-info btn-just-icon edit"><i class="material-icons" >edit</i></a>
                                         </td>
                                     </tr>

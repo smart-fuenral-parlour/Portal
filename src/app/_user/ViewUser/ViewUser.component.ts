@@ -50,7 +50,7 @@ export class ViewUserComponent implements OnInit {
     ngOnInit() {
         this.app.loading = true
         this.currentUser = JSON.parse(localStorage.getItem('user'))
-        this.currentUser.role
+      
 
         //get all users
         this.userService.getUsers()

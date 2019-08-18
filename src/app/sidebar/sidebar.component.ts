@@ -264,7 +264,7 @@ export class SidebarComponent implements OnInit {
         if (this.user.role == 'Admin') {
             return true
         } else
-            if (this.user.role == 'clerk' && creatUserTab == 'Create User') {
+            if ( (this.user.role == 'clerk' && creatUserTab == 'Create User') || (this.user.role == 'clerk' && creatUserTab == 'Create Policy')) {
                 return false
             } else {
                 return true
