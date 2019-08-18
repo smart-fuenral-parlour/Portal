@@ -98,8 +98,8 @@
                   </tr>
                 </thead>
                 <tbody>
-                  <tr *ngFor="let member of members | paginate: { itemsPerPage: 5, currentPage: p }; let i = index ">
-                    <td>{{ member.membershipnumber }}</td>
+                  <tr *ngFor="let member of members | paginate: { itemsPerPage: membersPerPage, currentPage: pageNo }; let i = index ">
+                    <td><b>{{1+i}}.</b> {{ member.membershipnumber }}</td>
                     <td>{{ member.name }}</td>
                     <td>{{ member.surname }}</td>
                     <td>{{ member.createddate }}</td> <!--  | date: "dd MMMM, yyyy"  -->
@@ -125,7 +125,7 @@
                 
               </table>
               <div class="pull-center">
-                  <pagination-controls class="my-pagination" (pageChange)="p = $event"></pagination-controls>
+                  <pagination-controls class="my-pagination" (pageChange)="pageNo = $event"></pagination-controls>
               </div>
              
             </div>

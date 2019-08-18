@@ -38,7 +38,9 @@ export class ViewMembersComponent implements OnInit, AfterViewInit {
 
   searchText = 'ID Number';
 
-
+  // pagination
+  pageNo = 1
+  membersPerPage = 5
 
   //////////////////
   isEmpty = false
@@ -202,14 +204,16 @@ export class ViewMembersComponent implements OnInit, AfterViewInit {
 
   // Edit a member
   editMember(index) {
-    localStorage.setItem('editmember', JSON.stringify(this.members[index])); // this.members[index]
+    index = index + ((this.pageNo-1)*this.membersPerPage)
+    localStorage.setItem('editmember', JSON.stringify(this.members[index]));
     sessionStorage.clear()
     this.router.navigate(['/members/editmember']);
   }
 
   // View full member details
   viewMember(index) {
-    localStorage.setItem('viewdetails', JSON.stringify(this.members[index])); // this.members[index]
+    index = index + ((this.pageNo-1)*this.membersPerPage)
+    localStorage.setItem('viewdetails', JSON.stringify(this.members[index]));
     this.router.navigate(['/members/viewmemberdetails']);
   }
 
@@ -272,9 +276,3 @@ export class ViewMembersComponent implements OnInit, AfterViewInit {
   }
 
 }
-
-/**
- *         this.dataTable = {
- * 
-         };
- */

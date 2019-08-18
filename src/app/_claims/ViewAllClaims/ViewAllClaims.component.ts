@@ -174,9 +174,6 @@ export class ViewAllClaimsComponent implements OnInit {
   claimInfo(index) {
     index = index + ((this.p-1)*10)
     localStorage.setItem('claiminfo', JSON.stringify(this.claims[index]));
-    console.log('page: '+this.p)
-    console.log('current item: '+index)
-    console.log(this.claims[index])
    this.router.navigate(['/claims/claiminfo']);
   }
 
