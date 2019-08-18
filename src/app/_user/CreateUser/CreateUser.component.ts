@@ -156,7 +156,7 @@ export class CreateUserComponent implements OnInit {
 
                                 swal({
                                     title: 'Create ' + this.user.name + ' ' + this.user.surname + ' as a user ',
-                                    text: "Are you sure you want to create " + this.user.name + ' ' + this.user.surname + " as a user?",
+                                    text: "Are you sure you want to add " + this.user.name + ' ' + this.user.surname + " as a "+this.user.role+"?",
                                     type: 'warning',
                                     showCancelButton: true,
                                     confirmButtonClass: 'btn btn-success',
