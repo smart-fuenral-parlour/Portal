@@ -79,7 +79,7 @@
                   </tr>
                 </thead>
                 <tbody>
-                  <tr *ngFor="let claim of claims | paginate: { itemsPerPage: 10, currentPage: p }; let i = index" ><!--   -->
+                  <tr *ngFor="let claim of claims | paginate: { itemsPerPage: claimsPerPage, currentPage: pageNo }; let i = index" ><!--   -->
                     <td>{{ claim.claimnumber }}</td>
                     <td>{{ claim.createdby }}</td>
                     <td>{{ claim.createddate | date: "dd MMMM, yyyy"  }}</td> <!--  -->
@@ -98,7 +98,7 @@
                 </tbody>
               </table>
               <div class="pull-center">
-                  <pagination-controls class="my-pagination" (pageChange)="p = $event"></pagination-controls>
+                  <pagination-controls class="my-pagination" (pageChange)="pageNo = $event"></pagination-controls>
               </div>
             </div>
           </div>
