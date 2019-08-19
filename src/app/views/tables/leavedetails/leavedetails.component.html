@@ -33,7 +33,17 @@
               <div class="tab-content">
                 <div class="tab-pane" id="leaveDetails">
 
-                  <table class="table table-striped" id="LeaveDetails">
+                  <div class="row" *ngIf="LeaveDetails.length == 0">
+                    <div class="col-12 ml-auto mr-auto">
+                      <div class="card" style="background-color: lightgray">
+                        <div class="card-body text-center card-description">
+                          <h3><b>No Leaves made yet</b></h3>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <table *ngIf="LeaveDetails.length > 0" class="table table-striped" id="LeaveDetails">
                     <thead>
                       <tr>
                         <th></th>
@@ -83,11 +93,11 @@
                       <tr>
                         <td colspan="7">
                           <span id="paginator">
-                            <button type="button" rel="tooltip" (click)="getFirstAlert();" id="first_page"
+                            <button type="button" [disabled] = "pageNo == 1" rel="tooltip" (click)="getFirstAlert();" id="first_page"
                               title="First page" class="btn btn-primary btn-round btn-fab btn-fab-mini">
                               <i class="material-icons">first_page</i>
                             </button>
-                            <button type="button" rel="tooltip" (click)="getPrevousAlert();" id="fast_rewind"
+                            <button type="button" [disabled] = "pageNo == 1" rel="tooltip" (click)="getPrevousAlert();" id="fast_rewind"
                               title="Previous page" class="btn btn-primary btn-round btn-fab btn-fab-mini">
                               <i class="material-icons">keyboard_arrow_left</i>
                             </button>
@@ -96,12 +106,12 @@
                               <!-- Page: {{pageNo}}  -->
                               {{pageNo}} of {{totalPageNo}}
                             </span>
-                            <button type="button" aria-disabled="true" rel="tooltip" (click)="getNextAlert();"
+                            <button type="button" [disabled] = "pageNo == totalPageNo" aria-disabled="true" rel="tooltip" (click)="getNextAlert();"
                               name="fast_forward" id="fast_forward" title="Next page"
                               class="btn {{buttonActiveClass}} btn-primary btn-round btn-fab btn-fab-mini">
                               <i class="material-icons">keyboard_arrow_right</i>
                             </button>
-                            <button type="button" aria-disabled="true" rel="tooltip" (click)="getLastAlert();"
+                            <button type="button" [disabled] = "pageNo == totalPageNo" aria-disabled="true" rel="tooltip" (click)="getLastAlert();"
                               id="last_page" title="Last page" class="btn btn-primary btn-round btn-fab btn-fab-mini">
                               <i class="material-icons">last_page</i>
                             </button>
@@ -118,10 +128,21 @@
                       </tr>
                     </tfoot>
                   </table>
+
                 </div>
                 <div class="tab-pane" id="approvedLeave">
 
-                  <table class="table table-striped">
+                  <div class="row" *ngIf="approvedleave.length == 0">
+                    <div class="col-12 ml-auto mr-auto">
+                      <div class="card" style="background-color: lightgray">
+                        <div class="card-body text-center card-description">
+                          <h3><b>No leaves approved</b></h3>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <table *ngIf="approvedleave.length > 0" class="table table-striped">
                     <thead>
                       <tr>
                         <th></th>
@@ -172,11 +193,11 @@
                       <tr>
                         <td colspan="7">
                           <span id="paginator">
-                            <button type="button" rel="tooltip" (click)="getFirstAlert();" id="approved_first_page"
+                            <button type="button" [disabled] = "ApprovedPageNo == 1" rel="tooltip" (click)="getFirstAlert();" id="approved_first_page"
                               title="First page" class="btn btn-primary btn-round btn-fab btn-fab-mini">
                               <i class="material-icons">first_page</i>
                             </button>
-                            <button type="button" rel="tooltip" (click)="getPrevousAlert();" id="approved_fast_rewind"
+                            <button type="button" [disabled] = "ApprovedPageNo == 1" rel="tooltip" (click)="getPrevousAlert();" id="approved_fast_rewind"
                               title="Previous page" class="btn btn-primary btn-round btn-fab btn-fab-mini">
                               <i class="material-icons">keyboard_arrow_left</i>
                             </button>
@@ -185,11 +206,11 @@
                               {{ApprovedPageNo}} of {{ApprovedTotalPageNo}}
                             </span>
 
-                            <button type="button" rel="tooltip" (click)="getNextAlert();" id="approved_fast_forward"
+                            <button type="button" [disabled] = "ApprovedPageNo == ApprovedTotalPageNo" rel="tooltip" (click)="getNextAlert();" id="approved_fast_forward"
                               title="Next page" class="btn btn-primary btn-round btn-fab btn-fab-mini">
                               <i class="material-icons">keyboard_arrow_right</i>
                             </button>
-                            <button type="button" rel="tooltip" (click)="getLastAlert();" id="approved_last_page"
+                            <button type="button" [disabled] = "ApprovedPageNo == ApprovedTotalPageNo" rel="tooltip" (click)="getLastAlert();" id="approved_last_page"
                               title="Last page" class="btn btn-primary btn-round btn-fab btn-fab-mini">
                               <i class="material-icons">last_page</i>
                             </button>
@@ -204,10 +225,21 @@
                       </tr>
                     </tfoot>
                   </table>
+
                 </div>
                 <div class="tab-pane" id="pendingLeave">
 
-                  <table class="table table-striped">
+                  <div class="row" *ngIf="Pendingleaves.length == 0">
+                    <div class="col-12 ml-auto mr-auto">
+                      <div class="card" style="background-color: lightgray">
+                        <div class="card-body text-center card-description">
+                          <h3><b>No leaves in pending</b></h3>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <table *ngIf="Pendingleaves.length > 0" class="table table-striped">
                     <thead>
                       <tr>
                         <th></th>
@@ -257,11 +289,11 @@
                       <tr>
                         <td colspan="7">
                           <span id="paginator">
-                            <button type="button" rel="tooltip" (click)="getFirstAlert();" id="pending_first_page"
+                            <button type="button" [disabled] = "PendingPageNo == 1" rel="tooltip" (click)="getFirstAlert();" id="pending_first_page"
                               title="First page" class="btn btn-primary btn-round btn-fab btn-fab-mini">
                               <i class="material-icons">first_page</i>
                             </button>
-                            <button type="button" rel="tooltip" (click)="getPrevousAlert();" id="pending_fast_rewind"
+                            <button type="button" [disabled] = "PendingPageNo == 1" rel="tooltip" (click)="getPrevousAlert();" id="pending_fast_rewind"
                               title="Previous page" class="btn btn-primary btn-round btn-fab btn-fab-mini">
                               <i class="material-icons">keyboard_arrow_left</i>
                             </button>
@@ -270,11 +302,11 @@
                               {{PendingPageNo}} of {{PendingTotalPageNo}}
                             </span>
 
-                            <button type="button" rel="tooltip" (click)="getNextAlert();" id="pending_fast_forward"
+                            <button type="button" [disabled] = "PendingPageNo == PendingTotalPageNo" rel="tooltip" (click)="getNextAlert();" id="pending_fast_forward"
                               title="Next page" class="btn btn-primary btn-round btn-fab btn-fab-mini">
                               <i class="material-icons">keyboard_arrow_right</i>
                             </button>
-                            <button type="button" rel="tooltip" (click)="getLastAlert();" id="pending_last_page"
+                            <button type="button" [disabled] = "PendingPageNo == PendingTotalPageNo" rel="tooltip" (click)="getLastAlert();" id="pending_last_page"
                               title="Last page" class="btn btn-primary btn-round btn-fab btn-fab-mini">
                               <i class="material-icons">last_page</i>
                             </button>
@@ -289,9 +321,21 @@
                       </tr>
                     </tfoot>
                   </table>
+
                 </div>
                 <div class="tab-pane" id="rejectedLeave">
-                  <div class="row">
+
+                  <div class="row" *ngIf="rejectedleave.length == 0">
+                    <div class="col-12 ml-auto mr-auto">
+                      <div class="card" style="background-color: lightgray">
+                        <div class="card-body text-center card-description">
+                          <h3><b>No leaves rejected</b></h3>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div *ngIf="rejectedleave.length > 0" class="row">
                     <table class="table table-striped">
                       <thead>
                         <tr>
@@ -340,11 +384,11 @@
                         <tr>
                           <td colspan="7">
                             <span id="paginator">
-                              <button type="button" rel="tooltip" (click)="getFirstAlert();" id="rejected_first_page"
+                              <button type="button" [disabled] = "RejectedPageNo == 1" rel="tooltip" (click)="getFirstAlert();" id="rejected_first_page"
                                 title="First page" class="btn btn-primary btn-round btn-fab btn-fab-mini">
                                 <i class="material-icons">first_page</i>
                               </button>
-                              <button type="button" rel="tooltip" (click)="getPrevousAlert();" id="rejected_fast_rewind"
+                              <button type="button" [disabled] = "RejectedPageNo == 1" rel="tooltip" (click)="getPrevousAlert();" id="rejected_fast_rewind"
                                 title="Previous page" class="btn btn-primary btn-round btn-fab btn-fab-mini">
                                 <i class="material-icons">keyboard_arrow_left</i>
                               </button>
@@ -353,11 +397,11 @@
                                 {{RejectedPageNo}} of {{RejectedTotalPageNo}}
                               </span>
 
-                              <button type="button" rel="tooltip" (click)="getNextAlert();" id="rejected_fast_forward"
+                              <button type="button" [disabled] = "RejectedPageNo == RejectedTotalPageNo" rel="tooltip" (click)="getNextAlert();" id="rejected_fast_forward"
                                 title="Next page" class="btn btn-primary btn-round btn-fab btn-fab-mini">
                                 <i class="material-icons">keyboard_arrow_right</i>
                               </button>
-                              <button type="button" rel="tooltip" (click)="getLastAlert();" id="rejected_last_page"
+                              <button type="button" [disabled] = "RejectedPageNo == RejectedTotalPageNo" rel="tooltip" (click)="getLastAlert();" id="rejected_last_page"
                                 title="Last page" class="btn btn-primary btn-round btn-fab btn-fab-mini">
                                 <i class="material-icons">last_page</i>
                               </button>
@@ -374,9 +418,22 @@
                     </table>
 
                   </div>
+
+
                 </div>
                 <div class="tab-pane" id="leaveBalances">
-                  <div class="row">
+
+                  <div class="row" *ngIf="LeaveBalances.length == 0">
+                    <div class="col-12 ml-auto mr-auto">
+                      <div class="card" style="background-color: lightgray">
+                        <div class="card-body text-center card-description">
+                          <h3><b>No leaves balance</b></h3>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div *ngIf="LeaveBalances.length > 0" class="row">
                     <table class="table table-striped">
                       <thead>
                         <tr>

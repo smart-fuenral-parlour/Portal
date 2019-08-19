@@ -31,8 +31,7 @@ export class LeavedetailsComponent implements OnInit {
   startdate: string;
   enddate: string;
   buttonDisable: any
-  ApprovedpageNo = 1
-  limitFilter = 10
+  limitFilter = 5
 
   //page number  
   pageNo = 1
@@ -77,34 +76,11 @@ export class LeavedetailsComponent implements OnInit {
           this.totalPageNo = parseInt((res.count / this.limitFilter).toFixed(0));
         }
 
-        if (this.totalPageNo <= 1) {
-
-          // disables next and prev buttons if total number of page is 1
-          this.totalPageNo = 1
-          this.buttonDisable = document.querySelector('#fast_forward')
-          this.buttonDisable.disabled = true
-          this.buttonDisable = document.querySelector('#fast_rewind')
-          this.buttonDisable.disabled = true
-          this.buttonDisable = document.querySelector('#first_page')
-          this.buttonDisable.disabled = true
-          this.buttonDisable = document.querySelector('#last_page')
-          this.buttonDisable.disabled = true
-
-        }
-
 
       } else {
 
         // disable next and prev buttons if number of leaves are 0
         this.totalPageNo = 1;
-        this.buttonDisable = document.querySelector('#fast_forward')
-        this.buttonDisable.disabled = true
-        this.buttonDisable = document.querySelector('#fast_rewind')
-        this.buttonDisable.disabled = true
-        this.buttonDisable = document.querySelector('#first_page')
-        this.buttonDisable.disabled = true
-        this.buttonDisable = document.querySelector('#last_page')
-        this.buttonDisable.disabled = true
 
       }
 
@@ -126,34 +102,11 @@ export class LeavedetailsComponent implements OnInit {
           this.ApprovedTotalPageNo = parseInt((res.count / this.limitFilter).toFixed(0));
         }
 
-        if (this.ApprovedTotalPageNo <= 1) {
-
-          // disables next and prev buttons if total number of page is 1
-          this.ApprovedTotalPageNo = 1
-          this.buttonDisable = document.querySelector('#approved_fast_forward')
-          this.buttonDisable.disabled = true
-          this.buttonDisable = document.querySelector('#approved_fast_rewind')
-          this.buttonDisable.disabled = true
-          this.buttonDisable = document.querySelector('#approved_first_page')
-          this.buttonDisable.disabled = true
-          this.buttonDisable = document.querySelector('#approved_last_page')
-          this.buttonDisable.disabled = true
-
-        }
-
 
       } else {
 
         // disable next and prev buttons if number of approved leaves are 0
         this.ApprovedTotalPageNo = 1;
-        this.buttonDisable = document.querySelector('#approved_fast_forward')
-        this.buttonDisable.disabled = true
-        this.buttonDisable = document.querySelector('#approved_fast_rewind')
-        this.buttonDisable.disabled = true
-        this.buttonDisable = document.querySelector('#approved_first_page')
-        this.buttonDisable.disabled = true
-        this.buttonDisable = document.querySelector('#approved_last_page')
-        this.buttonDisable.disabled = true
       }
 
     });
@@ -175,34 +128,10 @@ export class LeavedetailsComponent implements OnInit {
           this.PendingTotalPageNo = parseInt((res.count / this.limitFilter).toFixed(0));
         }
 
-        if (this.PendingTotalPageNo <= 1) {
-
-          // disables next and prev buttons if total number of page is 1
-          this.PendingTotalPageNo = 1
-          this.buttonDisable = document.querySelector('#pending_first_page')
-          this.buttonDisable.disabled = true
-          this.buttonDisable = document.querySelector('#pending_fast_rewind')
-          this.buttonDisable.disabled = true
-          this.buttonDisable = document.querySelector('#pending_fast_forward')
-          this.buttonDisable.disabled = true
-          this.buttonDisable = document.querySelector('#pending_last_page')
-          this.buttonDisable.disabled = true
-
-        }
-
-
       } else {
 
         // disable next and prev buttons if number of approved leaves are 0
         this.PendingTotalPageNo = 1;
-        this.buttonDisable = document.querySelector('#pending_first_page')
-        this.buttonDisable.disabled = true
-        this.buttonDisable = document.querySelector('#pending_fast_rewind')
-        this.buttonDisable.disabled = true
-        this.buttonDisable = document.querySelector('#pending_fast_forward')
-        this.buttonDisable.disabled = true
-        this.buttonDisable = document.querySelector('#pending_last_page')
-        this.buttonDisable.disabled = true
       }
 
     });
@@ -223,34 +152,11 @@ export class LeavedetailsComponent implements OnInit {
           this.RejectedTotalPageNo = parseInt((res.count / this.limitFilter).toFixed(0));
         }
 
-        if (this.RejectedTotalPageNo <= 1) {
-
-          // disables next and prev buttons if total number of page is 1
-          this.RejectedTotalPageNo = 1
-          this.buttonDisable = document.querySelector('#rejected_first_page')
-          this.buttonDisable.disabled = true
-          this.buttonDisable = document.querySelector('#rejected_fast_rewind')
-          this.buttonDisable.disabled = true
-          this.buttonDisable = document.querySelector('#rejected_fast_forward')
-          this.buttonDisable.disabled = true
-          this.buttonDisable = document.querySelector('#rejected_last_page')
-          this.buttonDisable.disabled = true
-
-        }
-
 
       } else {
 
         // disable next and prev buttons if number of approved leaves are 0
         this.RejectedTotalPageNo = 1;
-        this.buttonDisable = document.querySelector('#rejected_first_page')
-        this.buttonDisable.disabled = true
-        this.buttonDisable = document.querySelector('#rejected_fast_rewind')
-        this.buttonDisable.disabled = true
-        this.buttonDisable = document.querySelector('#rejected_fast_forward')
-        this.buttonDisable.disabled = true
-        this.buttonDisable = document.querySelector('#rejected_last_page')
-        this.buttonDisable.disabled = true
       }
 
     });
@@ -410,15 +316,13 @@ export class LeavedetailsComponent implements OnInit {
     // Get Method for current user leave request details
     // tslint:disable-next-line:max-line-length
 
-    this.buttonDisable = document.querySelector('#fast_forward')
-    this.buttonDisable.disabled = true
 
     console.log('Active Tab Index:' + this.activeTab)
     if (this.activeTab == 1) {
       // changed to pending tab
       this.httpClient.get('https://sktleaveapi.herokuapp.com/api/leaveRequesteds?filter[where][email]=' + emails + '&filter[limit]=' + this.limitFilter + '&filter[where][status]=Approved&filter[skip]=' + this.getLeaveSkipForward + '&filter[order]=startdate%20DESC').subscribe((res: any[]) => {
         // Asign Results to leavedetails variable
-        this.buttonDisable.disabled = false
+        //  this.buttonDisable.disabled = false
 
         if (res.length > 0) {
           this.ApprovedPageNo++
@@ -436,7 +340,7 @@ export class LeavedetailsComponent implements OnInit {
         // changed to pending tab
         this.httpClient.get('https://sktleaveapi.herokuapp.com/api/leaveRequesteds?filter[where][email]=' + emails + '&filter[limit]=' + this.limitFilter + '&filter[where][status]=Pending&filter[skip]=' + this.getLeaveSkipForward + '&filter[order]=startdate%20DESC').subscribe((res: any[]) => {
           // Asign Results to leavedetails variable
-          this.buttonDisable.disabled = false
+          //  this.buttonDisable.disabled = false
 
           if (res.length > 0) {
             this.PendingPageNo++
@@ -454,7 +358,7 @@ export class LeavedetailsComponent implements OnInit {
           // changed to pending tab
           this.httpClient.get('https://sktleaveapi.herokuapp.com/api/leaveRequesteds?filter[where][email]=' + emails + '&filter[limit]=' + this.limitFilter + '&filter[where][status]=Rejected&filter[skip]=' + this.getLeaveSkipForward + '&filter[order]=startdate%20DESC').subscribe((res: any[]) => {
             // Asign Results to leavedetails variable
-            this.buttonDisable.disabled = false
+            //  this.buttonDisable.disabled = false
 
             if (res.length > 0) {
               this.RejectedPageNo++
@@ -471,7 +375,7 @@ export class LeavedetailsComponent implements OnInit {
 
           this.httpClient.get('https://sktleaveapi.herokuapp.com/api/leaveRequesteds?filter[where][email]=' + emails + '&filter[limit]=' + this.limitFilter + '&filter[skip]=' + this.getLeaveSkipForward + '&filter[order]=startdate%20DESC').subscribe((res: any[]) => {
             // Asign Results to leavedetails variable
-            this.buttonDisable.disabled = false
+            //  this.buttonDisable.disabled = false
 
             if (res.length > 0) {
 
@@ -498,8 +402,8 @@ export class LeavedetailsComponent implements OnInit {
     if (this.getLeaveSkipForward < 0) {
       this.getLeaveSkipForward = 0
     }
-    this.buttonDisable = document.querySelector('#fast_rewind')
-    this.buttonDisable.disabled = true
+    //  this.buttonDisable = document.querySelector('#fast_rewind')
+    //  this.buttonDisable.disabled = true
 
     const emails = this.adalSvc.userInfo.userName;
     // Get Method for current user leave request details
@@ -511,7 +415,7 @@ export class LeavedetailsComponent implements OnInit {
       this.httpClient.get('https://sktleaveapi.herokuapp.com/api/leaveRequesteds?filter[where][email]=' + emails + '&filter[limit]=' + this.limitFilter + '&filter[where][status]=Approved&filter[skip]=' + this.getLeaveSkipForward + '&filter[order]=startdate%20DESC').subscribe((res: any[]) => {
         // Asign Results to leavedetails variable
         this.approvedleave = res;
-        this.buttonDisable.disabled = false
+        //  this.buttonDisable.disabled = false
 
         if (this.ApprovedPageNo > 1) {
           this.ApprovedPageNo--
@@ -526,7 +430,7 @@ export class LeavedetailsComponent implements OnInit {
         this.httpClient.get('https://sktleaveapi.herokuapp.com/api/leaveRequesteds?filter[where][email]=' + emails + '&filter[limit]=' + this.limitFilter + '&filter[where][status]=Pending&filter[skip]=' + this.getLeaveSkipForward + '&filter[order]=startdate%20DESC').subscribe((res: any[]) => {
           // Asign Results to leavedetails variable
           this.Pendingleaves = res;
-          this.buttonDisable.disabled = false
+          //  this.buttonDisable.disabled = false
 
           if (this.PendingPageNo > 1) {
             this.PendingPageNo--
@@ -541,7 +445,7 @@ export class LeavedetailsComponent implements OnInit {
           this.httpClient.get('https://sktleaveapi.herokuapp.com/api/leaveRequesteds?filter[where][email]=' + emails + '&filter[limit]=' + this.limitFilter + '&filter[where][status]=Rejected&filter[skip]=' + this.getLeaveSkipForward + '&filter[order]=startdate%20DESC').subscribe((res: any[]) => {
             // Asign Results to leavedetails variable
             this.rejectedleave = res;
-            this.buttonDisable.disabled = false
+            //  this.buttonDisable.disabled = false
 
             if (this.RejectedPageNo > 1) {
               this.RejectedPageNo--
@@ -555,7 +459,7 @@ export class LeavedetailsComponent implements OnInit {
           this.httpClient.get('https://sktleaveapi.herokuapp.com/api/leaveRequesteds?filter[where][email]=' + emails + '&filter[limit]=' + this.limitFilter + '&filter[skip]=' + this.getLeaveSkipForward + '&filter[order]=startdate%20DESC').subscribe((res: any[]) => {
             // Asign Results to leavedetails variable
             this.LeaveDetails = res;
-            this.buttonDisable.disabled = false
+            //  this.buttonDisable.disabled = false
 
             if (this.pageNo > 1) {
               this.pageNo--
@@ -572,19 +476,21 @@ export class LeavedetailsComponent implements OnInit {
     //skip count for query
     this.getLeaveSkipForward = 0;
 
+    //  this.buttonDisable = document.querySelector('#fast_rewind')
+    //  this.buttonDisable.disabled = true
 
     const emails = this.adalSvc.userInfo.userName;
     // Get Method for current user leave request details
     // tslint:disable-next-line:max-line-length
 
-    
+
     if (this.activeTab == 1) {
       // changed to pending tab
 
       this.httpClient.get('https://sktleaveapi.herokuapp.com/api/leaveRequesteds?filter[where][email]=' + emails + '&filter[limit]=' + this.limitFilter + '&filter[where][status]=Approved&filter[skip]=0&filter[order]=startdate%20DESC').subscribe((res: any[]) => {
         // Asign Results to leavedetails variable
         this.approvedleave = res;
-        this.buttonDisable.disabled = false
+        //  this.buttonDisable.disabled = false
 
         this.ApprovedPageNo = 1
 
@@ -598,7 +504,7 @@ export class LeavedetailsComponent implements OnInit {
         this.httpClient.get('https://sktleaveapi.herokuapp.com/api/leaveRequesteds?filter[where][email]=' + emails + '&filter[limit]=' + this.limitFilter + '&filter[where][status]=Pending&filter[skip]=0&filter[order]=startdate%20DESC').subscribe((res: any[]) => {
           // Asign Results to leavedetails variable
           this.Pendingleaves = res;
-          this.buttonDisable.disabled = false
+          //  this.buttonDisable.disabled = false
 
           this.PendingPageNo = 1
 
@@ -612,7 +518,7 @@ export class LeavedetailsComponent implements OnInit {
           this.httpClient.get('https://sktleaveapi.herokuapp.com/api/leaveRequesteds?filter[where][email]=' + emails + '&filter[limit]=' + this.limitFilter + '&filter[where][status]=Rejected&filter[skip]=0&filter[order]=startdate%20DESC').subscribe((res: any[]) => {
             // Asign Results to leavedetails variable
             this.rejectedleave = res;
-            this.buttonDisable.disabled = false
+            //  this.buttonDisable.disabled = false
 
 
             this.RejectedPageNo = 1
@@ -626,7 +532,7 @@ export class LeavedetailsComponent implements OnInit {
           this.httpClient.get('https://sktleaveapi.herokuapp.com/api/leaveRequesteds?filter[where][email]=' + emails + '&filter[limit]=' + this.limitFilter + '&filter[skip]=' + this.getLeaveSkipForward + '&filter[order]=startdate%20DESC').subscribe((res: any[]) => {
             // Asign Results to leavedetails variable
             this.LeaveDetails = res;
-            this.buttonDisable.disabled = false
+            //  this.buttonDisable.disabled = false
 
 
             this.pageNo = 1
@@ -640,6 +546,84 @@ export class LeavedetailsComponent implements OnInit {
 
   getLastAlert() {
     console.log('goto last page')
+
+    //skip count for query
+    this.getLeaveSkipForward = 0;
+
+    //  this.buttonDisable = document.querySelector('#fast_rewind')
+    //  this.buttonDisable.disabled = true
+
+    const emails = this.adalSvc.userInfo.userName;
+    // Get Method for current user leave request details
+    // tslint:disable-next-line:max-line-length
+
+
+    if (this.activeTab == 1) {
+
+      this.getLeaveSkipForward = (this.ApprovedTotalPageNo * this.limitFilter) - this.limitFilter
+
+      // changed to leaves approved tab
+
+      this.httpClient.get('https://sktleaveapi.herokuapp.com/api/leaveRequesteds?filter[where][email]=' + emails + '&filter[limit]=' + this.limitFilter + '&filter[where][status]=Approved&filter[skip]=0&filter[order]=startdate%20DESC').subscribe((res: any[]) => {
+        // Asign Results to leavedetails variable
+        this.approvedleave = res;
+        //  this.buttonDisable.disabled = false
+
+        this.ApprovedPageNo = this.ApprovedTotalPageNo
+
+
+      });
+
+    } else
+      if (this.activeTab == 2) {
+
+        this.getLeaveSkipForward = (this.PendingTotalPageNo * this.limitFilter) - this.limitFilter
+
+        // changed to pending tab
+
+        this.httpClient.get('https://sktleaveapi.herokuapp.com/api/leaveRequesteds?filter[where][email]=' + emails + '&filter[limit]=' + this.limitFilter + '&filter[where][status]=Pending&filter[skip]=0&filter[order]=startdate%20DESC').subscribe((res: any[]) => {
+          // Asign Results to leavedetails variable
+          this.Pendingleaves = res;
+          //  this.buttonDisable.disabled = false
+
+          this.PendingPageNo = this.PendingTotalPageNo
+
+
+        });
+
+      } else
+        if (this.activeTab == 3) {
+
+          this.getLeaveSkipForward = (this.RejectedTotalPageNo * this.limitFilter) - this.limitFilter
+
+          // changed to pending tab
+
+          this.httpClient.get('https://sktleaveapi.herokuapp.com/api/leaveRequesteds?filter[where][email]=' + emails + '&filter[limit]=' + this.limitFilter + '&filter[where][status]=Rejected&filter[skip]=0&filter[order]=startdate%20DESC').subscribe((res: any[]) => {
+            // Asign Results to leavedetails variable
+            this.rejectedleave = res;
+            //  this.buttonDisable.disabled = false
+
+
+            this.RejectedPageNo = this.RejectedTotalPageNo
+
+
+          });
+
+        } else {
+
+          this.getLeaveSkipForward = (this.totalPageNo * this.limitFilter) - this.limitFilter
+
+          this.httpClient.get('https://sktleaveapi.herokuapp.com/api/leaveRequesteds?filter[where][email]=' + emails + '&filter[limit]=' + this.limitFilter + '&filter[skip]=' + this.getLeaveSkipForward + '&filter[order]=startdate%20DESC').subscribe((res: any[]) => {
+            // Asign Results to leavedetails variable
+            this.LeaveDetails = res;
+            //  this.buttonDisable.disabled = false
+
+
+            this.pageNo = this.totalPageNo
+
+          });
+
+        }
   }
 
   changeTab(tab: any) {
@@ -647,77 +631,20 @@ export class LeavedetailsComponent implements OnInit {
     this.activeTab = tab
     this.getLeaveSkipForward = 0
 
-    if(tab == 1){
+    if (tab == 1) {
       console.log('Approved Leaves page')
-    } else 
-    if(tab == 2){
-      console.log('Pending Leaves page')
     } else
-    if(tab == 3){
-      console.log('Rejected Leaves page')
-    } else
-    if(tab == 4){
-      console.log('Leave Balance')
-    } else{
-      console.log('Leaves Details page')
-    } 
-
-
-/*
-    if(this.pageNo > 1){
-      
-    
-      if (tab== 1) {
-        // changed to pending tab
-  
-        this.httpClient.get('https://sktleaveapi.herokuapp.com/api/leaveRequesteds?filter[where][email]=' + this.email + '&filter[limit]=' + this.limitFilter + '&filter[where][status]=Approved&filter[skip]=0&filter[order]=startdate%20DESC').subscribe((res: any[]) => {
-          // Asign Results to leavedetails variable
-          this.approvedleave = res;  
-          this.pageNo = 1
-  
-  
-        });
-  
+      if (tab == 2) {
+        console.log('Pending Leaves page')
       } else
-        if (tab == 2) {
-          // changed to pending tab
-  
-          this.httpClient.get('https://sktleaveapi.herokuapp.com/api/leaveRequesteds?filter[where][email]=' + this.email + '&filter[limit]=' + this.limitFilter + '&filter[where][status]=Pending&filter[skip]=0&filter[order]=startdate%20DESC').subscribe((res: any[]) => {
-            // Asign Results to leavedetails variable
-            this.Pendingleaves = res;
-            this.pageNo = 1  
-  
-          });
-  
+        if (tab == 3) {
+          console.log('Rejected Leaves page')
         } else
-          if (tab == 3) {
-            // changed to pending tab
-  
-            this.httpClient.get('https://sktleaveapi.herokuapp.com/api/leaveRequesteds?filter[where][email]=' + this.email + '&filter[limit]=' + this.limitFilter + '&filter[where][status]=Rejected&filter[skip]=0&filter[order]=startdate%20DESC').subscribe((res: any[]) => {
-              // Asign Results to leavedetails variable
-              this.rejectedleave = res;
-              this.pageNo = 1  
-  
-            });
-  
+          if (tab == 4) {
+            console.log('Leave Balance')
           } else {
-  
-  
-            this.httpClient.get('https://sktleaveapi.herokuapp.com/api/leaveRequesteds?filter[where][email]=' + this.email + '&filter[limit]=' + this.limitFilter + '&filter[skip]=' + this.getLeaveSkipForward + '&filter[order]=startdate%20DESC').subscribe((res: any[]) => {
-              // Asign Results to leavedetails variable
-              this.LeaveDetails = res;
-              this.pageNo = 1
-  
-            });
-  
+            console.log('Leaves Details page')
           }
-  
-  
-
-    }
-    */
-
-    console.log(tab)
   }
 
 }
