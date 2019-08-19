@@ -39,6 +39,10 @@ export class ViewUserComponent implements OnInit {
     currentUser: User
     noUser = false
 
+    // pagination
+    pageNo = 1
+    usersPerPage = 5
+
 
     constructor(private formBuilder: FormBuilder,
         private userService: UserService,
@@ -50,7 +54,7 @@ export class ViewUserComponent implements OnInit {
     ngOnInit() {
         this.app.loading = true
         this.currentUser = JSON.parse(localStorage.getItem('user'))
-      
+
 
         //get all users
         this.userService.getUsers()
@@ -74,6 +78,7 @@ export class ViewUserComponent implements OnInit {
 
 
     EditUser(index) {
+        index = index + ((this.pageNo-1)*this.usersPerPage)
         localStorage.setItem('edituser', JSON.stringify(this.users[index]));
         this.router.navigate(['/user/edituser']);
     }
@@ -99,7 +104,7 @@ export class ViewUserComponent implements OnInit {
                     .subscribe(res => {
 
                         console.log(res)
-                    this.app.loading = false
+                        this.app.loading = false
 
                         swal({
                             title: 'User Deleted',
