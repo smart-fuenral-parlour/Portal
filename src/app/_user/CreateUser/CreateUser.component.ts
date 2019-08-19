@@ -110,7 +110,7 @@ export class CreateUserComponent implements OnInit {
 
 
         // checking for empty fields
-        if (isNullOrUndefined(this.user.email) || isNullOrUndefined(this.user.role) || isNullOrUndefined(this.user.password) || isNullOrUndefined(this.user.surname) || isNullOrUndefined(this.user.name) || isNullOrUndefined(password)) {
+        if ( isNullOrUndefined(this.user.role) || isNullOrUndefined(this.user.password) || isNullOrUndefined(this.user.surname) || isNullOrUndefined(this.user.name) || isNullOrUndefined(password)) {
 
             swal({
                 title: "Empty fields",
@@ -121,7 +121,7 @@ export class CreateUserComponent implements OnInit {
             }).catch(swal.noop)
 
         } else
-            if (this.user.email == '' || this.user.role == '' || this.user.password == '' || this.user.surname == '' || this.user.name == '' || password == '') {
+            if (this.user.role == '' || this.user.password == '' || this.user.surname == '' || this.user.name == '' || password == '') {
 
                 swal({
                     title: "Empty fields",
@@ -145,8 +145,63 @@ export class CreateUserComponent implements OnInit {
 
                 } else {
 
+                    swal({
+                        title: 'Create ' + this.user.name + ' ' + this.user.surname + ' as a user ',
+                        text: "Are you sure you want to add " + this.user.name + ' ' + this.user.surname + " as a "+this.user.role+"?",
+                        type: 'warning',
+                        showCancelButton: true,
+                        confirmButtonClass: 'btn btn-success',
+                        cancelButtonClass: 'btn btn-danger',
+                        cancelButtonText: 'Cancel',
+                        confirmButtonText: 'Yes, Save',
+                        buttonsStyling: false
+                    }).then((result) => {
+                        if (result.value) {
+                            this.user.idsystemusers = 0;
 
-                    // validating duplicated email
+                            this.app.loading = true
+                            this.userService.createUser(
+                                this.user)
+                                .subscribe(user_res => {
+
+                                    console.log(user_res)
+                                    this.app.loading = false
+
+                                    if (user_res.idsystemusers > 0) {
+                                        swal({
+                                            title: 'User Created',
+                                            type: 'success',
+                                            confirmButtonClass: "btn btn-success",
+                                            buttonsStyling: false
+
+                                        }).then((result) => {
+                                            this.router.navigate(['/user/viewuser'])
+                                        })
+                                    } else {
+
+                                        swal({
+                                            title: "Error submitting form",
+                                            text: "we apologize for the error, please try again or contact your IT technician  ",
+                                            type: 'error',
+                                            timer: 5000,
+                                            showConfirmButton: true
+                                        }).catch(swal.noop).then((result) => {
+                                            // this.router.navigate(['/user/viewuser'])
+                                            document.location.reload();
+                                        })
+
+                                    }
+
+                                }, (err) => {
+                                    console.log(err);
+                                    this.app.loading = false
+
+                                });
+
+                        }
+                    })
+
+                    /* validating duplicated email
                     this.app.loading = true
                     this.userService.checkUserEmail(this.user.email)
                         .subscribe(count_res => {
@@ -154,61 +209,6 @@ export class CreateUserComponent implements OnInit {
                             this.app.loading = false
                             if (count_res.count == 0) {
 
-                                swal({
-                                    title: 'Create ' + this.user.name + ' ' + this.user.surname + ' as a user ',
-                                    text: "Are you sure you want to add " + this.user.name + ' ' + this.user.surname + " as a "+this.user.role+"?",
-                                    type: 'warning',
-                                    showCancelButton: true,
-                                    confirmButtonClass: 'btn btn-success',
-                                    cancelButtonClass: 'btn btn-danger',
-                                    cancelButtonText: 'Cancel',
-                                    confirmButtonText: 'Yes, Save',
-                                    buttonsStyling: false
-                                }).then((result) => {
-                                    if (result.value) {
-                                        this.user.idsystemusers = 0;
-
-                                        this.app.loading = true
-                                        this.userService.createUser(
-                                            this.user)
-                                            .subscribe(user_res => {
-
-                                                console.log(user_res)
-                                                this.app.loading = false
-
-                                                if (user_res.idsystemusers > 0) {
-                                                    swal({
-                                                        title: 'User Created',
-                                                        type: 'success',
-                                                        confirmButtonClass: "btn btn-success",
-                                                        buttonsStyling: false
-
-                                                    }).then((result) => {
-                                                        this.router.navigate(['/user/viewuser'])
-                                                    })
-                                                } else {
-
-                                                    swal({
-                                                        title: "Error submitting form",
-                                                        text: "we apologize for the error, please try again or contact your IT technician  ",
-                                                        type: 'error',
-                                                        timer: 5000,
-                                                        showConfirmButton: true
-                                                    }).catch(swal.noop).then((result) => {
-                                                        // this.router.navigate(['/user/viewuser'])
-                                                        document.location.reload();
-                                                    })
-
-                                                }
-
-                                            }, (err) => {
-                                                console.log(err);
-                                                this.app.loading = false
-
-                                            });
-
-                                    }
-                                })
 
                             } else {
                                 swal({
@@ -225,6 +225,7 @@ export class CreateUserComponent implements OnInit {
                             console.log(err)
                             this.app.loading = false
                         })
+                        */
 
                 }
 

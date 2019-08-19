@@ -78,7 +78,7 @@ export class CreateMemberComponent implements OnInit {
     limitReached = false
 
     // validate null or empty drop down values
-    nullPolicytype = " <b>Policy</b> -> Select Policy Type"
+   // nullPolicytype = " <b>Policy</b> -> Select Policy Type"
     nullGender = " <b>Info</b> -> Select Gender"
     nullProvince = " <b>Address</b> -> Select Province"
     nullBeneficiary = ""
@@ -230,20 +230,20 @@ export class CreateMemberComponent implements OnInit {
                 housenumber: {
                     required: true,
                     minlength: 1
-                },
+                }, /*
                 phone: {
                     required: true,
                     minlength: 10,
                     maxlength: 10
-                },
+                },*/
                 lastName: {
                     required: true,
                     minlength: 3
-                },
+                }/*,
                 email: {
                     required: true,
                     minlength: 3,
-                }
+                }*/
             },
 
             highlight: function (element) {
@@ -600,43 +600,46 @@ export class CreateMemberComponent implements OnInit {
         if (!isNullOrUndefined(this.setmember.province)) {
             this.nullProvince = ""
         }
-
+/*
         if (!isNullOrUndefined(this.setmember.idpolicytype)) {
             this.nullPolicytype = ""
-            if (this.unhideBeneficiaryForm) {
 
-                if (this.maxNumberAllowed > 0 && this.BeneficiaryForm.length > 0) {
+        }
+*/
+        if (this.unhideBeneficiaryForm) {
 
-                    for (let x = 0; x < this.BeneficiaryForm.length; x++) {
+            if (this.maxNumberAllowed > 0 && this.BeneficiaryForm.length > 0) {
 
-                        let BeneficiaryName
-                        let BeneficiarySurname
-                        let BeneficiaryIdNumber
+                for (let x = 0; x < this.BeneficiaryForm.length; x++) {
 
-                        BeneficiaryName = document.querySelector('#beneficiaryName' + x)
-                        BeneficiarySurname = document.querySelector('#beneficiarySurname' + x)
-                        BeneficiaryIdNumber = document.querySelector('#beneficiaryID' + x)
+                    let BeneficiaryName
+                    let BeneficiarySurname
+                    let BeneficiaryIdNumber
 
-
-                        if (BeneficiaryName.value.length > 0 && BeneficiarySurname.value.length > 0 && BeneficiaryIdNumber.value.length == 13) {
-                            this.nullBeneficiary = ""
-                        } else {
-                            this.nullBeneficiary = " <b>Policy</b> -> Add beneficiary [Name(empty field), Surname(empty field), Idnumber(digits below 13)]"
-                        }
+                    BeneficiaryName = document.querySelector('#beneficiaryName' + x)
+                    BeneficiarySurname = document.querySelector('#beneficiarySurname' + x)
+                    BeneficiaryIdNumber = document.querySelector('#beneficiaryID' + x)
 
 
+                    if (BeneficiaryName.value.length > 0 && BeneficiarySurname.value.length > 0 && BeneficiaryIdNumber.value.length == 13) {
+                        this.nullBeneficiary = ""
+                    } else {
+                        this.nullBeneficiary = " <b>Policy</b> -> Add beneficiary [Name(empty field), Surname(empty field), Idnumber(digits below 13)]"
                     }
-                } else {
-                    this.nullBeneficiary = ""
-                }
 
+
+                }
             } else {
                 this.nullBeneficiary = ""
             }
+
+        } else {
+            this.nullBeneficiary = ""
         }
+        
 
 
-        if (this.nullGender == "" && this.nullProvince == "" && this.nullPolicytype == "" && this.nullBeneficiary == "") {
+        if (this.nullGender == "" && this.nullProvince == "" && this.nullBeneficiary == "") {
             this.errorMessage = false
         }
 
@@ -743,10 +746,10 @@ export class CreateMemberComponent implements OnInit {
                     '</b></div>' +
                     '<div class="row pull-center"> <b>' +
                     this.nullProvince +
-                    '</b></div>' +
+                    '</b></div>' +/*
                     '<div class="row pull-center"> <b>' +
                     this.nullPolicytype +
-                    '</b></div>' +
+                    '</b></div>' +*/
                     '<div class="row pull-center"> <b>' +
                     this.nullBeneficiary +
                     '</b></div>',
@@ -792,6 +795,152 @@ export class CreateMemberComponent implements OnInit {
 
                                 console.log(this.setmember)
 
+
+                                this.app.loading = true
+                                this.memberService.checkMembershipNumber(this.setmember.membershipnumber)
+                                    .subscribe(membership_res => {
+                                        this.app.loading = false
+
+                                        if (membership_res.count > 0) {
+
+                                            this.setmember.membershipnumber = (this.setmember.surname.slice(0, 1).toUpperCase() + this.setmember.name.slice(0, 1).toUpperCase() + Math.floor(100000 + Math.random() * 900000) + (this.setmember.identitynumber).toString().slice(7, 9))
+
+                                            // creating member after validation
+                                            this.app.loading = true
+                                            this.memberService.createMember(this.setmember)
+                                                .subscribe(member_res => {
+
+                                                    console.log(member_res)
+
+                                                    if (this.unhideBeneficiaryForm) {
+
+                                                        // creating beneficiary
+                                                        for (let x = 0; x < this.BeneficiaryForm.length; x++) {
+
+                                                            let BeneficiaryName
+                                                            let BeneficiarySurname
+                                                            let BeneficiaryIdNumber
+
+                                                            BeneficiaryName = document.querySelector('#beneficiaryName' + x)
+                                                            BeneficiarySurname = document.querySelector('#beneficiarySurname' + x)
+                                                            BeneficiaryIdNumber = document.querySelector('#beneficiaryID' + x)
+
+                                                            this.setbeneficiary.name = BeneficiaryName.value
+                                                            this.setbeneficiary.surname = BeneficiarySurname.value
+                                                            this.setbeneficiary.identitynumber = BeneficiaryIdNumber.value
+                                                            this.setbeneficiary.idlifestatus = 1
+                                                            this.setbeneficiary.id = 0
+                                                            this.setbeneficiary.idmember = member_res.id
+
+                                                            /*
+                                                            this.beneficiaryService.checkBeneficiaryIdnumber(this.setbeneficiary.identitynumber)
+                                                                .subscribe(beneficiarycount_res => {
+    
+                                                                    if(beneficiarycount_res.count > 0){
+    
+                                                                    } else {
+    
+                                                                    }
+    
+                                                                }, err => {
+                                                                    console.log(err)
+                                                                })
+                                                                */
+
+                                                            this.beneficiaryService.createBeneficiary(this.setbeneficiary)
+                                                                .subscribe(beneficiary_res => {
+
+                                                                    console.log(beneficiary_res)
+                                                                }, err => {
+                                                                    console.log(err)
+                                                                })
+
+                                                        }
+
+                                                    }
+                                                    this.app.loading = false
+
+                                                    swal(
+                                                        {
+                                                            title: 'Member Created',
+                                                            type: 'success',
+                                                            confirmButtonClass: "btn btn-success",
+                                                            buttonsStyling: false
+
+                                                        }).then((result) => document.location.reload()) // console.log('done: ' + result.value))  document.location.reload()
+
+
+
+                                                }, err => {
+                                                    console.log(err)
+                                                    this.app.loading = false
+                                                })
+
+                                        } else {
+
+                                            // creating member after validation
+                                            this.memberService.createMember(this.setmember)
+                                                .subscribe(member_res => {
+
+                                                    console.log(member_res)
+
+                                                    if (this.unhideBeneficiaryForm) {
+
+                                                        // creating beneficiary
+                                                        for (let x = 0; x < this.BeneficiaryForm.length; x++) {
+
+                                                            let BeneficiaryName
+                                                            let BeneficiarySurname
+                                                            let BeneficiaryIdNumber
+
+                                                            BeneficiaryName = document.querySelector('#beneficiaryName' + x)
+                                                            BeneficiarySurname = document.querySelector('#beneficiarySurname' + x)
+                                                            BeneficiaryIdNumber = document.querySelector('#beneficiaryID' + x)
+
+                                                            this.setbeneficiary.name = BeneficiaryName.value
+                                                            this.setbeneficiary.surname = BeneficiarySurname.value
+                                                            this.setbeneficiary.identitynumber = BeneficiaryIdNumber.value
+                                                            this.setbeneficiary.idlifestatus = 1
+                                                            this.setbeneficiary.id = 0
+                                                            this.setbeneficiary.idmember = member_res.id
+
+                                                            this.beneficiaryService.createBeneficiary(this.setbeneficiary)
+                                                                .subscribe(beneficiary_res => {
+
+                                                                    console.log(beneficiary_res)
+                                                                }, err => {
+                                                                    console.log(err)
+                                                                })
+
+                                                        }
+
+                                                    }
+                                                    this.app.loading = false
+
+                                                    swal(
+                                                        {
+                                                            title: 'Member Created',
+                                                            type: 'success',
+                                                            confirmButtonClass: "btn btn-success",
+                                                            buttonsStyling: false
+
+                                                        }).then((result) => document.location.reload()) // console.log('done: ' + result.value))  document.location.reload()
+
+
+
+                                                }, err => {
+                                                    console.log(err)
+                                                    this.app.loading = false
+                                                })
+
+                                        }
+
+                                    }, err => {
+                                        console.log(err)
+                                        this.app.loading = false
+                                    })
+
+/*
                                 this.memberService.checkMemberEmail(this.setmember.email)
                                     .subscribe(memberemail_res => {
 
@@ -819,7 +968,7 @@ export class CreateMemberComponent implements OnInit {
                                                         this.setmember.membershipnumber = (this.setmember.surname.slice(0, 1).toUpperCase() + this.setmember.name.slice(0, 1).toUpperCase() + Math.floor(100000 + Math.random() * 900000) + (this.setmember.identitynumber).toString().slice(7, 9))
 
                                                         // creating member after validation
-                    this.app.loading = true
+                                                        this.app.loading = true
                                                         this.memberService.createMember(this.setmember)
                                                             .subscribe(member_res => {
 
@@ -845,7 +994,7 @@ export class CreateMemberComponent implements OnInit {
                                                                         this.setbeneficiary.id = 0
                                                                         this.setbeneficiary.idmember = member_res.id
 
-                                                                        /*
+                                                                        
                                                                         this.beneficiaryService.checkBeneficiaryIdnumber(this.setbeneficiary.identitynumber)
                                                                             .subscribe(beneficiarycount_res => {
                 
@@ -858,7 +1007,7 @@ export class CreateMemberComponent implements OnInit {
                                                                             }, err => {
                                                                                 console.log(err)
                                                                             })
-                                                                            */
+                                                                            
 
                                                                         this.beneficiaryService.createBeneficiary(this.setbeneficiary)
                                                                             .subscribe(beneficiary_res => {
@@ -959,7 +1108,7 @@ export class CreateMemberComponent implements OnInit {
                                         console.log(err)
                                         this.app.loading = true
                                     })
-
+*/
 
 
                             }
