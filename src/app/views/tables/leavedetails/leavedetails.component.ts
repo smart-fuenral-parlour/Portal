@@ -31,9 +31,14 @@ export class LeavedetailsComponent implements OnInit {
   startdate: string;
   enddate: string;
   buttonDisable: any
-  pageNo = 1
   ApprovedpageNo = 1
   limitFilter = 10
+
+  //page number  
+  pageNo = 1
+  ApprovedPageNo = 1
+  RejectedPageNo = 1
+  PendingPageNo = 1
 
   // total number of pages on leaves
   totalPageNo = 1
@@ -416,7 +421,7 @@ export class LeavedetailsComponent implements OnInit {
         this.buttonDisable.disabled = false
 
         if (res.length > 0) {
-          this.pageNo++
+          this.ApprovedPageNo++
           this.approvedleave = res;
         } else {
 
@@ -434,7 +439,7 @@ export class LeavedetailsComponent implements OnInit {
           this.buttonDisable.disabled = false
 
           if (res.length > 0) {
-            this.pageNo++
+            this.PendingPageNo++
             this.Pendingleaves = res;
           } else {
 
@@ -452,7 +457,7 @@ export class LeavedetailsComponent implements OnInit {
             this.buttonDisable.disabled = false
 
             if (res.length > 0) {
-              this.pageNo++
+              this.RejectedPageNo++
               this.rejectedleave = res;
             } else {
 
@@ -508,8 +513,8 @@ export class LeavedetailsComponent implements OnInit {
         this.approvedleave = res;
         this.buttonDisable.disabled = false
 
-        if (this.pageNo > 1) {
-          this.pageNo--
+        if (this.ApprovedPageNo > 1) {
+          this.ApprovedPageNo--
         }
 
       });
@@ -523,8 +528,8 @@ export class LeavedetailsComponent implements OnInit {
           this.Pendingleaves = res;
           this.buttonDisable.disabled = false
 
-          if (this.pageNo > 1) {
-            this.pageNo--
+          if (this.PendingPageNo > 1) {
+            this.PendingPageNo--
           }
 
         });
@@ -538,8 +543,8 @@ export class LeavedetailsComponent implements OnInit {
             this.rejectedleave = res;
             this.buttonDisable.disabled = false
 
-            if (this.pageNo > 1) {
-              this.pageNo--
+            if (this.RejectedPageNo > 1) {
+              this.RejectedPageNo--
             }
 
           });
@@ -581,7 +586,7 @@ export class LeavedetailsComponent implements OnInit {
         this.approvedleave = res;
         this.buttonDisable.disabled = false
 
-        this.pageNo = 1
+        this.ApprovedPageNo = 1
 
 
       });
@@ -595,7 +600,7 @@ export class LeavedetailsComponent implements OnInit {
           this.Pendingleaves = res;
           this.buttonDisable.disabled = false
 
-          this.pageNo = 1
+          this.PendingPageNo = 1
 
 
         });
@@ -610,7 +615,7 @@ export class LeavedetailsComponent implements OnInit {
             this.buttonDisable.disabled = false
 
 
-            this.pageNo = 1
+            this.RejectedPageNo = 1
 
 
           });
@@ -641,11 +646,22 @@ export class LeavedetailsComponent implements OnInit {
 
     this.activeTab = tab
     this.getLeaveSkipForward = 0
-    console.log(this.pageNo)
 
-    if(this.pageNo > 1){
-      this.pageNo = 1
-    }
+    if(tab == 1){
+      console.log('Approved Leaves page')
+    } else 
+    if(tab == 2){
+      console.log('Pending Leaves page')
+    } else
+    if(tab == 3){
+      console.log('Rejected Leaves page')
+    } else
+    if(tab == 4){
+      console.log('Leave Balance')
+    } else{
+      console.log('Leaves Details page')
+    } 
+
 
 /*
     if(this.pageNo > 1){
